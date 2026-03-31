@@ -4608,7 +4608,7 @@
 <p><strong>1. What is the fundamental physical concept that integration computes?</strong></p>
 <ul>
 <li>A. The rate of instantaneous change</li>
-<li>B. The total accumulation of a quantity over a domain</li>
+<li>B. <strong>The total accumulation of a quantity over a domain</strong></li>
 <li>C. The "sweet spot" between competing errors</li>
 <li>D. The slope of a function on a discrete grid</li>
 </ul>
@@ -4627,7 +4627,7 @@ Integration is the process of **accumulating** infinitesimal contributions acros
 <ul>
 <li>A. Numerical differentiation</li>
 <li>B. Root finding</li>
-<li>C. Numerical quadrature</li>
+<li>C. <strong>Numerical quadrature</strong></li>
 <li>D. The Monte Carlo method</li>
 </ul>
 </div>
@@ -4644,7 +4644,7 @@ Integration is the process of **accumulating** infinitesimal contributions acros
 <p><strong>3. Why can't we always use analytical calculus techniques to evaluate integrals in computational physics?</strong></p>
 <ul>
 <li>A. Computers cannot handle symbolic mathematics</li>
-<li>B. Many functions have no closed-form antiderivative, and experimental data is discrete</li>
+<li>B. <strong>Many functions have no closed-form antiderivative, and experimental data is discrete</strong></li>
 <li>C. Numerical methods are always more accurate</li>
 <li>D. Integration is undefined for discrete data</li>
 </ul>
@@ -4855,7 +4855,7 @@ Two fundamental barriers exist: (1) Many physically important functions (like th
 <p><strong>1. What is the geometric shape used to approximate each slice of the integral in the Trapezoidal Rule?</strong></p>
 <ul>
 <li>A. A rectangle</li>
-<li>B. A trapezoid formed by linear interpolation</li>
+<li>B. <strong>A trapezoid formed by linear interpolation</strong></li>
 <li>C. A parabola</li>
 <li>D. A triangle</li>
 </ul>
@@ -4873,7 +4873,7 @@ The Trapezoidal Rule connects adjacent data points with a **straight line**, for
 <p><strong>2. In the Extended Trapezoidal Rule, why do interior points receive a weight of 1 while endpoints receive a weight of &frac12;?</strong></p>
 <ul>
 <li>A. It's an arbitrary convention for symmetry</li>
-<li>B. Interior points are counted twice (once by each adjacent trapezoid), while endpoints appear only once</li>
+<li>B. <strong>Interior points are counted twice (once by each adjacent trapezoid), while endpoints appear only once</strong></li>
 <li>C. The formula requires normalization</li>
 <li>D. Endpoints are less accurate than interior points</li>
 </ul>
@@ -4891,7 +4891,7 @@ Each interior point $y_i$ serves as the **right edge** of the trapezoid to its l
 <p><strong>3. If you double the number of grid points <span class="arithmatex">\(N\)</span> (halving <span class="arithmatex">\(h\)</span>) in the Trapezoidal Rule, the truncation error decreases by a factor of:</strong></p>
 <ul>
 <li>A. 2</li>
-<li>B. 4</li>
+<li>B. <strong>4</strong></li>
 <li>C. 8</li>
 <li>D. <span class="arithmatex">\(\sqrt{2}\)</span></li>
 </ul>
@@ -5172,7 +5172,7 @@ The Trapezoidal Rule has **second-order accuracy** ($O(h^2)$). Halving $h$ means
 <p><strong>1. What geometric shape does Simpson's Rule use to approximate each "tile" of the integral?</strong></p>
 <ul>
 <li>A. A straight line (trapezoid)</li>
-<li>B. A parabola (quadratic polynomial)</li>
+<li>B. <strong>A parabola (quadratic polynomial)</strong></li>
 <li>C. A cubic spline</li>
 <li>D. A circle segment</li>
 </ul>
@@ -5191,7 +5191,7 @@ Simpson&#39;s Rule fits a **parabola** (2nd-degree polynomial) through three con
 <ul>
 <li>A. <span class="arithmatex">\(\frac{h}{2} [1, 2, 2, 2, \ldots, 2, 1]\)</span></li>
 <li>B. <span class="arithmatex">\(h [1/2, 1, 1, 1, \ldots, 1, 1/2]\)</span></li>
-<li>C. <span class="arithmatex">\(\frac{h}{3} [1, 4, 2, 4, 2, \ldots, 4, 1]\)</span></li>
+<li>C. <strong><span class="arithmatex">\(\frac{h}{3} [1, 4, 2, 4, 2, \ldots, 4, 1]\)</span></strong></li>
 <li>D. <span class="arithmatex">\(\frac{h}{3} [1, 4, 1, 4, 1, \ldots, 4, 1]\)</span></li>
 </ul>
 </div>
@@ -5210,7 +5210,7 @@ The Extended Simpson&#39;s Rule has the signature **1-4-2-4-2-...-4-1** weightin
 <li>A. 2</li>
 <li>B. 4</li>
 <li>C. 8</li>
-<li>D. 16</li>
+<li>D. <strong>16</strong></li>
 </ul>
 </div>
 <details class="info">
@@ -5478,7 +5478,7 @@ Simpson&#39;s Rule has **fourth-order accuracy** ($O(h^4)$). Halving $h$ means t
 <p><strong>1. What is the "Aha! Moment" of Gaussian Quadrature?</strong></p>
 <ul>
 <li>A. It uses parabolic tiles for <span class="arithmatex">\(O(h^4)\)</span> accuracy</li>
-<li>B. It optimally chooses both sample points <span class="arithmatex">\(x_i\)</span> and weights <span class="arithmatex">\(w_i\)</span> to maximize polynomial accuracy</li>
+<li>B. <strong>It optimally chooses both sample points <span class="arithmatex">\(x_i\)</span> and weights <span class="arithmatex">\(w_i\)</span> to maximize polynomial accuracy</strong></li>
 <li>C. It uses random sampling like Monte Carlo methods</li>
 <li>D. It works only for grid-based data</li>
 </ul>
@@ -5497,7 +5497,7 @@ Gaussian Quadrature breaks free from the constraint of fixed, uniform grids. By 
 <ul>
 <li>A. Degree 2</li>
 <li>B. Degree 3</li>
-<li>C. Degree 5</li>
+<li>C. <strong>Degree 5</strong></li>
 <li>D. Degree 6</li>
 </ul>
 </div>
@@ -5515,7 +5515,7 @@ The general rule is that $N$-point Gaussian quadrature is exact for polynomials 
 <ul>
 <li>A. Manual implementation of Simpson's Rule</li>
 <li>B. <code>scipy.integrate.trapezoid</code> on a uniform grid</li>
-<li>C. <code>scipy.integrate.quad</code> (Gaussian Quadrature)</li>
+<li>C. <strong><code>scipy.integrate.quad</code> (Gaussian Quadrature)</strong></li>
 <li>D. Monte Carlo integration</li>
 </ul>
 </div>
@@ -5808,7 +5808,7 @@ $<span class="arithmatex">\(x = t^2 \quad \Rightarrow \quad dx = 2t \, dt\)</spa
 <p><strong>1. How do we "tame" an integral with an infinite limit, like <span class="arithmatex">\(\int_0^\infty f(x) dx\)</span>?</strong></p>
 <ul>
 <li>A. Use Monte Carlo, which handles infinity automatically</li>
-<li>B. Use a change of variables (e.g., <span class="arithmatex">\(t = 1/(1+x)\)</span>) to map the infinite domain to a finite one</li>
+<li>B. <strong>Use a change of variables (e.g., <span class="arithmatex">\(t = 1/(1+x)\)</span>) to map the infinite domain to a finite one</strong></li>
 <li>C. Integrate to a "very large number" (e.g., <span class="arithmatex">\(10^{10}\)</span>) and hope it's correct</li>
 <li>D. Use Simpson's Rule with an infinite number of slices</li>
 </ul>
@@ -5826,7 +5826,7 @@ The mathematically rigorous approach is a **change of variables** that **compact
 <p><strong>2. How do we "tame" an integral with a singularity, like <span class="arithmatex">\(\int_0^1 \frac{1}{\sqrt{x}} dx\)</span>?</strong></p>
 <ul>
 <li>A. Start the integral just after the singularity, e.g., <span class="arithmatex">\(\int_{0.0001}^1\)</span></li>
-<li>B. Use a change of variables (e.g., <span class="arithmatex">\(x = t^2\)</span>) chosen to cancel the singularity</li>
+<li>B. <strong>Use a change of variables (e.g., <span class="arithmatex">\(x = t^2\)</span>) chosen to cancel the singularity</strong></li>
 <li>C. Use the Trapezoidal Rule, which is not affected by singularities</li>
 <li>D. This integral is unsolvable and must be approximated</li>
 </ul>
@@ -5844,7 +5844,7 @@ The key is choosing a substitution that **cancels the singular behavior**. For $
 <p><strong>3. For the integral <span class="arithmatex">\(\int_0^\infty e^{-x^2} dx\)</span>, which transformation maps it to a finite interval?</strong></p>
 <ul>
 <li>A. <span class="arithmatex">\(t = x^2\)</span></li>
-<li>B. <span class="arithmatex">\(t = 1/(1+x)\)</span></li>
+<li>B. <strong><span class="arithmatex">\(t = 1/(1+x)\)</span></strong></li>
 <li>C. <span class="arithmatex">\(t = e^{-x}\)</span></li>
 <li>D. <span class="arithmatex">\(t = \ln(x)\)</span></li>
 </ul>
@@ -6138,7 +6138,7 @@ The substitution $t = 1/(1+x)$ maps $x \in [0, \infty)$ to $t \in (0, 1]$. From 
 <p><strong>1. What is the source of the computational problem in the nonlinear pendulum period integral?</strong></p>
 <ul>
 <li>A. The integral has infinite limits</li>
-<li>B. The integrand has a singularity at the upper endpoint <span class="arithmatex">\(\theta = \theta_0\)</span></li>
+<li>B. <strong>The integrand has a singularity at the upper endpoint <span class="arithmatex">\(\theta = \theta_0\)</span></strong></li>
 <li>C. The integral is 10-dimensional</li>
 <li>D. The function is too "wiggly" for Simpson's Rule</li>
 </ul>
@@ -6157,7 +6157,7 @@ At $\theta = \theta_0$, the denominator $\sqrt{\cos\theta - \cos\theta_0}$ appro
 <ul>
 <li>A. Significantly shorter</li>
 <li>B. Exactly the same</li>
-<li>C. Longer, due to the nonlinearity of the equation</li>
+<li>C. <strong>Longer, due to the nonlinearity of the equation</strong></li>
 <li>D. Shorter, due to energy loss</li>
 </ul>
 </div>
@@ -6175,7 +6175,7 @@ For large amplitudes, the pendulum spends more time at the extremes of its swing
 <ul>
 <li>A. The integral is too long</li>
 <li>B. The function oscillates too much</li>
-<li>C. Evaluating at the endpoint <span class="arithmatex">\(\theta_0\)</span> causes division by zero</li>
+<li>C. <strong>Evaluating at the endpoint <span class="arithmatex">\(\theta_0\)</span> causes division by zero</strong></li>
 <li>D. Grid-based methods don't work for physics problems</li>
 </ul>
 </div>
@@ -6566,7 +6566,7 @@ Grid-based methods require evaluating the function at regular intervals, includi
 <p><strong>1. What is the "Curse of Dimensionality"?</strong></p>
 <ul>
 <li>A. Monte Carlo integration is <span class="arithmatex">\(O(1/\sqrt{N})\)</span></li>
-<li>B. Grid-based methods become exponentially slow and less accurate as dimension <span class="arithmatex">\(D\)</span> increases</li>
+<li>B. <strong>Grid-based methods become exponentially slow and less accurate as dimension <span class="arithmatex">\(D\)</span> increases</strong></li>
 <li>C. All numerical methods fail if <span class="arithmatex">\(D &gt; 3\)</span></li>
 <li>D. You must use double-wide tiles for Simpson's Rule in high dimensions</li>
 </ul>
@@ -6585,7 +6585,7 @@ The Curse of Dimensionality refers to the exponential scaling of computational c
 <ul>
 <li>A. A 1D integral of a smooth, callable function</li>
 <li>B. A 2D integral of data on a fixed grid</li>
-<li>C. A 1000-dimensional integral for a statistical mechanics problem</li>
+<li>C. <strong>A 1000-dimensional integral for a statistical mechanics problem</strong></li>
 <li>D. Finding the area under a simple parabola</li>
 </ul>
 </div>
@@ -6602,7 +6602,7 @@ Monte Carlo is the **only feasible method** for high-dimensional integrals (typi
 <p><strong>3. What is the "magic" property of Monte Carlo error that allows it to beat the Curse of Dimensionality?</strong></p>
 <ul>
 <li>A. It uses optimal Gaussian quadrature points</li>
-<li>B. The error <span class="arithmatex">\(O(1/\sqrt{N})\)</span> does not depend on dimension <span class="arithmatex">\(D\)</span></li>
+<li>B. <strong>The error <span class="arithmatex">\(O(1/\sqrt{N})\)</span> does not depend on dimension <span class="arithmatex">\(D\)</span></strong></li>
 <li>C. It's faster than Simpson's Rule in all dimensions</li>
 <li>D. It requires no function evaluations</li>
 </ul>

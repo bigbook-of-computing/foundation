@@ -2649,6 +2649,15 @@
 <li>C. <strong>Approximately 24 iterations, as <span class="arithmatex">\(2^{24} \approx 1.6 \times 10^7\)</span>.</strong></li>
 <li>D. 1,000,000 iterations (linear scaling).</li>
 </ul>
+</div>
+<details class="info">
+<summary>See Answer</summary>
+<div class="language-text highlight"><pre><span></span><code>**Correct: C**  
+Each iteration of Bisection halves the interval. $(10 / 2^n) \approx 10^{-6} \Rightarrow 2^n \approx 10^7$. Since $2^{10} \approx 10^3$ and $2^{20} \approx 10^6$, 24 iterations are required.
+</code></pre></div>
+</details>
+<div class="admonition note">
+<p class="admonition-title">Quiz</p>
 <p><strong>2. What is the fundamental requirement for a bracketing method to work?</strong></p>
 <ul>
 <li>A. The function must be a polynomial.</li>
@@ -2659,9 +2668,9 @@
 </div>
 <details class="info">
 <summary>See Answer</summary>
-<p><strong>Correct: C, B</strong><br />
-1. <strong>C.</strong> Each iteration of Bisection halves the interval. <span class="arithmatex">\((10 / 2^n) \approx 10^{-6} \Rightarrow 2^n \approx 10^7\)</span>. Since <span class="arithmatex">\(2^{10} \approx 10^3\)</span> and <span class="arithmatex">\(2^{20} \approx 10^6\)</span>, 24 iterations are required.
-2. <strong>B.</strong> The Intermediate Value Theorem guarantees a root exists only if the function is continuous and changes sign across the interval.</p>
+<div class="language-text highlight"><pre><span></span><code>**Correct: B**  
+The Intermediate Value Theorem guarantees a root exists only if the function is continuous and changes sign across the interval.
+</code></pre></div>
 </details>
 <hr />
 <h2 class="heading-with-pill" id="32-open-methods-newton-raphson-secant"><strong>3.2 Open Methods: Newton-Raphson &amp; Secant</strong></h2>

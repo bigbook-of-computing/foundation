@@ -2663,23 +2663,31 @@ The singular values (<span class="arithmatex">\(\sigma_1 \ge \sigma_2 \ge \dots 
 <p><strong>1. The SVD factors a matrix <span class="arithmatex">\(\mathbf{A}\)</span> into <span class="arithmatex">\(\mathbf{U}\boldsymbol{\Sigma}\mathbf{V}^T\)</span>. What component directly quantifies the "importance" or magnitude of the information along each axis?</strong></p>
 <ul>
 <li>A. The Left Singular Vectors (<span class="arithmatex">\(\mathbf{U}\)</span>).</li>
-<li>B. The Singular Values (<span class="arithmatex">\(\boldsymbol{\sigma}\)</span>), found on the diagonal of <span class="arithmatex">\(\boldsymbol{\Sigma}\)</span>.</li>
+<li>B. <strong>The Singular Values (<span class="arithmatex">\(\boldsymbol{\sigma}\)</span>), found on the diagonal of <span class="arithmatex">\(\boldsymbol{\Sigma}\)</span>.</strong></li>
 <li>C. The Right Singular Vectors (<span class="arithmatex">\(\mathbf{V}^T\)</span>).</li>
 <li>D. The determinant of <span class="arithmatex">\(\mathbf{A}\)</span>.</li>
 </ul>
+</div>
+<details class="info">
+<summary>See Answer</summary>
+<div class="language-text highlight"><pre><span></span><code>**Correct: B**  
+The singular values tell you which &quot;directions&quot; in the data carry the most weight.
+</code></pre></div>
+</details>
+<div class="admonition note">
+<p class="admonition-title">Quiz</p>
 <p><strong>2. Truncated SVD is an effective method for data compression and noise filtering because:</strong></p>
 <ul>
 <li>A. It makes the matrix larger.</li>
 <li>B. It only works on square matrices.</li>
-<li>C. Information is ranked by importance, allowing the low-magnitude components (small <span class="arithmatex">\(\sigma_k\)</span>) to be discarded as noise.</li>
+<li>C. <strong>Information is ranked by importance, allowing the low-magnitude components (small <span class="arithmatex">\(\sigma_k\)</span>) to be discarded as noise.</strong></li>
 <li>D. It removes all non-zero entries.</li>
 </ul>
 </div>
 <details class="info">
 <summary>See Answer</summary>
-<div class="language-text highlight"><pre><span></span><code>**Correct: 1. B, 2. C**  
-1. **B.** The singular values tell you which &quot;directions&quot; in the data carry the most weight.
-2. **C.** Dropping tiny singular values is like removing static from a radio signal.
+<div class="language-text highlight"><pre><span></span><code>**Correct: C**  
+Dropping tiny singular values is like removing static from a radio signal.
 </code></pre></div>
 </details>
 <div class="admonition abstract">
@@ -2720,23 +2728,31 @@ The singular values (<span class="arithmatex">\(\sigma_1 \ge \sigma_2 \ge \dots 
 <p><strong>1. In Principal Component Analysis (PCA), the Principal Components themselves are given by which component of the covariance matrix solution?</strong></p>
 <ul>
 <li>A. The eigenvalues (<span class="arithmatex">\(\lambda\)</span>).</li>
-<li>B. The eigenvectors (<span class="arithmatex">\(\mathbf{v}\)</span>).</li>
+<li>B. <strong>The eigenvectors (<span class="arithmatex">\(\mathbf{v}\)</span>).</strong></li>
 <li>C. The trace of the matrix.</li>
 <li>D. The mean of the data.</li>
 </ul>
+</div>
+<details class="info">
+<summary>See Answer</summary>
+<div class="language-text highlight"><pre><span></span><code>**Correct: B**  
+Eigenvectors define the new orthogonal coordinate systems (the PCs).
+</code></pre></div>
+</details>
+<div class="admonition note">
+<p class="admonition-title">Quiz</p>
 <p><strong>2. The magnitude of the eigenvalues (<span class="arithmatex">\(\lambda\)</span>) resulting from the covariance matrix gives a direct measure of what quantity along the corresponding Principal Component axis?</strong></p>
 <ul>
 <li>A. The velocity.</li>
-<li>B. The Variance (the measure of spread or "energy" in the data).</li>
+<li>B. <strong>The Variance (the measure of spread or "energy" in the data).</strong></li>
 <li>C. The number of samples.</li>
 <li>D. The temperature.</li>
 </ul>
 </div>
 <details class="info">
 <summary>See Answer</summary>
-<div class="language-text highlight"><pre><span></span><code>**Correct: 1. B, 2. B**  
-1. **B.** Eigenvectors define the new orthogonal coordinate systems (the PCs).
-2. **B.** Large eigenvalues identify the directions where the data varies the most.
+<div class="language-text highlight"><pre><span></span><code>**Correct: B**  
+Large eigenvalues identify the directions where the data varies the most.
 </code></pre></div>
 </details>
 <div class="admonition abstract">

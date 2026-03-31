@@ -2648,6 +2648,15 @@
 <li>C. The CPU performs addition differently than human logic.</li>
 <li>D. Standard Python uses 32-bit floats by default, which are too small.</li>
 </ul>
+</div>
+<details class="info">
+<summary>See Answer</summary>
+<div class="language-text highlight"><pre><span></span><code>**Correct: B**  
+Just as $1/3$ is $0.333...$ in decimal, the fraction $1/10$ is a repeating sequence in binary ($0.000110011...$). The computer must truncate this sequence, leading to a tiny representation error.
+</code></pre></div>
+</details>
+<div class="admonition note">
+<p class="admonition-title">Quiz</p>
 <p><strong>2. If <span class="arithmatex">\(x = 10^{16}\)</span>, what is the smallest number you can add to <span class="arithmatex">\(x\)</span> such that the computer notices the change?</strong></p>
 <ul>
 <li>A. <span class="arithmatex">\(1.0 \times 10^{-16}\)</span></li>
@@ -2658,9 +2667,9 @@
 </div>
 <details class="info">
 <summary>See Answer</summary>
-<p><strong>Correct: B, C</strong><br />
-1. <strong>B.</strong> Just as <span class="arithmatex">\(1/3\)</span> is <span class="arithmatex">\(0.333...\)</span> in decimal, the fraction <span class="arithmatex">\(1/10\)</span> is a repeating sequence in binary (<span class="arithmatex">\(0.000110011...\)</span>). The computer must truncate this sequence, leading to a tiny representation error.
-2. <strong>C.</strong> At the scale of <span class="arithmatex">\(10^{16}\)</span>, the absolute gap between representable numbers is <span class="arithmatex">\(\epsilon_m \times 10^{16} \approx 2.22\)</span>. Any addition smaller than this will be "rounded away."</p>
+<div class="language-text highlight"><pre><span></span><code>**Correct: C**  
+At the scale of $10^{16}$, the absolute gap between representable numbers is $\epsilon_m \times 10^{16} \approx 2.22$. Any addition smaller than this will be &quot;rounded away.&quot;
+</code></pre></div>
 </details>
 <hr />
 <h2 class="heading-with-pill" id="22-catastrophic-cancellation"><strong>2.2 Catastrophic Cancellation</strong></h2>

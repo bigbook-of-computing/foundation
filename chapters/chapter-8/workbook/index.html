@@ -2594,17 +2594,35 @@
 <h3 id="comprehension-check"><strong>Comprehension Check</strong></h3>
 <div class="admonition note">
 <p class="admonition-title">Quiz</p>
-<ol>
-<li>Why does the RK4 method, despite its high local accuracy, fail to conserve total energy in a long-term simulation of a harmonic oscillator?</li>
-<li>How do symplectic integrators behave with respect to energy conservation over long time periods?</li>
-</ol>
+<p><strong>1. Why does the RK4 method, despite its high local accuracy, fail to conserve total energy in a long-term simulation of a harmonic oscillator?</strong></p>
+<ul>
+<li>A. It is too computationally expensive per step.</li>
+<li>B. It only provides first-order accuracy.</li>
+<li>C. <strong>It does not preserve the symplectic geometry of Hamiltonian systems, leading to accumulating error.</strong></li>
+<li>D. It cannot handle second-order differential equations.</li>
+</ul>
 </div>
 <details class="info">
 <summary>See Answer</summary>
-<ol>
-<li><strong>RK4 does not preserve the symplectic geometry of Hamiltonian systems, leading to accumulating error.</strong></li>
-<li><strong>The energy oscillates around the true mean value but remains bounded.</strong></li>
-</ol>
+<div class="language-text highlight"><pre><span></span><code>**Correct: C**  
+RK4 lacks the structural preservation needed for long-term stability in orbits.
+</code></pre></div>
+</details>
+<div class="admonition note">
+<p class="admonition-title">Quiz</p>
+<p><strong>2. How do symplectic integrators behave with respect to energy conservation over long time periods?</strong></p>
+<ul>
+<li>A. The energy grows exponentially.</li>
+<li>B. <strong>The energy oscillates around the true mean value but remains bounded.</strong></li>
+<li>C. The energy always decreases to zero.</li>
+<li>D. The energy is perfectly constant with zero oscillation.</li>
+</ul>
+</div>
+<details class="info">
+<summary>See Answer</summary>
+<div class="language-text highlight"><pre><span></span><code>**Correct: B**  
+Preserving phase-space area prevents the energy from drifting away.
+</code></pre></div>
 </details>
 <div class="admonition abstract">
 <p class="admonition-title">Interview-Style Question</p>
@@ -2712,86 +2730,158 @@ $<span class="arithmatex">\(\mathbf{a}_i = G \sum_{j \neq i} m_j \frac{\mathbf{r
 <ul>
 <li>A. It is too computationally expensive per step.</li>
 <li>B. It only provides first-order accuracy.</li>
-<li>C. It does not conserve total energy in Hamiltonian systems, causing secular drift.</li>
+<li>C. <strong>It does not conserve total energy in Hamiltonian systems, causing secular drift.</strong></li>
 <li>D. It cannot handle second-order differential equations.</li>
 </ul>
+</div>
+<details class="info">
+<summary>See Answer</summary>
+<div class="language-text highlight"><pre><span></span><code>**Correct: C**  
+RK4 fails to preserve the long-term geometry of conservative systems.
+</code></pre></div>
+</details>
+<div class="admonition note">
+<p class="admonition-title">Quiz</p>
 <p><strong>2. What mathematical property does a symplectic integrator preserve to ensure long-term stability?</strong></p>
 <ul>
 <li>A. The exact analytical trajectory.</li>
-<li>B. The phase-space area (or volume).</li>
+<li>B. <strong>The phase-space area (or volume).</strong></li>
 <li>C. The maximum value of the time step.</li>
 <li>D. The global truncation error.</li>
 </ul>
-<p><strong>3. What is the order of accuracy of the basic (Stormer–)Verlet algorithm?</strong></p>
+</div>
+<details class="info">
+<summary>See Answer</summary>
+<div class="language-text highlight"><pre><span></span><code>**Correct: B**  
+Preserving phase-space volume (Liouville&#39;s Theorem) prevents secular energy drift.
+</code></pre></div>
+</details>
+<div class="admonition note">
+<p class="admonition-title">Quiz</p>
+<p><strong>3. What is the order of accuracy of the basic (Störmer–)Verlet algorithm?</strong></p>
 <ul>
 <li>A. <span class="arithmatex">\(\mathcal{O}(h)\)</span></li>
-<li>B. <span class="arithmatex">\(\mathcal{O}(h^2)\)</span></li>
+<li>B. <strong><span class="arithmatex">\(\mathcal{O}(h^2)\)</span></strong></li>
 <li>C. <span class="arithmatex">\(\mathcal{O}(h^3)\)</span></li>
 <li>D. <span class="arithmatex">\(\mathcal{O}(h^4)\)</span></li>
 </ul>
+</div>
+<details class="info">
+<summary>See Answer</summary>
+<div class="language-text highlight"><pre><span></span><code>**Correct: B**  
+Verlet is a second-order integrator, balancing speed and structural stability.
+</code></pre></div>
+</details>
+<div class="admonition note">
+<p class="admonition-title">Quiz</p>
 <p><strong>4. How is the Verlet algorithm formula (<span class="arithmatex">\(x_{n+1} = 2x_n - x_{n-1} + h^2 a_n\)</span>) derived?</strong></p>
 <ul>
 <li>A. By integrating the acceleration twice.</li>
 <li>B. By using only the forward Taylor expansion.</li>
-<li>C. By adding the forward and backward Taylor expansions, canceling odd-order terms.</li>
+<li>C. <strong>By adding the forward and backward Taylor expansions, canceling odd-order terms.</strong></li>
 <li>D. By approximating the velocity as a constant.</li>
 </ul>
+</div>
+<details class="info">
+<summary>See Answer</summary>
+<div class="language-text highlight"><pre><span></span><code>**Correct: C**  
+The symmetry of the forward/backward expansions cancels $O(h)$ and $O(h^3)$ terms.
+</code></pre></div>
+</details>
+<div class="admonition note">
+<p class="admonition-title">Quiz</p>
 <p><strong>5. Why is the Velocity–Verlet algorithm often preferred over the original Verlet algorithm?</strong></p>
 <ul>
 <li>A. Because it has higher order accuracy (<span class="arithmatex">\(\mathcal{O}(h^4)\)</span>).</li>
 <li>B. Because it is faster to compute.</li>
-<li>C. Because it explicitly calculates both position (<span class="arithmatex">\(x\)</span>) and velocity (<span class="arithmatex">\(v\)</span>) synchronously at every step.</li>
+<li>C. <strong>Because it explicitly calculates both position (<span class="arithmatex">\(x\)</span>) and velocity (<span class="arithmatex">\(v\)</span>) synchronously at every step.</strong></li>
 <li>D. Because it does not require initial conditions.</li>
 </ul>
+</div>
+<details class="info">
+<summary>See Answer</summary>
+<div class="language-text highlight"><pre><span></span><code>**Correct: C**  
+Synchronous $x$ and $v$ makes kinetic energy calculations trivial.
+</code></pre></div>
+</details>
+<div class="admonition note">
+<p class="admonition-title">Quiz</p>
 <p><strong>6. The Velocity–Verlet method is structured as a sequence of:</strong></p>
 <ul>
 <li>A. Drift–Kick–Drift</li>
-<li>B. Kick–Drift–Kick (half-step velocity, full-step position, half-step velocity)</li>
+<li>B. <strong>Kick–Drift–Kick (half-step velocity, full-step position, half-step velocity)</strong></li>
 <li>C. Forward–Backward–Forward</li>
 <li>D. Only Full-Step Kicks</li>
 </ul>
+</div>
+<details class="info">
+<summary>See Answer</summary>
+<div class="language-text highlight"><pre><span></span><code>**Correct: B**  
+This &quot;Kick–Drift–Kick&quot; sequence is the hallmark of the Velocity-Verlet method.
+</code></pre></div>
+</details>
+<div class="admonition note">
+<p class="admonition-title">Quiz</p>
 <p><strong>7. In the Leapfrog scheme, if <span class="arithmatex">\(x_n\)</span> is known at time <span class="arithmatex">\(t_n\)</span>, at what time is the velocity <span class="arithmatex">\(v\)</span> known?</strong></p>
 <ul>
 <li>A. <span class="arithmatex">\(t_n\)</span></li>
 <li>B. <span class="arithmatex">\(t_{n+1}\)</span></li>
-<li>C. <span class="arithmatex">\(t_{n+1/2}\)</span> (staggered by half a step)</li>
+<li>C. <strong><span class="arithmatex">\(t_{n+1/2}\)</span> (staggered by half a step)</strong></li>
 <li>D. <span class="arithmatex">\(t_{n-1}\)</span></li>
 </ul>
+</div>
+<details class="info">
+<summary>See Answer</summary>
+<div class="language-text highlight"><pre><span></span><code>**Correct: C**  
+Staggering is what gives Leapfrog its stability and name.
+</code></pre></div>
+</details>
+<div class="admonition note">
+<p class="admonition-title">Quiz</p>
 <p><strong>8. Which statement about the relationship between Leapfrog and Velocity–Verlet is true?</strong></p>
 <ul>
 <li>A. Leapfrog is more accurate than Velocity–Verlet.</li>
 <li>B. Velocity–Verlet is stable while Leapfrog is not.</li>
-<li>C. They are mathematically equivalent, representing the same symplectic map with different variable timing.</li>
+<li>C. <strong>They are mathematically equivalent, representing the same symplectic map with different variable timing.</strong></li>
 <li>D. One is explicit and the other is implicit.</li>
 </ul>
+</div>
+<details class="info">
+<summary>See Answer</summary>
+<div class="language-text highlight"><pre><span></span><code>**Correct: C**  
+They are &quot;structural twins&quot; in discretization.
+</code></pre></div>
+</details>
+<div class="admonition note">
+<p class="admonition-title">Quiz</p>
 <p><strong>9. For a 3-body planetary simulation, what is the computational cost of the <code>get_accelerations</code> function per time step?</strong></p>
 <ul>
 <li>A. <span class="arithmatex">\(\mathcal{O}(N)\)</span></li>
-<li>B. <span class="arithmatex">\(\mathcal{O}(N^2)\)</span></li>
+<li>B. <strong><span class="arithmatex">\(\mathcal{O}(N^2)\)</span></strong></li>
 <li>C. <span class="arithmatex">\(\mathcal{O}(N \log N)\)</span></li>
 <li>D. <span class="arithmatex">\(\mathcal{O}(1)\)</span></li>
 </ul>
+</div>
+<details class="info">
+<summary>See Answer</summary>
+<div class="language-text highlight"><pre><span></span><code>**Correct: B**  
+Pairwise interactions always scale as $N^2$.
+</code></pre></div>
+</details>
+<div class="admonition note">
+<p class="admonition-title">Quiz</p>
 <p><strong>10. What is the total energy (Hamiltonian) of a conservative simple harmonic oscillator?</strong></p>
 <ul>
 <li>A. <span class="arithmatex">\(E = x + v\)</span></li>
-<li>B. <span class="arithmatex">\(E = \frac{1}{2}mv^2 + \frac{1}{2}kx^2\)</span></li>
+<li>B. <strong><span class="arithmatex">\(E = \frac{1}{2}mv^2 + \frac{1}{2}kx^2\)</span></strong></li>
 <li>C. <span class="arithmatex">\(E = mgh\)</span></li>
 <li>D. <span class="arithmatex">\(E = \frac{1}{2}mv^2\)</span></li>
 </ul>
 </div>
 <details class="info">
 <summary>See Answer</summary>
-<div class="language-text highlight"><pre><span></span><code>**Correct: 1. C, 2. B, 3. B, 4. C, 5. C, 6. B, 7. C, 8. C, 9. B, 10. B**  
-1. **C.** RK4 lacks the structural preservation needed for long-term stability in orbits.
-2. **B.** Preserving phase-space area prevents the energy from drifting away.
-3. **B.** Verlet is a second-order integrator.
-4. **C.** The symmetry of the forward/backward expansions cancels $O(h)$ and $O(h^3)$ terms.
-5. **C.** Synchronous $x$ and $v$ makes kinetic energy calculations trivial.
-6. **B.** This &quot;Kick–Drift–Kick&quot; sequence is the hallmark of the method.
-7. **C.** Staggering is what gives Leapfrog its stability and name.
-8. **C.** They are &quot;structural twins&quot; in discretization.
-9. **B.** Pairwise interactions always scale as $N^2$.
-10. **B.** The sum of kinetic ($p^2/2m$) and potential ($1/2 kx^2$) energy.
+<div class="language-text highlight"><pre><span></span><code>**Correct: B**  
+The sum of kinetic ($p^2/2m$) and potential ($1/2 kx^2$) energy.
 </code></pre></div>
 </details>
 <hr />

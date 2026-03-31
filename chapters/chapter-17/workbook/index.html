@@ -1771,17 +1771,6 @@
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#173-the-core-problem-how-to-sample-non-uniformly_1" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        17.3 The "Core Problem": How to Sample Non-Uniformly?
-      
-    </span>
-  </a>
-  
     <nav class="md-nav" aria-label="17.3 The &#34;Core Problem&#34;: How to Sample Non-Uniformly?">
       <ul class="md-nav__list">
         
@@ -2540,17 +2529,6 @@
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#173-the-core-problem-how-to-sample-non-uniformly_1" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        17.3 The "Core Problem": How to Sample Non-Uniformly?
-      
-    </span>
-  </a>
-  
     <nav class="md-nav" aria-label="17.3 The &#34;Core Problem&#34;: How to Sample Non-Uniformly?">
       <ul class="md-nav__list">
         
@@ -2715,23 +2693,31 @@
 <p><strong>1. Why is a Pseudo-Random Number Generator (PRNG) considered "deterministic"?</strong></p>
 <ul>
 <li>A. Because it can predict the future.</li>
-<li>B. Because it uses a fixed starting seed and a fixed formula, meaning it produces the same sequence every time.</li>
+<li>B. <strong>Because it uses a fixed starting seed and a fixed formula, meaning it produces the same sequence every time.</strong></li>
 <li>C. Because it is 100% truly random.</li>
 <li>D. Because it only generates even numbers.</li>
 </ul>
+</div>
+<details class="info">
+<summary>See Answer</summary>
+<div class="language-text highlight"><pre><span></span><code>**Correct: B**  
+PRNGs are complex mathematical cycles, not physical dice rolls.
+</code></pre></div>
+</details>
+<div class="admonition note">
+<p class="admonition-title">Quiz</p>
 <p><strong>2. What is the key scientific advantage of the PRNG property where results are identical when using the same seed?</strong></p>
 <ul>
 <li>A. It makes the code run faster.</li>
 <li>B. It saves memory.</li>
-<li>C. It ensures the exact reproducibility of stochastic simulations for verification and debugging.</li>
+<li>C. <strong>It ensures the exact reproducibility of stochastic simulations for verification and debugging.</strong></li>
 <li>D. It eliminates the need for random numbers.</li>
 </ul>
 </div>
 <details class="info">
 <summary>See Answer</summary>
-<div class="language-text highlight"><pre><span></span><code>**Correct: 1. B, 2. C**  
-1. **B.** PRNGs are complex mathematical cycles, not physical dice rolls.
-2. **C.** Reproducibility is a pillar of the scientific method (Chapter 1).
+<div class="language-text highlight"><pre><span></span><code>**Correct: C**  
+Reproducibility is a pillar of the scientific method (Chapter 1).
 </code></pre></div>
 </details>
 <div class="admonition abstract">
@@ -2743,11 +2729,6 @@
 </details>
 </div>
 <h2 class="heading-with-pill" id="173-the-core-problem-how-to-sample-non-uniformly"><strong>17.3 The "Core Problem": How to Sample Non-Uniformly?</strong></h2>
-<blockquote>
-<p>Summary: The <strong>Inverse Transform Method</strong> is the "Rosetta Stone" for sampling from arbitrary physical distributions (<span class="arithmatex">\(p(x)\)</span>). It works by using a uniform random number (<span class="arithmatex">\(r\)</span>) as a probability and solving for <span class="arithmatex">\(x\)</span> via the inverse of the <strong>Cumulative Distribution Function (CDF)</strong>: <span class="arithmatex">\(x = P^{-1}(r)\)</span>.</p>
-</blockquote>
-<p><strong>The Problem:</strong> PRNGs typically only generate <strong>uniform</strong> random numbers <span class="arithmatex">\(r \in [0, 1)\)</span>. Physics, however, requires sampling from non-uniform distributions, such as the <strong>Maxwell-Boltzmann distribution</strong> (for speeds) or the <strong>exponential decay distribution</strong>.</p>
-<h2 class="heading-with-pill" id="173-the-core-problem-how-to-sample-non-uniformly_1"><strong>17.3 The "Core Problem": How to Sample Non-Uniformly?</strong></h2>
 <blockquote>
 <p>Summary: The <strong>Inverse Transform Method</strong> is the "Rosetta Stone" for sampling from arbitrary physical distributions (<span class="arithmatex">\(p(x)\)</span>). It works by using a uniform random number (<span class="arithmatex">\(r\)</span>) as a probability and solving for <span class="arithmatex">\(x\)</span> via the inverse of the <strong>Cumulative Distribution Function (CDF)</strong>: <span class="arithmatex">\(x = P^{-1}(r)\)</span>.</p>
 </blockquote>
@@ -2769,23 +2750,31 @@
 <p><strong>1. The Inverse Transform Method finds the desired sampled value <span class="arithmatex">\(x\)</span> by using a uniform random number <span class="arithmatex">\(r\)</span> and solving for <span class="arithmatex">\(x\)</span> using which mathematical function?</strong></p>
 <ul>
 <li>A. The square root of <span class="arithmatex">\(r\)</span>.</li>
-<li>B. The Inverse of the Cumulative Distribution Function (<span class="arithmatex">\(P^{-1}(r)\)</span>).</li>
+<li>B. <strong>The Inverse of the Cumulative Distribution Function (<span class="arithmatex">\(P^{-1}(r)\)</span>).</strong></li>
 <li>C. The determinant of <span class="arithmatex">\(r\)</span>.</li>
 <li>D. The Fourier Transform of <span class="arithmatex">\(r\)</span>.</li>
 </ul>
+</div>
+<details class="info">
+<summary>See Answer</summary>
+<div class="language-text highlight"><pre><span></span><code>**Correct: B**  
+Mapping the range $[0, 1]$ onto the inverse CDF is the &quot;Rosetta Stone&quot; of sampling.
+</code></pre></div>
+</details>
+<div class="admonition note">
+<p class="admonition-title">Quiz</p>
 <p><strong>2. The Box-Muller Transform is an efficient and specialized technique used to generate random numbers following which distribution?</strong></p>
 <ul>
 <li>A. Uniform distribution.</li>
 <li>B. Exponential distribution.</li>
-<li>C. Gaussian (Normal) distribution.</li>
+<li>C. <strong>Gaussian (Normal) distribution.</strong></li>
 <li>D. Poisson distribution.</li>
 </ul>
 </div>
 <details class="info">
 <summary>See Answer</summary>
-<div class="language-text highlight"><pre><span></span><code>**Correct: 1. B, 2. C**  
-1. **B.** Mapping the range $[0, 1]$ onto the inverse CDF is the &quot;Rosetta Stone&quot; of sampling.
-2. **C.** High-quality Gaussian noise is essential for most physics simulations.
+<div class="language-text highlight"><pre><span></span><code>**Correct: C**  
+High-quality Gaussian noise is essential for most physics simulations.
 </code></pre></div>
 </details>
 <div class="admonition abstract">
@@ -2813,23 +2802,31 @@
 <p><strong>1. The Random Walk is classified as a microscopic, stochastic model for which macroscopic physical process studied in Chapter 11?</strong></p>
 <ul>
 <li>A. Wave propagation.</li>
-<li>B. Diffusion (the Heat Equation).</li>
+<li>B. <strong>Diffusion (the Heat Equation).</strong></li>
 <li>C. Static equilibrium.</li>
 <li>D. Linear regression.</li>
 </ul>
+</div>
+<details class="info">
+<summary>See Answer</summary>
+<div class="language-text highlight"><pre><span></span><code>**Correct: B**  
+The random jiggling of particles is what causes macroscopic heat to spread.
+</code></pre></div>
+</details>
+<div class="admonition note">
+<p class="admonition-title">Quiz</p>
 <p><strong>2. When the final positions of a large number of independent random walkers are plotted, the resulting probability distribution is a:</strong></p>
 <ul>
 <li>A. Uniform distribution.</li>
 <li>B. Delta function.</li>
-<li>C. Gaussian (Normal) distribution.</li>
+<li>C. <strong>Gaussian (Normal) distribution.</strong></li>
 <li>D. Power law.</li>
 </ul>
 </div>
 <details class="info">
 <summary>See Answer</summary>
-<div class="language-text highlight"><pre><span></span><code>**Correct: 1. B, 2. C**  
-1. **B.** The random jiggling of particles is what causes macroscopic heat to spread.
-2. **C.** This is a consequence of the Central Limit Theorem.
+<div class="language-text highlight"><pre><span></span><code>**Correct: C**  
+This is a consequence of the Central Limit Theorem.
 </code></pre></div>
 </details>
 <div class="admonition abstract">
@@ -2859,23 +2856,31 @@ $<span class="arithmatex">\(I = \int_a^b f(x) dx \approx (b-a) \cdot \frac{1}{N}
 <p><strong>1. The most efficient Monte Carlo integration method approximates the integral by finding the domain size multiplied by what quantity?</strong></p>
 <ul>
 <li>A. The maximum value of the function.</li>
-<li>B. The sample mean (average) value of the function (<span class="arithmatex">\(\langle f \rangle\)</span>).</li>
+<li>B. <strong>The sample mean (average) value of the function (<span class="arithmatex">\(\langle f \rangle\)</span>).</strong></li>
 <li>C. The slope of the function.</li>
 <li>D. A random constant.</li>
 </ul>
+</div>
+<details class="info">
+<summary>See Answer</summary>
+<div class="language-text highlight"><pre><span></span><code>**Correct: B**  
+Mean Value Monte Carlo is the standard for high-performance integration.
+</code></pre></div>
+</details>
+<div class="admonition note">
+<p class="admonition-title">Quiz</p>
 <p><strong>2. For a 1000-dimensional integral, which solver is the only computationally feasible method?</strong></p>
 <ul>
 <li>A. Simpson's Rule.</li>
 <li>B. Gaussian Quadrature.</li>
-<li>C. The Monte Carlo Method.</li>
+<li>C. <strong>The Monte Carlo Method.</strong></li>
 <li>D. The Trapezoidal Rule.</li>
 </ul>
 </div>
 <details class="info">
 <summary>See Answer</summary>
-<div class="language-text highlight"><pre><span></span><code>**Correct: 1. B, 2. C**  
-1. **B.** Mean Value Monte Carlo is the standard for high-performance integration.
-2. **C.** Monte Carlo&#39;s $\mathcal{O}(1/\sqrt{N})$ error is independent of the dimension $D$.
+<div class="language-text highlight"><pre><span></span><code>**Correct: C**  
+Monte Carlo&#39;s $\mathcal{O}(1/\sqrt{N})$ error is independent of the dimension $D$.
 </code></pre></div>
 </details>
 <div class="admonition abstract">

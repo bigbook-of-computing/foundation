@@ -2719,47 +2719,79 @@ We have mastered the solutions for the core computational problem: <span class="
 <p><strong>1. What is the fundamental algebraic structure that most complex FDM and Implicit PDE problems eventually simplify to?</strong></p>
 <ul>
 <li>A. A single nonlinear equation.</li>
-<li>B. A system of linear equations (<span class="arithmatex">\(\mathbf{A}\mathbf{x} = \mathbf{b}\)</span>).</li>
+<li>B. <strong>A system of linear equations (<span class="arithmatex">\(\mathbf{A}\mathbf{x} = \mathbf{b}\)</span>).</strong></li>
 <li>C. A symbolic derivative.</li>
 <li>D. A Monte Carlo simulation.</li>
 </ul>
+</div>
+<details class="info">
+<summary>See Answer</summary>
+<div class="language-text highlight"><pre><span></span><code>**Correct: B**  
+Discretization turns calculus (derivatives) into algebra (linear systems).
+</code></pre></div>
+</details>
+<div class="admonition note">
+<p class="admonition-title">Quiz</p>
 <p><strong>2. Which direct solution method is the foundation for all professional linear algebra solvers and is broken down into two matrices <span class="arithmatex">\(\mathbf{L}\)</span> and <span class="arithmatex">\(\mathbf{U}\)</span>?</strong></p>
 <ul>
 <li>A. Gaussian Elimination</li>
-<li>B. LU Decomposition</li>
+<li>B. <strong>LU Decomposition</strong></li>
 <li>C. Singular Value Decomposition (SVD)</li>
 <li>D. Principal Component Analysis (PCA)</li>
 </ul>
+</div>
+<details class="info">
+<summary>See Answer</summary>
+<div class="language-text highlight"><pre><span></span><code>**Correct: B**  
+Factoring once allows for very fast solves with changing right-hand sides.
+</code></pre></div>
+</details>
+<div class="admonition note">
+<p class="admonition-title">Quiz</p>
 <p><strong>3. Why is it considered poor numerical practice to solve a system by computing the explicit matrix inverse, <span class="arithmatex">\(\mathbf{x} = \mathbf{A}^{-1}\mathbf{b}\)</span>?</strong></p>
 <ul>
 <li>A. It is too simple.</li>
-<li>B. It is slow, unnecessary, and numerically unstable (prone to round-off error amplification).</li>
+<li>B. <strong>It is slow, unnecessary, and numerically unstable (prone to round-off error amplification).</strong></li>
 <li>C. It only works for <span class="arithmatex">\(2 \times 2\)</span> matrices.</li>
 <li>D. Computers cannot calculate inverses.</li>
 </ul>
+</div>
+<details class="info">
+<summary>See Answer</summary>
+<div class="language-text highlight"><pre><span></span><code>**Correct: B**  
+Inversion calculates $N^2$ elements when only $N$ values of the solution vector are needed.
+</code></pre></div>
+</details>
+<div class="admonition note">
+<p class="admonition-title">Quiz</p>
 <p><strong>4. For a large, sparse matrix resulting from an FDM problem, what is the primary advantage of using an iterative solver (like Conjugate Gradient) over a direct solver?</strong></p>
 <ul>
 <li>A. It is always more accurate.</li>
-<li>B. It exploits the sparsity (<span class="arithmatex">\(\mathbf{A}\)</span> being mostly zeros), avoiding the massive <span class="arithmatex">\(O(N^3)\)</span> cost and memory requirements of direct methods.</li>
+<li>B. <strong>It exploits the sparsity (<span class="arithmatex">\(\mathbf{A}\)</span> being mostly zeros), avoiding the massive <span class="arithmatex">\(O(N^3)\)</span> cost and memory requirements of direct methods.</strong></li>
 <li>C. it is easier to implement.</li>
 <li>D. It does not require a right-hand side vector <span class="arithmatex">\(\mathbf{b}\)</span>.</li>
 </ul>
+</div>
+<details class="info">
+<summary>See Answer</summary>
+<div class="language-text highlight"><pre><span></span><code>**Correct: B**  
+Storing only non-zero entries saves gigabytes of memory for large simulations.
+</code></pre></div>
+</details>
+<div class="admonition note">
+<p class="admonition-title">Quiz</p>
 <p><strong>5. After a matrix <span class="arithmatex">\(\mathbf{A}\)</span> is factored into <span class="arithmatex">\(\mathbf{L}\mathbf{U}\)</span>, what is the computational complexity of the forward and back substitution steps required to find the solution <span class="arithmatex">\(\mathbf{x}\)</span>?</strong></p>
 <ul>
 <li>A. <span class="arithmatex">\(\mathcal{O}(N)\)</span></li>
-<li>B. <span class="arithmatex">\(\mathcal{O}(N^2)\)</span></li>
+<li>B. <strong><span class="arithmatex">\(\mathcal{O}(N^2)\)</span></strong></li>
 <li>C. <span class="arithmatex">\(\mathcal{O}(N^3)\)</span></li>
 <li>D. <span class="arithmatex">\(\mathcal{O}(\log N)\)</span></li>
 </ul>
 </div>
 <details class="info">
 <summary>See Answer</summary>
-<div class="language-text highlight"><pre><span></span><code>**Correct: 1. B, 2. B, 3. B, 4. B, 5. B**  
-1. **B.** Discretization turns calculus (derivatives) into algebra (linear systems).
-2. **B.** Factoring once allows for very fast solves with changing right-hand sides.
-3. **B.** Inversion calculates $N^2$ elements when only $N$ values of the solution vector are needed.
-4. **B.** Storing only non-zero entries saves gigabytes of memory for large simulations.
-5. **B.** Triangular systems are solved in quadratic time, much faster than the cubic time of factorization.
+<div class="language-text highlight"><pre><span></span><code>**Correct: B**  
+Triangular systems are solved in quadratic time, much faster than the cubic time of factorization.
 </code></pre></div>
 </details>
 <div class="admonition abstract">

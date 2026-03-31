@@ -2738,22 +2738,30 @@ We extend the <strong>Finite Difference Method (FDM)</strong> from Chapter 9 int
 <ul>
 <li>A. Parabolic PDEs</li>
 <li>B. Hyperbolic PDEs</li>
-<li>C. Elliptic PDEs</li>
+<li>C. <strong>Elliptic PDEs</strong></li>
 <li>D. Chaos PDEs</li>
 </ul>
+</div>
+<details class="info">
+<summary>See Answer</summary>
+<div class="language-text highlight"><pre><span></span><code>**Correct: C**  
+Elliptic PDEs describe &quot;shape&quot; problems without explicit time evolution.
+</code></pre></div>
+</details>
+<div class="admonition note">
+<p class="admonition-title">Quiz</p>
 <p><strong>2. Laplace's Equation, <span class="arithmatex">\(\nabla^2 \phi = 0\)</span>, implies what physical condition at every point in a charge-free region?</strong></p>
 <ul>
 <li>A. The field is rapidly increasing.</li>
-<li>B. The field is at equilibrium, with no net flux (or source) at that point.</li>
+<li>B. <strong>The field is at equilibrium, with no net flux (or source) at that point.</strong></li>
 <li>C. The field is rotating.</li>
 <li>D. The temperature is absolute zero.</li>
 </ul>
 </div>
 <details class="info">
 <summary>See Answer</summary>
-<div class="language-text highlight"><pre><span></span><code>**Correct: 1. C, 2. B**  
-1. **C.** Elliptic PDEs describe &quot;shape&quot; problems without explicit time evolution.
-2. **B.** No net flux means the potential perfectly averages out between neighbors.
+<div class="language-text highlight"><pre><span></span><code>**Correct: B**  
+No net flux means the potential perfectly averages out between neighbors.
 </code></pre></div>
 </details>
 <div class="admonition abstract">
@@ -2795,22 +2803,30 @@ This <strong>Five-Point Stencil</strong> is the entire algorithm. It means the p
 <ul>
 <li>A. The sum of its neighbors.</li>
 <li>B. The product of its neighbors.</li>
-<li>C. The average of the potentials of its four nearest neighbors.</li>
+<li>C. <strong>The average of the potentials of its four nearest neighbors.</strong></li>
 <li>D. Zero.</li>
 </ul>
+</div>
+<details class="info">
+<summary>See Answer</summary>
+<div class="language-text highlight"><pre><span></span><code>**Correct: C**  
+The value is the arithmetic mean $(\phi_{up} + \phi_{down} + \phi_{left} + \phi_{right})/4$.
+</code></pre></div>
+</details>
+<div class="admonition note">
+<p class="admonition-title">Quiz</p>
 <p><strong>2. What is the order of the Truncation Error for the FDM stencil used to solve Laplace's Equation?</strong></p>
 <ul>
 <li>A. <span class="arithmatex">\(\mathcal{O}(h)\)</span></li>
-<li>B. <span class="arithmatex">\(\mathcal{O}(h^2)\)</span></li>
+<li>B. <strong><span class="arithmatex">\(\mathcal{O}(h^2)\)</span></strong></li>
 <li>C. <span class="arithmatex">\(\mathcal{O}(h^4)\)</span></li>
 <li>D. <span class="arithmatex">\(\mathcal{O}(1)\)</span></li>
 </ul>
 </div>
 <details class="info">
 <summary>See Answer</summary>
-<div class="language-text highlight"><pre><span></span><code>**Correct: 1. C, 2. B**  
-1. **C.** The value is the arithmetic mean $(\phi_{up} + \phi_{down} + \phi_{left} + \phi_{right})/4$.
-2. **B.** Like most central difference schemes, it is second-order accurate.
+<div class="language-text highlight"><pre><span></span><code>**Correct: B**  
+Like most central difference schemes, it is second-order accurate.
 </code></pre></div>
 </details>
 <div class="admonition abstract">
@@ -2874,31 +2890,47 @@ $<span class="arithmatex">\(\phi[i, j] = \phi_{\text{old}}[i, j] + \mathbf{\omeg
 <p><strong>1. What is the primary characteristic of the Jacobi Method?</strong></p>
 <ul>
 <li>A. It updates all points in-place using only one array.</li>
-<li>B. All new values are calculated based <em>only</em> on the potentials from the previous iteration (<span class="arithmatex">\(\phi_{\text{old}}\)</span>), requiring two arrays.</li>
+<li>B. <strong>All new values are calculated based <em>only</em> on the potentials from the previous iteration (<span class="arithmatex">\(\phi_{\text{old}}\)</span>), requiring two arrays.</strong></li>
 <li>C. It is the fastest iterative method.</li>
 <li>D. It ignores boundary conditions.</li>
 </ul>
+</div>
+<details class="info">
+<summary>See Answer</summary>
+<div class="language-text highlight"><pre><span></span><code>**Correct: B**  
+Jacobi updates are synchronous, which is easier to parallelize but slower to converge.
+</code></pre></div>
+</details>
+<div class="admonition note">
+<p class="admonition-title">Quiz</p>
 <p><strong>2. The Gauss-Seidel Method improves upon the Jacobi Method by making what adjustment?</strong></p>
 <ul>
 <li>A. It uses more memory.</li>
-<li>B. It uses newly calculated potential values immediately within the current sweep (sequential update).</li>
+<li>B. <strong>It uses newly calculated potential values immediately within the current sweep (sequential update).</strong></li>
 <li>C. It adds random noise to the grid.</li>
 <li>D. It only updates the boundaries.</li>
 </ul>
+</div>
+<details class="info">
+<summary>See Answer</summary>
+<div class="language-text highlight"><pre><span></span><code>**Correct: B**  
+Using new data immediately speeds up the propagation of boundary information.
+</code></pre></div>
+</details>
+<div class="admonition note">
+<p class="admonition-title">Quiz</p>
 <p><strong>3. What is the purpose of the over-relaxation factor <span class="arithmatex">\(\omega\)</span> in the SOR Method?</strong></p>
 <ul>
 <li>A. To slow down the simulation for better accuracy.</li>
 <li>B. To stabilize the boundaries.</li>
-<li>C. To push the updated potential past its equilibrium value to accelerate convergence.</li>
+<li>C. <strong>To push the updated potential past its equilibrium value to accelerate convergence.</strong></li>
 <li>D. To normalize the grid values to 1.</li>
 </ul>
 </div>
 <details class="info">
 <summary>See Answer</summary>
-<div class="language-text highlight"><pre><span></span><code>**Correct: 1. B, 2. B, 3. C**  
-1. **B.** Jacobi updates are synchronous, which is easier to parallelize but slower to converge.
-2. **B.** Using new data immediately speeds up the propagation of boundary information.
-3. **C.** SOR &quot;overshoots&quot; to dampen the errors faster.
+<div class="language-text highlight"><pre><span></span><code>**Correct: C**  
+SOR &quot;overshoots&quot; to dampen the errors faster.
 </code></pre></div>
 </details>
 <div class="admonition abstract">

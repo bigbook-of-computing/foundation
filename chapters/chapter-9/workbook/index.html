@@ -2726,23 +2726,31 @@
 <p><strong>1. What is the core difference between an Initial Value Problem (IVP) and a Boundary Value Problem (BVP)?</strong></p>
 <ul>
 <li>A. IVPs are for linear equations; BVPs are for nonlinear equations.</li>
-<li>B. IVPs specify all conditions at a single point; BVPs specify conditions at two different points (boundaries).</li>
+<li>B. <strong>IVPs specify all conditions at a single point; BVPs specify conditions at two different points (boundaries).</strong></li>
 <li>C. IVPs only use first derivatives; BVPs use second derivatives.</li>
 <li>D. There is no mathematical difference.</li>
 </ul>
+</div>
+<details class="info">
+<summary>See Answer</summary>
+<div class="language-text highlight"><pre><span></span><code>**Correct: B**  
+IVPs &quot;march&quot; forward from a start; BVPs must satisfy constraints at both ends.
+</code></pre></div>
+</details>
+<div class="admonition note">
+<p class="admonition-title">Quiz</p>
 <p><strong>2. The core challenge in solving a BVP like <span class="arithmatex">\(y(0)=A, y(L)=B\)</span> with an IVP solver is that you are missing which required initial condition?</strong></p>
 <ul>
 <li>A. The initial position <span class="arithmatex">\(y(0)\)</span>.</li>
 <li>B. The final position <span class="arithmatex">\(y(L)\)</span>.</li>
-<li>C. The initial slope <span class="arithmatex">\(y'(0)\)</span>.</li>
+<li>C. <strong>The initial slope <span class="arithmatex">\(y'(0)\)</span>.</strong></li>
 <li>D. The acceleration constant.</li>
 </ul>
 </div>
 <details class="info">
 <summary>See Answer</summary>
-<div class="language-text highlight"><pre><span></span><code>**Correct: 1. B, 2. C**  
-1. **B.** IVPs &quot;march&quot; forward from a start; BVPs must satisfy constraints at both ends.
-2. **C.** To start an IVP solver for a second-order ODE, you need both position and slope.
+<div class="language-text highlight"><pre><span></span><code>**Correct: C**  
+To start an IVP solver for a second-order ODE, you need both position and slope.
 </code></pre></div>
 </details>
 <div class="admonition abstract">
@@ -2789,23 +2797,31 @@ The BVP is solved when the initial slope <span class="arithmatex">\(g = y'(0)\)<
 <p><strong>1. The "Aha! Moment" of the Shooting Method is that the entire BVP is converted into what kind of problem?</strong></p>
 <ul>
 <li>A. A linear regression problem.</li>
-<li>B. A root-finding problem for the "miss" distance.</li>
+<li>B. <strong>A root-finding problem for the "miss" distance.</strong></li>
 <li>C. A numerical integration problem only.</li>
 <li>D. A logic puzzle.</li>
 </ul>
+</div>
+<details class="info">
+<summary>See Answer</summary>
+<div class="language-text highlight"><pre><span></span><code>**Correct: B**  
+We search for the slope $g$ that makes the error function $E(g) = 0$.
+</code></pre></div>
+</details>
+<div class="admonition note">
+<p class="admonition-title">Quiz</p>
 <p><strong>2. What is the primary disadvantage of the Shooting Method, especially for chaotic or exponentially growing ODEs?</strong></p>
 <ul>
 <li>A. It is too simple to code.</li>
 <li>B. It is extremely stable but slow.</li>
-<li>C. It is very unstable, as small errors in the initial slope guess are exponentially amplified.</li>
+<li>C. <strong>It is very unstable, as small errors in the initial slope guess are exponentially amplified.</strong></li>
 <li>D. It cannot handle second-order equations.</li>
 </ul>
 </div>
 <details class="info">
 <summary>See Answer</summary>
-<div class="language-text highlight"><pre><span></span><code>**Correct: 1. B, 2. C**  
-1. **B.** We search for the slope $g$ that makes the error function $E(g) = 0$.
-2. **C.** This sensitivity makes it difficult for complex physical systems.
+<div class="language-text highlight"><pre><span></span><code>**Correct: C**  
+This sensitivity makes it difficult for complex physical systems.
 </code></pre></div>
 </details>
 <div class="admonition abstract">
@@ -2851,23 +2867,31 @@ The final solution <span class="arithmatex">\(\mathbf{y}\)</span> is found by so
 <p><strong>1. The "Aha! Moment" of the Finite Difference Method (FDM) is that it solves the BVP by converting the calculus problem into what?</strong></p>
 <ul>
 <li>A. A series of random guesses.</li>
-<li>B. A system of linear algebra equations (<span class="arithmatex">\(\mathbf{A}\mathbf{y} = \mathbf{b}\)</span>).</li>
+<li>B. <strong>A system of linear algebra equations (<span class="arithmatex">\(\mathbf{A}\mathbf{y} = \mathbf{b}\)</span>).</strong></li>
 <li>C. A set of independent initial value problems.</li>
 <li>D. A graphical derivation.</li>
 </ul>
+</div>
+<details class="info">
+<summary>See Answer</summary>
+<div class="language-text highlight"><pre><span></span><code>**Correct: B**  
+FDM links every point on the grid simultaneously.
+</code></pre></div>
+</details>
+<div class="admonition note">
+<p class="admonition-title">Quiz</p>
 <p><strong>2. Why is the tridiagonal structure of the matrix <span class="arithmatex">\(\mathbf{A}\)</span> highly advantageous for computation?</strong></p>
 <ul>
 <li>A. It looks pretty in a plot.</li>
 <li>B. It means the matrix is mostly full of ones.</li>
-<li>C. It can be solved rapidly in <span class="arithmatex">\(\mathcal{O}(N)\)</span> time using specialized algorithms like the Thomas Algorithm.</li>
+<li>C. <strong>It can be solved rapidly in <span class="arithmatex">\(\mathcal{O}(N)\)</span> time using specialized algorithms like the Thomas Algorithm.</strong></li>
 <li>D. It eliminates the need for boundary conditions.</li>
 </ul>
 </div>
 <details class="info">
 <summary>See Answer</summary>
-<div class="language-text highlight"><pre><span></span><code>**Correct: 1. B, 2. C**  
-1. **B.** FDM links every point on the grid simultaneously.
-2. **C.** Tridiagonal systems are the &quot;Golden Case&quot; for linear algebra efficiency.
+<div class="language-text highlight"><pre><span></span><code>**Correct: C**  
+Tridiagonal systems are the &quot;Golden Case&quot; for linear algebra efficiency.
 </code></pre></div>
 </details>
 <div class="admonition abstract">
@@ -2913,23 +2937,31 @@ $<span class="arithmatex">\(\left( \frac{-\hbar^2}{2mh^2} \right)\psi_{i-1} + \l
 <p><strong>1. When FDM is applied to the Schrödinger equation, the problem naturally maps to which category of linear algebra problem?</strong></p>
 <ul>
 <li>A. A matrix inversion problem.</li>
-<li>B. A matrix eigenvalue problem (<span class="arithmatex">\(\mathbf{H}\boldsymbol{\psi} = E\boldsymbol{\psi}\)</span>).</li>
+<li>B. <strong>A matrix eigenvalue problem (<span class="arithmatex">\(\mathbf{H}\boldsymbol{\psi} = E\boldsymbol{\psi}\)</span>).</strong></li>
 <li>C. A basic multiplication problem.</li>
 <li>D. A determinant calculation.</li>
 </ul>
+</div>
+<details class="info">
+<summary>See Answer</summary>
+<div class="language-text highlight"><pre><span></span><code>**Correct: B**  
+Discretization transforms the operator into a Hamiltonian matrix.
+</code></pre></div>
+</details>
+<div class="admonition note">
+<p class="admonition-title">Quiz</p>
 <p><strong>2. In the resulting matrix equation <span class="arithmatex">\(\mathbf{H}\boldsymbol{\psi} = E\boldsymbol{\psi}\)</span>, the unknown energy <span class="arithmatex">\(E\)</span> corresponds to which component of the matrix solution?</strong></p>
 <ul>
 <li>A. The eigenvector.</li>
 <li>B. The determinant.</li>
-<li>C. The eigenvalue.</li>
+<li>C. <strong>The eigenvalue.</strong></li>
 <li>D. The trace.</li>
 </ul>
 </div>
 <details class="info">
 <summary>See Answer</summary>
-<div class="language-text highlight"><pre><span></span><code>**Correct: 1. B, 2. C**  
-1. **B.** Discretization transforms the operator into a Hamiltonian matrix.
-2. **C.** The allowed discrete energies of the quantum system are the eigenvalues of $\mathbf{H}$.
+<div class="language-text highlight"><pre><span></span><code>**Correct: C**  
+The allowed discrete energies of the quantum system are the eigenvalues of $\mathbf{H}$.
 </code></pre></div>
 </details>
 <div class="admonition abstract">

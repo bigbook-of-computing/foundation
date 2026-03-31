@@ -2648,6 +2648,15 @@ While mathematically pure, global polynomials are prone to <strong>Runge's Pheno
 <li>C. The polynomial degree decreases to accommodate the new point.</li>
 <li>D. The interpolation fails and returns a linear fit.</li>
 </ul>
+</div>
+<details class="info">
+<summary>See Answer</summary>
+<div class="language-text highlight"><pre><span></span><code>**Correct: B**  
+Because a global polynomial must pass through all points using a single equation, a small change anywhere is felt everywhere, often leading to Runge&#39;s Phenomenon.
+</code></pre></div>
+</details>
+<div class="admonition note">
+<p class="admonition-title">Quiz</p>
 <p><strong>2. Why are "Splines" generally preferred over high-degree "Lagrange" polynomials?</strong></p>
 <ul>
 <li>A. Splines are always lower error than polynomials.</li>
@@ -2658,9 +2667,9 @@ While mathematically pure, global polynomials are prone to <strong>Runge's Pheno
 </div>
 <details class="info">
 <summary>See Answer</summary>
-<p><strong>Correct: B, B</strong><br />
-1. <strong>B.</strong> Because a global polynomial must pass through all points using a single equation, a small change anywhere is felt everywhere, often leading to Runge's Phenomenon.
-2. <strong>B.</strong> Cubic splines are piecewise; they only connect adjacent nodes, which isolates local changes and prevents the "Global Ripple" effect.</p>
+<div class="language-text highlight"><pre><span></span><code>**Correct: B**  
+Cubic splines are piecewise; they only connect adjacent nodes, which isolates local changes and prevents the &quot;Global Ripple&quot; effect.
+</code></pre></div>
 </details>
 <hr />
 <h2 class="heading-with-pill" id="42-regression-the-statistical-trend"><strong>4.2 Regression: The Statistical Trend</strong></h2>
