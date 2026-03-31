@@ -2692,17 +2692,27 @@
 <h3 id="comprehension-check"><strong>Comprehension Check</strong></h3>
 <div class="admonition note">
 <p class="admonition-title">Quiz</p>
-<ol>
-<li>The Discrete Fourier Transform (DFT) is primarily used for what purpose?</li>
-<li>The major limitation of a direct implementation of the DFT formula is its computational cost, which scales as:</li>
-</ol>
+<p><strong>1. The Discrete Fourier Transform (DFT) is primarily used for what purpose?</strong></p>
+<ul>
+<li>A. Solving differential equations.</li>
+<li>B. Converting a time-domain signal to the frequency domain (the spectrum).</li>
+<li>C. Multiplying large matrices.</li>
+<li>D. Generating random numbers.</li>
+</ul>
+<p><strong>2. The major limitation of a direct implementation of the DFT formula is its computational cost, which scales as:</strong></p>
+<ul>
+<li>A. <span class="arithmatex">\(\mathcal{O}(N)\)</span></li>
+<li>B. <span class="arithmatex">\(\mathcal{O}(N \log N)\)</span></li>
+<li>C. <span class="arithmatex">\(\mathcal{O}(N^2)\)</span></li>
+<li>D. <span class="arithmatex">\(\mathcal{O}(2^N)\)</span></li>
+</ul>
 </div>
 <details class="info">
 <summary>See Answer</summary>
-<ol>
-<li><strong>Converting a time-domain signal to the frequency domain (the spectrum).</strong></li>
-<li><strong><span class="arithmatex">\(\mathcal{O}(N^2)\)</span></strong>.</li>
-</ol>
+<div class="language-text highlight"><pre><span></span><code>**Correct: 1. B, 2. C**  
+1. **B.** The DFT reveals the &quot;ingredients&quot; (frequencies) that make up a complex signal.
+2. **C.** This quadratic scaling makes the direct DFT unusable for large datasets.
+</code></pre></div>
 </details>
 <div class="admonition abstract">
 <p class="admonition-title">Interview-Style Question</p>
@@ -2749,17 +2759,27 @@
 <h3 id="comprehension-check_1"><strong>Comprehension Check</strong></h3>
 <div class="admonition note">
 <p class="admonition-title">Quiz</p>
-<ol>
-<li>The primary advantage of the Fast Fourier Transform (FFT) over the direct DFT calculation is that it reduces the cost from <span class="arithmatex">\(\mathcal{O}(N^2)\)</span> to:</li>
-<li>The FFT algorithm is based on the recursive strategy known as:</li>
-</ol>
+<p><strong>1. The primary advantage of the Fast Fourier Transform (FFT) over the direct DFT calculation is that it reduces the cost from <span class="arithmatex">\(\mathcal{O}(N^2)\)</span> to:</strong></p>
+<ul>
+<li>A. <span class="arithmatex">\(\mathcal{O}(N)\)</span></li>
+<li>B. <span class="arithmatex">\(\mathcal{O}(N \log N)\)</span></li>
+<li>C. <span class="arithmatex">\(\mathcal{O}(\sqrt{N})\)</span></li>
+<li>D. <span class="arithmatex">\(\mathcal{O}(N^{1.5})\)</span></li>
+</ul>
+<p><strong>2. The FFT algorithm is based on the recursive strategy known as:</strong></p>
+<ul>
+<li>A. Brute Force</li>
+<li>B. Greedy Search</li>
+<li>C. Divide and Conquer (Cooley-Tukey)</li>
+<li>D. Monte Carlo</li>
+</ul>
 </div>
 <details class="info">
 <summary>See Answer</summary>
-<ol>
-<li><strong><span class="arithmatex">\(\mathcal{O}(N \log N)\)</span></strong>.</li>
-<li><strong>Divide and Conquer (Cooley-Tukey).</strong></li>
-</ol>
+<div class="language-text highlight"><pre><span></span><code>**Correct: 1. B, 2. C**  
+1. **B.** This reduction is one of the most important algorithmic &quot;miracles&quot; in computation.
+2. **C.** Breaking the problem into smaller, even/odd pieces eliminates redundant work.
+</code></pre></div>
 </details>
 <div class="admonition abstract">
 <p class="admonition-title">Interview-Style Question</p>
@@ -2786,17 +2806,27 @@
 <h3 id="comprehension-check_2"><strong>Comprehension Check</strong></h3>
 <div class="admonition note">
 <p class="admonition-title">Quiz</p>
-<ol>
-<li>The Nyquist-Shannon Sampling Theorem states that the sampling rate (<span class="arithmatex">\(f_s\)</span>) must be:</li>
-<li>What is the consequence of failing to meet the Nyquist-Shannon criterion?</li>
-</ol>
+<p><strong>1. The Nyquist-Shannon Sampling Theorem states that the sampling rate (<span class="arithmatex">\(f_s\)</span>) must be:</strong></p>
+<ul>
+<li>A. Exactly equal to the maximum frequency (<span class="arithmatex">\(f_{\text{max}}\)</span>).</li>
+<li>B. Less than the maximum frequency.</li>
+<li>C. Greater than twice the maximum frequency (<span class="arithmatex">\(2f_{\text{max}}\)</span>).</li>
+<li>D. Ten times the maximum frequency.</li>
+</ul>
+<p><strong>2. What is the consequence of failing to meet the Nyquist-Shannon criterion?</strong></p>
+<ul>
+<li>A. The computer will crash.</li>
+<li>B. The high-frequency components are irreversibly misinterpreted as false, lower frequencies (aliasing).</li>
+<li>C. The signal becomes louder.</li>
+<li>D. The frequency spectrum disappears.</li>
+</ul>
 </div>
 <details class="info">
 <summary>See Answer</summary>
-<ol>
-<li><strong>Greater than twice the maximum frequency (<span class="arithmatex">\(2f_{\text{max}}\)</span>).</strong></li>
-<li><strong>The high-frequency components are irreversibly misinterpreted as false, lower frequencies (aliasing).</strong></li>
-</ol>
+<div class="language-text highlight"><pre><span></span><code>**Correct: 1. C, 2. B**  
+1. **C.** This ensuring that at least two samples are taken per cycle for the highest frequency.
+2. **B.** Aliasing &quot;folds&quot; high frequencies into the low-frequency range, confusing the data.
+</code></pre></div>
 </details>
 <div class="admonition abstract">
 <p class="admonition-title">Interview-Style Question</p>
@@ -2818,17 +2848,27 @@
 <h3 id="comprehension-check_3"><strong>Comprehension Check</strong></h3>
 <div class="admonition note">
 <p class="admonition-title">Quiz</p>
-<ol>
-<li>In the Power Spectrum of a musical note, the largest peak (<span class="arithmatex">\(f_1\)</span>) primarily represents what physical property?</li>
-<li>The specific quality or "color" of the sound produced by the string (the timbre) is determined by which aspect of the Power Spectrum?</li>
-</ol>
+<p><strong>1. In the Power Spectrum of a musical note, the largest peak (<span class="arithmatex">\(f_1\)</span>) primarily represents what physical property?</strong></p>
+<ul>
+<li>A. The loudness.</li>
+<li>B. The fundamental frequency (the note being played).</li>
+<li>C. The speed of sound.</li>
+<li>D. Random noise.</li>
+</ul>
+<p><strong>2. The specific quality or "color" of the sound produced by the string (the timbre) is determined by which aspect of the Power Spectrum?</strong></p>
+<ul>
+<li>A. The position of the first peak.</li>
+<li>B. The total area under the curve.</li>
+<li>C. The relative height and number of the harmonic peaks (<span class="arithmatex">\(2f_1, 3f_1, \dots\)</span>).</li>
+<li>D. The Nyquist frequency.</li>
+</ul>
 </div>
 <details class="info">
 <summary>See Answer</summary>
-<ol>
-<li><strong>The fundamental frequency (the note).</strong></li>
-<li><strong>The relative height and number of the harmonic peaks (<span class="arithmatex">\(2f_1, 3f_1, \dots\)</span>).</strong></li>
-</ol>
+<div class="language-text highlight"><pre><span></span><code>**Correct: 1. B, 2. C**  
+1. **B.** The fundamental defines the pitch we perceive as the note.
+2. **C.** Distinguishing a violin from a guitar is all about the &quot;recipe&quot; of harmonics.
+</code></pre></div>
 </details>
 <div class="admonition abstract">
 <p class="admonition-title">Interview-Style Question</p>

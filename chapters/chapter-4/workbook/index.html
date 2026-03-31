@@ -2641,17 +2641,26 @@ While mathematically pure, global polynomials are prone to <strong>Runge's Pheno
 <h3 id="comprehension-check"><strong>Comprehension Check</strong></h3>
 <div class="admonition note">
 <p class="admonition-title">Quiz</p>
-<ol>
-<li>What happens to a high-degree polynomial fit if you add a new data point at the center of the interval?</li>
-<li>Why are "Splines" generally preferred over high-degree "Lagrange" polynomials?</li>
-</ol>
+<p><strong>1. What happens to a high-degree polynomial fit if you add a new data point at the center of the interval?</strong></p>
+<ul>
+<li>A. Only the local value at that point changes.</li>
+<li>B. <strong>A "Global Ripple" occurs, where the change at the center can cause massive oscillations at the distant boundaries.</strong></li>
+<li>C. The polynomial degree decreases to accommodate the new point.</li>
+<li>D. The interpolation fails and returns a linear fit.</li>
+</ul>
+<p><strong>2. Why are "Splines" generally preferred over high-degree "Lagrange" polynomials?</strong></p>
+<ul>
+<li>A. Splines are always lower error than polynomials.</li>
+<li>B. <strong>Splines offer "Local Control," meaning a change in one area does not cause artificial oscillations to propagate across the entire dataset.</strong></li>
+<li>C. Splines are easier to integrate analytically.</li>
+<li>D. Lagrange polynomials only work for evenly spaced data.</li>
+</ul>
 </div>
 <details class="info">
 <summary>See Answer</summary>
-<ol>
-<li><strong>Global Ripple.</strong> Because the polynomial is global, a change at the center can cause massive oscillations at the distant boundaries.</li>
-<li><strong>Local Control.</strong> A spline is piecewise; changing a point in one area only affects the local cubic segments, preventing oscillations from propagating across the entire dataset.</li>
-</ol>
+<p><strong>Correct: B, B</strong><br />
+1. <strong>B.</strong> Because a global polynomial must pass through all points using a single equation, a small change anywhere is felt everywhere, often leading to Runge's Phenomenon.
+2. <strong>B.</strong> Cubic splines are piecewise; they only connect adjacent nodes, which isolates local changes and prevents the "Global Ripple" effect.</p>
 </details>
 <hr />
 <h2 class="heading-with-pill" id="42-regression-the-statistical-trend"><strong>4.2 Regression: The Statistical Trend</strong></h2>

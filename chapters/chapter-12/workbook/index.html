@@ -2661,21 +2661,43 @@ This <strong>Courant–Friedrichs–Lewy (CFL) condition</strong> states that <s
 <h3 id="section-quiz"><strong>Section Quiz</strong></h3>
 <div class="admonition note">
 <p class="admonition-title">Quiz</p>
-<ol>
-<li>What is the fundamental difference between the Heat Equation (Chapter 11) and the Wave Equation?</li>
-<li>The FDM recurrence relation for the Wave Equation is structurally identical to which other integrator from this volume?</li>
-<li>The CFL stability condition for the Wave Equation, <span class="arithmatex">\(C \le 1\)</span>, states that in one time step (<span class="arithmatex">\(\Delta t\)</span>):</li>
-<li>The Wave Equation recurrence relation is a two-step algorithm. The missing initial profile (<span class="arithmatex">\(y_{i, -1}\)</span>) is found by combining the initial position <span class="arithmatex">\(y_{i, 0}\)</span> with what other initial condition?</li>
-</ol>
+<p><strong>1. What is the fundamental difference between the Heat Equation (Chapter 11) and the Wave Equation?</strong></p>
+<ul>
+<li>A. The Heat Equation is 1D, the Wave Equation is 2D.</li>
+<li>B. The Heat Equation models diffusion (<span class="arithmatex">\(\frac{\partial T}{\partial t}\)</span>); the Wave Equation models propagation (<span class="arithmatex">\(\frac{\partial^2 y}{\partial t^2}\)</span>), requiring two initial conditions.</li>
+<li>C. The Heat Equation is deterministic, the Wave Equation is stochastic.</li>
+<li>D. There is no mathematical difference.</li>
+</ul>
+<p><strong>2. The FDM recurrence relation for the Wave Equation is structurally identical to which other integrator from this volume?</strong></p>
+<ul>
+<li>A. Euler's Method</li>
+<li>B. RK4</li>
+<li>C. The Verlet Algorithm (Chapter 8)</li>
+<li>D. Simpson's Rule</li>
+</ul>
+<p><strong>3. The CFL stability condition for the Wave Equation, <span class="arithmatex">\(C = \frac{v h_t}{h_x} \le 1\)</span>, states that in one time step (<span class="arithmatex">\(\Delta t\)</span>):</strong></p>
+<ul>
+<li>A. The wave must travel across the entire grid.</li>
+<li>B. The numerical wave cannot travel more than one spatial grid box (<span class="arithmatex">\(\Delta x\)</span>).</li>
+<li>C. The amplitude must double.</li>
+<li>D. The velocity must be zero.</li>
+</ul>
+<p><strong>4. The Wave Equation recurrence relation is a two-step algorithm. The missing initial profile (<span class="arithmatex">\(y_{i, -1}\)</span>) is found by combining the initial position <span class="arithmatex">\(y_{i, 0}\)</span> with what other initial condition?</strong></p>
+<ul>
+<li>A. The initial acceleration <span class="arithmatex">\(a_{i, 0}\)</span>.</li>
+<li>B. The initial velocity (<span class="arithmatex">\(v_{i, 0}\)</span>), typically using a central difference in time.</li>
+<li>C. The boundary potential.</li>
+<li>D. A random seed.</li>
+</ul>
 </div>
 <details class="info">
 <summary>See Answer</summary>
-<ol>
-<li><strong>The Heat Equation models diffusion (<span class="arithmatex">\(\frac{\partial T}{\partial t}\)</span>); the Wave Equation models propagation (<span class="arithmatex">\(\frac{\partial^2 y}{\partial t^2}\)</span>).</strong></li>
-<li><strong>The Verlet Algorithm.</strong></li>
-<li><strong>The numerical wave cannot travel more than one spatial grid box (<span class="arithmatex">\(\Delta x\)</span>).</strong></li>
-<li><strong>The initial velocity (<span class="arithmatex">\(v_{i, 0}\)</span>).</strong></li>
-</ol>
+<div class="language-text highlight"><pre><span></span><code>**Correct: 1. B, 2. C, 3. B, 4. B**  
+1. **B.** Propagation preserves shape, while diffusion smooths it out.
+2. **C.** Both are two-step explicit schemes that conserve the system&#39;s &quot;energy&quot; or structure.
+3. **B.** If information travels faster than the grid can &quot;see,&quot; the simulation explodes.
+4. **B.** Centering the velocity approximation at $t=0$ ensures second-order accuracy for the first step.
+</code></pre></div>
 </details>
 <div class="admonition abstract">
 <p class="admonition-title">Interview-Style Question</p>

@@ -2642,17 +2642,26 @@
 <h3 id="comprehension-check"><strong>Comprehension Check</strong></h3>
 <div class="admonition note">
 <p class="admonition-title">Quiz</p>
-<ol>
-<li>If your initial bracket is <span class="arithmatex">\([0, 10]\)</span>, how many iterations are needed to reach a precision of <span class="arithmatex">\(10^{-6}\)</span>?</li>
-<li>What is the fundamental requirement for a bracketing method to work?</li>
-</ol>
+<p><strong>1. If your initial bracket is <span class="arithmatex">\([0, 10]\)</span>, how many iterations are needed to reach a precision of <span class="arithmatex">\(10^{-6}\)</span>?</strong></p>
+<ul>
+<li>A. 6 iterations (one per decimal place).</li>
+<li>B. 10 iterations.</li>
+<li>C. <strong>Approximately 24 iterations, as <span class="arithmatex">\(2^{24} \approx 1.6 \times 10^7\)</span>.</strong></li>
+<li>D. 1,000,000 iterations (linear scaling).</li>
+</ul>
+<p><strong>2. What is the fundamental requirement for a bracketing method to work?</strong></p>
+<ul>
+<li>A. The function must be a polynomial.</li>
+<li>B. <strong>The function must be continuous and have opposite signs at the two ends of the bracket (<span class="arithmatex">\(f(a) \cdot f(b) &lt; 0\)</span>).</strong></li>
+<li>C. The initial guess must be within 1% of the true root.</li>
+<li>D. The derivative of the function must be known.</li>
+</ul>
 </div>
 <details class="info">
 <summary>See Answer</summary>
-<ol>
-<li><strong>Approximately 24 iterations.</strong> <span class="arithmatex">\(10/2^n \approx 10^{-6} \Rightarrow 2^n \approx 10^7\)</span>. Since <span class="arithmatex">\(2^{10} \approx 10^3\)</span>, <span class="arithmatex">\(2^{20} \approx 10^6\)</span>, and <span class="arithmatex">\(2^{24} \approx 1.6 \times 10^7\)</span>.</li>
-<li><strong>A Sign Change.</strong> The function must be continuous and have opposite signs at the two ends of the bracket.</li>
-</ol>
+<p><strong>Correct: C, B</strong><br />
+1. <strong>C.</strong> Each iteration of Bisection halves the interval. <span class="arithmatex">\((10 / 2^n) \approx 10^{-6} \Rightarrow 2^n \approx 10^7\)</span>. Since <span class="arithmatex">\(2^{10} \approx 10^3\)</span> and <span class="arithmatex">\(2^{20} \approx 10^6\)</span>, 24 iterations are required.
+2. <strong>B.</strong> The Intermediate Value Theorem guarantees a root exists only if the function is continuous and changes sign across the interval.</p>
 </details>
 <hr />
 <h2 class="heading-with-pill" id="32-open-methods-newton-raphson-secant"><strong>3.2 Open Methods: Newton-Raphson &amp; Secant</strong></h2>

@@ -2814,17 +2814,27 @@
 <h3 id="comprehension-check"><strong>Comprehension Check</strong></h3>
 <div class="admonition note">
 <p class="admonition-title">Quiz</p>
-<ol>
-<li>Why do we need numerical methods for Initial Value Problems (IVPs)?</li>
-<li>What is the general mathematical form of an Initial Value Problem (IVP)?</li>
-</ol>
+<p><strong>1. Why do we need numerical methods for Initial Value Problems (IVPs)?</strong></p>
+<ul>
+<li>A. Because all differential equations in physics are solvable by hand.</li>
+<li>B. Because differential equations describe continuous change, but computers only work with discrete time steps.</li>
+<li>C. Because numerical methods are always more accurate than analytical solutions.</li>
+<li>D. Because initial conditions are never required for numerical integration.</li>
+</ul>
+<p><strong>2. What is the general mathematical form of an Initial Value Problem (IVP)?</strong></p>
+<ul>
+<li>A. <span class="arithmatex">\(x = f(t)\)</span></li>
+<li>B. <span class="arithmatex">\(\dfrac{dx}{dt} = f(x, t)\)</span> with <span class="arithmatex">\(x(t_0) = x_0\)</span></li>
+<li>C. <span class="arithmatex">\(\int f(x) dx = C\)</span></li>
+<li>D. <span class="arithmatex">\(x^2 + y^2 = r^2\)</span></li>
+</ul>
 </div>
 <details class="info">
 <summary>See Answer</summary>
-<ol>
-<li><strong>Because differential equations describe continuous change, but computers only work with discrete time steps.</strong></li>
-<li><strong><span class="arithmatex">\(\dfrac{dx}{dt} = f(x, t)\)</span> with <span class="arithmatex">\(x(t_0) = x_0\)</span></strong>.</li>
-</ol>
+<div class="language-text highlight"><pre><span></span><code>**Correct: 1. B, 2. B**  
+1. **B.** Computers operate on discrete intervals, requiring us to approximate continuous physics.
+2. **B.** An IVP requires both the &quot;rule of change&quot; (the ODE) and the &quot;initial state&quot; ($x_0$).
+</code></pre></div>
 </details>
 <div class="admonition abstract">
 <p class="admonition-title">Interview-Style Question</p>
@@ -2860,17 +2870,27 @@ $<span class="arithmatex">\(\boxed{x_{n+1} = x_n + h\, f(x_n, t_n)} \qquad \text
 <h3 id="comprehension-check_1"><strong>Comprehension Check</strong></h3>
 <div class="admonition note">
 <p class="admonition-title">Quiz</p>
-<ol>
-<li>What is the order of accuracy (global truncation error) of Euler’s Method?</li>
-<li>Why is Euler’s method <em>unstable</em> for oscillatory systems (like springs)?</li>
-</ol>
+<p><strong>1. What is the order of accuracy (global truncation error) of Euler’s Method?</strong></p>
+<ul>
+<li>A. <span class="arithmatex">\(\mathcal{O}(1)\)</span></li>
+<li>B. <span class="arithmatex">\(\mathcal{O}(h)\)</span></li>
+<li>C. <span class="arithmatex">\(\mathcal{O}(h^2)\)</span></li>
+<li>D. <span class="arithmatex">\(\mathcal{O}(h^4)\)</span></li>
+</ul>
+<p><strong>2. Why is Euler’s method <em>unstable</em> for oscillatory systems like springs?</strong></p>
+<ul>
+<li>A. It adds artificial damping to the system.</li>
+<li>B. It captures the energy perfectly but has phase errors.</li>
+<li>C. It consistently "overshoots" the true curve, adding artificial energy each step.</li>
+<li>D. It is too slow to compute oscillations.</li>
+</ul>
 </div>
 <details class="info">
 <summary>See Answer</summary>
-<ol>
-<li><strong><span class="arithmatex">\(\mathcal O(h)\)</span> (first-order accurate)</strong>.</li>
-<li><strong>It consistently “overshoots” the true curve, adding artificial energy each step.</strong></li>
-</ol>
+<div class="language-text highlight"><pre><span></span><code>**Correct: 1. B, 2. C**  
+1. **B.** Euler&#39;s method is first-order accurate, meaning global error scales linearly with $h$.
+2. **C.** By using only the slope at the start of the step, Euler&#39;s method causes trajectories to &quot;spiral out,&quot; injecting energy.
+</code></pre></div>
 </details>
 <div class="admonition abstract">
 <p class="admonition-title">Interview-Style Question</p>
@@ -2909,17 +2929,27 @@ $<span class="arithmatex">\(\boxed{x_{n+1} = x_n + h\, k_2}\qquad\text{with glob
 <h3 id="comprehension-check_2"><strong>Comprehension Check</strong></h3>
 <div class="admonition note">
 <p class="admonition-title">Quiz</p>
-<ol>
-<li>The Midpoint (RK2) Method improves on Euler’s method by:</li>
-<li>What is the order of accuracy (global truncation error) of the RK2 (Midpoint) Method?</li>
-</ol>
+<p><strong>1. The Midpoint (RK2) Method improves on Euler’s method by:</strong></p>
+<ul>
+<li>A. Using the second derivative explicitly.</li>
+<li>B. Using the average of the slope at the start and midpoint of the interval.</li>
+<li>C. Reducing the step size to machine epsilon.</li>
+<li>D. Ignoring the initial conditions.</li>
+</ul>
+<p><strong>2. What is the order of accuracy (global truncation error) of the RK2 (Midpoint) Method?</strong></p>
+<ul>
+<li>A. <span class="arithmatex">\(\mathcal{O}(h)\)</span></li>
+<li>B. <span class="arithmatex">\(\mathcal{O}(h^2)\)</span></li>
+<li>C. <span class="arithmatex">\(\mathcal{O}(h^3)\)</span></li>
+<li>D. <span class="arithmatex">\(\mathcal{O}(h^4)\)</span></li>
+</ul>
 </div>
 <details class="info">
 <summary>See Answer</summary>
-<ol>
-<li><strong>Using the average of the slope at the start and midpoint of the interval.</strong></li>
-<li><strong><span class="arithmatex">\(\mathcal O(h^2)\)</span></strong>.</li>
-</ol>
+<div class="language-text highlight"><pre><span></span><code>**Correct: 1. B, 2. B**  
+1. **B.** RK2 samples the derivative at the midpoint to find a better representative slope.
+2. **B.** RK2 is second-order accurate, significantly better than Euler&#39;s method.
+</code></pre></div>
 </details>
 <div class="admonition abstract">
 <p class="admonition-title">Interview-Style Question</p>
@@ -2959,17 +2989,27 @@ $<span class="arithmatex">\(\boxed{x_{n+1} = x_n + h\, k_2}\qquad\text{with glob
 <h3 id="comprehension-check_3"><strong>Comprehension Check</strong></h3>
 <div class="admonition note">
 <p class="admonition-title">Quiz</p>
-<ol>
-<li>How many derivative evaluations does the RK4 method make per time step?</li>
-<li>What is the truncation error of RK4?</li>
-</ol>
+<p><strong>1. How many derivative evaluations does the RK4 method make per time step?</strong></p>
+<ul>
+<li>A. 1</li>
+<li>B. 2</li>
+<li>C. 4</li>
+<li>D. 8</li>
+</ul>
+<p><strong>2. What is the truncation error of RK4?</strong></p>
+<ul>
+<li>A. <span class="arithmatex">\(\mathcal{O}(h)\)</span></li>
+<li>B. <span class="arithmatex">\(\mathcal{O}(h^2)\)</span></li>
+<li>C. <span class="arithmatex">\(\mathcal{O}(h^4)\)</span></li>
+<li>D. <span class="arithmatex">\(\mathcal{O}(h^5)\)</span></li>
+</ul>
 </div>
 <details class="info">
 <summary>See Answer</summary>
-<ol>
-<li><strong>4</strong>.</li>
-<li><strong><span class="arithmatex">\(\mathcal O(h^4)\)</span></strong>.</li>
-</ol>
+<div class="language-text highlight"><pre><span></span><code>**Correct: 1. C, 2. C**  
+1. **C.** RK4 evaluates the slope four times ($k_1, k_2, k_3, k_4$) per step.
+2. **C.** RK4 is fourth-order accurate, the &quot;gold standard&quot; for general ODEs.
+</code></pre></div>
 </details>
 <div class="admonition abstract">
 <p class="admonition-title">Interview-Style Question</p>
@@ -3009,17 +3049,27 @@ $<span class="arithmatex">\(\boxed{x_{n+1} = x_n + h\, k_2}\qquad\text{with glob
 <h3 id="comprehension-check_4"><strong>Comprehension Check</strong></h3>
 <div class="admonition note">
 <p class="admonition-title">Quiz</p>
-<ol>
-<li>What is the main purpose of Adaptive Step-Size Control?</li>
-<li>Which SciPy function implements an adaptive Runge–Kutta method (RK45) for IVPs?</li>
-</ol>
+<p><strong>1. What is the main purpose of Adaptive Step-Size Control?</strong></p>
+<ul>
+<li>A. To make the code run faster by using the largest possible <span class="arithmatex">\(h\)</span>.</li>
+<li>B. To automatically adjust <span class="arithmatex">\(h\)</span> to keep error below a specified tolerance.</li>
+<li>C. To eliminate round-off error.</li>
+<li>D. To force the solver to use fixed intervals.</li>
+</ul>
+<p><strong>2. Which SciPy function implements an adaptive Runge–Kutta method (RK45) for IVPs?</strong></p>
+<ul>
+<li>A. <code>scipy.integrate.quad</code></li>
+<li>B. <code>scipy.integrate.solve_ivp</code></li>
+<li>C. <code>scipy.optimize.minimize</code></li>
+<li>D. <code>scipy.fft.fft</code></li>
+</ul>
 </div>
 <details class="info">
 <summary>See Answer</summary>
-<ol>
-<li><strong>To automatically adjust <span class="arithmatex">\(h\)</span> to keep error below a tolerance.</strong></li>
-<li><strong><code>scipy.integrate.solve_ivp</code></strong>.</li>
-</ol>
+<div class="language-text highlight"><pre><span></span><code>**Correct: 1. B, 2. B**  
+1. **B.** Adaptive control balances accuracy and performance by shrinking $h$ only when necessary.
+2. **B.** `solve_ivp` is the modern interface for solving IVPs in SciPy.
+</code></pre></div>
 </details>
 <div class="admonition abstract">
 <p class="admonition-title">Interview-Style Question</p>
@@ -3060,17 +3110,27 @@ $<span class="arithmatex">\(\boxed{x_{n+1} = x_n + h\, k_2}\qquad\text{with glob
 <h3 id="comprehension-check_5"><strong>Comprehension Check</strong></h3>
 <div class="admonition note">
 <p class="admonition-title">Quiz</p>
-<ol>
-<li>Why must we convert higher-order ODEs (like <span class="arithmatex">\(x'' = -x\)</span>) into first-order systems before using RK4?</li>
-<li>In the projectile motion with drag example, what causes the ODEs to be nonlinear?</li>
-</ol>
+<p><strong>1. Why must we convert higher-order ODEs (like <span class="arithmatex">\(x'' = -x\)</span>) into first-order systems before using RK4?</strong></p>
+<ul>
+<li>A. Because high-order derivatives are too complex for any computer.</li>
+<li>B. Because RK4 and similar solvers are mathematically designed for first-order systems <span class="arithmatex">\(\dot{y} = f(y, t)\)</span>.</li>
+<li>C. To increase the order of accuracy of the solver.</li>
+<li>D. To reduce the number of variables in the simulation.</li>
+</ul>
+<p><strong>2. In the projectile motion with drag example, what causes the ODEs to be nonlinear?</strong></p>
+<ul>
+<li>A. The gravitational constant <span class="arithmatex">\(g\)</span>.</li>
+<li>B. The drag force dependence on <span class="arithmatex">\(|\mathbf{v}|\mathbf{v}\)</span> (velocity squared).</li>
+<li>C. The use of a fixed time step.</li>
+<li>D. The integration method chosen.</li>
+</ul>
 </div>
 <details class="info">
 <summary>See Answer</summary>
-<ol>
-<li><strong>Because RK4 cannot handle derivatives higher than first order directly.</strong></li>
-<li><strong>The drag force depends on <span class="arithmatex">\(v^2\)</span>, making it nonlinear in velocity.</strong></li>
-</ol>
+<div class="language-text highlight"><pre><span></span><code>**Correct: 1. B, 2. B**  
+1. **B.** Most numerical integrators expect a system of first-order equations.
+2. **B.** Drag introduces a $v^2$ term, coupling the equations and making them nonlinear.
+</code></pre></div>
 </details>
 <div class="admonition abstract">
 <p class="admonition-title">Interview-Style Question</p>

@@ -2799,17 +2799,27 @@ These phenomena are governed by the <strong>Heat Equation</strong> (or <strong>D
 <h3 id="comprehension-check"><strong>Comprehension Check</strong></h3>
 <div class="admonition note">
 <p class="admonition-title">Quiz</p>
-<ol>
-<li>What class of Partial Differential Equations (PDEs) governs diffusion and transient heat flow (<span class="arithmatex">\(\frac{\partial T}{\partial t}\)</span> is present)?</li>
-<li>The Heat/Diffusion Equation, <span class="arithmatex">\(\frac{\partial T}{\partial t} = D \nabla^2 T\)</span>, is classified as a "hybrid" problem because it is an IVP in time and what kind of problem in space?</li>
-</ol>
+<p><strong>1. What class of Partial Differential Equations (PDEs) governs diffusion and transient heat flow (<span class="arithmatex">\(\frac{\partial T}{\partial t}\)</span> is present)?</strong></p>
+<ul>
+<li>A. Elliptic PDEs</li>
+<li>B. Parabolic PDEs</li>
+<li>C. Hyperbolic PDEs</li>
+<li>D. Static PDEs</li>
+</ul>
+<p><strong>2. The Heat/Diffusion Equation, <span class="arithmatex">\(\frac{\partial T}{\partial t} = D \nabla^2 T\)</span>, is classified as a "hybrid" problem because it is an IVP in time and what kind of problem in space?</strong></p>
+<ul>
+<li>A. Also an IVP</li>
+<li>B. A Random Walk</li>
+<li>C. A Boundary Value Problem (BVP)</li>
+<li>D. A logic problem</li>
+</ul>
 </div>
 <details class="info">
 <summary>See Answer</summary>
-<ol>
-<li><strong>Parabolic PDEs</strong>.</li>
-<li><strong>A Boundary Value Problem (BVP)</strong>.</li>
-</ol>
+<div class="language-text highlight"><pre><span></span><code>**Correct: 1. B, 2. C**  
+1. **B.** Parabolic PDEs describe systems that &quot;spread&quot; or diffuse over time.
+2. **C.** It requires both initial conditions (time) and boundary conditions (space).
+</code></pre></div>
 </details>
 <div class="admonition abstract">
 <p class="admonition-title">Interview-Style Question</p>
@@ -2872,17 +2882,27 @@ By defining the <strong>Diffusion Number</strong> <span class="arithmatex">\(\al
 <h3 id="comprehension-check_1"><strong>Comprehension Check</strong></h3>
 <div class="admonition note">
 <p class="admonition-title">Quiz</p>
-<ol>
-<li>The FTCS (Forward-Time Centered-Space) Method is created by calculating the spatial derivative at which time level?</li>
-<li>The constant <span class="arithmatex">\(\alpha\)</span> (alpha) in the FTCS equation is defined as:</li>
-</ol>
+<p><strong>1. The FTCS (Forward-Time Centered-Space) Method is created by calculating the spatial derivative at which time level?</strong></p>
+<ul>
+<li>A. Time <span class="arithmatex">\(n\)</span> (present)</li>
+<li>B. Time <span class="arithmatex">\(n+1\)</span> (future)</li>
+<li>C. Time <span class="arithmatex">\(n-1\)</span> (past)</li>
+<li>D. An average of current and future time</li>
+</ul>
+<p><strong>2. The constant <span class="arithmatex">\(\alpha\)</span> (alpha) in the FTCS equation is defined as:</strong></p>
+<ul>
+<li>A. <span class="arithmatex">\(\alpha = D \frac{h_x}{h_t}\)</span></li>
+<li>B. <span class="arithmatex">\(\alpha = D \frac{h_t}{h_x^2}\)</span></li>
+<li>C. <span class="arithmatex">\(\alpha = \frac{h_x^2}{D h_t}\)</span></li>
+<li>D. <span class="arithmatex">\(\alpha = D^2 \frac{h_t}{h_x}\)</span></li>
+</ul>
 </div>
 <details class="info">
 <summary>See Answer</summary>
-<ol>
-<li><strong>Time <span class="arithmatex">\(n\)</span> (present)</strong>.</li>
-<li><strong><span class="arithmatex">\(\alpha = D \frac{h_t}{h_x^2}\)</span></strong>.</li>
-</ol>
+<div class="language-text highlight"><pre><span></span><code>**Correct: 1. A, 2. B**  
+1. **A.** Using present values makes the formula explicit and easy to solve directly.
+2. **B.** This dimensionless &quot;diffusion number&quot; controls the stability of the simulation.
+</code></pre></div>
 </details>
 <div class="admonition abstract">
 <p class="admonition-title">Interview-Style Question</p>
@@ -2939,17 +2959,27 @@ By defining the <strong>Diffusion Number</strong> <span class="arithmatex">\(\al
 <h3 id="comprehension-check_2"><strong>Comprehension Check</strong></h3>
 <div class="admonition note">
 <p class="admonition-title">Quiz</p>
-<ol>
-<li>What is the CFL stability condition for the FTCS method?</li>
-<li>Why is the CFL stability restriction a "crippling" problem for high-resolution FTCS simulations?</li>
-</ol>
+<p><strong>1. What is the CFL stability condition for the FTCS method?</strong></p>
+<ul>
+<li>A. <span class="arithmatex">\(\alpha \le 1.0\)</span></li>
+<li>B. <span class="arithmatex">\(\alpha \le 0.5\)</span></li>
+<li>C. <span class="arithmatex">\(\alpha \le 0.25\)</span></li>
+<li>D. <span class="arithmatex">\(\alpha \ge 0.5\)</span></li>
+</ul>
+<p><strong>2. Why is the CFL stability restriction a "crippling" problem for high-resolution FTCS simulations?</strong></p>
+<ul>
+<li>A. Because code becomes too complex to write.</li>
+<li>B. Because decreasing the spatial step <span class="arithmatex">\(h_x\)</span> by 10x forces the time step <span class="arithmatex">\(h_t\)</span> to decrease by 100x to maintain stability.</li>
+<li>C. Because it requires infinite memory.</li>
+<li>D. Because it only works for symmetric systems.</li>
+</ul>
 </div>
 <details class="info">
 <summary>See Answer</summary>
-<ol>
-<li><strong><span class="arithmatex">\(\alpha \le 0.5\)</span></strong>.</li>
-<li><strong>Because decreasing the spatial step <span class="arithmatex">\(h_x\)</span> by 10x forces the time step <span class="arithmatex">\(h_t\)</span> to decrease by 100x</strong>.</li>
-</ol>
+<div class="language-text highlight"><pre><span></span><code>**Correct: 1. B, 2. B**  
+1. **B.** Von Neumann analysis proves the solution explodes if this is violated.
+2. **B.** The $h_x^2$ dependence in the denominator leads to a quadratic increase in computation time.
+</code></pre></div>
 </details>
 <div class="admonition abstract">
 <p class="admonition-title">Interview-Style Question</p>
@@ -3085,33 +3115,91 @@ We transition from diffusion (<span class="arithmatex">\(\\partial T / \partial 
 <h3 id="section-quiz"><strong>Section Quiz</strong></h3>
 <div class="admonition note">
 <p class="admonition-title">Quiz</p>
-<ol>
-<li>What class of Partial Differential Equations (PDEs) governs diffusion and transient heat flow (<span class="arithmatex">\(\frac{\partial T}{\partial t}\)</span> is present)?</li>
-<li>The FTCS (Forward-Time Centered-Space) Method is constructed using the <span class="arithmatex">\(\mathcal{O}(h_t)\)</span> Forward Difference for time with which stencil for space?</li>
-<li>What is the CFL stability condition for the FTCS method?</li>
-<li>Why is the BTCS (Backward-Time Centered-Space) method classified as an implicit scheme?</li>
-<li>What is the most significant advantage of the implicit BTCS and Crank-Nicolson schemes?</li>
-<li>The Crank-Nicolson Method is the gold standard because it is unconditionally stable and achieves what level of temporal accuracy?</li>
-<li>If you decrease the spatial step <span class="arithmatex">\(h_x\)</span> by 10x in an FTCS simulation, what must happen to the maximum stable time step <span class="arithmatex">\(h_t\)</span>?</li>
-<li>The matrix <span class="arithmatex">\(\mathbf{A}\)</span> that results from the Crank-Nicolson scheme has what structure?</li>
-<li>The final destination of the Heat Equation, the steady-state solution <span class="arithmatex">\(T_{\text{steady}}(x)\)</span>, is equivalent to the solution of what other PDE?</li>
-<li>What specific <span class="arithmatex">\(O(N)\)</span> algorithm is typically used to efficiently solve the tridiagonal system <span class="arithmatex">\(\mathbf{A} \mathbf{T}_{n+1} = \mathbf{b}\)</span> at each time step?</li>
-</ol>
+<p><strong>1. What class of Partial Differential Equations (PDEs) governs diffusion and transient heat flow?</strong></p>
+<ul>
+<li>A. Elliptic</li>
+<li>B. Parabolic</li>
+<li>C. Hyperbolic</li>
+<li>D. Linear</li>
+</ul>
+<p><strong>2. The FTCS (Forward-Time Centered-Space) Method is constructed using the <span class="arithmatex">\(\mathcal{O}(h_t)\)</span> Forward Difference for time with which stencil for space?</strong></p>
+<ul>
+<li>A. Forward Difference</li>
+<li>B. Backward Difference</li>
+<li>C. Central Difference (<span class="arithmatex">\(\mathcal{O}(h_x^2)\)</span>)</li>
+<li>D. Average of all neighbors</li>
+</ul>
+<p><strong>3. What is the CFL stability condition for the FTCS method?</strong></p>
+<ul>
+<li>A. <span class="arithmatex">\(\alpha \le 0.5\)</span></li>
+<li>B. <span class="arithmatex">\(\alpha \le 1.0\)</span></li>
+<li>C. <span class="arithmatex">\(\alpha &gt; 0.5\)</span></li>
+<li>D. <span class="arithmatex">\(C \le 1.0\)</span></li>
+</ul>
+<p><strong>4. Why is the BTCS (Backward-Time Centered-Space) method classified as an implicit scheme?</strong></p>
+<ul>
+<li>A. Because it's hard to understand.</li>
+<li>B. Because it uses past values only.</li>
+<li>C. Because the unknown future state <span class="arithmatex">\(T_{n+1}\)</span> is linked to itself and its neighbors, requiring a matrix solution.</li>
+<li>D. Because it uses random guesses.</li>
+</ul>
+<p><strong>5. What is the most significant advantage of the implicit BTCS and Crank-Nicolson schemes?</strong></p>
+<ul>
+<li>A. They are faster per individual step than FTCS.</li>
+<li>B. They are unconditionally stable (A-stable), allowing much larger time steps.</li>
+<li>C. They use less memory.</li>
+<li>D. They are third-order accurate.</li>
+</ul>
+<p><strong>6. The Crank-Nicolson Method is the gold standard because it is unconditionally stable and achieves what level of temporal accuracy?</strong></p>
+<ul>
+<li>A. <span class="arithmatex">\(\mathcal{O}(h_t)\)</span></li>
+<li>B. <span class="arithmatex">\(\mathcal{O}(h_t^2)\)</span> (second-order)</li>
+<li>C. <span class="arithmatex">\(\mathcal{O}(h_t^4)\)</span></li>
+<li>D. <span class="arithmatex">\(\mathcal{O}(1)\)</span></li>
+</ul>
+<p><strong>7. If you decrease the spatial step <span class="arithmatex">\(h_x\)</span> by 10x in an FTCS simulation, what must happen to the maximum stable time step <span class="arithmatex">\(h_t\)</span>?</strong></p>
+<ul>
+<li>A. It must decrease by 10x.</li>
+<li>B. It must stay the same.</li>
+<li>C. It must decrease by 100x.</li>
+<li>D. It must increase by 100x.</li>
+</ul>
+<p><strong>8. The matrix <span class="arithmatex">\(\mathbf{A}\)</span> that results from the Crank-Nicolson scheme for 1D diffusion has what structure?</strong></p>
+<ul>
+<li>A. A full dense matrix.</li>
+<li>B. A diagonal matrix.</li>
+<li>C. A tridiagonal matrix.</li>
+<li>D. An upper triangular matrix.</li>
+</ul>
+<p><strong>9. The final destination of the Heat Equation (the steady-state solution <span class="arithmatex">\(T_{\text{steady}}(x)\)</span>) is equivalent to the solution of what other PDE?</strong></p>
+<ul>
+<li>A. Wave Equation</li>
+<li>B. Laplace's Equation (<span class="arithmatex">\(\nabla^2 T = 0\)</span>)</li>
+<li>C. Black-Scholes Equation</li>
+<li>D. Schrodinger Equation</li>
+</ul>
+<p><strong>10. What specific <span class="arithmatex">\(O(N)\)</span> algorithm is typically used to efficiently solve the tridiagonal system <span class="arithmatex">\(\mathbf{A}\mathbf{T}_{n+1} = \mathbf{b}\)</span>?</strong></p>
+<ul>
+<li>A. Gaussian Elimination</li>
+<li>B. Matrix Inversion</li>
+<li>C. Thomas Algorithm (or specialized banded solvers)</li>
+<li>D. Random Search</li>
+</ul>
 </div>
 <details class="info">
 <summary>See Answer</summary>
-<ol>
-<li><strong>Parabolic PDEs</strong>.</li>
-<li><strong>Central Difference</strong> (<span class="arithmatex">\(\mathcal{O}(h_x^2)\)</span>).</li>
-<li><strong><span class="arithmatex">\(\alpha \le 0.5\)</span></strong>.</li>
-<li><strong>Because the scheme builds a system of equations where the unknown <span class="arithmatex">\(T_{n+1}\)</span> is linked to itself and its future neighbors</strong>.</li>
-<li><strong>They are unconditionally stable (A-stable)</strong>.</li>
-<li><strong><span class="arithmatex">\(\mathcal{O}(h_t^2)\)</span></strong> (second-order).</li>
-<li><strong>It must decrease by 100x</strong>.</li>
-<li><strong>A tridiagonal matrix</strong>.</li>
-<li><strong>Laplace's Equation (<span class="arithmatex">\(\nabla^2 T = 0\)</span>)</strong>.</li>
-<li><strong>The Thomas Algorithm (or specialized banded solvers)</strong>.</li>
-</ol>
+<div class="language-text highlight"><pre><span></span><code>**Correct: 1. B, 2. C, 3. A, 4. C, 5. B, 6. B, 7. C, 8. C, 9. B, 10. C**  
+1. **B.** Diffusion is the defining behavior of Parabolic PDEs.
+2. **C.** Central difference ensures second-order spatial accuracy.
+3. **A.** Violating this causes exponential amplification of errors.
+4. **C.** Implicit schemes &quot;look ahead,&quot; coupling future points together.
+5. **B.** Decoupling stability from step size is the key to efficiency.
+6. **B.** Averaging the stencils gives second-order accuracy in both time and space.
+7. **C.** This is the &quot;bad news&quot; of the $h_x^2$ dependence.
+8. **C.** Each point $i$ is only linked to $i-1$ and $i+1$.
+9. **B.** Steady-state means temporal change is zero, leaving only the Laplacian.
+10. **C.** Specialized linear algebra is the engine room of implicit solvers.
+</code></pre></div>
 </details>
 <hr />
 <h3 id="conceptual-questions"><strong>Conceptual Questions</strong></h3>

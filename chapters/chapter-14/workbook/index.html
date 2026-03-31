@@ -2687,17 +2687,27 @@
 <h3 id="comprehension-check"><strong>Comprehension Check</strong></h3>
 <div class="admonition note">
 <p class="admonition-title">Quiz</p>
-<ol>
-<li>The Power Iteration algorithm is best suited for finding which component of the eigenvalue spectrum?</li>
-<li>To find the smallest eigenvalue using the Power Iteration method, one must apply the iteration to which matrix?</li>
-</ol>
+<p><strong>1. The Power Iteration algorithm is best suited for finding which component of the eigenvalue spectrum?</strong></p>
+<ul>
+<li>A. The median eigenvalue.</li>
+<li>B. The smallest eigenvalue.</li>
+<li>C. The dominant eigenvalue (largest in magnitude).</li>
+<li>D. All eigenvalues simultaneously.</li>
+</ul>
+<p><strong>2. To find the smallest eigenvalue using the Power Iteration method, one must apply the iteration to which matrix?</strong></p>
+<ul>
+<li>A. The original matrix <span class="arithmatex">\(\mathbf{A}\)</span>.</li>
+<li>B. The inverse matrix <span class="arithmatex">\(\mathbf{A}^{-1}\)</span> (using a solver to avoid explicit inversion).</li>
+<li>C. The transpose matrix <span class="arithmatex">\(\mathbf{A}^T\)</span>.</li>
+<li>D. The identity matrix.</li>
+</ul>
 </div>
 <details class="info">
 <summary>See Answer</summary>
-<ol>
-<li><strong>The dominant eigenvalue (largest in magnitude).</strong></li>
-<li><strong>The inverse matrix, <span class="arithmatex">\(\mathbf{A}^{-1}\)</span>.</strong></li>
-</ol>
+<div class="language-text highlight"><pre><span></span><code>**Correct: 1. C, 2. B**  
+1. **C.** Like a plucked string, the strongest mode eventually dominates after repeated applications.
+2. **B.** The smallest eigenvalue of $\mathbf{A}$ is the reciprocal of the largest eigenvalue of $\mathbf{A}^{-1}$.
+</code></pre></div>
 </details>
 <div class="admonition abstract">
 <p class="admonition-title">Interview-Style Question</p>
@@ -2722,17 +2732,27 @@
 <h3 id="comprehension-check_1"><strong>Comprehension Check</strong></h3>
 <div class="admonition note">
 <p class="admonition-title">Quiz</p>
-<ol>
-<li>The QR Algorithm works by iteratively transforming the matrix <span class="arithmatex">\(\mathbf{A}\)</span> until the eigenvalues are found where?</li>
-<li>The QR Algorithm is generally used when the user needs:</li>
-</ol>
+<p><strong>1. The QR Algorithm works by iteratively transforming the matrix <span class="arithmatex">\(\mathbf{A}\)</span> until the eigenvalues are found where?</strong></p>
+<ul>
+<li>A. In the first column.</li>
+<li>B. On the main diagonal of the resulting triangular matrix.</li>
+<li>C. In the determinant.</li>
+<li>D. They vanish.</li>
+</ul>
+<p><strong>2. The QR Algorithm is generally used when the user needs:</strong></p>
+<ul>
+<li>A. Only the largest eigenvalue.</li>
+<li>B. Only the eigenvectors.</li>
+<li>C. All eigenvalues and eigenvectors simultaneously for a dense matrix.</li>
+<li>D. To solve a linear system <span class="arithmatex">\(\mathbf{A}\mathbf{x} = \mathbf{b}\)</span>.</li>
+</ul>
 </div>
 <details class="info">
 <summary>See Answer</summary>
-<ol>
-<li><strong>On the main diagonal of the resulting triangular matrix.</strong></li>
-<li><strong>All eigenvalues and eigenvectors simultaneously for a dense matrix.</strong></li>
-</ol>
+<div class="language-text highlight"><pre><span></span><code>**Correct: 1. B, 2. C**  
+1. **B.** Each iteration &quot;pushes&quot; non-zero values towards the diagonal.
+2. **C.** It is the &quot;gold-standard&quot; direct method for full spectrum analysis.
+</code></pre></div>
 </details>
 <div class="admonition abstract">
 <p class="admonition-title">Interview-Style Question</p>
@@ -2758,17 +2778,27 @@
 <h3 id="comprehension-check_2"><strong>Comprehension Check</strong></h3>
 <div class="admonition note">
 <p class="admonition-title">Quiz</p>
-<ol>
-<li>The primary reason a specialized solver like <span class="arithmatex">\(\text{eigh}\)</span> is used instead of the general <span class="arithmatex">\(\text{eig}\)</span> in computational physics is that <span class="arithmatex">\(\text{eigh}\)</span> is designed to exploit which property of the Hamiltonian matrix?</li>
-<li>Which specialized solver is recommended for the tridiagonal matrix that results from the 1D FDM Schrödinger Equation?</li>
-</ol>
+<p><strong>1. The primary reason a specialized solver like <span class="arithmatex">\(\text{eigh}\)</span> is used instead of the general <span class="arithmatex">\(\text{eig}\)</span> in computational physics is that <span class="arithmatex">\(\text{eigh}\)</span> is designed to exploit which property of the Hamiltonian matrix?</strong></p>
+<ul>
+<li>A. The fact that it is a small matrix.</li>
+<li>B. The Hermitian (symmetric) property, ensuring real eigenvalues and faster computation.</li>
+<li>C. The fact that it is mostly zeros.</li>
+<li>D. The presence of complex numbers.</li>
+</ul>
+<p><strong>2. Which specialized solver is recommended for the tridiagonal matrix that results from the 1D FDM Schrödinger Equation?</strong></p>
+<ul>
+<li>A. <code>np.linalg.inv</code></li>
+<li>B. <code>scipy.linalg.eigh_tridiagonal</code></li>
+<li>C. <code>np.fft.fft</code></li>
+<li>D. <code>scipy.optimize.minimize</code></li>
+</ul>
 </div>
 <details class="info">
 <summary>See Answer</summary>
-<ol>
-<li><strong>The Hermitian (symmetric) property.</strong></li>
-<li><strong><code>scipy.linalg.eigh_tridiagonal</code></strong>.</li>
-</ol>
+<div class="language-text highlight"><pre><span></span><code>**Correct: 1. B, 2. B**  
+1. **B.** Symmetry is a fundamental physical law that allows for significant algorithmic optimization.
+2. **B.** This specialized $O(N)$ solver is the &quot;magic bullet&quot; for 1D quantum problems.
+</code></pre></div>
 </details>
 <div class="admonition abstract">
 <p class="admonition-title">Interview-Style Question</p>

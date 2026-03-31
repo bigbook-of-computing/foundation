@@ -2686,17 +2686,26 @@
 <h3 id="comprehension-check"><strong>Comprehension Check</strong></h3>
 <div class="admonition note">
 <p class="admonition-title">Quiz</p>
-<ol>
-<li>Why is "it works on my machine" considered a failure in scientific computing?</li>
-<li>Which command ensures your terminal is using the project-specific library versions?</li>
-</ol>
+<p><strong>1. Why is "it works on my machine" considered a failure in scientific computing?</strong></p>
+<ul>
+<li>A. It indicates the computer hardware is failing.</li>
+<li>B. <strong>It represents a lack of Reproducibility across different systems.</strong></li>
+<li>C. It means the user has not installed Python correctly.</li>
+<li>D. It shows that the code is optimized for only one specific CPU architecture.</li>
+</ul>
+<p><strong>2. Which command ensures your terminal is using the project-specific library versions?</strong></p>
+<ul>
+<li>A. <code>pip install [package_name]</code></li>
+<li>B. <code>conda create -n [env_name]</code></li>
+<li>C. <strong><code>conda activate [env_name]</code></strong></li>
+<li>D. <code>jupyter notebook [file_name].ipynb</code></li>
+</ul>
 </div>
 <details class="info">
 <summary>See Answer</summary>
-<ol>
-<li><strong>Lack of Reproducibility.</strong> If a result cannot be replicated on a different machine with a standard setup, it is not a scientific result—it is an anecdote.</li>
-<li><strong><code>conda activate [env_name]</code></strong>. This modifies the PATH variable to prioritize the environment's binaries.</li>
-</ol>
+<p><strong>Correct: B, C</strong><br />
+1. <strong>B.</strong> If a result cannot be replicated on a different machine with a standard setup, it is not a scientific result—it is an anecdote.
+2. <strong>C.</strong> <code>conda activate</code> modifies the PATH variable to prioritize the environment's binaries.</p>
 </details>
 <div class="admonition abstract">
 <p class="admonition-title">Interview-Style Question</p>
