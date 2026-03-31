@@ -42,10 +42,8 @@ The **Fast Fourier Transform (FFT)** is an indispensable algorithm that computes
 * **Mechanism:** The FFT achieves this efficiency by recursively breaking down the $N$-point DFT into smaller, manageable DFTs (e.g., $N/2$-point DFTs), exploiting the symmetries and periodicities within the complex exponential terms to eliminate redundant calculations [1, 5].
 
 !!! tip "Padding for Power-of-2"
-```
-The FFT algorithm is *most* efficient when the number of data points **$N$ is a power of 2** (e.g., 1024, 2048, 4096). If your data has $N=1000$ points, it is standard practice to "pad" the array with 24 zeros to reach $N=1024$. This small addition of data results in a massive speedup of the algorithm.
-
-```
+    The FFT algorithm is *most* efficient when the number of data points **$N$ is a power of 2** (e.g., 1024, 2048, 4096). If your data has $N=1000$ points, it is standard practice to "pad" the array with 24 zeros to reach $N=1024$. This small addition of data results in a massive speedup of the algorithm.
+    
 ---
 
 ## **15.3 The Power Spectrum and Physical Interpretation**
@@ -71,13 +69,11 @@ Translating the array index $k$ into a physical frequency $f_k$ requires knowled
 3. **Frequency Array:** $f_k = k \cdot \frac{f_s}{N}$.
 
 ??? question "What is the Nyquist Frequency?"
-```
-The **Nyquist–Shannon sampling theorem** states that to perfectly reconstruct a sine wave, you must sample it at least *twice* per cycle.
-
-
-This means your maximum resolvable frequency ($f_{Nyq}$) is *half* your sampling rate ($f_s/2$). Any physical frequency in your signal *above* $f_{Nyq}$ will be "aliased" and incorrectly appear as a lower frequency, contaminating your spectrum.
-
-```
+    The **Nyquist–Shannon sampling theorem** states that to perfectly reconstruct a sine wave, you must sample it at least *twice* per cycle.
+    
+    
+    This means your maximum resolvable frequency ($f_{Nyq}$) is *half* your sampling rate ($f_s/2$). Any physical frequency in your signal *above* $f_{Nyq}$ will be "aliased" and incorrectly appear as a lower frequency, contaminating your spectrum.
+    
 ---
 
 ## **15.4 Core Application: Spectral Filtering (Noise Reduction)**
@@ -103,10 +99,8 @@ The filtering cycle is:
 3. **Inverse Transform:** Compute the **Inverse FFT (IFFT)** to return the filtered signal to the time domain.
 
 !!! example "Audio Noise Reduction"
-```
-A classic example is removing high-frequency hiss from an audio recording: FFT → filter out high-frequency coefficients → IFFT to reconstruct clean audio.
-
-```
+    A classic example is removing high-frequency hiss from an audio recording: FFT → filter out high-frequency coefficients → IFFT to reconstruct clean audio.
+    
 ---
 
 ## **15.5 Chapter Summary and Bridge to Chapter 16**

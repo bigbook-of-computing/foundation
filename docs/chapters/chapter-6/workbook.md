@@ -1,4 +1,4 @@
-# **Chapter 6: Numerical Integration (Quadrature) () () (Workbook)**
+# **Chapter 6: Numerical Integration (Quadrature) (Workbook)**
 
 ---
 
@@ -62,77 +62,69 @@ The quality of this approximation depends on:
 ### Comprehension Check
 
 !!! note "Quiz"
-```
-**1. What is the fundamental physical concept that integration computes?**
-
-- A. The rate of instantaneous change
-- B. The total accumulation of a quantity over a domain
-- C. The "sweet spot" between competing errors
-- D. The slope of a function on a discrete grid
-
+    **1. What is the fundamental physical concept that integration computes?**
+    
+    - A. The rate of instantaneous change
+    - B. The total accumulation of a quantity over a domain
+    - C. The "sweet spot" between competing errors
+    - D. The slope of a function on a discrete grid
+    
 ??? info "See Answer"
-    **Correct: B**
-
-    Integration is the process of **accumulating** infinitesimal contributions across a continuous domain. While differentiation asks "how fast is this changing right now?", integration asks "how much total quantity has accumulated?". This is why work (accumulated force), probability (accumulated wavefunction density), and energy (accumulated contributions from all states) are all defined as integrals.
-
-```
+        **Correct: B**
+    
+        Integration is the process of **accumulating** infinitesimal contributions across a continuous domain. While differentiation asks "how fast is this changing right now?", integration asks "how much total quantity has accumulated?". This is why work (accumulated force), probability (accumulated wavefunction density), and energy (accumulated contributions from all states) are all defined as integrals.
+    
 ---
 
 !!! note "Quiz"
-```
-**2. The process of approximating integrals by summing areas of simple geometric shapes is called:**
-
-- A. Numerical differentiation
-- B. Root finding
-- C. Numerical quadrature
-- D. The Monte Carlo method
-
+    **2. The process of approximating integrals by summing areas of simple geometric shapes is called:**
+    
+    - A. Numerical differentiation
+    - B. Root finding
+    - C. Numerical quadrature
+    - D. The Monte Carlo method
+    
 ??? info "See Answer"
-    **Correct: C**
-
-    **Numerical quadrature** is the systematic approach of tiling the area under a curve with simple shapes (trapezoids, parabolas, etc.) and summing their areas. The term comes from the Latin *quadratura*, reflecting the geometric origin of the method.
-
-```
+        **Correct: C**
+    
+        **Numerical quadrature** is the systematic approach of tiling the area under a curve with simple shapes (trapezoids, parabolas, etc.) and summing their areas. The term comes from the Latin *quadratura*, reflecting the geometric origin of the method.
+    
 ---
 
 !!! note "Quiz"
-```
-**3. Why can't we always use analytical calculus techniques to evaluate integrals in computational physics?**
-
-- A. Computers cannot handle symbolic mathematics
-- B. Many functions have no closed-form antiderivative, and experimental data is discrete
-- C. Numerical methods are always more accurate
-- D. Integration is undefined for discrete data
-
+    **3. Why can't we always use analytical calculus techniques to evaluate integrals in computational physics?**
+    
+    - A. Computers cannot handle symbolic mathematics
+    - B. Many functions have no closed-form antiderivative, and experimental data is discrete
+    - C. Numerical methods are always more accurate
+    - D. Integration is undefined for discrete data
+    
 ??? info "See Answer"
-    **Correct: B**
-
-    Two fundamental barriers exist: (1) Many physically important functions (like the Gaussian $e^{-x^2}$ or the sinc function $\sin(x)/x$) have no elementary antiderivative expressible in terms of standard functions. (2) Experimental measurements and simulations produce **discrete data points**, not continuous functions, making analytical techniques inapplicable. This is why numerical quadrature is essential.
-
-```
+        **Correct: B**
+    
+        Two fundamental barriers exist: (1) Many physically important functions (like the Gaussian $e^{-x^2}$ or the sinc function $\sin(x)/x$) have no elementary antiderivative expressible in terms of standard functions. (2) Experimental measurements and simulations produce **discrete data points**, not continuous functions, making analytical techniques inapplicable. This is why numerical quadrature is essential.
+    
 ---
 
 !!! abstract "Interview-Style Question"
-
-```
-**Q:** Chapter 5 was about $\frac{d}{dx}$ (change). Why is $\int dx$ (accumulation) arguably even more fundamental to the practice of physics?
-
-???+ info "Answer Strategy"
-    This question tests your understanding of the relationship between local and global descriptions in physics.
-
-    1. **Local vs. Global:**
-       The derivative describes **local, instantaneous** behavior—the velocity at this moment, the electric field at this point. The integral computes **global, cumulative** properties—the total distance traveled, the total energy stored in a field.
-
-    2. **Observables are Global:**
-       Most measurable quantities in physics are accumulated totals: the work done on an object, the total probability of detection, the center of mass of a system, the partition function that determines temperature and pressure. These are all integrals.
-
-    3. **From Rules to Reality:**
-       Differential equations (like Newton's laws, Maxwell's equations, Schrödinger's equation) give us the **rules** governing how systems evolve. But to extract **predictions**—trajectories, energies, probabilities—we must *integrate* these equations. Integration translates the microscopic physics into macroscopic observables.
-
-    4. **The Hierarchy:**
-       You could argue that physics *happens* at the differential level (forces cause accelerations), but physics is *measured* at the integral level (we observe cumulative effects). This makes integration the bridge from theory to experiment.
-
-```
+    
+    **Q:** Chapter 5 was about $\frac{d}{dx}$ (change). Why is $\int dx$ (accumulation) arguably even more fundamental to the practice of physics?
+    
+    ???+ info "Answer Strategy"
+        This question tests your understanding of the relationship between local and global descriptions in physics.
+    
+        1. **Local vs. Global:**
+           The derivative describes **local, instantaneous** behavior—the velocity at this moment, the electric field at this point. The integral computes **global, cumulative** properties—the total distance traveled, the total energy stored in a field.
+    
+        2. **Observables are Global:**
+           Most measurable quantities in physics are accumulated totals: the work done on an object, the total probability of detection, the center of mass of a system, the partition function that determines temperature and pressure. These are all integrals.
+    
+        3. **From Rules to Reality:**
+           Differential equations (like Newton's laws, Maxwell's equations, Schrödinger's equation) give us the **rules** governing how systems evolve. But to extract **predictions**—trajectories, energies, probabilities—we must *integrate* these equations. Integration translates the microscopic physics into macroscopic observables.
+    
+        4. **The Hierarchy:**
+           You could argue that physics *happens* at the differential level (forces cause accelerations), but physics is *measured* at the integral level (we observe cumulative effects). This makes integration the bridge from theory to experiment.
+    
 ---
 
 ### <i class="fa-solid fa-flask"></i> Hands-On Project
@@ -300,90 +292,82 @@ However, this error decreases rapidly as $h \to 0$, making the method both robus
 ### Comprehension Check
 
 !!! note "Quiz"
-```
-**1. What is the geometric shape used to approximate each slice of the integral in the Trapezoidal Rule?**
-
-- A. A rectangle
-- B. A trapezoid formed by linear interpolation
-- C. A parabola
-- D. A triangle
-
+    **1. What is the geometric shape used to approximate each slice of the integral in the Trapezoidal Rule?**
+    
+    - A. A rectangle
+    - B. A trapezoid formed by linear interpolation
+    - C. A parabola
+    - D. A triangle
+    
 ??? info "See Answer"
-    **Correct: B**
-
-    The Trapezoidal Rule connects adjacent data points with a **straight line**, forming a trapezoid. The area of this trapezoid is $h \cdot (y_i + y_{i+1})/2$, which is the average height times the width.
-
-```
+        **Correct: B**
+    
+        The Trapezoidal Rule connects adjacent data points with a **straight line**, forming a trapezoid. The area of this trapezoid is $h \cdot (y_i + y_{i+1})/2$, which is the average height times the width.
+    
 ---
 
 !!! note "Quiz"
-```
-**2. In the Extended Trapezoidal Rule, why do interior points receive a weight of 1 while endpoints receive a weight of 1/2?**
-
-- A. It's an arbitrary convention for symmetry
-- B. Interior points are counted twice (once by each adjacent trapezoid), while endpoints appear only once
-- C. The formula requires normalization
-- D. Endpoints are less accurate than interior points
-
+    **2. In the Extended Trapezoidal Rule, why do interior points receive a weight of 1 while endpoints receive a weight of 1/2?**
+    
+    - A. It's an arbitrary convention for symmetry
+    - B. Interior points are counted twice (once by each adjacent trapezoid), while endpoints appear only once
+    - C. The formula requires normalization
+    - D. Endpoints are less accurate than interior points
+    
 ??? info "See Answer"
-    **Correct: B**
-
-    Each interior point $y_i$ serves as the **right edge** of the trapezoid to its left and the **left edge** of the trapezoid to its right. Each contribution adds $h/2$, so $y_i$ receives a total weight of $h/2 + h/2 = h$ (which factors out as 1 when $h$ is pulled outside). The endpoints $y_0$ and $y_N$ appear in only one trapezoid each, receiving a weight of $h/2$.
-
-```
+        **Correct: B**
+    
+        Each interior point $y_i$ serves as the **right edge** of the trapezoid to its left and the **left edge** of the trapezoid to its right. Each contribution adds $h/2$, so $y_i$ receives a total weight of $h/2 + h/2 = h$ (which factors out as 1 when $h$ is pulled outside). The endpoints $y_0$ and $y_N$ appear in only one trapezoid each, receiving a weight of $h/2$.
+    
 ---
 
 !!! note "Quiz"
-```
-**3. If you double the number of grid points $N$ (halving $h$) in the Trapezoidal Rule, the truncation error decreases by a factor of:**
-
-- A. 2
-- B. 4
-- C. 8
-- D. $\sqrt{2}$
-
+    **3. If you double the number of grid points $N$ (halving $h$) in the Trapezoidal Rule, the truncation error decreases by a factor of:**
+    
+    - A. 2
+    - B. 4
+    - C. 8
+    - D. $\sqrt{2}$
+    
 ??? info "See Answer"
-    **Correct: B**
-
-    The Trapezoidal Rule has **second-order accuracy** ($O(h^2)$). Halving $h$ means the error scales as $(h/2)^2 = h^2/4$, which is **four times smaller** than the original error. This quadratic convergence is a defining characteristic of the method.
-
-```
+        **Correct: B**
+    
+        The Trapezoidal Rule has **second-order accuracy** ($O(h^2)$). Halving $h$ means the error scales as $(h/2)^2 = h^2/4$, which is **four times smaller** than the original error. This quadratic convergence is a defining characteristic of the method.
+    
 ---
 
 !!! abstract "Interview-Style Question"
-
-```
-**Q:** Walk me through the conceptual derivation of the Extended Trapezoidal Rule. Why do the interior points have a weight of 1, while the endpoints have a weight of 1/2?
-
-???+ info "Answer Strategy"
-    This question tests your understanding of how the formula arises from summing individual trapezoidal contributions.
-
-    1. **Single Trapezoid:**
-       The area of one trapezoid from $x_i$ to $x_{i+1}$ is:
-       $$A_i = h \cdot \frac{y_i + y_{i+1}}{2}$$
-
-    2. **Summing All Trapezoids:**
-       The total integral is the sum of all trapezoidal areas:
-       $$I = \sum_{i=0}^{N-1} h \cdot \frac{y_i + y_{i+1}}{2}$$
-
-    3. **Expanding the Sum:**
-       Writing out the first few terms:
-       $$I = \frac{h}{2}(y_0 + y_1) + \frac{h}{2}(y_1 + y_2) + \frac{h}{2}(y_2 + y_3) + \cdots + \frac{h}{2}(y_{N-1} + y_N)$$
-
-    4. **Collecting Terms:**
-       Notice that:
-       - $y_0$ appears **once** (coefficient $h/2$)
-       - $y_1$ appears **twice**: once as the right edge of the first trapezoid, once as the left edge of the second (total coefficient $h$)
-       - $y_2, y_3, \ldots, y_{N-1}$ all appear **twice** (coefficient $h$ each)
-       - $y_N$ appears **once** (coefficient $h/2$)
-
-    5. **Factoring Out $h$:**
-       Pulling out the common factor $h$ gives:
-       $$I = h \left[\frac{1}{2}y_0 + y_1 + y_2 + \cdots + y_{N-1} + \frac{1}{2}y_N\right]$$
-
-    This is the Extended Trapezoidal Rule. The interior weights of 1 and endpoint weights of 1/2 arise naturally from the overlapping trapezoidal contributions.
-
-```
+    
+    **Q:** Walk me through the conceptual derivation of the Extended Trapezoidal Rule. Why do the interior points have a weight of 1, while the endpoints have a weight of 1/2?
+    
+    ???+ info "Answer Strategy"
+        This question tests your understanding of how the formula arises from summing individual trapezoidal contributions.
+    
+        1. **Single Trapezoid:**
+           The area of one trapezoid from $x_i$ to $x_{i+1}$ is:
+           $$A_i = h \cdot \frac{y_i + y_{i+1}}{2}$$
+    
+        2. **Summing All Trapezoids:**
+           The total integral is the sum of all trapezoidal areas:
+           $$I = \sum_{i=0}^{N-1} h \cdot \frac{y_i + y_{i+1}}{2}$$
+    
+        3. **Expanding the Sum:**
+           Writing out the first few terms:
+           $$I = \frac{h}{2}(y_0 + y_1) + \frac{h}{2}(y_1 + y_2) + \frac{h}{2}(y_2 + y_3) + \cdots + \frac{h}{2}(y_{N-1} + y_N)$$
+    
+        4. **Collecting Terms:**
+           Notice that:
+           - $y_0$ appears **once** (coefficient $h/2$)
+           - $y_1$ appears **twice**: once as the right edge of the first trapezoid, once as the left edge of the second (total coefficient $h$)
+           - $y_2, y_3, \ldots, y_{N-1}$ all appear **twice** (coefficient $h$ each)
+           - $y_N$ appears **once** (coefficient $h/2$)
+    
+        5. **Factoring Out $h$:**
+           Pulling out the common factor $h$ gives:
+           $$I = h \left[\frac{1}{2}y_0 + y_1 + y_2 + \cdots + y_{N-1} + \frac{1}{2}y_N\right]$$
+    
+        This is the Extended Trapezoidal Rule. The interior weights of 1 and endpoint weights of 1/2 arise naturally from the overlapping trapezoidal contributions.
+    
 ---
 
 ### <i class="fa-solid fa-flask"></i> Hands-On Project
@@ -567,80 +551,72 @@ The magic comes from Taylor series cancellation. When we fit a parabola through 
 ### Comprehension Check
 
 !!! note "Quiz"
-```
-**1. What geometric shape does Simpson's Rule use to approximate each "tile" of the integral?**
-
-- A. A straight line (trapezoid)
-- B. A parabola (quadratic polynomial)
-- C. A cubic spline
-- D. A circle segment
-
+    **1. What geometric shape does Simpson's Rule use to approximate each "tile" of the integral?**
+    
+    - A. A straight line (trapezoid)
+    - B. A parabola (quadratic polynomial)
+    - C. A cubic spline
+    - D. A circle segment
+    
 ??? info "See Answer"
-    **Correct: B**
-
-    Simpson's Rule fits a **parabola** (2nd-degree polynomial) through three consecutive data points. This parabolic interpolant can curve to match the function's shape, providing much better accuracy than the straight-line approximation of the Trapezoidal Rule.
-
-```
+        **Correct: B**
+    
+        Simpson's Rule fits a **parabola** (2nd-degree polynomial) through three consecutive data points. This parabolic interpolant can curve to match the function's shape, providing much better accuracy than the straight-line approximation of the Trapezoidal Rule.
+    
 ---
 
 !!! note "Quiz"
-```
-**2. What is the characteristic weighting pattern for the Extended Simpson's Rule?**
-
-- A. $\frac{h}{2} [1, 2, 2, 2, \ldots, 2, 1]$
-- B. $h [1/2, 1, 1, 1, \ldots, 1, 1/2]$
-- C. $\frac{h}{3} [1, 4, 2, 4, 2, \ldots, 4, 1]$
-- D. $\frac{h}{3} [1, 4, 1, 4, 1, \ldots, 4, 1]$
-
+    **2. What is the characteristic weighting pattern for the Extended Simpson's Rule?**
+    
+    - A. $\frac{h}{2} [1, 2, 2, 2, \ldots, 2, 1]$
+    - B. $h [1/2, 1, 1, 1, \ldots, 1, 1/2]$
+    - C. $\frac{h}{3} [1, 4, 2, 4, 2, \ldots, 4, 1]$
+    - D. $\frac{h}{3} [1, 4, 1, 4, 1, \ldots, 4, 1]$
+    
 ??? info "See Answer"
-    **Correct: C**
-
-    The Extended Simpson's Rule has the signature **1-4-2-4-2-...-4-1** weighting pattern. The endpoints have weight 1, odd-indexed interior points have weight 4, and even-indexed interior points have weight 2. This pattern emerges from overlapping parabolic tiles and is preceded by the factor $h/3$.
-
-```
+        **Correct: C**
+    
+        The Extended Simpson's Rule has the signature **1-4-2-4-2-...-4-1** weighting pattern. The endpoints have weight 1, odd-indexed interior points have weight 4, and even-indexed interior points have weight 2. This pattern emerges from overlapping parabolic tiles and is preceded by the factor $h/3$.
+    
 ---
 
 !!! note "Quiz"
-```
-**3. If you double the number of grid points $N$ (halving $h$) in Simpson's Rule, the truncation error decreases by a factor of:**
-
-- A. 2
-- B. 4
-- C. 8
-- D. 16
-
+    **3. If you double the number of grid points $N$ (halving $h$) in Simpson's Rule, the truncation error decreases by a factor of:**
+    
+    - A. 2
+    - B. 4
+    - C. 8
+    - D. 16
+    
 ??? info "See Answer"
-    **Correct: D**
-
-    Simpson's Rule has **fourth-order accuracy** ($O(h^4)$). Halving $h$ means the error scales as $(h/2)^4 = h^4/16$, which is **sixteen times smaller** than the original error. This is why Simpson's Rule is so powerful for smooth functions—it converges much faster than the Trapezoidal Rule's $O(h^2)$ convergence.
-
-```
+        **Correct: D**
+    
+        Simpson's Rule has **fourth-order accuracy** ($O(h^4)$). Halving $h$ means the error scales as $(h/2)^4 = h^4/16$, which is **sixteen times smaller** than the original error. This is why Simpson's Rule is so powerful for smooth functions—it converges much faster than the Trapezoidal Rule's $O(h^2)$ convergence.
+    
 ---
 
 !!! abstract "Interview-Style Question"
-
-```
-**Q:** Why would anyone ever use the Trapezoidal Rule if Simpson's Rule is so much more accurate ($O(h^4)$ vs $O(h^2)$)? Hint: Think about the "gotcha" or simplicity of implementation.
-
-???+ info "Answer Strategy"
-    This question tests your understanding of the trade-offs between accuracy and robustness in numerical methods.
-
-    1. **The Even-Interval Requirement:**
-       Simpson's Rule has a structural constraint: it **requires an even number of intervals** (odd number of data points). If your experimental data happens to have 100 points, you cannot directly apply Simpson's Rule without modification. The Trapezoidal Rule has no such restriction—it works for any number of points.
-
-    2. **Simplicity and Robustness:**
-       The Trapezoidal Rule is conceptually simpler, easier to implement, and more robust to edge cases. For quick exploratory work or when implementing from scratch, the Trapezoidal Rule is often the first choice.
-
-    3. **Noisy Data:**
-       For extremely **noisy** or **irregular** data (common in experimental physics), the parabolic fits of Simpson's Rule can actually be counterproductive. Parabolas can "wiggle" to fit high-frequency noise, whereas the straight-line smoothing of the Trapezoidal Rule can be more stable.
-
-    4. **Non-Uniform Grids:**
-       The standard Simpson's Rule formula assumes **uniform spacing** $h$. For non-uniform grids, the derivation becomes more complex, whereas the Trapezoidal Rule generalizes trivially: $A_i = \frac{1}{2}(x_{i+1} - x_i)(y_i + y_{i+1})$.
-
-    5. **The Takeaway:**
-       Simpson's Rule is superior for **smooth, well-behaved functions on uniform grids** with the right number of points. But the Trapezoidal Rule remains the **workhorse** for many practical applications due to its universal applicability and simplicity.
-
-```
+    
+    **Q:** Why would anyone ever use the Trapezoidal Rule if Simpson's Rule is so much more accurate ($O(h^4)$ vs $O(h^2)$)? Hint: Think about the "gotcha" or simplicity of implementation.
+    
+    ???+ info "Answer Strategy"
+        This question tests your understanding of the trade-offs between accuracy and robustness in numerical methods.
+    
+        1. **The Even-Interval Requirement:**
+           Simpson's Rule has a structural constraint: it **requires an even number of intervals** (odd number of data points). If your experimental data happens to have 100 points, you cannot directly apply Simpson's Rule without modification. The Trapezoidal Rule has no such restriction—it works for any number of points.
+    
+        2. **Simplicity and Robustness:**
+           The Trapezoidal Rule is conceptually simpler, easier to implement, and more robust to edge cases. For quick exploratory work or when implementing from scratch, the Trapezoidal Rule is often the first choice.
+    
+        3. **Noisy Data:**
+           For extremely **noisy** or **irregular** data (common in experimental physics), the parabolic fits of Simpson's Rule can actually be counterproductive. Parabolas can "wiggle" to fit high-frequency noise, whereas the straight-line smoothing of the Trapezoidal Rule can be more stable.
+    
+        4. **Non-Uniform Grids:**
+           The standard Simpson's Rule formula assumes **uniform spacing** $h$. For non-uniform grids, the derivation becomes more complex, whereas the Trapezoidal Rule generalizes trivially: $A_i = \frac{1}{2}(x_{i+1} - x_i)(y_i + y_{i+1})$.
+    
+        5. **The Takeaway:**
+           Simpson's Rule is superior for **smooth, well-behaved functions on uniform grids** with the right number of points. But the Trapezoidal Rule remains the **workhorse** for many practical applications due to its universal applicability and simplicity.
+    
 ---
 
 ### <i class="fa-solid fa-flask"></i> Hands-On Project
@@ -860,87 +836,79 @@ In practice, we access Gaussian quadrature through **`scipy.integrate.quad`**, w
 ### Comprehension Check
 
 !!! note "Quiz"
-```
-**1. What is the "Aha! Moment" of Gaussian Quadrature?**
-
-- A. It uses parabolic tiles for $O(h^4)$ accuracy
-- B. It optimally chooses both sample points $x_i$ and weights $w_i$ to maximize polynomial accuracy
-- C. It uses random sampling like Monte Carlo methods
-- D. It works only for grid-based data
-
+    **1. What is the "Aha! Moment" of Gaussian Quadrature?**
+    
+    - A. It uses parabolic tiles for $O(h^4)$ accuracy
+    - B. It optimally chooses both sample points $x_i$ and weights $w_i$ to maximize polynomial accuracy
+    - C. It uses random sampling like Monte Carlo methods
+    - D. It works only for grid-based data
+    
 ??? info "See Answer"
-    **Correct: B**
-
-    Gaussian Quadrature breaks free from the constraint of fixed, uniform grids. By optimally choosing **where** to sample the function ($x_i$) and **how much** to weight each sample ($w_i$), it achieves the maximum possible polynomial accuracy for a given number of function evaluations. With $N$ points, it's exact for polynomials up to degree $2N - 1$.
-
-```
+        **Correct: B**
+    
+        Gaussian Quadrature breaks free from the constraint of fixed, uniform grids. By optimally choosing **where** to sample the function ($x_i$) and **how much** to weight each sample ($w_i$), it achieves the maximum possible polynomial accuracy for a given number of function evaluations. With $N$ points, it's exact for polynomials up to degree $2N - 1$.
+    
 ---
 
 !!! note "Quiz"
-```
-**2. With $N = 3$ Gaussian quadrature points, the method is exact for polynomials up to what degree?**
-
-- A. Degree 2
-- B. Degree 3
-- C. Degree 5
-- D. Degree 6
-
+    **2. With $N = 3$ Gaussian quadrature points, the method is exact for polynomials up to what degree?**
+    
+    - A. Degree 2
+    - B. Degree 3
+    - C. Degree 5
+    - D. Degree 6
+    
 ??? info "See Answer"
-    **Correct: C**
-
-    The general rule is that $N$-point Gaussian quadrature is exact for polynomials up to degree $2N - 1$. For $N = 3$: $2(3) - 1 = 5$. This is remarkable—three carefully chosen points can exactly integrate a quintic polynomial, whereas Simpson's Rule (also using 3 points) only exactly integrates up to degree 2.
-
-```
+        **Correct: C**
+    
+        The general rule is that $N$-point Gaussian quadrature is exact for polynomials up to degree $2N - 1$. For $N = 3$: $2(3) - 1 = 5$. This is remarkable—three carefully chosen points can exactly integrate a quintic polynomial, whereas Simpson's Rule (also using 3 points) only exactly integrates up to degree 2.
+    
 ---
 
 !!! note "Quiz"
-```
-**3. You have a callable Python function `f(x)` and want the most accurate possible answer for $\int_0^1 f(x) dx$. Which method should you use?**
-
-- A. Manual implementation of Simpson's Rule
-- B. `scipy.integrate.trapezoid` on a uniform grid
-- C. `scipy.integrate.quad` (Gaussian Quadrature)
-- D. Monte Carlo integration
-
+    **3. You have a callable Python function `f(x)` and want the most accurate possible answer for $\int_0^1 f(x) dx$. Which method should you use?**
+    
+    - A. Manual implementation of Simpson's Rule
+    - B. `scipy.integrate.trapezoid` on a uniform grid
+    - C. `scipy.integrate.quad` (Gaussian Quadrature)
+    - D. Monte Carlo integration
+    
 ??? info "See Answer"
-    **Correct: C**
-
-    `scipy.integrate.quad` uses adaptive Gaussian quadrature (specifically Gauss-Kronrod), which is the gold standard for integrating smooth, callable functions. It automatically chooses optimal sample points, adapts to the function's behavior, and provides an error estimate. For a callable function (not pre-gridded data), this is always the best choice.
-
-```
+        **Correct: C**
+    
+        `scipy.integrate.quad` uses adaptive Gaussian quadrature (specifically Gauss-Kronrod), which is the gold standard for integrating smooth, callable functions. It automatically chooses optimal sample points, adapts to the function's behavior, and provides an error estimate. For a callable function (not pre-gridded data), this is always the best choice.
+    
 ---
 
 !!! abstract "Interview-Style Question"
-
-```
-**Q:** I have a fixed grid of experimental data in a NumPy array. Why is `scipy.integrate.quad` the *wrong* tool to use, even though it's the most powerful 1D integrator?
-
-???+ info "Answer Strategy"
-    This question tests your understanding of the fundamental difference between grid-based and function-based quadrature methods.
-
-    1. **The Core Issue: Function Evaluation Freedom**
-       `scipy.integrate.quad` uses Gaussian quadrature, which requires the ability to evaluate the function $f(x)$ at **arbitrary, optimally chosen points** $x_i$. These points are the roots of Legendre polynomials and are **not** evenly spaced.
-
-    2. **Fixed Grid Constraint:**
-       When you have experimental data in a NumPy array, your $x$-coordinates are **already locked in**. You measured the function at specific, predetermined locations (e.g., $x = 0.0, 0.1, 0.2, \ldots, 1.0$). You cannot "re-measure" the function at the optimal Gaussian points like $x = 0.1127, 0.5, 0.8873$.
-
-    3. **Type Mismatch:**
-       `quad` expects a **callable function** `def f(x): ...` as input, not an array of pre-computed values. You could try to create an interpolating function from your data, but this adds complexity and potential interpolation error.
-
-    4. **The Right Tool for the Job:**
-       For fixed-grid data, you must use grid-based methods like:
-       - `scipy.integrate.trapezoid(y, x)` for Trapezoidal Rule
-       - `scipy.integrate.simpson(y, x)` for Simpson's Rule
-
-       These methods work with your existing $(x_i, y_i)$ pairs without requiring additional function evaluations.
-
-    5. **The Broader Principle:**
-       The choice of integration method depends fundamentally on your **data format**:
-       - **Callable function** → Use Gaussian quadrature (`quad`)
-       - **Fixed grid data** → Use grid-based methods (Simpson's, Trapezoidal)
-       - **High-dimensional** or **noisy** → Consider Monte Carlo
-
-```
+    
+    **Q:** I have a fixed grid of experimental data in a NumPy array. Why is `scipy.integrate.quad` the *wrong* tool to use, even though it's the most powerful 1D integrator?
+    
+    ???+ info "Answer Strategy"
+        This question tests your understanding of the fundamental difference between grid-based and function-based quadrature methods.
+    
+        1. **The Core Issue: Function Evaluation Freedom**
+           `scipy.integrate.quad` uses Gaussian quadrature, which requires the ability to evaluate the function $f(x)$ at **arbitrary, optimally chosen points** $x_i$. These points are the roots of Legendre polynomials and are **not** evenly spaced.
+    
+        2. **Fixed Grid Constraint:**
+           When you have experimental data in a NumPy array, your $x$-coordinates are **already locked in**. You measured the function at specific, predetermined locations (e.g., $x = 0.0, 0.1, 0.2, \ldots, 1.0$). You cannot "re-measure" the function at the optimal Gaussian points like $x = 0.1127, 0.5, 0.8873$.
+    
+        3. **Type Mismatch:**
+           `quad` expects a **callable function** `def f(x): ...` as input, not an array of pre-computed values. You could try to create an interpolating function from your data, but this adds complexity and potential interpolation error.
+    
+        4. **The Right Tool for the Job:**
+           For fixed-grid data, you must use grid-based methods like:
+           - `scipy.integrate.trapezoid(y, x)` for Trapezoidal Rule
+           - `scipy.integrate.simpson(y, x)` for Simpson's Rule
+    
+           These methods work with your existing $(x_i, y_i)$ pairs without requiring additional function evaluations.
+    
+        5. **The Broader Principle:**
+           The choice of integration method depends fundamentally on your **data format**:
+           - **Callable function** → Use Gaussian quadrature (`quad`)
+           - **Fixed grid data** → Use grid-based methods (Simpson's, Trapezoidal)
+           - **High-dimensional** or **noisy** → Consider Monte Carlo
+    
 ---
 
 ### <i class="fa-solid fa-flask"></i> Hands-On Project
@@ -1162,99 +1130,90 @@ These functions detect the special cases and automatically apply appropriate tra
 ### Comprehension Check
 
 !!! note "Quiz"
-```
-**1. How do we "tame" an integral with an infinite limit, like $\int_0^\infty f(x) dx$?**
-
-- A. Use Monte Carlo, which handles infinity automatically
-- B. Use a change of variables (e.g., $t = 1/(1+x)$) to map the infinite domain to a finite one
-- C. Integrate to a "very large number" (e.g., $10^{10}$) and hope it's correct
-- D. Use Simpson's Rule with an infinite number of slices
-
+    **1. How do we "tame" an integral with an infinite limit, like $\int_0^\infty f(x) dx$?**
+    
+    - A. Use Monte Carlo, which handles infinity automatically
+    - B. Use a change of variables (e.g., $t = 1/(1+x)$) to map the infinite domain to a finite one
+    - C. Integrate to a "very large number" (e.g., $10^{10}$) and hope it's correct
+    - D. Use Simpson's Rule with an infinite number of slices
+    
 ??? info "See Answer"
-    **Correct: B**
-
-    The mathematically rigorous approach is a **change of variables** that **compactifies** the infinite interval onto a finite one. For example, $t = 1/(1+x)$ maps $[0, \infty)$ onto $(0, 1]$. This transforms the integral into standard form that any quadrature method can handle. Simply integrating to a "large number" is unreliable—you never know how large is large enough.
-
-```
+        **Correct: B**
+    
+        The mathematically rigorous approach is a **change of variables** that **compactifies** the infinite interval onto a finite one. For example, $t = 1/(1+x)$ maps $[0, \infty)$ onto $(0, 1]$. This transforms the integral into standard form that any quadrature method can handle. Simply integrating to a "large number" is unreliable—you never know how large is large enough.
+    
 ---
 
 !!! note "Quiz"
-```
-**2. How do we "tame" an integral with a singularity, like $\int_0^1 \frac{1}{\sqrt{x}} dx$?**
-
-- A. Start the integral just after the singularity, e.g., $\int_{0.0001}^1$
-- B. Use a change of variables (e.g., $x = t^2$) chosen to cancel the singularity
-- C. Use the Trapezoidal Rule, which is not affected by singularities
-- D. This integral is unsolvable and must be approximated
-
+    **2. How do we "tame" an integral with a singularity, like $\int_0^1 \frac{1}{\sqrt{x}} dx$?**
+    
+    - A. Start the integral just after the singularity, e.g., $\int_{0.0001}^1$
+    - B. Use a change of variables (e.g., $x = t^2$) chosen to cancel the singularity
+    - C. Use the Trapezoidal Rule, which is not affected by singularities
+    - D. This integral is unsolvable and must be approximated
+    
 ??? info "See Answer"
-    **Correct: B**
-
-    The key is choosing a substitution that **cancels the singular behavior**. For $\int_0^1 x^{-1/2} dx$, the substitution $x = t^2$ (so $dx = 2t \, dt$) transforms the integral to $\int_0^1 \frac{1}{t} \cdot 2t \, dt = \int_0^1 2 \, dt$. The $1/t$ singularity exactly cancels with the $t$ from the Jacobian, leaving a constant integrand. Starting "just after" the singularity is a crude workaround that introduces systematic error.
-
-```
+        **Correct: B**
+    
+        The key is choosing a substitution that **cancels the singular behavior**. For $\int_0^1 x^{-1/2} dx$, the substitution $x = t^2$ (so $dx = 2t \, dt$) transforms the integral to $\int_0^1 \frac{1}{t} \cdot 2t \, dt = \int_0^1 2 \, dt$. The $1/t$ singularity exactly cancels with the $t$ from the Jacobian, leaving a constant integrand. Starting "just after" the singularity is a crude workaround that introduces systematic error.
+    
 ---
 
 !!! note "Quiz"
-```
-**3. For the integral $\int_0^\infty e^{-x^2} dx$, which transformation maps it to a finite interval?**
-
-- A. $t = x^2$
-- B. $t = 1/(1+x)$
-- C. $t = e^{-x}$
-- D. $t = \ln(x)$
-
+    **3. For the integral $\int_0^\infty e^{-x^2} dx$, which transformation maps it to a finite interval?**
+    
+    - A. $t = x^2$
+    - B. $t = 1/(1+x)$
+    - C. $t = e^{-x}$
+    - D. $t = \ln(x)$
+    
 ??? info "See Answer"
-    **Correct: B**
-
-    The substitution $t = 1/(1+x)$ maps $x \in [0, \infty)$ to $t \in (0, 1]$. From $t = 1/(1+x)$, we get $x = (1-t)/t$ and $dx = -1/t^2 \, dt$. This transforms the infinite integral into a finite one that can be evaluated with standard quadrature. Options A and D don't compactify to a finite interval, and option C maps to $(0, 1]$ but is less straightforward for this particular integrand.
-
-```
+        **Correct: B**
+    
+        The substitution $t = 1/(1+x)$ maps $x \in [0, \infty)$ to $t \in (0, 1]$. From $t = 1/(1+x)$, we get $x = (1-t)/t$ and $dx = -1/t^2 \, dt$. This transforms the infinite integral into a finite one that can be evaluated with standard quadrature. Options A and D don't compactify to a finite interval, and option C maps to $(0, 1]$ but is less straightforward for this particular integrand.
+    
 ---
 
 !!! abstract "Interview-Style Question"
-
-```
-**Q:** You need to solve $\int_0^\infty e^{-x} dx$ numerically. Walk me through the complete process of transforming this into a "safe" integral using the substitution $t = 1/(1+x)$.
-
-???+ info "Answer Strategy"
-    This question tests your ability to execute a complete change of variables, a fundamental skill for handling pathological integrals.
-
-    1. **Define the Substitution:**
-       Start with $t = \frac{1}{1+x}$. We need to express $x$ in terms of $t$ and find $dx$.
-
-    2. **Invert the Relationship:**
-       Solving for $x$:
-       $$t(1+x) = 1 \quad \Rightarrow \quad t + tx = 1 \quad \Rightarrow \quad x = \frac{1-t}{t}$$
-
-    3. **Transform the Limits:**
-       - When $x = 0$: $t = 1/(1+0) = 1$
-       - When $x \to \infty$: $t = 1/(\infty) \to 0$
-
-    4. **Compute the Differential:**
-       Differentiate $x = (1-t)/t = 1/t - 1$:
-       $$dx = -\frac{1}{t^2} dt$$
-
-    5. **Substitute into the Original Integral:**
-       $$\int_0^\infty e^{-x} dx = \int_1^0 e^{-(1-t)/t} \left(-\frac{1}{t^2}\right) dt$$
-
-    6. **Flip the Limits:**
-       The negative sign from $dx$ flips the integration limits:
-       $$= \int_0^1 \frac{1}{t^2} e^{-(1-t)/t} dt$$
-
-    7. **Final Result:**
-       This is now a **finite integral** from 0 to 1 with an integrand that is well-behaved (no singularities, finite limits). Any standard quadrature method (Simpson's, Gaussian, etc.) can now be applied.
-
-    8. **Implementation Detail:**
-       In Python:
-       ```python
-       def transformed_integrand(t):
-           return (1/t**2) * np.exp(-(1-t)/t)
-
-       result, error = scipy.integrate.quad(transformed_integrand, 0, 1)
-       ```
-
-```
+    
+    **Q:** You need to solve $\int_0^\infty e^{-x} dx$ numerically. Walk me through the complete process of transforming this into a "safe" integral using the substitution $t = 1/(1+x)$.
+    
+    ???+ info "Answer Strategy"
+        This question tests your ability to execute a complete change of variables, a fundamental skill for handling pathological integrals.
+    
+        1. **Define the Substitution:**
+           Start with $t = \frac{1}{1+x}$. We need to express $x$ in terms of $t$ and find $dx$.
+    
+        2. **Invert the Relationship:**
+           Solving for $x$:
+           $$t(1+x) = 1 \quad \Rightarrow \quad t + tx = 1 \quad \Rightarrow \quad x = \frac{1-t}{t}$$
+    
+        3. **Transform the Limits:**
+           - When $x = 0$: $t = 1/(1+0) = 1$
+           - When $x \to \infty$: $t = 1/(\infty) \to 0$
+    
+        4. **Compute the Differential:**
+           Differentiate $x = (1-t)/t = 1/t - 1$:
+           $$dx = -\frac{1}{t^2} dt$$
+    
+        5. **Substitute into the Original Integral:**
+           $$\int_0^\infty e^{-x} dx = \int_1^0 e^{-(1-t)/t} \left(-\frac{1}{t^2}\right) dt$$
+    
+        6. **Flip the Limits:**
+           The negative sign from $dx$ flips the integration limits:
+           $$= \int_0^1 \frac{1}{t^2} e^{-(1-t)/t} dt$$
+    
+        7. **Final Result:**
+           This is now a **finite integral** from 0 to 1 with an integrand that is well-behaved (no singularities, finite limits). Any standard quadrature method (Simpson's, Gaussian, etc.) can now be applied.
+    
+        8. **Implementation Detail:**
+           In Python:
+           ```python
+           def transformed_integrand(t):
+               return (1/t**2) * np.exp(-(1-t)/t)
+    
+           result, error = scipy.integrate.quad(transformed_integrand, 0, 1)
+    
 ---
 
 ### <i class="fa-solid fa-flask"></i> Hands-On Project
@@ -1466,91 +1425,83 @@ For larger amplitudes, the exact period is **longer** than the small-angle predi
 ### Comprehension Check
 
 !!! note "Quiz"
-```
-**1. What is the source of the computational problem in the nonlinear pendulum period integral?**
-
-- A. The integral has infinite limits
-- B. The integrand has a singularity at the upper endpoint $\theta = \theta_0$
-- C. The integral is 10-dimensional
-- D. The function is too "wiggly" for Simpson's Rule
-
+    **1. What is the source of the computational problem in the nonlinear pendulum period integral?**
+    
+    - A. The integral has infinite limits
+    - B. The integrand has a singularity at the upper endpoint $\theta = \theta_0$
+    - C. The integral is 10-dimensional
+    - D. The function is too "wiggly" for Simpson's Rule
+    
 ??? info "See Answer"
-    **Correct: B**
-
-    At $\theta = \theta_0$, the denominator $\sqrt{\cos\theta - \cos\theta_0}$ approaches zero, causing the integrand to diverge to infinity. This is an **endpoint singularity**. Grid-based methods that must evaluate the function at the endpoint will fail with division by zero or severe round-off error.
-
-```
+        **Correct: B**
+    
+        At $\theta = \theta_0$, the denominator $\sqrt{\cos\theta - \cos\theta_0}$ approaches zero, causing the integrand to diverge to infinity. This is an **endpoint singularity**. Grid-based methods that must evaluate the function at the endpoint will fail with division by zero or severe round-off error.
+    
 ---
 
 !!! note "Quiz"
-```
-**2. For a large swing angle (e.g., $\theta_0 = 45°$), how does the exact period $T_{\text{exact}}$ compare to the small-angle approximation $T_{\text{approx}} = 2\pi\sqrt{L/g}$?**
-
-- A. Significantly shorter
-- B. Exactly the same
-- C. Longer, due to the nonlinearity of the equation
-- D. Shorter, due to energy loss
-
+    **2. For a large swing angle (e.g., $\theta_0 = 45°$), how does the exact period $T_{\text{exact}}$ compare to the small-angle approximation $T_{\text{approx}} = 2\pi\sqrt{L/g}$?**
+    
+    - A. Significantly shorter
+    - B. Exactly the same
+    - C. Longer, due to the nonlinearity of the equation
+    - D. Shorter, due to energy loss
+    
 ??? info "See Answer"
-    **Correct: C**
-
-    For large amplitudes, the pendulum spends more time at the extremes of its swing (where velocity is low) compared to the small-angle case. This increases the period. The nonlinear term $\sin\theta$ (vs. the approximation $\theta$) causes this deviation. For $\theta_0 = 45°$, the period is about 3.5% longer than the small-angle prediction.
-
-```
+        **Correct: C**
+    
+        For large amplitudes, the pendulum spends more time at the extremes of its swing (where velocity is low) compared to the small-angle case. This increases the period. The nonlinear term $\sin\theta$ (vs. the approximation $\theta$) causes this deviation. For $\theta_0 = 45°$, the period is about 3.5% longer than the small-angle prediction.
+    
 ---
 
 !!! note "Quiz"
-```
-**3. Why can't we use a simple grid-based method (like Simpson's Rule) directly for this integral?**
-
-- A. The integral is too long
-- B. The function oscillates too much
-- C. Evaluating at the endpoint $\theta_0$ causes division by zero
-- D. Grid-based methods don't work for physics problems
-
+    **3. Why can't we use a simple grid-based method (like Simpson's Rule) directly for this integral?**
+    
+    - A. The integral is too long
+    - B. The function oscillates too much
+    - C. Evaluating at the endpoint $\theta_0$ causes division by zero
+    - D. Grid-based methods don't work for physics problems
+    
 ??? info "See Answer"
-    **Correct: C**
-
-    Grid-based methods require evaluating the function at regular intervals, including the endpoints. At $\theta = \theta_0$, the integrand $1/\sqrt{\cos\theta - \cos\theta_0}$ is **undefined** (division by zero). Even evaluating extremely close to $\theta_0$ leads to catastrophic cancellation in the subtraction $\cos\theta - \cos\theta_0$, destroying numerical accuracy.
-
-```
+        **Correct: C**
+    
+        Grid-based methods require evaluating the function at regular intervals, including the endpoints. At $\theta = \theta_0$, the integrand $1/\sqrt{\cos\theta - \cos\theta_0}$ is **undefined** (division by zero). Even evaluating extremely close to $\theta_0$ leads to catastrophic cancellation in the subtraction $\cos\theta - \cos\theta_0$, destroying numerical accuracy.
+    
 ---
 
 !!! abstract "Interview-Style Question"
-
-```
-**Q:** I have an integral with a singularity at $x = 1$. If I use `scipy.integrate.quad(f, 0, 1)`, what internal mechanism does `quad` employ that prevents the code from failing, unlike a simple loop using the Trapezoidal Rule?
-
-???+ info "Answer Strategy"
-    This question tests your understanding of why adaptive Gaussian quadrature succeeds where fixed-grid methods fail.
-
-    1. **No Evaluation at the Singularity:**
-       `quad` uses **Gaussian quadrature**, which doesn't require evaluating the function at the endpoints. The sample points are the **roots of Legendre polynomials**, which lie strictly **inside** the interval $(0, 1)$, never at the boundaries.
-
-    2. **Adaptive Refinement:**
-       When `quad` detects rapid changes in the integrand (which happens near a singularity), it automatically **subdivides** the interval into smaller segments and concentrates more evaluation points in the problematic region—all while avoiding the singular point itself.
-
-    3. **Specialized Weight Functions:**
-       For common singularities (like $1/\sqrt{x}$ at $x=0$), `quad` can use **Gauss-Kronrod rules** with built-in weights that exactly match the singular behavior. This is analogous to the change-of-variables trick we saw in Section 6.5, but implemented internally.
-
-    4. **Error Estimation:**
-       By comparing results from different quadrature orders (Gauss vs. Kronrod), `quad` estimates the integration error. If the error is too large, it refines further—but never by evaluating at the singularity.
-
-    5. **Contrast with Grid Methods:**
-       The Trapezoidal Rule in a simple loop would:
-       - Evaluate $f(0)$ and $f(1)$ directly → **division by zero**
-       - Use fixed, evenly-spaced points → **no adaptive refinement**
-       - Lack sophisticated error control → **unreliable results**
-
-    6. **The Takeaway:**
-       `quad` succeeds because it:
-       - Avoids the singular points
-       - Adapts to the integrand's behavior
-       - Uses mathematically optimal sampling
-
-       This makes it robust for real-world physics problems where singularities are common.
-
-```
+    
+    **Q:** I have an integral with a singularity at $x = 1$. If I use `scipy.integrate.quad(f, 0, 1)`, what internal mechanism does `quad` employ that prevents the code from failing, unlike a simple loop using the Trapezoidal Rule?
+    
+    ???+ info "Answer Strategy"
+        This question tests your understanding of why adaptive Gaussian quadrature succeeds where fixed-grid methods fail.
+    
+        1. **No Evaluation at the Singularity:**
+           `quad` uses **Gaussian quadrature**, which doesn't require evaluating the function at the endpoints. The sample points are the **roots of Legendre polynomials**, which lie strictly **inside** the interval $(0, 1)$, never at the boundaries.
+    
+        2. **Adaptive Refinement:**
+           When `quad` detects rapid changes in the integrand (which happens near a singularity), it automatically **subdivides** the interval into smaller segments and concentrates more evaluation points in the problematic region—all while avoiding the singular point itself.
+    
+        3. **Specialized Weight Functions:**
+           For common singularities (like $1/\sqrt{x}$ at $x=0$), `quad` can use **Gauss-Kronrod rules** with built-in weights that exactly match the singular behavior. This is analogous to the change-of-variables trick we saw in Section 6.5, but implemented internally.
+    
+        4. **Error Estimation:**
+           By comparing results from different quadrature orders (Gauss vs. Kronrod), `quad` estimates the integration error. If the error is too large, it refines further—but never by evaluating at the singularity.
+    
+        5. **Contrast with Grid Methods:**
+           The Trapezoidal Rule in a simple loop would:
+           - Evaluate $f(0)$ and $f(1)$ directly → **division by zero**
+           - Use fixed, evenly-spaced points → **no adaptive refinement**
+           - Lack sophisticated error control → **unreliable results**
+    
+        6. **The Takeaway:**
+           `quad` succeeds because it:
+           - Avoids the singular points
+           - Adapts to the integrand's behavior
+           - Uses mathematically optimal sampling
+    
+           This makes it robust for real-world physics problems where singularities are common.
+    
 ---
 
 ### <i class="fa-solid fa-flask"></i> Hands-On Project
@@ -1799,100 +1750,92 @@ These techniques (covered in Volume II) can reduce the effective $\sigma$, makin
 ### Comprehension Check
 
 !!! note "Quiz"
-```
-**1. What is the "Curse of Dimensionality"?**
-
-- A. Monte Carlo integration is $O(1/\sqrt{N})$
-- B. Grid-based methods become exponentially slow and less accurate as dimension $D$ increases
-- C. All numerical methods fail if $D > 3$
-- D. You must use double-wide tiles for Simpson's Rule in high dimensions
-
+    **1. What is the "Curse of Dimensionality"?**
+    
+    - A. Monte Carlo integration is $O(1/\sqrt{N})$
+    - B. Grid-based methods become exponentially slow and less accurate as dimension $D$ increases
+    - C. All numerical methods fail if $D > 3$
+    - D. You must use double-wide tiles for Simpson's Rule in high dimensions
+    
 ??? info "See Answer"
-    **Correct: B**
-
-    The Curse of Dimensionality refers to the exponential scaling of computational cost with dimension for grid-based methods. In $D$ dimensions, you need $N^D$ grid points (exponential in $D$), and the accuracy degrades from $O(N^{-4})$ in 1D to $O(N^{-4/D})$ in $D$ dimensions. For $D = 10$, this becomes $O(N^{-0.4})$, requiring impossibly many points for reasonable accuracy.
-
-```
+        **Correct: B**
+    
+        The Curse of Dimensionality refers to the exponential scaling of computational cost with dimension for grid-based methods. In $D$ dimensions, you need $N^D$ grid points (exponential in $D$), and the accuracy degrades from $O(N^{-4})$ in 1D to $O(N^{-4/D})$ in $D$ dimensions. For $D = 10$, this becomes $O(N^{-0.4})$, requiring impossibly many points for reasonable accuracy.
+    
 ---
 
 !!! note "Quiz"
-```
-**2. In which scenario is Monte Carlo integration the best (and likely only) choice?**
-
-- A. A 1D integral of a smooth, callable function
-- B. A 2D integral of data on a fixed grid
-- C. A 1000-dimensional integral for a statistical mechanics problem
-- D. Finding the area under a simple parabola
-
+    **2. In which scenario is Monte Carlo integration the best (and likely only) choice?**
+    
+    - A. A 1D integral of a smooth, callable function
+    - B. A 2D integral of data on a fixed grid
+    - C. A 1000-dimensional integral for a statistical mechanics problem
+    - D. Finding the area under a simple parabola
+    
 ??? info "See Answer"
-    **Correct: C**
-
-    Monte Carlo is the **only feasible method** for high-dimensional integrals (typically $D > 8$). A 1000-dimensional grid would require $N^{1000}$ points—far beyond any computational capacity. Monte Carlo's error $O(1/\sqrt{N})$ is **independent of dimension**, making it scale identically for 3D, 100D, or 1000D problems. This is why it's essential for statistical mechanics (integrating over $\sim 10^{23}$ degrees of freedom).
-
-```
+        **Correct: C**
+    
+        Monte Carlo is the **only feasible method** for high-dimensional integrals (typically $D > 8$). A 1000-dimensional grid would require $N^{1000}$ points—far beyond any computational capacity. Monte Carlo's error $O(1/\sqrt{N})$ is **independent of dimension**, making it scale identically for 3D, 100D, or 1000D problems. This is why it's essential for statistical mechanics (integrating over $\sim 10^{23}$ degrees of freedom).
+    
 ---
 
 !!! note "Quiz"
-```
-**3. What is the "magic" property of Monte Carlo error that allows it to beat the Curse of Dimensionality?**
-
-- A. It uses optimal Gaussian quadrature points
-- B. The error $O(1/\sqrt{N})$ does not depend on dimension $D$
-- C. It's faster than Simpson's Rule in all dimensions
-- D. It requires no function evaluations
-
+    **3. What is the "magic" property of Monte Carlo error that allows it to beat the Curse of Dimensionality?**
+    
+    - A. It uses optimal Gaussian quadrature points
+    - B. The error $O(1/\sqrt{N})$ does not depend on dimension $D$
+    - C. It's faster than Simpson's Rule in all dimensions
+    - D. It requires no function evaluations
+    
 ??? info "See Answer"
-    **Correct: B**
-
-    The critical property is **dimension independence**. The error term $\sigma/\sqrt{N}$ contains no factor of $D$. While grid methods need $N^D$ points (exponential in $D$), Monte Carlo needs only $N$ random samples regardless of dimension. To cut the error in half, you need 4× more samples whether you're in 1D, 10D, or 1000D. This dimension-independence is what makes high-dimensional integration possible.
-
-```
+        **Correct: B**
+    
+        The critical property is **dimension independence**. The error term $\sigma/\sqrt{N}$ contains no factor of $D$. While grid methods need $N^D$ points (exponential in $D$), Monte Carlo needs only $N$ random samples regardless of dimension. To cut the error in half, you need 4× more samples whether you're in 1D, 10D, or 1000D. This dimension-independence is what makes high-dimensional integration possible.
+    
 ---
 
 !!! abstract "Interview-Style Question"
-
-```
-**Q:** What is the "magic" property of Monte Carlo integration's error, $O(1/\sqrt{N})$, that allows it to beat the Curse of Dimensionality? And why doesn't this make it superior to Simpson's Rule in all cases?
-
-???+ info "Answer Strategy"
-    This two-part question tests both your understanding of Monte Carlo's strength and its limitations.
-
-    **Part 1: The Magic (Why It Beats the Curse)**
-
-    1. **Dimension Independence:**
-       The error $\sigma/\sqrt{N}$ contains **no dimension factor $D$**. The same error formula applies whether you're integrating over a 1D line, a 100D hypercube, or a $10^{23}$-dimensional phase space.
-
-    2. **Contrast with Grid Methods:**
-       Grid-based methods require $N^D$ total points (exponential in $D$), making them impractical for $D > 8$. Monte Carlo requires only $N$ random samples, scaling **linearly** with computational cost regardless of dimension.
-
-    3. **Statistical Foundation:**
-       This dimension-independence comes from the **Central Limit Theorem**: the variance of a sample mean decreases as $1/N$, regardless of the underlying space's dimension. It's a fundamental property of statistical sampling.
-
-    **Part 2: Why Simpson's Still Wins in Low Dimensions**
-
-    1. **Convergence Rate Comparison:**
-       - Simpson's Rule: $O(N^{-4})$ in 1D (or $O(N^{-4/D})$ in $D$ dimensions)
-       - Monte Carlo: $O(N^{-0.5})$ always
-
-       In 1D: $N^{-4}$ converges **much faster** than $N^{-0.5}$.
-
-    2. **Numerical Example:**
-       To achieve error $< 10^{-6}$:
-       - Simpson's (1D): $N \sim 100$ points
-       - Monte Carlo (1D): $N \sim 10^{12}$ samples
-
-       This is a **factor of 10 billion** difference!
-
-    3. **The Crossover Point:**
-       The dimension where Monte Carlo becomes competitive depends on the function, but typically:
-       - $D \leq 3$: Grid methods dominate
-       - $D = 4-7$: Case-dependent
-       - $D \geq 8$: Monte Carlo becomes essential
-
-    4. **The Takeaway:**
-       Monte Carlo is not "better"—it's **different**. It trades convergence speed for dimension scalability. Use grid methods for low-dimensional, smooth problems. Use Monte Carlo when dimension makes grids impossible. This is a fundamental trade-off in computational science.
-
-```
+    
+    **Q:** What is the "magic" property of Monte Carlo integration's error, $O(1/\sqrt{N})$, that allows it to beat the Curse of Dimensionality? And why doesn't this make it superior to Simpson's Rule in all cases?
+    
+    ???+ info "Answer Strategy"
+        This two-part question tests both your understanding of Monte Carlo's strength and its limitations.
+    
+        **Part 1: The Magic (Why It Beats the Curse)**
+    
+        1. **Dimension Independence:**
+           The error $\sigma/\sqrt{N}$ contains **no dimension factor $D$**. The same error formula applies whether you're integrating over a 1D line, a 100D hypercube, or a $10^{23}$-dimensional phase space.
+    
+        2. **Contrast with Grid Methods:**
+           Grid-based methods require $N^D$ total points (exponential in $D$), making them impractical for $D > 8$. Monte Carlo requires only $N$ random samples, scaling **linearly** with computational cost regardless of dimension.
+    
+        3. **Statistical Foundation:**
+           This dimension-independence comes from the **Central Limit Theorem**: the variance of a sample mean decreases as $1/N$, regardless of the underlying space's dimension. It's a fundamental property of statistical sampling.
+    
+        **Part 2: Why Simpson's Still Wins in Low Dimensions**
+    
+        1. **Convergence Rate Comparison:**
+           - Simpson's Rule: $O(N^{-4})$ in 1D (or $O(N^{-4/D})$ in $D$ dimensions)
+           - Monte Carlo: $O(N^{-0.5})$ always
+    
+           In 1D: $N^{-4}$ converges **much faster** than $N^{-0.5}$.
+    
+        2. **Numerical Example:**
+           To achieve error $< 10^{-6}$:
+           - Simpson's (1D): $N \sim 100$ points
+           - Monte Carlo (1D): $N \sim 10^{12}$ samples
+    
+           This is a **factor of 10 billion** difference!
+    
+        3. **The Crossover Point:**
+           The dimension where Monte Carlo becomes competitive depends on the function, but typically:
+           - $D \leq 3$: Grid methods dominate
+           - $D = 4-7$: Case-dependent
+           - $D \geq 8$: Monte Carlo becomes essential
+    
+        4. **The Takeaway:**
+           Monte Carlo is not "better"—it's **different**. It trades convergence speed for dimension scalability. Use grid methods for low-dimensional, smooth problems. Use Monte Carlo when dimension makes grids impossible. This is a fundamental trade-off in computational science.
+    
 ---
 
 ### <i class="fa-solid fa-flask"></i> Hands-On Project

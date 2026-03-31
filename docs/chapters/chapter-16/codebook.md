@@ -1,4 +1,4 @@
-# **Chapter 16: Data-Driven Analysis: SVD & PCA () () (Codebook)**
+# **Chapter 16: Data-Driven Analysis: SVD & PCA (Codebook)**
 
 ---
 

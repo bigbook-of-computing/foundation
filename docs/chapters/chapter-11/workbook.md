@@ -1,4 +1,4 @@
-# **Chapter 11: Parabolic PDEs (e.g., The Heat/Diffusion Equation) () () (Workbook)**
+# **Chapter 11: Parabolic PDEs (e.g., The Heat/Diffusion Equation) (Workbook)**
 
 ### 11.1 Chapter Opener: The Physics of "Spreading Out"
 

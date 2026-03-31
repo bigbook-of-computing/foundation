@@ -59,12 +59,9 @@ $$
 The local truncation error (error per step) is $\mathcal{O}(h^2)$. However, the accumulation of this error over the entire simulation leads to a **global error** of $\mathbf{\mathcal{O}(h)}$. This makes Euler's method a **first-order** method, meaning halving the step size $h$ only halves the overall accuracy.
 
 !!! tip "Intuition Boost"
-```
-Euler's method is the "straight-line" method. It calculates the slope *once* at the beginning of the step and assumes the system travels in that straight line for the entire duration $h$. If the path curves, Euler's method flies off the tangent.
-
-```
-```python
-```
+    Euler's method is the "straight-line" method. It calculates the slope *once* at the beginning of the step and assumes the system travels in that straight line for the entire duration $h$. If the path curves, Euler's method flies off the tangent.
+    
+    ```python
 # Illustrative pseudo-code for Euler's Method
 
 function euler_solver(f, x0, t_start, t_end, h):
@@ -152,10 +149,8 @@ $$
 This derivative function $\mathbf{f}$ returns the instantaneous velocities and accelerations, allowing the RK4 method to perform the march of time.
 
 !!! example "The State Vector"
-```
-The "state vector" $\mathbf{S}$ is the complete DNA of the system at time $t$. For this problem, $\mathbf{S} = [x, y, v_x, v_y]$. The derivative function `f(S, t)` must take this 4-element vector as input and return the 4-element *derivative* vector: $\frac{d\mathbf{S}}{dt} = [v_x, v_y, F_{d,x}/m, -g + F_{d,y}/m]$.
-
-```
+    The "state vector" $\mathbf{S}$ is the complete DNA of the system at time $t$. For this problem, $\mathbf{S} = [x, y, v_x, v_y]$. The derivative function `f(S, t)` must take this 4-element vector as input and return the 4-element *derivative* vector: $\frac{d\mathbf{S}}{dt} = [v_x, v_y, F_{d,x}/m, -g + F_{d,y}/m]$.
+    
 ---
 
 ### **Analysis**

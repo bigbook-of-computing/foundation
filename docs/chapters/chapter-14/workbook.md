@@ -1,4 +1,4 @@
-# **Chapter 14: Eigenvalue Problems () () (Workbook)**
+# **Chapter 14: Eigenvalue Problems (Workbook)**
 
 ### 14.1 Chapter Opener: The Physics of "Natural States"
 

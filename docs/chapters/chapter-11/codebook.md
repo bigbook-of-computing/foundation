@@ -1,4 +1,4 @@
-# **Chapter 11: Parabolic Partial Differential Equations (e.g., The Heat/Diffusion Equation) () () (Codebook)**
+# **Chapter 11: Parabolic Partial Differential Equations (e.g., The Heat/Diffusion Equation) (Codebook)**
 
 ---
 

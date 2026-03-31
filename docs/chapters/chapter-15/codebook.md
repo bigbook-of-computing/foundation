@@ -1,4 +1,4 @@
-# **Chapter 15: Fourier Analysis & The FFT () () (Codebook)**
+# **Chapter 15: Fourier Analysis & The FFT (Codebook)**
 
 This Python Code Book is for **Chapter 15: Fourier Analysis & The FFT**, focusing on implementing the Fast Fourier Transform to analyze the frequency content of a signal and perform noise reduction.
 

@@ -1,4 +1,4 @@
-# **Chapter 3: End-to-End Root-Finding Practice () () (Codebook)**
+# **Chapter 3: End-to-End Root-Finding Practice (Codebook)**
 
 ---
 

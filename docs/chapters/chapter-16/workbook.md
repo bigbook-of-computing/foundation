@@ -1,4 +1,4 @@
-# **Chapter 16: Data-Driven Analysis: SVD & PCA () () (Workbook)**
+# **Chapter 16: Data-Driven Analysis: SVD & PCA (Workbook)**
 
 ### 16.1 Chapter Opener: The "Data Deluge" Problem
 

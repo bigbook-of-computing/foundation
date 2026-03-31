@@ -33,14 +33,12 @@ This operation is central to calculating the **global properties** of physical s
 * **Statistical Mechanics:** The partition function ($Z$) involves summing up all possible states in a system: $Z = \int e^{-\beta E} dE$.
 
 !!! tip "Integration: The 'Accumulator' of Physics"
-```
-Think of the derivative as a "rate meter" (speed). The integral is the "total-so-far meter" (odometer). It *accumulates* all the tiny changes to give a global, total value.
-
-```
-The **computational problem** is that the function $f(x)$ we need to integrate rarely exists as an analytical formula. Instead, we possess a set of **discrete data points $(x_i, y_i)$** on a grid, typically obtained from an experiment or a prior simulation. Our task is to find the total **"area under the curve"** for this discrete, stair-stepped data.
-
-The solution is **numerical quadrature**—the process of approximating the integral by **tiling** the area with simple geometric shapes (trapezoids, parabolas) whose areas are easily calculated from their side lengths. The total integral is then the **accumulation** (sum) of the areas of all these tiles.
-
+    Think of the derivative as a "rate meter" (speed). The integral is the "total-so-far meter" (odometer). It *accumulates* all the tiny changes to give a global, total value.
+    
+    The **computational problem** is that the function $f(x)$ we need to integrate rarely exists as an analytical formula. Instead, we possess a set of **discrete data points $(x_i, y_i)$** on a grid, typically obtained from an experiment or a prior simulation. Our task is to find the total **"area under the curve"** for this discrete, stair-stepped data.
+    
+    The solution is **numerical quadrature**—the process of approximating the integral by **tiling** the area with simple geometric shapes (trapezoids, parabolas) whose areas are easily calculated from their side lengths. The total integral is then the **accumulation** (sum) of the areas of all these tiles.
+    
 ---
 
 ## **6.2 The "Simple" Tile: The Trapezoidal Rule**
@@ -124,10 +122,8 @@ $$
 This integral has a **singularity** at the upper limit, $\theta = \theta_0$, because the denominator approaches zero. A naive grid-based solver (like Simpson's Rule) would crash. The professional solution is to use **`scipy.integrate.quad`**, which automatically handles the singularity and provides the highly accurate period $T_{\text{exact}}$, which is correctly shown to be **longer** than the small-angle approximation.
 
 !!! example "Small vs. Large Angle Pendulum"
-```
-The "small angle" approximation $T \approx 2\pi\sqrt{L/g}$ assumes $\sin\theta \approx \theta$. This integral proves that as $\theta_0$ increases, the true period *always* gets longer, as the restoring force weakens at large angles.
-
-```
+    The "small angle" approximation $T \approx 2\pi\sqrt{L/g}$ assumes $\sin\theta \approx \theta$. This integral proves that as $\theta_0$ increases, the true period *always* gets longer, as the restoring force weakens at large angles.
+    
 ---
 
 ## **6.7 Teaser for Volume II: Monte Carlo Integration**

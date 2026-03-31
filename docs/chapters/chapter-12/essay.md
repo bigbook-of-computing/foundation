@@ -140,11 +140,9 @@ The **Plucked Guitar String** is the classic application, modeling a string fixe
 The simulation executes the two-stage time march with a stable Courant Number ($C \le 1.0$). Since the initial velocity is zero, the "First Step" formula simplifies: $y_{i, 1} = y_{i, 0} + \frac{C^2}{2} (\text{Laplacian})$. The resulting motion demonstrates **wave superposition** and the formation of **standing wave patterns** (harmonics) as the initial displacement propagates and reflects off the fixed boundaries.
 
 !!! example "Visualizing Wave Harmonics"
-
-```
-When the simulation runs, the initial triangular pulse (a superposition of many frequencies) splits into two pulses traveling in opposite directions. As they reflect off the fixed boundaries, they interfere. Over time, the simulation shows a stable superposition of the fundamental mode and its **standing wave harmonics**, just as a real guitar string does.
-
-```
+    
+    When the simulation runs, the initial triangular pulse (a superposition of many frequencies) splits into two pulses traveling in opposite directions. As they reflect off the fixed boundaries, they interfere. Over time, the simulation shows a stable superposition of the fundamental mode and its **standing wave harmonics**, just as a real guitar string does.
+    
 ---
 
 ## **12.5 Chapter Summary and Bridge to Part 5: Linear Algebra**

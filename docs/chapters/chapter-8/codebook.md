@@ -1,4 +1,4 @@
-# **Chapter 8: Initial Value Problems II — The Leapfrog & Verlet () () (Codebook)**
+# **Chapter 8: Initial Value Problems II — The Leapfrog & Verlet (Codebook)**
 
 ---
 

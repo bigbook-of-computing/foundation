@@ -63,12 +63,10 @@ $$
 The mathematical form of the Five-Point Stencil provides a powerful **physical insight**: the potential or temperature at any interior grid point in a static, equilibrium field is simply the **average of the potentials of its four immediate neighbors** (North, South, East, West). This condition *defines* equilibrium, as any deviation from this average implies a non-zero $\nabla^2 \phi$ and thus an unphysical flux.
 
 !!! tip "The Definition of Equilibrium"
-```
-The Five-Point Stencil isn't just a mathematical trick; it's a profound physical statement. It says that for a field in equilibrium ($\nabla^2\phi = 0$), the value at *any* point must be the **exact average** of its neighbors. If it were higher or lower, there would be a "dip" or "peak," implying a source or sink, which violates the equilibrium condition.
-
-```
-The local truncation error for this FDM approximation remains **$\mathcal{O}(h^2)$**.
-
+    The Five-Point Stencil isn't just a mathematical trick; it's a profound physical statement. It says that for a field in equilibrium ($\nabla^2\phi = 0$), the value at *any* point must be the **exact average** of its neighbors. If it were higher or lower, there would be a "dip" or "peak," implying a source or sink, which violates the equilibrium condition.
+    
+    The local truncation error for this FDM approximation remains **$\mathcal{O}(h^2)$**.
+    
 ---
 
 ## **10.2 The "Relaxation" Analogy and Iterative Methods**
@@ -152,9 +150,8 @@ The method updates the grid **sequentially** and utilizes the newly calculated p
 * **Disadvantage:** It is inherently **sequential**, making straightforward parallelization difficult.
 
 ??? question "How does Gauss-Seidel accelerate convergence?"
-    In Jacobi, information from a boundary moves one cell per iteration. In Gauss-Seidel (left-to-right sweep), information from the left ($i-1$) and bottom ($j-1$) boundaries is used *immediately* by the point $(i, j)$. This allows boundary information to propagate diagonally across the *entire grid* in a *single iteration*, leading to much faster convergence.
-
-```
+        In Jacobi, information from a boundary moves one cell per iteration. In Gauss-Seidel (left-to-right sweep), information from the left ($i-1$) and bottom ($j-1$) boundaries is used *immediately* by the point $(i, j)$. This allows boundary information to propagate diagonally across the *entire grid* in a *single iteration*, leading to much faster convergence.
+    
 ## Algorithm: Gauss-Seidel Relaxation
 
 ```python
@@ -219,10 +216,8 @@ The final visualization (heatmap) yields critical physical insights:
 * **Contour Lines:** Trace the **equipotential lines** (paths of constant $\phi$). Physically, the **electric field ($\mathbf{E}$) is always perpendicular** to these lines.
 
 !!! example "Visualizing the Physics"
-```
-A heatmap of the final potential distribution clearly shows the physics. The potential "flows" from the high-voltage $V_0$ boundary to the $0$ V boundaries. The contour lines, which show paths of equal voltage, are always perpendicular to the electric field $\mathbf{E}$. A test charge placed in this field would feel a force $\mathbf{F} = q\mathbf{E}$, pushing it "downhill" along the steepest gradient.
-
-```
+    A heatmap of the final potential distribution clearly shows the physics. The potential "flows" from the high-voltage $V_0$ boundary to the $0$ V boundaries. The contour lines, which show paths of equal voltage, are always perpendicular to the electric field $\mathbf{E}$. A test charge placed in this field would feel a force $\mathbf{F} = q\mathbf{E}$, pushing it "downhill" along the steepest gradient.
+    
 ---
 
 ## **10.7 Chapter Summary & Bridge to Chapter 11**

@@ -1,4 +1,4 @@
-# **Chapter 13: Systems of Linear Equations () () (Workbook)**
+# **Chapter 13: Systems of Linear Equations (Workbook)**
 
 ### 13.1 Chapter Opener: The "Engine" We've Been Waiting For
 

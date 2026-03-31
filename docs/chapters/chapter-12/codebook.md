@@ -1,4 +1,4 @@
-# **Chapter 12: Hyperbolic PDEs (e.g., The Wave Equation) () () (Codebook)**
+# **Chapter 12: Hyperbolic PDEs (e.g., The Wave Equation) (Codebook)**
 
 This Code Book is for **Chapter 12: Hyperbolic PDEs (e.g., The Wave Equation)**, focusing on implementing the explicit FTCS scheme, testing the CFL stability condition, and solving the "first step" problem.
 

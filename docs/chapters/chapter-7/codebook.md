@@ -1,4 +1,4 @@
-# **Chapter 7: Initial Value Problems I: The Basics () () (Codebook)**
+# **Chapter 7: Initial Value Problems I: The Basics (Codebook)**
 
 ---
 

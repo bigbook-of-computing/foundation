@@ -1,4 +1,4 @@
-# **Chapter 4: End-to-End Interpolation and Fitting Workflow () () (Codebook)**
+# **Chapter 4: End-to-End Interpolation and Fitting Workflow (Codebook)**
 
 ---
 

@@ -39,12 +39,10 @@ The reasons for avoiding direct matrix inversion are twofold:
 2. **Numerical Instability:** Matrix inversion is highly susceptible to **round-off error** (Chapter 2) and can magnify small errors, leading to poor numerical stability and an inaccurate solution vector $\mathbf{x}$ [2].
 
 ??? question "But isn't $\mathcal{O}(N^3)$ the same as Gaussian Elimination?"
-```
-Yes! But calculating the full inverse $\mathbf{A}^{-1}$ is equivalent to running Gaussian elimination $N$ times (once for each column of the identity matrix). A direct solver like LU decomposition *also* costs $\mathcal{O}(N^3)$ for its initial setup, but it is a *single* pass. In practice, direct inversion is 3-4 times slower and less stable for no benefit.
-
-```
-The alternative is to use dedicated **solver algorithms** that find the solution $\mathbf{x}$ without ever calculating the inverse.
-
+    Yes! But calculating the full inverse $\mathbf{A}^{-1}$ is equivalent to running Gaussian elimination $N$ times (once for each column of the identity matrix). A direct solver like LU decomposition *also* costs $\mathcal{O}(N^3)$ for its initial setup, but it is a *single* pass. In practice, direct inversion is 3-4 times slower and less stable for no benefit.
+    
+    The alternative is to use dedicated **solver algorithms** that find the solution $\mathbf{x}$ without ever calculating the inverse.
+    
 ---
 
 ## **13.2 Direct Solvers: LU Decomposition**

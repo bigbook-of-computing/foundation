@@ -30,10 +30,8 @@ The initial challenge is philosophical: a computer, by design, is a deterministi
 A PRNG is a **deterministic algorithm** that produces a sequence of numbers that appears random, passes stringent statistical tests for randomness, and yet is fully reproducible given its starting value, or **seed** [1]. This reproducibility is essential for the scientific process, allowing simulations to be verified and debugged.
 
 ??? question "Why is a *reproducible* random number useful?"
-```
-If a complex simulation (like a galaxy merger) fails due to a random fluctuation, a *truly* random number would make the bug impossible to reproduce. A PRNG’s **seed** acts like a “save state.” By re-using the same seed, we can re-run the *exact same* sequence of “random” events to find and fix the bug.
-
-```
+    If a complex simulation (like a galaxy merger) fails due to a random fluctuation, a *truly* random number would make the bug impossible to reproduce. A PRNG’s **seed** acts like a “save state.” By re-using the same seed, we can re-run the *exact same* sequence of “random” events to find and fix the bug.
+    
 ---
 
 ### **The Linear Congruential Generator (LCG)**
@@ -120,10 +118,8 @@ def random_walk_1d(N_steps=1000):
 ```
 
 !!! example "Brownian Motion"
-```
-The “drunken walk” of a pollen grain in water, first observed by Robert Brown, is the quintessential random walk. The grain isn’t moving on its own; it’s being “kicked” by countless, invisible water molecules. Our PRNG rule `if r < 0.5` simulates a single “kick” from this random thermal environment.
-
-```
+    The “drunken walk” of a pollen grain in water, first observed by Robert Brown, is the quintessential random walk. The grain isn’t moving on its own; it’s being “kicked” by countless, invisible water molecules. Our PRNG rule `if r < 0.5` simulates a single “kick” from this random thermal environment.
+    
 ---
 
 ## **17.3 Core Application: Monte Carlo Integration**
@@ -148,28 +144,25 @@ $$
 This scaling is **independent of dimension**.
 
 !!! tip "Defeating the Curse of Dimensionality"
-```
-A 10D grid with only 10 points per axis requires
-**$10^{10}$ function evaluations** — impossible.
-
-Monte Carlo with N = 10,000 samples achieves workable accuracy.
-The error depends only on 1/√N, not on dimensionality.
-
-
-```
-```mermaid
-flowchart TD
-    A[Start: need I = ∫ f(x) dx] --> B[Initialize sum = 0, N = 10000]
-    B --> C{Loop i = 1 to N}
-    C --> D[Generate random point x_i]
-    D --> E[Compute f(x_i)]
-    E --> F[sum = sum + f(x_i)]
-    F --> C
-    C -->|Done| G[Compute average ⟨f⟩ = sum / N]
-    G --> H[Compute domain volume V]
-    H --> I[Approximation I ≈ V ⟨f⟩]
-```
-
+    A 10D grid with only 10 points per axis requires
+    **$10^{10}$ function evaluations** — impossible.
+    
+    Monte Carlo with N = 10,000 samples achieves workable accuracy.
+    The error depends only on 1/√N, not on dimensionality.
+    
+    
+    ```mermaid
+    flowchart TD
+        A[Start: need I = ∫ f(x) dx] --> B[Initialize sum = 0, N = 10000]
+        B --> C{Loop i = 1 to N}
+        C --> D[Generate random point x_i]
+        D --> E[Compute f(x_i)]
+        E --> F[sum = sum + f(x_i)]
+        F --> C
+        C -->|Done| G[Compute average ⟨f⟩ = sum / N]
+        G --> H[Compute domain volume V]
+        H --> I[Approximation I ≈ V ⟨f⟩]
+    
 ---
 
 ## **17.4 Chapter Summary and Bridge to Volume II**

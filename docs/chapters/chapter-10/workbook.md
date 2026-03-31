@@ -1,4 +1,4 @@
-# **Chapter 10: Elliptic PDEs (e.g., Laplace's Equation) () () (Workbook)**
+# **Chapter 10: Elliptic PDEs (e.g., Laplace's Equation) (Workbook)**
 
 ### 10.1 Chapter Opener: The Physics of "Steady State"
 

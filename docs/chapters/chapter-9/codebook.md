@@ -1,4 +1,4 @@
-# **Chapter 9: Boundary Value Problems () () (Codebook)**
+# **Chapter 9: Boundary Value Problems (Codebook)**
 
 ---
 

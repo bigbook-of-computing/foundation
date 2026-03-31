@@ -1,4 +1,4 @@
-# **Chapter 14: Eigenvalue Problems () () (Codebook)**
+# **Chapter 14: Eigenvalue Problems (Codebook)**
 
 This Python Code Book is for **Chapter 14: Eigenvalue Problems**, focusing on solving the two core applications: quantum energy levels (TISE) and classical normal modes.
 

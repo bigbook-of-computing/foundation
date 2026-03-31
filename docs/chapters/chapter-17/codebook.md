@@ -1,4 +1,4 @@
-# **Chapter 17: Randomness in Physics () () (Codebook)**
+# **Chapter 17: Randomness in Physics (Codebook)**
 
 ---
 

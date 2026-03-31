@@ -135,13 +135,11 @@ $$
 The FDM thus converts the quantum mechanical differential equation into a matrix equation that is efficiently solved using specialized eigensolvers (Chapter 14).
 
 !!! example "The Particle in a Box"
-```
-The classic "particle in a box" problem is a perfect BVP. The potential $V(x)$ is $0$ inside the box (from $x=0$ to $x=L$) and $\infty$ outside. The boundary conditions are $\psi(0)=0$ and $\psi(L)=0$.
-
-
-```
-Using the FDM, we set $V_i = 0$ for all *interior* grid points. The resulting Hamiltonian matrix $\mathbf{H}$ is a simple tridiagonal matrix. Solving $\mathbf{H}\mathbf{\psi} = E\mathbf{\psi}$ numerically yields the correct quantized energy levels $E_n \propto n^2$ and the sinusoidal wavefunctions $\psi_n(x)$.
-
+    The classic "particle in a box" problem is a perfect BVP. The potential $V(x)$ is $0$ inside the box (from $x=0$ to $x=L$) and $\infty$ outside. The boundary conditions are $\psi(0)=0$ and $\psi(L)=0$.
+    
+    
+    Using the FDM, we set $V_i = 0$ for all *interior* grid points. The resulting Hamiltonian matrix $\mathbf{H}$ is a simple tridiagonal matrix. Solving $\mathbf{H}\mathbf{\psi} = E\mathbf{\psi}$ numerically yields the correct quantized energy levels $E_n \propto n^2$ and the sinusoidal wavefunctions $\psi_n(x)$.
+    
 ---
 
 ## **9.5 Chapter Summary and Bridge to Part 4: PDEs**

@@ -1,4 +1,4 @@
-# **Chapter 17: Randomness in Physics () () (Workbook)**
+# **Chapter 17: Randomness in Physics (Workbook)**
 
 ### 17.1 Chapter Opener: The Physics of "Chance"
 

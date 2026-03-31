@@ -1,4 +1,4 @@
-# **Chapter 4: Interpolation, Fitting, and Residual Judgment () () (Workbook)**
+# **Chapter 4: Interpolation, Fitting, and Residual Judgment (Workbook)**
 
 ---
 
@@ -19,109 +19,89 @@ By the end of this chapter you should be able to:
 ## Part A: Core Quiz (Conceptual)
 
 !!! note "Quiz 1"
-```
-Interpolation is most appropriate when:
-
-- A. Data are heavily noisy and trend-only is desired
-- B. Data points are treated as exact constraints
-- C. Extrapolation dominates the task
-- D. Model uncertainty is unknown
-
-```
+    Interpolation is most appropriate when:
+    
+    - A. Data are heavily noisy and trend-only is desired
+    - B. Data points are treated as exact constraints
+    - C. Extrapolation dominates the task
+    - D. Model uncertainty is unknown
+    
 !!! note "Quiz 2"
-```
-Least-squares fitting minimizes:
-
-- A. Sum of absolute x values
-- B. Sum of signed residuals
-- C. Sum of squared residuals
-- D. Maximum residual only
-
-```
+    Least-squares fitting minimizes:
+    
+    - A. Sum of absolute x values
+    - B. Sum of signed residuals
+    - C. Sum of squared residuals
+    - D. Maximum residual only
+    
 !!! note "Quiz 3"
-```
-Runge phenomenon is commonly associated with:
-
-- A. Piecewise cubic splines
-- B. Low-degree local interpolation
-- C. High-degree global polynomial interpolation on uniform nodes
-- D. Linear regression with Gaussian noise
-
-```
+    Runge phenomenon is commonly associated with:
+    
+    - A. Piecewise cubic splines
+    - B. Low-degree local interpolation
+    - C. High-degree global polynomial interpolation on uniform nodes
+    - D. Linear regression with Gaussian noise
+    
 !!! note "Quiz 4"
-```
-A residual pattern with clear oscillation usually indicates:
-
-- A. Excellent model adequacy
-- B. Model misspecification or missing structure
-- C. Guaranteed homoscedasticity
-- D. Numerical overflow
-
-```
+    A residual pattern with clear oscillation usually indicates:
+    
+    - A. Excellent model adequacy
+    - B. Model misspecification or missing structure
+    - C. Guaranteed homoscedasticity
+    - D. Numerical overflow
+    
 !!! note "Quiz 5"
-```
-Extrapolation is risky because:
-
-- A. Interpolation error theory no longer strongly constrains behavior outside sampled domain
-- B. Solvers cannot evaluate outside domain
-- C. Splines are undefined outside interval
-- D. All models become linear outside interval
-
-```
+    Extrapolation is risky because:
+    
+    - A. Interpolation error theory no longer strongly constrains behavior outside sampled domain
+    - B. Solvers cannot evaluate outside domain
+    - C. Splines are undefined outside interval
+    - D. All models become linear outside interval
+    
 ---
 
 ## Part B: Advanced Quiz (Practice)
 
 !!! note "Quiz 6"
-```
-If you need exact value continuity and smooth first derivative for trajectory data, you should first consider:
-
-- A. 12th-degree global polynomial
-- B. Natural cubic spline
-- C. Constant model
-- D. Random forest
-
-```
+    If you need exact value continuity and smooth first derivative for trajectory data, you should first consider:
+    
+    - A. 12th-degree global polynomial
+    - B. Natural cubic spline
+    - C. Constant model
+    - D. Random forest
+    
 !!! note "Quiz 7"
-```
-A model with very low training RMSE but high validation RMSE likely suffers from:
-
-- A. Underfitting
-- B. Overfitting
-- C. Integer overflow
-- D. Unit conversion success
-
-```
+    A model with very low training RMSE but high validation RMSE likely suffers from:
+    
+    - A. Underfitting
+    - B. Overfitting
+    - C. Integer overflow
+    - D. Unit conversion success
+    
 !!! note "Quiz 8"
-```
-In weighted least squares, higher weight means:
-
-- A. Point has lower reliability
-- B. Point contributes less to objective
-- C. Point contributes more because it is more trusted
-- D. Point is ignored
-
-```
+    In weighted least squares, higher weight means:
+    
+    - A. Point has lower reliability
+    - B. Point contributes less to objective
+    - C. Point contributes more because it is more trusted
+    - D. Point is ignored
+    
 !!! note "Quiz 9"
-```
-A physically meaningful fit should satisfy:
-
-- A. Numerical convergence only
-- B. Residual minimum only
-- C. Parameter plausibility and dimensional consistency in addition to error metrics
-- D. Highest possible polynomial degree
-
-```
+    A physically meaningful fit should satisfy:
+    
+    - A. Numerical convergence only
+    - B. Residual minimum only
+    - C. Parameter plausibility and dimensional consistency in addition to error metrics
+    - D. Highest possible polynomial degree
+    
 !!! note "Quiz 10"
-```
-A good model report should include:
-
-- A. Plot colors and font choice only
-- B. Parameters without uncertainty
-- C. Data preprocessing, model form, fit quality, diagnostics, and limitations
-- D. Execution time only
-
-```
+    A good model report should include:
+    
+    - A. Plot colors and font choice only
+    - B. Parameters without uncertainty
+    - C. Data preprocessing, model form, fit quality, diagnostics, and limitations
+    - D. Execution time only
+    
 ---
 
 ## Part C: Interview-Style Questions
@@ -279,17 +259,17 @@ Include:
 ## Part I: Self-Check Answers
 
 !!! success "Quiz Key"
-    1. B
-    2. C
-    3. C
-    4. B
-    5. A
-    6. B
-    7. B
-    8. C
-    9. C
-    10. C
-
+        1. B
+        2. C
+        3. C
+        4. B
+        5. A
+        6. B
+        7. B
+        8. C
+        9. C
+        10. C
+    
 ---
 
 ## Exit Ticket

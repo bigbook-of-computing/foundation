@@ -1,4 +1,4 @@
-# **Chapter 6: Numerical Integration () () (Codebook)**
+# **Chapter 6: Numerical Integration (Codebook)**
 
 ---
 

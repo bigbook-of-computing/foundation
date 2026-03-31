@@ -1,4 +1,4 @@
-# **Chapter 3: Root Finding for Scientific Reliability () () (Workbook)**
+# **Chapter 3: Root Finding for Scientific Reliability (Workbook)**
 
 ---
 
@@ -19,109 +19,89 @@ By the end, you should be able to:
 ## Part A: Concept Quiz (Foundations)
 
 !!! note "Quiz 1"
-```
-A bracketing method requires:
-
-- A. A derivative function
-- B. Two points with opposite signs in a continuous interval
-- C. A second derivative
-- D. A random initial guess
-
-```
+    A bracketing method requires:
+    
+    - A. A derivative function
+    - B. Two points with opposite signs in a continuous interval
+    - C. A second derivative
+    - D. A random initial guess
+    
 !!! note "Quiz 2"
-```
-Newton-Raphson is generally fast when:
-
-- A. The initial guess is near a simple root and derivative is well-behaved
-- B. The function is discontinuous
-- C. The derivative is always zero
-- D. No initial guess is provided
-
-```
+    Newton-Raphson is generally fast when:
+    
+    - A. The initial guess is near a simple root and derivative is well-behaved
+    - B. The function is discontinuous
+    - C. The derivative is always zero
+    - D. No initial guess is provided
+    
 !!! note "Quiz 3"
-```
-Secant method is attractive because:
-
-- A. It guarantees convergence globally
-- B. It avoids explicit derivative evaluation
-- C. It always outperforms Newton
-- D. It needs only one iterate
-
-```
+    Secant method is attractive because:
+    
+    - A. It guarantees convergence globally
+    - B. It avoids explicit derivative evaluation
+    - C. It always outperforms Newton
+    - D. It needs only one iterate
+    
 !!! note "Quiz 4"
-```
-The most robust stopping design is:
-
-- A. Residual-only criterion
-- B. Iteration-count-only criterion
-- C. Multi-condition criterion combining step, residual, and safeguards
-- D. Stop after fixed wall-clock time
-
-```
+    The most robust stopping design is:
+    
+    - A. Residual-only criterion
+    - B. Iteration-count-only criterion
+    - C. Multi-condition criterion combining step, residual, and safeguards
+    - D. Stop after fixed wall-clock time
+    
 !!! note "Quiz 5"
-```
-Catastrophic cancellation is most related to:
-
-- A. Multiplication overflow
-- B. Subtracting nearly equal quantities
-- C. FFT aliasing
-- D. Integer truncation
-
-```
+    Catastrophic cancellation is most related to:
+    
+    - A. Multiplication overflow
+    - B. Subtracting nearly equal quantities
+    - C. FFT aliasing
+    - D. Integer truncation
+    
 ---
 
 ## Part B: Concept Quiz (Professional Practice)
 
 !!! note "Quiz 6"
-```
-A solver reports $|f(x)|$ very small, but $x$ is physically impossible. Best interpretation:
-
-- A. Converged and valid
-- B. Numerical convergence must still be checked against domain constraints
-- C. Physics constraints are optional
-- D. Residual always dominates physical checks
-
-```
+    A solver reports $|f(x)|$ very small, but $x$ is physically impossible. Best interpretation:
+    
+    - A. Converged and valid
+    - B. Numerical convergence must still be checked against domain constraints
+    - C. Physics constraints are optional
+    - D. Residual always dominates physical checks
+    
 !!! note "Quiz 7"
-```
-If Newton diverges from a valid bracket, a practical response is:
-
-- A. Increase iteration limit only
-- B. Use damped or bracketed fallback steps
-- C. Remove tolerance checks
-- D. Assume model is wrong
-
-```
+    If Newton diverges from a valid bracket, a practical response is:
+    
+    - A. Increase iteration limit only
+    - B. Use damped or bracketed fallback steps
+    - C. Remove tolerance checks
+    - D. Assume model is wrong
+    
 !!! note "Quiz 8"
-```
-For reproducibility, the most important metadata includes:
-
-- A. Plot colors only
-- B. Hardware RGB profile
-- C. Tolerances, initial guesses/brackets, iteration counts, and solver type
-- D. Window size of IDE only
-
-```
+    For reproducibility, the most important metadata includes:
+    
+    - A. Plot colors only
+    - B. Hardware RGB profile
+    - C. Tolerances, initial guesses/brackets, iteration counts, and solver type
+    - D. Window size of IDE only
+    
 !!! note "Quiz 9"
-```
-In bisection, interval width after $n$ steps is:
-
-- A. $|I_0| / n$
-- B. $|I_0| / 2^n$
-- C. $|I_0| \times n$
-- D. Constant
-
-```
+    In bisection, interval width after $n$ steps is:
+    
+    - A. $|I_0| / n$
+    - B. $|I_0| / 2^n$
+    - C. $|I_0| \times n$
+    - D. Constant
+    
 !!! note "Quiz 10"
-```
-A root-finding method is numerically stable when:
-
-- A. It amplifies tiny perturbations unpredictably
-- B. It is fastest on one benchmark
-- C. It tends to control and not explosively amplify perturbations
-- D. It uses symbolic algebra only
-
-```
+    A root-finding method is numerically stable when:
+    
+    - A. It amplifies tiny perturbations unpredictably
+    - B. It is fastest on one benchmark
+    - C. It tends to control and not explosively amplify perturbations
+    - D. It uses symbolic algebra only
+    
 ---
 
 ## Part C: Interview-Style Questions
@@ -301,17 +281,17 @@ Expected dimensions:
 ## Part I: Self-Check Answers
 
 !!! success "Quiz Key"
-    1. B
-    2. A
-    3. B
-    4. C
-    5. B
-    6. B
-    7. B
-    8. C
-    9. B
-    10. C
-
+        1. B
+        2. A
+        3. B
+        4. C
+        5. B
+        6. B
+        7. B
+        8. C
+        9. B
+        10. C
+    
 ---
 
 ## Exit Ticket

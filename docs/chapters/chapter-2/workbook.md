@@ -1,4 +1,4 @@
-# **Chapter 2: Precision, Error, and Numerical Judgment () () (Workbook)**
+# **Chapter 2: Precision, Error, and Numerical Judgment (Workbook)**
 
 ---
 
@@ -19,55 +19,45 @@ By the end of this chapter, you should be able to:
 ## Part A: Concept Quiz
 
 !!! note "Quiz 1"
-```
-The main reason `0.1 + 0.2 != 0.3` exactly in binary floating-point is:
-
-- A. Python parser bug
-- B. Decimal fractions like 0.1 are often non-terminating in base 2
-- C. CPU cannot add numbers
-- D. Matplotlib formatting issue
-
-```
+    The main reason `0.1 + 0.2 != 0.3` exactly in binary floating-point is:
+    
+    - A. Python parser bug
+    - B. Decimal fractions like 0.1 are often non-terminating in base 2
+    - C. CPU cannot add numbers
+    - D. Matplotlib formatting issue
+    
 !!! note "Quiz 2"
-```
-Machine epsilon is best interpreted as:
-
-- A. The maximum error in any computation
-- B. The smallest positive representable number
-- C. The smallest distinguishable relative increment near 1.0
-- D. A hardware temperature coefficient
-
-```
+    Machine epsilon is best interpreted as:
+    
+    - A. The maximum error in any computation
+    - B. The smallest positive representable number
+    - C. The smallest distinguishable relative increment near 1.0
+    - D. A hardware temperature coefficient
+    
 !!! note "Quiz 3"
-```
-Which is an algorithmic approximation error?
-
-- A. Round-off error from finite mantissa
-- B. Truncation from finite-difference derivatives
-- C. Underflow to zero
-- D. Overflow to infinity
-
-```
+    Which is an algorithmic approximation error?
+    
+    - A. Round-off error from finite mantissa
+    - B. Truncation from finite-difference derivatives
+    - C. Underflow to zero
+    - D. Overflow to infinity
+    
 !!! note "Quiz 4"
-```
-Catastrophic cancellation is most likely when:
-
-- A. Multiplying large numbers
-- B. Dividing by powers of ten
-- C. Subtracting nearly equal numbers
-- D. Sorting arrays
-
-```
+    Catastrophic cancellation is most likely when:
+    
+    - A. Multiplying large numbers
+    - B. Dividing by powers of ten
+    - C. Subtracting nearly equal numbers
+    - D. Sorting arrays
+    
 !!! note "Quiz 5"
-```
-A problem is ill-conditioned when:
-
-- A. Inputs are measured in SI units
-- B. Small input perturbations cause large output changes
-- C. The algorithm is vectorized
-- D. The plot uses a log axis
-
-```
+    A problem is ill-conditioned when:
+    
+    - A. Inputs are measured in SI units
+    - B. Small input perturbations cause large output changes
+    - C. The algorithm is vectorized
+    - D. The plot uses a log axis
+    
 ---
 
 ## Part B: Interview-Style Questions
@@ -209,12 +199,12 @@ Produce a concise student report demonstrating three error mechanisms with evide
 ## Part E: Self-Check Answers
 
 !!! success "Quiz Key"
-    1. B
-    2. C
-    3. B
-    4. C
-    5. B
-
+        1. B
+        2. C
+        3. B
+        4. C
+        5. B
+    
 ---
 
 ## Exit Ticket

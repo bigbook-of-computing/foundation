@@ -1,4 +1,4 @@
-# **Chapter 1: Building Your Computational Physics Lab () () (Workbook)**
+# **Chapter 1: Building Your Computational Physics Lab (Workbook)**
 
 ---
 
@@ -17,55 +17,45 @@ This workbook is for active learning. By the end of this chapter you should be a
 ## Part A: Quick Concept Check
 
 !!! note "Quiz 1: Reproducibility"
-```
-Why is reproducibility a core requirement in scientific computing?
-
-- A. It makes notebooks look professional.
-- B. It ensures others can verify and rebuild your result.
-- C. It removes all numerical error.
-- D. It replaces peer review.
-
-```
+    Why is reproducibility a core requirement in scientific computing?
+    
+    - A. It makes notebooks look professional.
+    - B. It ensures others can verify and rebuild your result.
+    - C. It removes all numerical error.
+    - D. It replaces peer review.
+    
 !!! note "Quiz 2: Environment Management"
-```
-What is the main reason to use isolated environments (e.g., conda envs)?
-
-- A. To increase CPU clock speed.
-- B. To avoid dependency conflicts across projects.
-- C. To reduce memory use to zero.
-- D. To avoid writing documentation.
-
-```
+    What is the main reason to use isolated environments (e.g., conda envs)?
+    
+    - A. To increase CPU clock speed.
+    - B. To avoid dependency conflicts across projects.
+    - C. To reduce memory use to zero.
+    - D. To avoid writing documentation.
+    
 !!! note "Quiz 3: Jupyter Cell Types"
-```
-Which statement is correct?
-
-- A. Markdown cells execute Python code.
-- B. Code cells are only for comments.
-- C. Markdown cells document assumptions, interpretation, and conclusions.
-- D. Cell order never affects results.
-
-```
+    Which statement is correct?
+    
+    - A. Markdown cells execute Python code.
+    - B. Code cells are only for comments.
+    - C. Markdown cells document assumptions, interpretation, and conclusions.
+    - D. Cell order never affects results.
+    
 !!! note "Quiz 4: NumPy Motivation"
-```
-Why is NumPy central in scientific Python workflows?
-
-- A. It provides fast vectorized numerical operations on arrays.
-- B. It is only used for plotting.
-- C. It is a Git replacement.
-- D. It manages package installation.
-
-```
+    Why is NumPy central in scientific Python workflows?
+    
+    - A. It provides fast vectorized numerical operations on arrays.
+    - B. It is only used for plotting.
+    - C. It is a Git replacement.
+    - D. It manages package installation.
+    
 !!! note "Quiz 5: Git Commit Quality"
-```
-Which commit message is best practice?
-
-- A. "update"
-- B. "stuff"
-- C. "Chapter 1: add first sin(x) plot with labeled axes"
-- D. "works now maybe"
-
-```
+    Which commit message is best practice?
+    
+    - A. "update"
+    - B. "stuff"
+    - C. "Chapter 1: add first sin(x) plot with labeled axes"
+    - D. "works now maybe"
+    
 ---
 
 ## Part B: Interview-Style Questions
@@ -206,12 +196,12 @@ Build a complete mini scientific artifact using Chapter 1 tools.
 ## Part E: Answer Key (Self-check)
 
 !!! success "Quiz Answers"
-    1. B
-    2. B
-    3. C
-    4. A
-    5. C
-
+        1. B
+        2. B
+        3. C
+        4. A
+        5. C
+    
 ---
 
 ## Exit Ticket

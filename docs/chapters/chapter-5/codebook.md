@@ -1,4 +1,4 @@
-# **Chapter 5: Numerical Differentiation () () (Codebook)**
+# **Chapter 5: Numerical Differentiation (Codebook)**
 
 This Code Book is for **Chapter 5: Numerical Differentiation**, focusing on implementing the core concepts of finite difference stencils and analyzing the critical trade-off between truncation error and round-off error.
 

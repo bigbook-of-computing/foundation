@@ -1,4 +1,4 @@
-# **Chapter 7: Initial Value Problems I: The Basics () () (Workbook)**
+# **Chapter 7: Initial Value Problems I: The Basics (Workbook)**
 
 ### 7.1 Chapter Opener: The Physics of "What Happens Next?"
 

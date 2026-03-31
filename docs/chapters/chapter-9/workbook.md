@@ -1,4 +1,4 @@
-# **Chapter 9: Boundary Value Problems () () (Workbook)**
+# **Chapter 9: Boundary Value Problems (Workbook)**
 
 ### 9.1 Chapter Opener: The "In-Between" Problem
 

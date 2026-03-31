@@ -1,4 +1,4 @@
-# **Chapter 1: End-to-End Reproducible First Experiment () () (Codebook)**
+# **Chapter 1: End-to-End Reproducible First Experiment (Codebook)**
 
 ---
 

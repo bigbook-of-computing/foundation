@@ -1,4 +1,4 @@
-# **Chapter 13: Systems of Linear Equations () () (Codebook)**
+# **Chapter 13: Systems of Linear Equations (Codebook)**
 
 This Python Code Book for **Chapter 13: Systems of Linear Equations**, focusing on demonstrating the efficient solution of systems, particularly the specialized method for tridiagonal matrices common in FDM.
 

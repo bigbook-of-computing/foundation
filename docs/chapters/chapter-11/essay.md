@@ -47,12 +47,10 @@ $$
 $$
 
 ??? question "Why use a low-accuracy time stencil?"
-```
-We are using a highly accurate $\mathcal{O}(h_x^2)$ stencil for space but only a low-accuracy $\mathcal{O}(h_t)$ stencil for time. Why is this mismatch acceptable?
-
-**Hint:** Think about the FTCS stability constraint ($h_t \propto h_x^2$). The time step $h_t$ is *forced* to be so much smaller than $h_x$ that the error from the time-stepping (which scales with $h_t$) becomes negligible compared to the spatial error (which scales with $h_x^2$).
-
-```
+    We are using a highly accurate $\mathcal{O}(h_x^2)$ stencil for space but only a low-accuracy $\mathcal{O}(h_t)$ stencil for time. Why is this mismatch acceptable?
+    
+    **Hint:** Think about the FTCS stability constraint ($h_t \propto h_x^2$). The time step $h_t$ is *forced* to be so much smaller than $h_x$ that the error from the time-stepping (which scales with $h_t$) becomes negligible compared to the spatial error (which scales with $h_x^2$).
+    
 ---
 
 ## **11.2 Method 1: The Explicit FTCS Scheme**
@@ -139,14 +137,12 @@ $$
 Because $h_t$ is proportional to $h_x^2$, increasing the spatial resolution by a factor of $\mathbf{10}$ (i.e., decreasing $h_x$ by 10x) forces the time step $\mathbf{h_t}$ to decrease by a factor of $\mathbf{100}$. This renders the explicit FTCS method **impractically slow** for simulations requiring fine spatial grids.
 
 !!! example "The Cost of Resolution"
-```
-Imagine a 2D heat simulation ($h_t \propto h_x^2 + h_y^2$). You need to increase the spatial resolution by $10\times$ in both $x$ and $y$ to capture a fine detail.
-
-```
-* **Workload:** The grid size increases by $100\times$.
-* **Stability:** The time step $h_t$ must shrink by $100\times$.
-* **Total Cost:** The simulation now takes $100 \times 100 = \mathbf{10,000}$ times longer to run. This is the "tyranny of $h^2$."
-
+    Imagine a 2D heat simulation ($h_t \propto h_x^2 + h_y^2$). You need to increase the spatial resolution by $10\times$ in both $x$ and $y$ to capture a fine detail.
+    
+    * **Workload:** The grid size increases by $100\times$.
+    * **Stability:** The time step $h_t$ must shrink by $100\times$.
+    * **Total Cost:** The simulation now takes $100 \times 100 = \mathbf{10,000}$ times longer to run. This is the "tyranny of $h^2$."
+    
 ---
 
 ## **11.4 Method 2: The Implicit BTCS Scheme**
@@ -204,11 +200,9 @@ The complex substitution and rearrangement still result in a **tridiagonal syste
 * **Vector $\mathbf{b}$ (RHS):** Must be **recalculated at every step** using the known $T_n$ profile.
 
 !!! tip "Implicit Methods: Pay for Stability"
-```
-Implicit methods (BTCS, Crank-Nicolson) are **computationally more expensive *per step*** because they require solving a matrix equation. However, they are **vastly more efficient *overall*** because their unconditional stability allows you to take enormous time steps ($h_t$) that would be impossible for an explicit method. You trade
-many cheap, unstable steps for a few expensive, stable steps.
-
-```
+    Implicit methods (BTCS, Crank-Nicolson) are **computationally more expensive *per step*** because they require solving a matrix equation. However, they are **vastly more efficient *overall*** because their unconditional stability allows you to take enormous time steps ($h_t$) that would be impossible for an explicit method. You trade
+    many cheap, unstable steps for a few expensive, stable steps.
+    
 ---
 
 ### **The Gold Standard**

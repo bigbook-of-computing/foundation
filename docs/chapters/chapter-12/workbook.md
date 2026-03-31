@@ -1,4 +1,4 @@
-# **Chapter 12: Hyperbolic PDEs (e.g., The Wave Equation) () () (Workbook)**
+# **Chapter 12: Hyperbolic PDEs (e.g., The Wave Equation) (Workbook)**
 
 ### 12.1 Chapter Opener: The Physics of "Propagation"
 

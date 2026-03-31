@@ -30,21 +30,17 @@ This fundamental discrepancy is the source of all computational error. This chap
 Theoretical physics is predicated on the **Real Numbers** ($\mathbb{R}$), an **infinite continuum** where concepts like velocity, field strength, and position are assumed to possess arbitrary precision. In this abstract framework, one can always locate a unique number between any two given real numbers, embodying the perfect granularity of pure mathematics.
 
 !!! tip "Key Insight"
-```
-The *first* step in computational physics is accepting that numbers are **never exact** — not even the ones that look simple.
-
-```
-The **digital computer**, by its very nature, operates on a **finite, discrete set** of electrical states — a fixed number of bits. The unavoidable mandate of computational science is to approximate the infinite granularity of $\mathbb{R}$ using these finite resources. This fundamental conflict between the infinite perfection of theory and the finite reality of hardware constitutes the **foundational crisis of computational physics**.
-
-This inherent limitation necessitates the abandonment of the assumption of **exact numbers** in the "Digital Lab." Instead, every calculated quantity is an approximation, and we must embrace the concept of **error** as an intrinsic feature of computation. The magnitude of this unavoidable deviation is measured by the **Relative Error**, which contextualizes the error against the true value:
-
-$$\text{Relative Error} = \frac{|x_{\text{true}} - x_{\text{computed}}|}{|x_{\text{true}}|}$$
-
+    The *first* step in computational physics is accepting that numbers are **never exact** — not even the ones that look simple.
+    
+    The **digital computer**, by its very nature, operates on a **finite, discrete set** of electrical states — a fixed number of bits. The unavoidable mandate of computational science is to approximate the infinite granularity of $\mathbb{R}$ using these finite resources. This fundamental conflict between the infinite perfection of theory and the finite reality of hardware constitutes the **foundational crisis of computational physics**.
+    
+    This inherent limitation necessitates the abandonment of the assumption of **exact numbers** in the "Digital Lab." Instead, every calculated quantity is an approximation, and we must embrace the concept of **error** as an intrinsic feature of computation. The magnitude of this unavoidable deviation is measured by the **Relative Error**, which contextualizes the error against the true value:
+    
+    $$\text{Relative Error} = \frac{|x_{\text{true}} - x_{\text{computed}}|}{|x_{\text{true}}|}$$
+    
 !!! example "Representation Error in Practice"
-```
-The decimal number $0.1$ cannot be represented exactly in binary (just like $1/3$ in decimal). When stored as `float64`, it becomes `0.1000000000000000055511151231257827021181583404541015625`, introducing error before any computation begins.
-
-```
+    The decimal number $0.1$ cannot be represented exactly in binary (just like $1/3$ in decimal). When stored as `float64`, it becomes `0.1000000000000000055511151231257827021181583404541015625`, introducing error before any computation begins.
+    
 ---
 
 ## **2.2 The Standard Compromise: Floating-Point Representation (IEEE 754)**
@@ -62,12 +58,10 @@ The **IEEE 754 standard** is the universal blueprint for floating-point arithmet
 | **Mantissa** | 52 | Stores the significant digits (the **precision**), $\approx 15$–$16$ decimal digits. |
 
 ??? question "Why does the gap between adjacent floating-point numbers increase with magnitude?"
-```
-Because precision (52 bits) is constant while the exponent scales the number. Near zero, numbers are densely packed; at large magnitudes, the absolute spacing grows exponentially, though relative precision remains constant.
-
-```
-This fixed allocation leads to the **"gappy ruler" consequence**: the **absolute gap** between adjacent representable numbers is not constant. Numbers near the origin are spaced very closely, but numbers far from the origin have exponentially larger gaps between them. This design provides an enormous range at the cost of uniform spacing.
-
+    Because precision (52 bits) is constant while the exponent scales the number. Near zero, numbers are densely packed; at large magnitudes, the absolute spacing grows exponentially, though relative precision remains constant.
+    
+    This fixed allocation leads to the **"gappy ruler" consequence**: the **absolute gap** between adjacent representable numbers is not constant. Numbers near the origin are spaced very closely, but numbers far from the origin have exponentially larger gaps between them. This design provides an enormous range at the cost of uniform spacing.
+    
 ---
 
 ## **2.3 Machine Epsilon ($\epsilon_m$) and Critical Error Modes**
@@ -79,17 +73,15 @@ The finite 52-bit mantissa creates an unbridgeable distance between the number $
 $$\text{Machine Epsilon } \epsilon_m = 2^{-52} \approx 2.22 \times 10^{-16}$$
 
 !!! tip "Machine Epsilon as the Computational Planck Constant"
-```
-Machine epsilon $\epsilon_m$ acts as the fundamental limit of relative precision — the "quantum" of computational accuracy. Any change smaller than this relative to the current value is quantized out of existence.
-
-```
-The finite space allocated to the Exponent and Mantissa defines the primary failure modes of floating-point arithmetic:
-
-- **Overflow:** Number is too large for the exponent field → result is `inf`.
-- **Underflow:** Non-zero number is too small → result is flushed to `0.0`.
-- **Rounding Error:** Exact result requires more digits than the 52-bit Mantissa → rounded to nearest representable value.
-
-```python
+    Machine epsilon $\epsilon_m$ acts as the fundamental limit of relative precision — the "quantum" of computational accuracy. Any change smaller than this relative to the current value is quantized out of existence.
+    
+    The finite space allocated to the Exponent and Mantissa defines the primary failure modes of floating-point arithmetic:
+    
+    - **Overflow:** Number is too large for the exponent field → result is `inf`.
+    - **Underflow:** Non-zero number is too small → result is flushed to `0.0`.
+    - **Rounding Error:** Exact result requires more digits than the 52-bit Mantissa → rounded to nearest representable value.
+    
+    ```python
 ## Illustrative algorithm to find machine epsilon
 
 def find_machine_epsilon():
@@ -127,17 +119,15 @@ When two nearly equal numbers are subtracted, leading digits cancel, and the res
 - **Stable alternative:** $f(x) = 2\sin^2(x/2)$, which avoids the cancellation entirely.
 
 !!! example "Quadratic Formula Instability"
-```
-When $b \gg \sqrt{b^2-4ac}$, the formula $x = \frac{-b + \sqrt{b^2-4ac}}{2a}$ subtracts nearly equal quantities. The stable fix is to compute the well-conditioned root first, then use $x_1 x_2 = c/a$ to find the second.
-
-```
-Professional mitigation strategies:
-
-1. Algebraic reformulation to avoid subtracting near-equal terms.
-2. Scaling and nondimensionalization.
-3. Using numerically stable identities (e.g., half-angle formulas).
-4. Performing sensitivity checks with perturbed inputs.
-
+    When $b \gg \sqrt{b^2-4ac}$, the formula $x = \frac{-b + \sqrt{b^2-4ac}}{2a}$ subtracts nearly equal quantities. The stable fix is to compute the well-conditioned root first, then use $x_1 x_2 = c/a$ to find the second.
+    
+    Professional mitigation strategies:
+    
+    1. Algebraic reformulation to avoid subtracting near-equal terms.
+    2. Scaling and nondimensionalization.
+    3. Using numerically stable identities (e.g., half-angle formulas).
+    4. Performing sensitivity checks with perturbed inputs.
+    
 ---
 
 ## **2.6 Stability of Algorithms**

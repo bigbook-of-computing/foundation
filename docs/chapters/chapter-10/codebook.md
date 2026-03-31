@@ -1,4 +1,4 @@
-# **Chapter 10: Elliptic Partial Differential Equations () () (Codebook)**
+# **Chapter 10: Elliptic Partial Differential Equations (Codebook)**
 
 This Python Code Book is for **Chapter 10: Elliptic Partial Differential Equations (e.g., Laplace's Equation)**, focusing on implementing and comparing the iterative relaxation techniques used to solve static field problems.
 

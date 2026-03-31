@@ -1,4 +1,4 @@
-# **Chapter 2: End-to-End Numerical Reliability Workflow () () (Codebook)**
+# **Chapter 2: End-to-End Numerical Reliability Workflow (Codebook)**
 
 ---
 

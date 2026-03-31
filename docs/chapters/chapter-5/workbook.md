@@ -1,4 +1,4 @@
-# **Chapter 5: 5.1 The Physics of "Change" {.heading-with-pill} () () (Workbook)**
+# **Chapter 5: 5.1 The Physics of "Change" {.heading-with-pill} (Workbook)**
 
 > **Concept:** Discrete Grid vs. Continuous Derivatives • **Difficulty:** ★★☆☆☆
 
@@ -36,77 +36,69 @@ We will derive our "derivative-finders" from the **Taylor series**, using it to 
 ### Comprehension Check
 
 !!! note "Quiz"
-```
-**1. According to Chapter 5, why do we need numerical differentiation in physics?**
-
-- A. Because all physical laws are simple polynomial functions.
-- B. Because we often have data on a discrete grid and cannot use standard analytical calculus.
-- C. To find the area under the curve for a discrete function.
-- D. To solve root-finding problems for transcendental equations.
-
+    **1. According to Chapter 5, why do we need numerical differentiation in physics?**
+    
+    - A. Because all physical laws are simple polynomial functions.
+    - B. Because we often have data on a discrete grid and cannot use standard analytical calculus.
+    - C. To find the area under the curve for a discrete function.
+    - D. To solve root-finding problems for transcendental equations.
+    
 ??? info "See Answer"
-    **Correct: B**
-
-    *(We have discrete data points, not continuous functions, so we must approximate derivatives using finite differences.)*
-
-```
+        **Correct: B**
+    
+        *(We have discrete data points, not continuous functions, so we must approximate derivatives using finite differences.)*
+    
 ---
 
 !!! note "Quiz"
-```
-**2. Which of the following is defined as the second derivative of position, $x(t)$?**
-
-- A. Potential ($V(t)$)
-- B. Force ($F(t)$)
-- C. Velocity ($v(t)$)
-- D. Acceleration ($a(t)$)
-
+    **2. Which of the following is defined as the second derivative of position, $x(t)$?**
+    
+    - A. Potential ($V(t)$)
+    - B. Force ($F(t)$)
+    - C. Velocity ($v(t)$)
+    - D. Acceleration ($a(t)$)
+    
 ??? info "See Answer"
-    **Correct: D**
-
-    *(Acceleration is $a(t) = \frac{d^2x}{dt^2}$, the second derivative of position with respect to time.)*
-
-```
+        **Correct: D**
+    
+        *(Acceleration is $a(t) = \frac{d^2x}{dt^2}$, the second derivative of position with respect to time.)*
+    
 ---
 
 !!! note "Quiz"
-```
-**3. The "great war" in numerical differentiation refers to the conflict between:**
-
-- A. Forward and backward difference formulas.
-- B. Truncation error and round-off error.
-- C. First-order and second-order accuracy.
-- D. Taylor series and finite element methods.
-
+    **3. The "great war" in numerical differentiation refers to the conflict between:**
+    
+    - A. Forward and backward difference formulas.
+    - B. Truncation error and round-off error.
+    - C. First-order and second-order accuracy.
+    - D. Taylor series and finite element methods.
+    
 ??? info "See Answer"
-    **Correct: B**
-
-    *(Truncation error decreases as $h$ shrinks, but round-off error increases, creating an optimal balance point.)*
-
-```
+        **Correct: B**
+    
+        *(Truncation error decreases as $h$ shrinks, but round-off error increases, creating an optimal balance point.)*
+    
 ---
 
 !!! abstract "Interview-Style Question"
-
-```
-**Q:** Give two distinct examples from physics of laws that are defined by a derivative, emphasizing the concept of "change" inherent in the operation. Explain why the computational approximation of these derivatives is critical for numerical physics.
-
-???+ info "Answer Strategy"
-    This question tests understanding of how derivatives encode physical change and why numerical methods are essential.
-
-    1. **Classical Mechanics — Force:**
-       The force $F(x) = -\frac{dV}{dx}$ is the derivative of the potential $V$ with respect to position $x$. This defines force as the instantaneous **rate of change** of potential energy with distance. To compute forces on a discrete grid (e.g., in molecular dynamics), we must numerically differentiate the potential energy function.
-
-    2. **Electromagnetism — Electric Field:**
-       The electric field $\mathbf{E} = -\nabla \phi$ is the negative gradient (a multidimensional derivative) of the electric potential $\phi$. This defines the electric field as the instantaneous **rate of change** of electric potential in space. In computational electromagnetics, we calculate field strengths by numerically differentiating potential distributions.
-
-    3. **Computational Importance:**
-       In both cases, analytical derivatives may be unavailable (e.g., when $V$ or $\phi$ come from experimental data or complex simulations). We must use finite-difference approximations on discrete grids, making numerical differentiation a foundational tool for translating physical laws into computational models.
-
-    4. **The Challenge:**
-       The accuracy of these physical predictions depends directly on how well we approximate these derivatives. Poor differentiation methods introduce errors that propagate through the simulation, potentially invalidating results.
-
-```
+    
+    **Q:** Give two distinct examples from physics of laws that are defined by a derivative, emphasizing the concept of "change" inherent in the operation. Explain why the computational approximation of these derivatives is critical for numerical physics.
+    
+    ???+ info "Answer Strategy"
+        This question tests understanding of how derivatives encode physical change and why numerical methods are essential.
+    
+        1. **Classical Mechanics — Force:**
+           The force $F(x) = -\frac{dV}{dx}$ is the derivative of the potential $V$ with respect to position $x$. This defines force as the instantaneous **rate of change** of potential energy with distance. To compute forces on a discrete grid (e.g., in molecular dynamics), we must numerically differentiate the potential energy function.
+    
+        2. **Electromagnetism — Electric Field:**
+           The electric field $\mathbf{E} = -\nabla \phi$ is the negative gradient (a multidimensional derivative) of the electric potential $\phi$. This defines the electric field as the instantaneous **rate of change** of electric potential in space. In computational electromagnetics, we calculate field strengths by numerically differentiating potential distributions.
+    
+        3. **Computational Importance:**
+           In both cases, analytical derivatives may be unavailable (e.g., when $V$ or $\phi$ come from experimental data or complex simulations). We must use finite-difference approximations on discrete grids, making numerical differentiation a foundational tool for translating physical laws into computational models.
+    
+        4. **The Challenge:**
+           The accuracy of these physical predictions depends directly on how well we approximate these derivatives. Poor differentiation methods introduce errors that propagate through the simulation, potentially invalidating results.
+    
 ---
 
 ### <i class="fa-solid fa-flask"></i> Hands-On Project
@@ -266,81 +258,73 @@ This algebraic manipulation transforms infinite series involving derivatives int
 ### Comprehension Check
 
 !!! note "Quiz"
-```
-**1. What is the "engine" or "oracle" that the chapter uses to derive *all* the finite difference formulas?**
-
-- A. The Method of Least Squares
-- B. The Taylor Series expansion
-- C. The Runge-Kutta algorithm
-- D. The "Sweet Spot" V-plot
-
+    **1. What is the "engine" or "oracle" that the chapter uses to derive *all* the finite difference formulas?**
+    
+    - A. The Method of Least Squares
+    - B. The Taylor Series expansion
+    - C. The Runge-Kutta algorithm
+    - D. The "Sweet Spot" V-plot
+    
 ??? info "See Answer"
-    **Correct: B**
-
-    *(The Taylor series provides the analytical foundation for deriving all finite-difference approximations of derivatives.)*
-
-```
+        **Correct: B**
+    
+        *(The Taylor series provides the analytical foundation for deriving all finite-difference approximations of derivatives.)*
+    
 ---
 
 !!! note "Quiz"
-```
-**2. The Taylor series allows us to predict $f(x+h)$ based on information at $f(x)$ by using:**
-
-- A. Integration and area under the curve.
-- B. The function's values and its derivatives ($f'$, $f''$, ...) at $x$.
-- C. The Mean Value Theorem.
-- D. The sign-change bracket.
-
+    **2. The Taylor series allows us to predict $f(x+h)$ based on information at $f(x)$ by using:**
+    
+    - A. Integration and area under the curve.
+    - B. The function's values and its derivatives ($f'$, $f''$, ...) at $x$.
+    - C. The Mean Value Theorem.
+    - D. The sign-change bracket.
+    
 ??? info "See Answer"
-    **Correct: B**
-
-    *(The Taylor series expresses $f(x+h)$ as a sum involving $f(x)$ and all its derivatives at point $x$.)*
-
-```
+        **Correct: B**
+    
+        *(The Taylor series expresses $f(x+h)$ as a sum involving $f(x)$ and all its derivatives at point $x$.)*
+    
 ---
 
 !!! note "Quiz"
-```
-**3. When deriving finite-difference formulas, what happens to the even-derivative terms ($f''(x)$, $f^{(4)}(x)$, etc.) when you subtract the backward Taylor expansion from the forward Taylor expansion?**
-
-- A. They are amplified and become the dominant error.
-- B. They cancel out completely due to equal coefficients with the same sign.
-- C. They become twice as large.
-- D. They are unchanged.
-
+    **3. When deriving finite-difference formulas, what happens to the even-derivative terms ($f''(x)$, $f^{(4)}(x)$, etc.) when you subtract the backward Taylor expansion from the forward Taylor expansion?**
+    
+    - A. They are amplified and become the dominant error.
+    - B. They cancel out completely due to equal coefficients with the same sign.
+    - C. They become twice as large.
+    - D. They are unchanged.
+    
 ??? info "See Answer"
-    **Correct: B**
-
-    *(In the forward expansion, even derivatives have positive coefficients; in the backward expansion, they also have positive coefficients. When subtracting, these terms cancel, leaving only odd derivatives.)*
-
-```
+        **Correct: B**
+    
+        *(In the forward expansion, even derivatives have positive coefficients; in the backward expansion, they also have positive coefficients. When subtracting, these terms cancel, leaving only odd derivatives.)*
+    
 ---
 
 !!! abstract "Interview-Style Question"
-
-```
-**Q:** If you are using a Taylor series to approximate $f(x+h)$ and you only include terms up to the first derivative, $f'(x)$, what type of geometrical approximation are you making for the function's behavior? What happens when you include the second-order term?
-
-???+ info "Answer Strategy"
-    This question tests understanding of the geometric interpretation of Taylor series truncation.
-
-    1. **First-Order (Linear) Approximation:**
-       By stopping at the $f'(x)$ term, you are approximating:
-       $$f(x+h) \approx f(x) + h f'(x)$$
-       This is a **linear approximation**—you are treating the function as a straight line (the tangent line) over the interval from $x$ to $x+h$. You explicitly ignore the function's curvature and all higher-order shape characteristics.
-
-    2. **Geometric Interpretation:**
-       The tangent line has the correct value and slope at $x$, but assumes the function continues in a straight line. For curved functions, this creates increasing error as you move farther from $x$.
-
-    3. **Second-Order (Quadratic) Approximation:**
-       When you include the second derivative term:
-       $$f(x+h) \approx f(x) + h f'(x) + \frac{h^2}{2} f''(x)$$
-       You are now approximating the function as a **parabola** (quadratic curve). This captures not just the value and slope, but also the **curvature** at $x$.
-
-    4. **Impact on Accuracy:**
-       The quadratic approximation is far more accurate for most functions because it accounts for how the slope itself is changing. The error drops from $O(h^2)$ to $O(h^3)$, a dramatic improvement for small $h$.
-
-```
+    
+    **Q:** If you are using a Taylor series to approximate $f(x+h)$ and you only include terms up to the first derivative, $f'(x)$, what type of geometrical approximation are you making for the function's behavior? What happens when you include the second-order term?
+    
+    ???+ info "Answer Strategy"
+        This question tests understanding of the geometric interpretation of Taylor series truncation.
+    
+        1. **First-Order (Linear) Approximation:**
+           By stopping at the $f'(x)$ term, you are approximating:
+           $$f(x+h) \approx f(x) + h f'(x)$$
+           This is a **linear approximation**—you are treating the function as a straight line (the tangent line) over the interval from $x$ to $x+h$. You explicitly ignore the function's curvature and all higher-order shape characteristics.
+    
+        2. **Geometric Interpretation:**
+           The tangent line has the correct value and slope at $x$, but assumes the function continues in a straight line. For curved functions, this creates increasing error as you move farther from $x$.
+    
+        3. **Second-Order (Quadratic) Approximation:**
+           When you include the second derivative term:
+           $$f(x+h) \approx f(x) + h f'(x) + \frac{h^2}{2} f''(x)$$
+           You are now approximating the function as a **parabola** (quadratic curve). This captures not just the value and slope, but also the **curvature** at $x$.
+    
+        4. **Impact on Accuracy:**
+           The quadratic approximation is far more accurate for most functions because it accounts for how the slope itself is changing. The error drops from $O(h^2)$ to $O(h^3)$, a dramatic improvement for small $h$.
+    
 ---
 
 ### <i class="fa-solid fa-flask"></i> Hands-On Project
@@ -514,86 +498,78 @@ This inefficiency is why the Forward Difference, despite its simplicity, is rare
 ### Comprehension Check
 
 !!! note "Quiz"
-```
-**1. What is the Forward Difference formula for the first derivative, $f'(x)$?**
-
-- A. $\frac{f(x+h) - f(x-h)}{2h}$
-- B. $\frac{f(x+h) - f(x)}{h}$
-- C. $\frac{f(x) - f(x-h)}{h}$
-- D. $\frac{f(x+h) - 2f(x) + f(x-h)}{h^2}$
-
+    **1. What is the Forward Difference formula for the first derivative, $f'(x)$?**
+    
+    - A. $\frac{f(x+h) - f(x-h)}{2h}$
+    - B. $\frac{f(x+h) - f(x)}{h}$
+    - C. $\frac{f(x) - f(x-h)}{h}$
+    - D. $\frac{f(x+h) - 2f(x) + f(x-h)}{h^2}$
+    
 ??? info "See Answer"
-    **Correct: B**
-
-    *(The Forward Difference uses the function values at $x$ and one point forward at $x+h$ to estimate the slope.)*
-
-```
+        **Correct: B**
+    
+        *(The Forward Difference uses the function values at $x$ and one point forward at $x+h$ to estimate the slope.)*
+    
 ---
 
 !!! note "Quiz"
-```
-**2. What is the order of the truncation error for the Forward Difference formula?**
-
-- A. $O(h)$ (first-order accurate)
-- B. $O(h^2)$ (second-order accurate)
-- C. $O(h^4)$ (fourth-order accurate)
-- D. $O(\epsilon_m/h)$ (round-off error)
-
+    **2. What is the order of the truncation error for the Forward Difference formula?**
+    
+    - A. $O(h)$ (first-order accurate)
+    - B. $O(h^2)$ (second-order accurate)
+    - C. $O(h^4)$ (fourth-order accurate)
+    - D. $O(\epsilon_m/h)$ (round-off error)
+    
 ??? info "See Answer"
-    **Correct: A**
-
-    *(The leading truncation error term is $\frac{h}{2}f''(x)$, making the method first-order accurate in $h$.)*
-
-```
+        **Correct: A**
+    
+        *(The leading truncation error term is $\frac{h}{2}f''(x)$, making the method first-order accurate in $h$.)*
+    
 ---
 
 !!! note "Quiz"
-```
-**3. If you halve the grid spacing $h$ in the Forward Difference method, by what factor does the truncation error decrease?**
-
-- A. Factor of 2
-- B. Factor of 4
-- C. Factor of 8
-- D. It increases
-
+    **3. If you halve the grid spacing $h$ in the Forward Difference method, by what factor does the truncation error decrease?**
+    
+    - A. Factor of 2
+    - B. Factor of 4
+    - C. Factor of 8
+    - D. It increases
+    
 ??? info "See Answer"
-    **Correct: A**
-
-    *(Since the method is $O(h)$ accurate, halving $h$ halves the error. This is less efficient than second-order methods where halving $h$ reduces error by a factor of 4.)*
-
-```
+        **Correct: A**
+    
+        *(Since the method is $O(h)$ accurate, halving $h$ halves the error. This is less efficient than second-order methods where halving $h$ reduces error by a factor of 4.)*
+    
 ---
 
 !!! abstract "Interview-Style Question"
-
-```
-**Q:** If you are using the Forward Difference method and cut your grid spacing $h$ in half, by what factor do you expect your truncation error to decrease, and why? How does this compare to a hypothetical second-order method?
-
-???+ info "Answer Strategy"
-    This question tests understanding of convergence rates and computational efficiency.
-
-    1. **First-Order Convergence:**
-       The truncation error will decrease by a factor of **two** (it will be cut in half). This is because the Forward Difference formula is **first-order accurate** ($O(h)$).
-
-    2. **Mathematical Justification:**
-       The truncation error is dominated by the term $\frac{h}{2} f''(x)$. If $h \to h/2$, then:
-       $$\text{Error}_{\text{new}} = \frac{h/2}{2} f''(x) = \frac{1}{2} \cdot \frac{h}{2} f''(x) = \frac{1}{2} \text{Error}_{\text{old}}$$
-
-    3. **Comparison to Second-Order Methods:**
-       A second-order method ($O(h^2)$) has error proportional to $h^2$. Halving $h$ reduces error by a factor of **four**:
-       $$\text{Error}_{\text{new}} = \left(\frac{h}{2}\right)^2 = \frac{1}{4} h^2 = \frac{1}{4} \text{Error}_{\text{old}}$$
-
-    4. **Computational Efficiency:**
-       To achieve the same target accuracy:
-       - **First-order:** Requires $N$ grid points (where $h \sim 1/N$)
-       - **Second-order:** Requires $\sqrt{N}$ grid points (where $h^2 \sim 1/N$)
-
-       The second-order method achieves the same accuracy with far fewer points, making it vastly more efficient.
-
-    5. **Practical Implication:**
-       This is why the Central Difference (second-order) is the "workhorse" of numerical differentiation, while the Forward Difference is used primarily at boundaries where centered formulas cannot be applied.
-
-```
+    
+    **Q:** If you are using the Forward Difference method and cut your grid spacing $h$ in half, by what factor do you expect your truncation error to decrease, and why? How does this compare to a hypothetical second-order method?
+    
+    ???+ info "Answer Strategy"
+        This question tests understanding of convergence rates and computational efficiency.
+    
+        1. **First-Order Convergence:**
+           The truncation error will decrease by a factor of **two** (it will be cut in half). This is because the Forward Difference formula is **first-order accurate** ($O(h)$).
+    
+        2. **Mathematical Justification:**
+           The truncation error is dominated by the term $\frac{h}{2} f''(x)$. If $h \to h/2$, then:
+           $$\text{Error}_{\text{new}} = \frac{h/2}{2} f''(x) = \frac{1}{2} \cdot \frac{h}{2} f''(x) = \frac{1}{2} \text{Error}_{\text{old}}$$
+    
+        3. **Comparison to Second-Order Methods:**
+           A second-order method ($O(h^2)$) has error proportional to $h^2$. Halving $h$ reduces error by a factor of **four**:
+           $$\text{Error}_{\text{new}} = \left(\frac{h}{2}\right)^2 = \frac{1}{4} h^2 = \frac{1}{4} \text{Error}_{\text{old}}$$
+    
+        4. **Computational Efficiency:**
+           To achieve the same target accuracy:
+           - **First-order:** Requires $N$ grid points (where $h \sim 1/N$)
+           - **Second-order:** Requires $\sqrt{N}$ grid points (where $h^2 \sim 1/N$)
+    
+           The second-order method achieves the same accuracy with far fewer points, making it vastly more efficient.
+    
+        5. **Practical Implication:**
+           This is why the Central Difference (second-order) is the "workhorse" of numerical differentiation, while the Forward Difference is used primarily at boundaries where centered formulas cannot be applied.
+    
 ---
 
 ### <i class="fa-solid fa-flask"></i> Hands-On Project
@@ -788,87 +764,79 @@ Unless you are at a boundary where only forward or backward differences are avai
 ### Comprehension Check
 
 !!! note "Quiz"
-```
-**1. What is the Central Difference formula for the first derivative, $f'(x)$?**
-
-- A. $\frac{f(x+h) - f(x-h)}{2h}$
-- B. $\frac{f(x+h) - f(x)}{h}$
-- C. $\frac{f(x) - f(x-h)}{h}$
-- D. $\frac{f(x+h) - 2f(x) + f(x-h)}{h^2}$
-
+    **1. What is the Central Difference formula for the first derivative, $f'(x)$?**
+    
+    - A. $\frac{f(x+h) - f(x-h)}{2h}$
+    - B. $\frac{f(x+h) - f(x)}{h}$
+    - C. $\frac{f(x) - f(x-h)}{h}$
+    - D. $\frac{f(x+h) - 2f(x) + f(x-h)}{h^2}$
+    
 ??? info "See Answer"
-    **Correct: A**
-
-    *(The Central Difference uses symmetric points at $x-h$ and $x+h$, divided by $2h$ for the slope.)*
-
-```
+        **Correct: A**
+    
+        *(The Central Difference uses symmetric points at $x-h$ and $x+h$, divided by $2h$ for the slope.)*
+    
 ---
 
 !!! note "Quiz"
-```
-**2. If you halve the step size $h$ when using the Central Difference formula, by what factor does the truncation error decrease?**
-
-- A. Two
-- B. Four
-- C. Eight
-- D. It remains the same
-
+    **2. If you halve the step size $h$ when using the Central Difference formula, by what factor does the truncation error decrease?**
+    
+    - A. Two
+    - B. Four
+    - C. Eight
+    - D. It remains the same
+    
 ??? info "See Answer"
-    **Correct: B**
-
-    *(The Central Difference is $O(h^2)$ accurate. Halving $h$ means error scales as $(h/2)^2 = h^2/4$, a reduction by factor of 4.)*
-
-```
+        **Correct: B**
+    
+        *(The Central Difference is $O(h^2)$ accurate. Halving $h$ means error scales as $(h/2)^2 = h^2/4$, a reduction by factor of 4.)*
+    
 ---
 
 !!! note "Quiz"
-```
-**3. Which terms in the Taylor series cancel when you subtract the backward expansion from the forward expansion?**
-
-- A. All odd-derivative terms ($f'$, $f'''$, $f^{(5)}$, ...)
-- B. All even-derivative terms ($f$, $f''$, $f^{(4)}$, ...)
-- C. Only the constant term $f(x)$
-- D. Only the first-derivative term $f'(x)$
-
+    **3. Which terms in the Taylor series cancel when you subtract the backward expansion from the forward expansion?**
+    
+    - A. All odd-derivative terms ($f'$, $f'''$, $f^{(5)}$, ...)
+    - B. All even-derivative terms ($f$, $f''$, $f^{(4)}$, ...)
+    - C. Only the constant term $f(x)$
+    - D. Only the first-derivative term $f'(x)$
+    
 ??? info "See Answer"
-    **Correct: B**
-
-    *(Even-derivative terms have the same sign in both expansions, so they cancel when subtracted. Odd-derivative terms have opposite signs and add up.)*
-
-```
+        **Correct: B**
+    
+        *(Even-derivative terms have the same sign in both expansions, so they cancel when subtracted. Odd-derivative terms have opposite signs and add up.)*
+    
 ---
 
 !!! abstract "Interview-Style Question"
-
-```
-**Q:** Walk through the logic of why the Central Difference formula is so much more accurate than the Forward Difference. Specifically, what mathematical property of the Taylor series causes the $O(h^2)$ error term to vanish?
-
-???+ info "Answer Strategy"
-    This question tests deep understanding of the Taylor series manipulation and error analysis.
-
-    1. **The Key Insight — Symmetry:**
-       The Central Difference uses both the forward ($x+h$) and backward ($x-h$) Taylor series expansions. The backward expansion has the same form as the forward, but with alternating signs on odd-power terms.
-
-    2. **The Cancellation Mechanism:**
-       When we subtract $f(x-h)$ from $f(x+h)$, we get:
-       $$f(x+h) - f(x-h) = 2hf'(x) + \frac{2h^3}{6}f'''(x) + O(h^5)$$
-
-       The $f(x)$ terms cancel completely. The $f''(x)$ terms also cancel because:
-       $$+\frac{h^2}{2}f''(x) - (+\frac{h^2}{2}f''(x)) = 0$$
-
-       Both have positive signs in their respective expansions.
-
-    3. **Why This Matters:**
-       In the Forward Difference, the leading error term is $\frac{h}{2}f''(x)$, which is $O(h)$.
-       In the Central Difference, this $f''(x)$ term is completely eliminated, and the leading error term becomes $\frac{h^2}{6}f'''(x)$, which is $O(h^2)$.
-
-    4. **The Computational Consequence:**
-       By eliminating the $O(h^2)$ term, we jump from first-order to second-order accuracy. This means that for the same grid resolution, the Central Difference is dramatically more accurate, or equivalently, we can use a coarser grid to achieve the same accuracy.
-
-    5. **General Principle:**
-       This demonstrates a fundamental strategy in numerical analysis: **symmetric formulas often have superior accuracy** because they exploit cancellation of even-order error terms. This principle extends to higher-order methods and multi-dimensional problems.
-
-```
+    
+    **Q:** Walk through the logic of why the Central Difference formula is so much more accurate than the Forward Difference. Specifically, what mathematical property of the Taylor series causes the $O(h^2)$ error term to vanish?
+    
+    ???+ info "Answer Strategy"
+        This question tests deep understanding of the Taylor series manipulation and error analysis.
+    
+        1. **The Key Insight — Symmetry:**
+           The Central Difference uses both the forward ($x+h$) and backward ($x-h$) Taylor series expansions. The backward expansion has the same form as the forward, but with alternating signs on odd-power terms.
+    
+        2. **The Cancellation Mechanism:**
+           When we subtract $f(x-h)$ from $f(x+h)$, we get:
+           $$f(x+h) - f(x-h) = 2hf'(x) + \frac{2h^3}{6}f'''(x) + O(h^5)$$
+    
+           The $f(x)$ terms cancel completely. The $f''(x)$ terms also cancel because:
+           $$+\frac{h^2}{2}f''(x) - (+\frac{h^2}{2}f''(x)) = 0$$
+    
+           Both have positive signs in their respective expansions.
+    
+        3. **Why This Matters:**
+           In the Forward Difference, the leading error term is $\frac{h}{2}f''(x)$, which is $O(h)$.
+           In the Central Difference, this $f''(x)$ term is completely eliminated, and the leading error term becomes $\frac{h^2}{6}f'''(x)$, which is $O(h^2)$.
+    
+        4. **The Computational Consequence:**
+           By eliminating the $O(h^2)$ term, we jump from first-order to second-order accuracy. This means that for the same grid resolution, the Central Difference is dramatically more accurate, or equivalently, we can use a coarser grid to achieve the same accuracy.
+    
+        5. **General Principle:**
+           This demonstrates a fundamental strategy in numerical analysis: **symmetric formulas often have superior accuracy** because they exploit cancellation of even-order error terms. This principle extends to higher-order methods and multi-dimensional problems.
+    
 ---
 
 ### <i class="fa-solid fa-flask"></i> Hands-On Project
@@ -1106,101 +1074,91 @@ The one-dimensional case is simply $\nabla^2 f = \frac{d^2f}{dx^2}$. Our stencil
 ### Comprehension Check
 
 !!! note "Quiz"
-```
-**1. What is the Central Difference formula for the second derivative, $f''(x)$?**
-
-- A. $\frac{f(x+h) - f(x-h)}{2h}$
-- B. $\frac{f(x+h) - 2f(x) + f(x-h)}{h^2}$
-- C. $\frac{f(x+h) - 2f(x) + f(x-h)}{2h}$
-- D. $\frac{f(x+h) + 2f(x) - f(x-h)}{h^2}$
-
+    **1. What is the Central Difference formula for the second derivative, $f''(x)$?**
+    
+    - A. $\frac{f(x+h) - f(x-h)}{2h}$
+    - B. $\frac{f(x+h) - 2f(x) + f(x-h)}{h^2}$
+    - C. $\frac{f(x+h) - 2f(x) + f(x-h)}{2h}$
+    - D. $\frac{f(x+h) + 2f(x) - f(x-h)}{h^2}$
+    
 ??? info "See Answer"
-    **Correct: B**
-
-    *(The second derivative stencil uses the pattern [+1, -2, +1] divided by $h^2$, forming the numerical Laplacian.)*
-
-```
+        **Correct: B**
+    
+        *(The second derivative stencil uses the pattern [+1, -2, +1] divided by $h^2$, forming the numerical Laplacian.)*
+    
 ---
 
 !!! note "Quiz"
-```
-**2. The formula $\frac{f(x+h) - 2f(x) + f(x-h)}{h^2}$ is the numerical equivalent of which fundamental operator, essential for solving the Schrödinger and heat equations?**
-
-- A. The gradient operator $\nabla$
-- B. The divergence operator $\nabla \cdot$
-- C. The Laplacian operator $\nabla^2$
-- D. The curl operator $\nabla \times$
-
+    **2. The formula $\frac{f(x+h) - 2f(x) + f(x-h)}{h^2}$ is the numerical equivalent of which fundamental operator, essential for solving the Schrödinger and heat equations?**
+    
+    - A. The gradient operator $\nabla$
+    - B. The divergence operator $\nabla \cdot$
+    - C. The Laplacian operator $\nabla^2$
+    - D. The curl operator $\nabla \times$
+    
 ??? info "See Answer"
-    **Correct: C**
-
-    *(This stencil is the discrete approximation of the Laplacian $\nabla^2$, which measures local curvature and appears in diffusion and wave equations.)*
-
-```
+        **Correct: C**
+    
+        *(This stencil is the discrete approximation of the Laplacian $\nabla^2$, which measures local curvature and appears in diffusion and wave equations.)*
+    
 ---
 
 !!! note "Quiz"
-```
-**3. When deriving the second derivative formula, which terms from the Taylor series cancel when you add the forward and backward expansions?**
-
-- A. All even-derivative terms ($f''$, $f^{(4)}$, ...)
-- B. All odd-derivative terms ($f'$, $f'''$, $f^{(5)}$, ...)
-- C. Only the constant term $f(x)$
-- D. No terms cancel
-
+    **3. When deriving the second derivative formula, which terms from the Taylor series cancel when you add the forward and backward expansions?**
+    
+    - A. All even-derivative terms ($f''$, $f^{(4)}$, ...)
+    - B. All odd-derivative terms ($f'$, $f'''$, $f^{(5)}$, ...)
+    - C. Only the constant term $f(x)$
+    - D. No terms cancel
+    
 ??? info "See Answer"
-    **Correct: B**
-
-    *(When adding the expansions, odd-derivative terms have opposite signs and cancel: $+hf'(x) - hf'(x) = 0$, etc.)*
-
-```
+        **Correct: B**
+    
+        *(When adding the expansions, odd-derivative terms have opposite signs and cancel: $+hf'(x) - hf'(x) = 0$, etc.)*
+    
 ---
 
 !!! abstract "Interview-Style Question"
-
-```
-**Q:** In the context of solving a differential equation on a discrete grid, why is the second derivative formula $\frac{f(x+h) - 2f(x) + f(x-h)}{h^2}$ referred to as a "stencil"? How does this concept extend to multi-dimensional problems?
-
-???+ info "Answer Strategy"
-    This question tests understanding of computational grid operations and their extension to higher dimensions.
-
-    1. **The Stencil Concept:**
-       A "stencil" is the geometric pattern of grid points and their associated weights used to compute a value at a central location. The second derivative formula is a **three-point stencil** because it requires exactly three specific, adjacent grid points:
-       - $f(x-h)$ with weight $+1$
-       - $f(x)$ with weight $-2$
-       - $f(x+h)$ with weight $+1$
-
-    2. **Computational Implementation:**
-       This algebraic pattern (the stencil) is applied repeatedly at every interior grid point, transforming the differential operator into a matrix operation:
-       $$f''(x_i) \approx \frac{f_{i+1} - 2f_i + f_{i-1}}{h^2}$$
-
-    3. **Physical Interpretation:**
-       The stencil measures how much the function at point $x$ deviates from the average of its neighbors. If $f(x)$ equals the average, the second derivative is zero (linear function). If $f(x)$ is below/above the average, the curvature is positive/negative.
-
-    4. **Extension to 2D (e.g., Heat Equation on a Plate):**
-       The Laplacian in 2D becomes:
-       $$\nabla^2 f = \frac{\partial^2 f}{\partial x^2} + \frac{\partial^2 f}{\partial y^2}$$
-
-       The numerical stencil expands to a **five-point stencil** (plus-shaped pattern):
-       ```
-             f(x, y+h)
-                 |
-       f(x-h, y) - f(x,y) - f(x+h, y)
-                 |
-             f(x, y-h)
-       ```
-       $$\nabla^2 f \approx \frac{f(x+h,y) + f(x-h,y) + f(x,y+h) + f(x,y-h) - 4f(x,y)}{h^2}$$
-
-    5. **Extension to 3D (e.g., Quantum Mechanics):**
-       The pattern extends to a **seven-point stencil** with neighbors along all three axes.
-
-    6. **Computational Importance:**
-       Understanding stencils is crucial because:
-       - They reveal the **locality** of differential operators (only nearby points matter)
-       - They determine the **sparsity pattern** of the resulting matrix equations
-       - They guide implementation in parallel computing and GPU programming
-
-```
+    
+    **Q:** In the context of solving a differential equation on a discrete grid, why is the second derivative formula $\frac{f(x+h) - 2f(x) + f(x-h)}{h^2}$ referred to as a "stencil"? How does this concept extend to multi-dimensional problems?
+    
+    ???+ info "Answer Strategy"
+        This question tests understanding of computational grid operations and their extension to higher dimensions.
+    
+        1. **The Stencil Concept:**
+           A "stencil" is the geometric pattern of grid points and their associated weights used to compute a value at a central location. The second derivative formula is a **three-point stencil** because it requires exactly three specific, adjacent grid points:
+           - $f(x-h)$ with weight $+1$
+           - $f(x)$ with weight $-2$
+           - $f(x+h)$ with weight $+1$
+    
+        2. **Computational Implementation:**
+           This algebraic pattern (the stencil) is applied repeatedly at every interior grid point, transforming the differential operator into a matrix operation:
+           $$f''(x_i) \approx \frac{f_{i+1} - 2f_i + f_{i-1}}{h^2}$$
+    
+        3. **Physical Interpretation:**
+           The stencil measures how much the function at point $x$ deviates from the average of its neighbors. If $f(x)$ equals the average, the second derivative is zero (linear function). If $f(x)$ is below/above the average, the curvature is positive/negative.
+    
+        4. **Extension to 2D (e.g., Heat Equation on a Plate):**
+           The Laplacian in 2D becomes:
+           $$\nabla^2 f = \frac{\partial^2 f}{\partial x^2} + \frac{\partial^2 f}{\partial y^2}$$
+    
+           The numerical stencil expands to a **five-point stencil** (plus-shaped pattern):
+                 f(x, y+h)
+                     |
+           f(x-h, y) - f(x,y) - f(x+h, y)
+                     |
+                 f(x, y-h)
+           $$\nabla^2 f \approx \frac{f(x+h,y) + f(x-h,y) + f(x,y+h) + f(x,y-h) - 4f(x,y)}{h^2}$$
+    
+        5. **Extension to 3D (e.g., Quantum Mechanics):**
+           The pattern extends to a **seven-point stencil** with neighbors along all three axes.
+    
+        6. **Computational Importance:**
+           Understanding stencils is crucial because:
+           - They reveal the **locality** of differential operators (only nearby points matter)
+           - They determine the **sparsity pattern** of the resulting matrix equations
+           - They guide implementation in parallel computing and GPU programming
+    
 ---
 
 ### <i class="fa-solid fa-flask"></i> Hands-On Project
@@ -1421,90 +1379,82 @@ The mantra **"smaller $h$ is always better"** is fundamentally wrong in finite-p
 ### Comprehension Check
 
 !!! note "Quiz"
-```
-**1. What is the specific "Chapter 2 bug" that causes the error to explode when $h$ becomes too small in the Central Difference formula?**
-
-- A. Integer overflow
-- B. Runge's phenomenon
-- C. Catastrophic cancellation (from subtracting two nearly-equal numbers)
-- D. Truncation error
-
+    **1. What is the specific "Chapter 2 bug" that causes the error to explode when $h$ becomes too small in the Central Difference formula?**
+    
+    - A. Integer overflow
+    - B. Runge's phenomenon
+    - C. Catastrophic cancellation (from subtracting two nearly-equal numbers)
+    - D. Truncation error
+    
 ??? info "See Answer"
-    **Correct: C**
-
-    *(When $h$ is very small, $f(x+h)$ and $f(x-h)$ are nearly identical, and their subtraction loses significant digits through catastrophic cancellation, amplifying round-off errors.)*
-
-```
+        **Correct: C**
+    
+        *(When $h$ is very small, $f(x+h)$ and $f(x-h)$ are nearly identical, and their subtraction loses significant digits through catastrophic cancellation, amplifying round-off errors.)*
+    
 ---
 
 !!! note "Quiz"
-```
-**2. What is the "sweet spot" in numerical differentiation?**
-
-- A. An $h$ value that is as close to $\epsilon_m$ as possible (e.g., $h=10^{-16}$)
-- B. The optimal $h$ (e.g., $h \sim 10^{-6}$) that balances truncation and round-off error to give minimum total error
-- C. The use of the Central Difference formula
-- D. The point where the truncation error is exactly zero
-
+    **2. What is the "sweet spot" in numerical differentiation?**
+    
+    - A. An $h$ value that is as close to $\epsilon_m$ as possible (e.g., $h=10^{-16}$)
+    - B. The optimal $h$ (e.g., $h \sim 10^{-6}$) that balances truncation and round-off error to give minimum total error
+    - C. The use of the Central Difference formula
+    - D. The point where the truncation error is exactly zero
+    
 ??? info "See Answer"
-    **Correct: B**
-
-    *(The sweet spot is where $E_{\text{trunc}} \approx E_{\text{round}}$, minimizing total error. This occurs around $h \sim \epsilon_m^{1/3} \approx 10^{-5}$ to $10^{-6}$ for double precision.)*
-
-```
+        **Correct: B**
+    
+        *(The sweet spot is where $E_{\text{trunc}} \approx E_{\text{round}}$, minimizing total error. This occurs around $h \sim \epsilon_m^{1/3} \approx 10^{-5}$ to $10^{-6}$ for double precision.)*
+    
 ---
 
 !!! note "Quiz"
-```
-**3. On the V-plot, what is the approximate slope of the error curve in the round-off-dominated region (left side, very small $h$)?**
-
-- A. $+2$ (error increases with $h^2$)
-- B. $-1$ (error increases as $h^{-1}$)
-- C. $0$ (error is constant)
-- D. $+1$ (error increases with $h$)
-
+    **3. On the V-plot, what is the approximate slope of the error curve in the round-off-dominated region (left side, very small $h$)?**
+    
+    - A. $+2$ (error increases with $h^2$)
+    - B. $-1$ (error increases as $h^{-1}$)
+    - C. $0$ (error is constant)
+    - D. $+1$ (error increases with $h$)
+    
 ??? info "See Answer"
-    **Correct: B**
-
-    *(Round-off error scales as $\epsilon_m/h$, so as $h$ decreases, error increases proportionally to $1/h$, giving slope $-1$ on log-log plot.)*
-
-```
+        **Correct: B**
+    
+        *(Round-off error scales as $\epsilon_m/h$, so as $h$ decreases, error increases proportionally to $1/h$, giving slope $-1$ on log-log plot.)*
+    
 ---
 
 !!! abstract "Interview-Style Question"
-
-```
-**Q:** A colleague tells you, "To get the most accurate derivative, just set $h$ to be as small as possible, like $10^{-15}$." Why is this terrible advice, and what is the physical meaning of the resulting error on the V-plot?
-
-???+ info "Answer Strategy"
-    This question tests understanding of the interplay between algorithmic and hardware limitations.
-
-    1. **Why It's Terrible Advice:**
-       Setting $h \approx 10^{-15}$ puts the calculation on the **left side** of the V-plot, deep in the round-off-dominated region. At this point, truncation error is negligible, but round-off error has exploded to dominate the result.
-
-    2. **The Numerical Disaster:**
-       For $h = 10^{-15}$:
-       - The numerator $f(x+h) - f(x-h)$ involves subtracting two numbers that agree to ~15 decimal places
-       - Only the last 1-2 digits differ, which are entirely round-off noise
-       - The division by $2h = 2 \times 10^{-15}$ amplifies this noise by a factor of $\sim 10^{15}$
-       - The final answer has effectively **zero significant digits**
-
-    3. **Physical Meaning on V-Plot:**
-       On the left side of the V-plot, you're measuring the slope using two points that are so close together that the computer cannot distinguish their heights due to finite precision. It's like trying to measure the slope of a mountain by looking at two points 1 millimeter apart with a ruler that has 1-meter resolution.
-
-    4. **The Correct Approach:**
-       Find the sweet spot (bottom of the V) where:
-       $$2Ch^2 \approx D\frac{\epsilon_m}{h} \implies h_{\text{opt}} \sim \epsilon_m^{1/3} \approx 10^{-5}$$
-
-       At this point, truncation and round-off errors are balanced, typically giving $\sim 10^{-11}$ accuracy—the best achievable for first derivatives in double precision.
-
-    5. **Practical Implication:**
-       There is a **fundamental limit** to numerical differentiation accuracy imposed by hardware, not just by algorithm. No amount of algorithmic sophistication can overcome this limit without using higher precision (e.g., quad precision) or symbolic differentiation.
-
-    6. **The Broader Lesson:**
-       This illustrates a key principle in computational science: **more resolution is not always better**. Every numerical method has an optimal operating regime determined by the balance between competing error sources.
-
-```
+    
+    **Q:** A colleague tells you, "To get the most accurate derivative, just set $h$ to be as small as possible, like $10^{-15}$." Why is this terrible advice, and what is the physical meaning of the resulting error on the V-plot?
+    
+    ???+ info "Answer Strategy"
+        This question tests understanding of the interplay between algorithmic and hardware limitations.
+    
+        1. **Why It's Terrible Advice:**
+           Setting $h \approx 10^{-15}$ puts the calculation on the **left side** of the V-plot, deep in the round-off-dominated region. At this point, truncation error is negligible, but round-off error has exploded to dominate the result.
+    
+        2. **The Numerical Disaster:**
+           For $h = 10^{-15}$:
+           - The numerator $f(x+h) - f(x-h)$ involves subtracting two numbers that agree to ~15 decimal places
+           - Only the last 1-2 digits differ, which are entirely round-off noise
+           - The division by $2h = 2 \times 10^{-15}$ amplifies this noise by a factor of $\sim 10^{15}$
+           - The final answer has effectively **zero significant digits**
+    
+        3. **Physical Meaning on V-Plot:**
+           On the left side of the V-plot, you're measuring the slope using two points that are so close together that the computer cannot distinguish their heights due to finite precision. It's like trying to measure the slope of a mountain by looking at two points 1 millimeter apart with a ruler that has 1-meter resolution.
+    
+        4. **The Correct Approach:**
+           Find the sweet spot (bottom of the V) where:
+           $$2Ch^2 \approx D\frac{\epsilon_m}{h} \implies h_{\text{opt}} \sim \epsilon_m^{1/3} \approx 10^{-5}$$
+    
+           At this point, truncation and round-off errors are balanced, typically giving $\sim 10^{-11}$ accuracy—the best achievable for first derivatives in double precision.
+    
+        5. **Practical Implication:**
+           There is a **fundamental limit** to numerical differentiation accuracy imposed by hardware, not just by algorithm. No amount of algorithmic sophistication can overcome this limit without using higher precision (e.g., quad precision) or symbolic differentiation.
+    
+        6. **The Broader Lesson:**
+           This illustrates a key principle in computational science: **more resolution is not always better**. Every numerical method has an optimal operating regime determined by the balance between competing error sources.
+    
 ---
 
 ### <i class="fa-solid fa-flask"></i> Hands-On Project
@@ -1758,94 +1708,86 @@ This problem provides a perfect **"ground truth" test case**:
 ### Comprehension Check
 
 !!! note "Quiz"
-```
-**1. In this application, how did we calculate the force $F(r)$ from the Lennard-Jones potential $V(r)$?**
-
-- A. By finding the root of $V(r)$ using the Bisection method
-- B. By finding the second derivative $F = d^2V/dr^2$
-- C. By applying the Central Difference formula to compute $F = -dV/dr$
-- D. By integrating $V(r)$
-
+    **1. In this application, how did we calculate the force $F(r)$ from the Lennard-Jones potential $V(r)$?**
+    
+    - A. By finding the root of $V(r)$ using the Bisection method
+    - B. By finding the second derivative $F = d^2V/dr^2$
+    - C. By applying the Central Difference formula to compute $F = -dV/dr$
+    - D. By integrating $V(r)$
+    
 ??? info "See Answer"
-    **Correct: C**
-
-    *(The force is the negative gradient of potential, $F = -dV/dr$, computed numerically using the Central Difference method.)*
-
-```
+        **Correct: C**
+    
+        *(The force is the negative gradient of potential, $F = -dV/dr$, computed numerically using the Central Difference method.)*
+    
 ---
 
 !!! note "Quiz"
-```
-**2. What was the purpose of calculating the analytical force $F_{\text{analytic}}(r)$ in this application?**
-
-- A. To provide the final answer that the simulation would use
-- B. To serve as the "ground truth" against which the accuracy of the numerical method was verified
-- C. To help select the optimal step size $h$
-- D. To check for boundary conditions
-
+    **2. What was the purpose of calculating the analytical force $F_{\text{analytic}}(r)$ in this application?**
+    
+    - A. To provide the final answer that the simulation would use
+    - B. To serve as the "ground truth" against which the accuracy of the numerical method was verified
+    - C. To help select the optimal step size $h$
+    - D. To check for boundary conditions
+    
 ??? info "See Answer"
-    **Correct: B**
-
-    *(Having the exact analytical answer allows us to measure the numerical method's error and verify it achieves machine precision accuracy.)*
-
-```
+        **Correct: B**
+    
+        *(Having the exact analytical answer allows us to measure the numerical method's error and verify it achieves machine precision accuracy.)*
+    
 ---
 
 !!! note "Quiz"
-```
-**3. The Lennard-Jones potential has a repulsive $r^{-12}$ term and an attractive $r^{-6}$ term. At what distance does the force equal zero (equilibrium)?**
-
-- A. $r = \sigma$
-- B. $r = 2^{1/6}\sigma \approx 1.122\sigma$
-- C. $r = 0$
-- D. $r = \infty$
-
+    **3. The Lennard-Jones potential has a repulsive $r^{-12}$ term and an attractive $r^{-6}$ term. At what distance does the force equal zero (equilibrium)?**
+    
+    - A. $r = \sigma$
+    - B. $r = 2^{1/6}\sigma \approx 1.122\sigma$
+    - C. $r = 0$
+    - D. $r = \infty$
+    
 ??? info "See Answer"
-    **Correct: B**
-
-    *(At equilibrium, $F=0$ occurs where $V(r)$ has its minimum, which is at $r_{\text{min}} = 2^{1/6}\sigma$.)*
-
-```
+        **Correct: B**
+    
+        *(At equilibrium, $F=0$ occurs where $V(r)$ has its minimum, which is at $r_{\text{min}} = 2^{1/6}\sigma$.)*
+    
 ---
 
 !!! abstract "Interview-Style Question"
-
-```
-**Q:** In the Lennard-Jones problem, you calculated the force numerically and analytically. You plot the absolute error and find it is $\sim 10^{-14}$. Is this result a failure or a success for the numerical method, and why?
-
-???+ info "Answer Strategy"
-    This question tests understanding of practical accuracy limits and error interpretation.
-
-    1. **This is a Success:**
-       An absolute error of $10^{-14}$ to $10^{-15}$ represents achieving the **limit of machine precision** for double-precision arithmetic (which has about 15-16 significant decimal digits).
-
-    2. **Why This is the Best Possible:**
-       - Machine epsilon: $\epsilon_m \approx 2.22 \times 10^{-16}$
-       - Relative error: $10^{-14} / 2.7 \approx 4 \times 10^{-15}$
-       - This means we've captured all but the last 1-2 bits of precision
-       - No numerical method using standard double precision can do better
-
-    3. **What It Confirms:**
-       - The Central Difference formula is working correctly
-       - The optimal $h$ was chosen properly (around $10^{-6}$)
-       - The implementation has no bugs
-       - Truncation error has been minimized to the point where only unavoidable round-off remains
-
-    4. **The Remaining Error Source:**
-       The $\sim 10^{-14}$ error is **not** from the algorithm—it's from the fundamental limitation of storing real numbers in 64 bits. This is irreducible hardware error.
-
-    5. **How to Improve (if needed):**
-       To achieve better accuracy would require:
-       - Quad precision (128-bit floats): $\epsilon_m \sim 10^{-34}$
-       - Symbolic differentiation: exact analytical formula
-       - Automatic differentiation: machine precision for complex functions
-
-       But for molecular dynamics simulations, $10^{-14}$ relative error in forces is vastly better than needed.
-
-    6. **Practical Perspective:**
-       Physical measurements rarely exceed 6-8 significant digits. Achieving 14-15 digits numerically is extraordinary and demonstrates the power of well-designed numerical methods.
-
-```
+    
+    **Q:** In the Lennard-Jones problem, you calculated the force numerically and analytically. You plot the absolute error and find it is $\sim 10^{-14}$. Is this result a failure or a success for the numerical method, and why?
+    
+    ???+ info "Answer Strategy"
+        This question tests understanding of practical accuracy limits and error interpretation.
+    
+        1. **This is a Success:**
+           An absolute error of $10^{-14}$ to $10^{-15}$ represents achieving the **limit of machine precision** for double-precision arithmetic (which has about 15-16 significant decimal digits).
+    
+        2. **Why This is the Best Possible:**
+           - Machine epsilon: $\epsilon_m \approx 2.22 \times 10^{-16}$
+           - Relative error: $10^{-14} / 2.7 \approx 4 \times 10^{-15}$
+           - This means we've captured all but the last 1-2 bits of precision
+           - No numerical method using standard double precision can do better
+    
+        3. **What It Confirms:**
+           - The Central Difference formula is working correctly
+           - The optimal $h$ was chosen properly (around $10^{-6}$)
+           - The implementation has no bugs
+           - Truncation error has been minimized to the point where only unavoidable round-off remains
+    
+        4. **The Remaining Error Source:**
+           The $\sim 10^{-14}$ error is **not** from the algorithm—it's from the fundamental limitation of storing real numbers in 64 bits. This is irreducible hardware error.
+    
+        5. **How to Improve (if needed):**
+           To achieve better accuracy would require:
+           - Quad precision (128-bit floats): $\epsilon_m \sim 10^{-34}$
+           - Symbolic differentiation: exact analytical formula
+           - Automatic differentiation: machine precision for complex functions
+    
+           But for molecular dynamics simulations, $10^{-14}$ relative error in forces is vastly better than needed.
+    
+        6. **Practical Perspective:**
+           Physical measurements rarely exceed 6-8 significant digits. Achieving 14-15 digits numerically is extraordinary and demonstrates the power of well-designed numerical methods.
+    
 ---
 
 ### <i class="fa-solid fa-flask"></i> Hands-On Project

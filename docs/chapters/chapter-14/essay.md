@@ -48,10 +48,8 @@ $$
 This direct mapping demonstrates that the solution to a complex differential equation lies in efficiently solving a large system of **Linear Algebra**.
 
 !!! tip "The “Magic Trick” of Computational Physics"
-```
-This transformation is arguably the most important "trick" in the field. It converts a complex analytic problem (a differential equation) into a discrete algebraic problem (a matrix equation). We don't solve the TISE; we solve $\mathbf{H}\mathbf{\psi} = E\mathbf{\psi}$, which computers are brilliant at.
-
-```
+    This transformation is arguably the most important "trick" in the field. It converts a complex analytic problem (a differential equation) into a discrete algebraic problem (a matrix equation). We don't solve the TISE; we solve $\mathbf{H}\mathbf{\psi} = E\mathbf{\psi}$, which computers are brilliant at.
+    
 ---
 
 ## **14.2 Solution Methods: Exploiting Matrix Structure**
@@ -74,10 +72,8 @@ Solving the full eigensystem for all $\lambda$ and $\mathbf{x}$ is computational
 
 
 ??? question "Why are physical matrices so often symmetric?"
-```
-Symmetry ($\mathbf{A} = \mathbf{A}^T$) implies that coupling from particle *i* to *j* equals that from *j* to *i*. This reflects Newton's Third Law and energy conservation.
-
-```
+    Symmetry ($\mathbf{A} = \mathbf{A}^T$) implies that coupling from particle *i* to *j* equals that from *j* to *i*. This reflects Newton's Third Law and energy conservation.
+    
 ---
 
 ### **Specialized Solvers (The Professional Toolkit)**
@@ -149,10 +145,8 @@ $$
 Transform to standard form via $\mathbf{A}=\mathbf{M}^{-1}\mathbf{K}$.
 
 !!! example "Two Masses, Three Springs"
-```
-A system with $m_1, m_2$ and $k_1,k_2,k_3$ yields a $2\times 2$ eigenproblem with **symmetric** and **antisymmetric** modes.
-
-```
+    A system with $m_1, m_2$ and $k_1,k_2,k_3$ yields a $2\times 2$ eigenproblem with **symmetric** and **antisymmetric** modes.
+    
 ---
 
 ## **14.4 Chapter Summary and Bridge to Part 6: Data Analysis**

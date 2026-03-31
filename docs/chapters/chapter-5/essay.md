@@ -141,15 +141,12 @@ $$
 This **second-order accuracy** is the method's "magic": cutting the step size $h$ in half reduces the truncation error by a factor of **four** ($1/2^2$), making it vastly superior and the generally preferred choice over the Forward Difference method [3].
 
 !!! tip "The Power of Symmetry"
-```
-The Central Difference formula is so accurate because its **symmetric** nature causes the even-powered error terms ($h^2, h^4, \dots$) in the Taylor expansion to cancel out perfectly. This "free lunch" is a core principle in designing good numerical algorithms.
-
-```
-```python
-def forward_difference(f, x, h=1e-5):
-    return (f(x + h) - f(x)) / h
-```
-
+    The Central Difference formula is so accurate because its **symmetric** nature causes the even-powered error terms ($h^2, h^4, \dots$) in the Taylor expansion to cancel out perfectly. This "free lunch" is a core principle in designing good numerical algorithms.
+    
+    ```python
+    def forward_difference(f, x, h=1e-5):
+        return (f(x + h) - f(x)) / h
+    
 ---
 
 ## **5.5 Second Derivative (The "Laplacian")**
@@ -236,8 +233,8 @@ A log-log plot of $\text{Error}$ vs. $h$ reveals a characteristic **"V" shape**:
 The **"sweet spot"** is the minimum point at the bottom of the "V" where the two error sources are perfectly balanced, typically around $h \sim 10^{-5}$ to $10^{-6}$ for 64-bit precision [1]. The crucial lesson is that the **most accurate answer** is found at this optimal $h$, not at the smallest possible $h$.
 
 ??? question "Where does the optimal h come from?"
-You can find it analytically\! By taking the derivative of the total error $E_{\text{Total}}(h)$ with respect to $h$ and setting it to zero ($dE/dh = 0$), you can solve for the $h$ that minimizes the error. This confirms the optimal $h$ scales with $\epsilon_m^{1/3}$ for this $O(h^2)$ formula.
-
+    You can find it analytically\! By taking the derivative of the total error $E_{\text{Total}}(h)$ with respect to $h$ and setting it to zero ($dE/dh = 0$), you can solve for the $h$ that minimizes the error. This confirms the optimal $h$ scales with $\epsilon_m^{1/3}$ for this $O(h^2)$ formula.
+    
 ---
 
 ## **5.7 Core Application: Force from a Lennard-Jones Potential**

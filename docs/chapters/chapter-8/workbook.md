@@ -1,4 +1,4 @@
-# **Chapter 8: Initial Value Problems II — The Leapfrog & Verlet () () (Workbook)**
+# **Chapter 8: Initial Value Problems II — The Leapfrog & Verlet (Workbook)**
 
 ### 8.1 Chapter Opener: The Problem of "Forever"
 

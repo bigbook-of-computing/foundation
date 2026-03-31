@@ -53,16 +53,14 @@ The singular values quantify the "importance" of each mode. This enables:
 A grayscale image is a 2D matrix $\mathbf{X}$ of pixel intensities.
 
 !!! example "SVD Image Compression"
-```
-A 500 × 500 cat image has 500 singular values.
-
-• Keeping the top K=50 values preserves almost all visual detail.
-• K=10 is blurrier but recognizable.
-• K=1 captures only the single dominant low-rank feature.
-
-SVD cleanly separates important low-rank structure from fine-grain noise.
-
-```
+    A 500 × 500 cat image has 500 singular values.
+    
+    • Keeping the top K=50 values preserves almost all visual detail.
+    • K=10 is blurrier but recognizable.
+    • K=1 captures only the single dominant low-rank feature.
+    
+    SVD cleanly separates important low-rank structure from fine-grain noise.
+    
 ---
 
 ## **16.3 Principal Component Analysis (PCA)**
@@ -98,13 +96,11 @@ Steps in PCA:
 * **Eigenvectors ($\mathbf{v}_i$):** The Principal Components themselves.
 
 ??? question "PCA vs. SVD: What’s the difference?"
-```
-PCA solves an eigenvalue problem for $\mathbf{C} = \mathbf{X}^T \mathbf{X}$.
-SVD factorizes $\mathbf{X}$ directly.
-
-Key fact: The right singular vectors (V) from SVD are exactly the eigenvectors of XᵀX.
-
-```
+    PCA solves an eigenvalue problem for $\mathbf{C} = \mathbf{X}^T \mathbf{X}$.
+    SVD factorizes $\mathbf{X}$ directly.
+    
+    Key fact: The right singular vectors (V) from SVD are exactly the eigenvectors of XᵀX.
+    
 ---
 
 ### **The SVD–PCA Connection**

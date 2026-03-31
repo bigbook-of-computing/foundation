@@ -1,4 +1,4 @@
-# **Chapter 15: Fourier Analysis & The FFT () () (Workbook)**
+# **Chapter 15: Fourier Analysis & The FFT (Workbook)**
 
 ### 15.1 Chapter Opener: The Physics of "Content"
 

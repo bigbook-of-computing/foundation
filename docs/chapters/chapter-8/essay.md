@@ -102,12 +102,10 @@ def stormer_verlet(x0, x1, h, F, m, N_steps):
 ```
 
 ??? question "A Startup Problem"
-```
-The formula for $x_{n+1}$ requires *two* previous positions, $x_n$ and $x_{n-1}$. How do you think we can calculate $x_1$ when we only know $x_0$ at the beginning of the simulation?
-
-**Hint:** We must use a different, non-Verlet method (like Euler's method) for the *very first* step, $x_1 = x_0 + v_0 h$, just to "seed" the Verlet algorithm.
-
-```
+    The formula for $x_{n+1}$ requires *two* previous positions, $x_n$ and $x_{n-1}$. How do you think we can calculate $x_1$ when we only know $x_0$ at the beginning of the simulation?
+    
+    **Hint:** We must use a different, non-Verlet method (like Euler's method) for the *very first* step, $x_1 = x_0 + v_0 h$, just to "seed" the Verlet algorithm.
+    
 ---
 
 ## **8.5 The Velocity–Verlet Algorithm**
@@ -180,10 +178,8 @@ $$
 Leapfrog is $\mathcal{O}(h^2)$ accurate and **symplectic**, making it perfectly stable for long-term orbital simulations.
 
 !!! example "Application: Celestial Mechanics"
-```
-Leapfrog is highly favored for orbital mechanics. Why? Its staggered nature perfectly captures the "fall-and-miss" physics of an orbit: the velocity (at $t + h/2$) dictates the *next* position (at $t+h$), which is then used to calculate the *next* acceleration ($a(t+h)$) that will update the velocity. This continuous "leaping" is exceptionally stable for N-body problems.
-
-```
+    Leapfrog is highly favored for orbital mechanics. Why? Its staggered nature perfectly captures the "fall-and-miss" physics of an orbit: the velocity (at $t + h/2$) dictates the *next* position (at $t+h$), which is then used to calculate the *next* acceleration ($a(t+h)$) that will update the velocity. This continuous "leaping" is exceptionally stable for N-body problems.
+    
 ---
 
 ## **8.7 Application: N-Body Simulation**

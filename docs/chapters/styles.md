@@ -19,10 +19,8 @@ This fundamental discrepancy is the source of all computational error. This chap
 ---
 
 ??? question "Why can’t we store real numbers exactly?"
-```
-Because most real numbers require infinitely many bits, while computers have finite registers.
-
-```
+        Because most real numbers require infinitely many bits, while computers have finite registers.
+    
 ---
 
 ### Insights
@@ -30,10 +28,8 @@ Because most real numbers require infinitely many bits, while computers have fin
 ---
 
 !!! tip "Key Insight"
-```
-The *first* step in computational physics is accepting that numbers are **never exact** — not even the ones that look simple.
-
-```
+        The *first* step in computational physics is accepting that numbers are **never exact** — not even the ones that look simple.
+    
 ---
 
 ### Examples
@@ -41,10 +37,8 @@ The *first* step in computational physics is accepting that numbers are **never 
 ---
 
 !!! example "Derivative Approximation"
-```
-Using $\frac{f(x+h)-f(x)}{h}$ to approximate $f'(x)$ ignores all higher-order Taylor terms.
-
-```
+        Using $\frac{f(x+h)-f(x)}{h}$ to approximate $f'(x)$ ignores all higher-order Taylor terms.
+    
 ---
 
 ### Quiz
@@ -52,18 +46,16 @@ Using $\frac{f(x+h)-f(x)}{h}$ to approximate $f'(x)$ ignores all higher-order Ta
 ---
 
 !!! note "Quiz"
-```
-**Why can't we store real numbers exactly?**
-
-- A. Magic numbers disappear
-- B. Reals need infinite bits
-- C. Processors are inaccurate
-- D. Rounding is mandatory
-
-??? info "See Answer"
-    **Correct: B**
-
-```
+        **Why can't we store real numbers exactly?**
+    
+        - A. Magic numbers disappear
+        - B. Reals need infinite bits
+        - C. Processors are inaccurate
+        - D. Rounding is mandatory
+    
+        ??? info "See Answer"
+            **Correct: B**
+    
 ---
 
 ### Interview-Style Question
@@ -71,26 +63,23 @@ Using $\frac{f(x+h)-f(x)}{h}$ to approximate $f'(x)$ ignores all higher-order Ta
 ---
 
 !!! abstract "Interview-Style Question"
-
-```
-**Q:** In the context of computational physics, why is it philosophically critical to differentiate between the mathematical definition of a number (e.g., $1/3$) and its digital representation (e.g., `0.3333333333333333`)?
-
-??? info "Answer Strategy"
-    This distinction is the foundation of **numerical stability**.
-
-    1. **Identity vs. Approximation:**
-       In mathematics, $1/3 + 1/3 + 1/3 = 1$ is an identity. In computation, the stored value is merely an approximation.
-
-    2. **Error In, Error Out:**
-       The digital version of $1/3$ starts with rounding error the moment it is stored.
-
-    3. **Error Propagation:**
-       Adding three approximations compounds the initial error, producing a result slightly below $1$.
-
-    4. **The Takeaway:**
-       Every computation must be seen as a step where error can grow or shrink. This mindset is the core of **error propagation** and **algorithmic stability**.
-
-```
+        **Q:** In the context of computational physics, why is it philosophically critical to differentiate between the mathematical definition of a number (e.g., $1/3$) and its digital representation (e.g., `0.3333333333333333`)?
+    
+        ??? info "Answer Strategy"
+            This distinction is the foundation of **numerical stability**.
+    
+            1. **Identity vs. Approximation:**
+               In mathematics, $1/3 + 1/3 + 1/3 = 1$ is an identity. In computation, the stored value is merely an approximation.
+    
+            2. **Error In, Error Out:**
+               The digital version of $1/3$ starts with rounding error the moment it is stored.
+    
+            3. **Error Propagation:**
+               Adding three approximations compounds the initial error, producing a result slightly below $1$.
+    
+            4. **The Takeaway:**
+               Every computation must be seen as a step where error can grow or shrink. This mindset is the core of **error propagation** and **algorithmic stability**.
+    
 ---
 
 ### Diagram
