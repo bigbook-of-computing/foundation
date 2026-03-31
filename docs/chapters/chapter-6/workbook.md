@@ -1,14 +1,18 @@
-# **Chapter 6: Numerical Integration (Quadrature) (Workbook)**
+# **Chapter 6: Numerical Integration (Workbook)**
 
 ---
 
-## 6.1 The Physics of "Accumulation" {.heading-with-pill}
-
-> **Concept:** Integration as Total Accumulation • **Difficulty:** ★★☆☆☆
-
-> **Summary:** The integral, $I = \int f(x) dx$, is the language of **total accumulation** in physics. While differentiation reveals instantaneous change, integration computes global properties—work, probability, energy—by summing continuous distributions over a domain.
+> **Summary:** This workbook explores the physics of "accumulation." While differentiation reveals instantaneous change, integration computes global properties—work, probability, and energy—by summing continuous distributions over a domain. We will master **Numerical Quadrature**, comparing the robust **Trapezoidal Rule** ($O(h^2)$) with the high-precision **Simpson's Rule** ($O(h^4)$) and the optimal **Gaussian Quadrature**.
 
 ---
+
+## **6.1 The Physics of "Accumulation"** {.heading-with-pill}
+
+> **Difficulty:** ★★☆☆☆
+> 
+> **Concept:** Integration as Total Accumulation
+> 
+> **Summary:** The integral is the mathematical tool for summing infinitesimal contributions into a macroscopic whole. This section establishes the physical motivation for numerical quadrature and the computational barriers we must overcome.
 
 ### Theoretical Background
 
@@ -127,7 +131,7 @@ The quality of this approximation depends on:
     
 ---
 
-### <i class="fa-solid fa-flask"></i> Hands-On Project
+### **Hands-On Project**
 
 #### **Project:** Center of Mass of a Non-Uniform Rod
 
@@ -370,7 +374,7 @@ However, this error decreases rapidly as $h \to 0$, making the method both robus
     
 ---
 
-### <i class="fa-solid fa-flask"></i> Hands-On Project
+### **Hands-On Project**
 
 #### **Project:** Verifying Second-Order Convergence
 
@@ -619,7 +623,7 @@ The magic comes from Taylor series cancellation. When we fit a parabola through 
     
 ---
 
-### <i class="fa-solid fa-flask"></i> Hands-On Project
+### **Hands-On Project**
 
 #### **Project:** $O(h^2)$ vs. $O(h^4)$ Convergence Showdown
 
@@ -911,7 +915,7 @@ In practice, we access Gaussian quadrature through **`scipy.integrate.quad`**, w
     
 ---
 
-### <i class="fa-solid fa-flask"></i> Hands-On Project
+### **Hands-On Project**
 
 #### **Project:** Quantum Mechanics—Normalizing a Wavefunction
 
@@ -1216,7 +1220,7 @@ These functions detect the special cases and automatically apply appropriate tra
     
 ---
 
-### <i class="fa-solid fa-flask"></i> Hands-On Project
+### **Hands-On Project**
 
 #### **Project:** Taming the Gaussian Integral
 
@@ -1504,7 +1508,7 @@ For larger amplitudes, the exact period is **longer** than the small-angle predi
     
 ---
 
-### <i class="fa-solid fa-flask"></i> Hands-On Project
+### **Hands-On Project**
 
 #### **Project:** Exact vs. Approximate Pendulum Period
 
@@ -1838,7 +1842,7 @@ These techniques (covered in Volume II) can reduce the effective $\sigma$, makin
     
 ---
 
-### <i class="fa-solid fa-flask"></i> Hands-On Project
+### **Hands-On Project**
 
 #### **Project:** 1D Monte Carlo vs. Simpson's Convergence Battle
 

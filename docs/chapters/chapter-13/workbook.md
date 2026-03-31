@@ -1,10 +1,18 @@
 # **Chapter 13: Systems of Linear Equations (Workbook)**
 
-### 13.1 Chapter Opener: The "Engine" We've Been Waiting For
+---
 
-> Summary: Nearly all advanced numerical methods (BVPs, Implicit PDEs) transform calculus problems into the core algebraic system $\mathbf{A}\mathbf{x} = \mathbf{b}$. This chapter introduces the efficient algorithms to solve this system, which acts as the engine for the entire computational toolkit.
+> **Summary:** This workbook introduces the "Engine Room" of numerical physics: solving $\mathbf{A}\mathbf{x} = \mathbf{b}$. We transition from $O(N^3)$ direct solvers (LU Decomposition) to $O(N)$ iterative solvers for sparse matrices. You will learn why matrix inversion is a cardinal sin of numerical computing and how to choose the right solver for resistors, trusses, and PDEs.
 
-Our journey through computational physics has continuously led us back to a single, universal algebraic structure: the **System of Linear Equations**:
+---
+
+## **13.1 The "Engine" We've Been Waiting For** {.heading-with-pill}
+
+> **Difficulty:** ★★☆☆☆
+> 
+> **Concept:** Matrix Equations ($\mathbf{A}\mathbf{x} = \mathbf{b}$)
+> 
+> **Summary:** Most complex physical simulations—from steady-state heat to circuit analysis—eventually condense into a system of linear equations. This section defines the universal structure of these problems and previews the direct and iterative strategies for solving them.
 
 $$\mathbf{A}\mathbf{x} = \mathbf{b}$$
 
@@ -20,7 +28,7 @@ We discovered that most "advanced" physical problems transform into this linear 
 
 ---
 
-### 13.2 Method 1: Gaussian Elimination (The Forward-Substitution Method)
+## **13.2 Method 1: Gaussian Elimination** {.heading-with-pill}
 
 > Summary: Gaussian Elimination is the classical direct method for solving $\mathbf{A}\mathbf{x} = \mathbf{b}$. It transforms the full matrix $\mathbf{A}$ into an **upper-triangular matrix $\mathbf{U}$** using forward elimination, followed by trivial **back substitution** to find the solution vector $\mathbf{x}$.
 
@@ -40,7 +48,7 @@ $$\begin{pmatrix} U_{11} & U_{12} & U_{13} \\ 0 & U_{22} & U_{23} \\ 0 & 0 & U_{
 
 ---
 
-### 13.3 Method 2: LU Decomposition (The "Smarter" Method)
+## **13.3 Method 2: LU Decomposition** {.heading-with-pill}
 
 > Summary: **LU Decomposition** is the direct method used by professional libraries. It factors the matrix $\mathbf{A}$ into lower ($\mathbf{L}$) and upper ($\mathbf{U}$) triangular matrices once ($\mathcal{O}(N^3)$), allowing the system to be solved for any subsequent right-hand side vector $\mathbf{b}$ very quickly ($\mathcal{O}(N^2)$).
 
@@ -65,7 +73,7 @@ This makes it vastly superior to Gaussian elimination when multiple solutions ar
 
 ---
 
-### 13.4 The "Do Not Do This" Method: Matrix Inversion
+## **13.4 The "Do Not Do This" Method: Matrix Inversion** {.heading-with-pill}
 
 > Summary: **Matrix Inversion** ($\mathbf{x} = \mathbf{A}^{-1}\mathbf{b}$) is computationally inefficient ($\mathcal{O}(N^3)$ with a large pre-factor) and numerically unstable. **Never** compute the inverse to solve $\mathbf{A}\mathbf{x} = \mathbf{b}$.
 
@@ -80,7 +88,7 @@ The mathematical identity $\mathbf{x} = \mathbf{A}^{-1}\mathbf{b}$ is tempting, 
 
 ---
 
-### 13.5 Iterative Solvers (Gauss-Seidel, CG)
+## **13.5 Iterative Solvers (Gauss-Seidel, CG)** {.heading-with-pill}
 
 > Summary: **Iterative Solvers** are essential for huge, sparse systems ($\mathbf{A}$ is mostly zeros), avoiding the $\mathcal{O}(N^3)$ cost and memory limitations of direct methods by "relaxing" to the solution using only the non-zero elements.
 
@@ -99,7 +107,7 @@ The matrices resulting from FDM (Chapters 9-12) are **sparse**—they are mostly
 
 ---
 
-### 13.6 Core Application: A Resistor Network
+## **13.6 Core Application: A Resistor Network** {.heading-with-pill}
 
 > Summary: Applying **Kirchhoff's Current Law** and **Ohm's Law** to a resistor network yields a system $\mathbf{A}\mathbf{V} = \mathbf{I}$, where $\mathbf{V}$ is the unknown voltage vector and $\mathbf{A}$ is the matrix of conductances ($\mathbf{G}$). This is a classic $\mathbf{A}\mathbf{x} = \mathbf{b}$ problem solved via a direct method.
 
@@ -121,7 +129,7 @@ Since the system is typically linear and small/medium-sized ($N$ nodes), the fas
 
 ---
 
-### 13.7 Chapter Summary & Next Steps
+## **13.7 Chapter Summary & Next Steps** {.heading-with-pill}
 
 **What We Built: The Linear Algebra Engine**
 We have mastered the solutions for the core computational problem: $\mathbf{A}\mathbf{x} = \mathbf{b}$.
@@ -142,55 +150,36 @@ This is the *exact* mathematical form of the **Schrödinger Equation** (Chapter 
 
 ---
 
-# **Chapter 13: and Project Questions () () (Workbook)**
+---
 
-#### Quiz Questions
+## **13.9 Comprehensive Review** {.heading-with-pill}
 
-**1. What is the fundamental algebraic structure that most complex FDM/Implicit PDE problems simplify to?**
+### **Section Quiz**
 
-* a) A root-finding problem $f(x)=0$.
-* b) A matrix eigenvalue problem $\mathbf{A}\mathbf{v} = \lambda\mathbf{v}$.
-* c) A **system of linear equations $\mathbf{A}\mathbf{x} = \mathbf{b}$**. (**Correct**)
-* d) A partial differential equation.
+!!! note "Quiz"
+    1. What is the fundamental algebraic structure that most complex FDM/Implicit PDE problems simplify to?
+    2. Which direct solution method is the foundation for all professional linear algebra solvers and is broken down into two matrices $\mathbf{L}$ and $\mathbf{U}$?
+    3. Why is it considered poor numerical practice to solve a system by computing the matrix inverse, $\mathbf{x} = \mathbf{A}^{-1}\mathbf{b}$?
+    4. For a large, sparse matrix resulting from an FDM problem, what is the primary advantage of using an **iterative solver** (like Gauss-Seidel or Conjugate Gradient) over a **direct solver** (like LU Decomposition)?
+    5. What is the computational complexity of the **forward/back substitution** steps required to solve $\mathbf{L}\mathbf{U}\mathbf{x} = \mathbf{b}$?
 
-**2. Which direct solution method is the foundation for all professional linear algebra solvers and is broken down into two matrices $\mathbf{L}$ and $\mathbf{U}$?**
+??? info "See Answer"
+    1. **A system of linear equations $\mathbf{A}\mathbf{x} = \mathbf{b}$**.
+    2. **LU Decomposition**.
+    3. **Because matrix inversion is slow, unnecessary, and numerically unstable (prone to round-off error)**.
+    4. **Iterative solvers exploit sparsity, avoiding the $O(N^3)$ storage and time cost of dense matrices**.
+    5. **$O(N^2)$**.
 
-* a) Gaussian Elimination.
-* b) **LU Decomposition**. (**Correct**)
-* c) Conjugate Gradient (CG).
-* d) Matrix Inversion.
+!!! abstract "Interview-Style Question"
+    **Question:** You need to solve $\mathbf{A}\mathbf{x} = \mathbf{b}$ one thousand times, where the matrix $\mathbf{A}$ is constant, but the vector $\mathbf{b}$ changes in every step. Explain the steps and the corresponding computational cost of the most efficient approach using a direct solver.
+    
+    ???+ info "Answer Strategy"
+        The most efficient approach is **LU Decomposition**.
+        1.  **Factorization (Pre-processing):** Factor the constant matrix $\mathbf{A}$ into $\mathbf{L}\mathbf{U}$ once. The cost of this step is $\mathcal{O}(N^3)$.
+        2.  **Solving:** For each of the 1000 steps, solve the two triangular systems ($\mathbf{L}\mathbf{y} = \mathbf{b}$ and $\mathbf{U}\mathbf{x} = \mathbf{y}$) using forward and back substitution. The cost for *each* solve is only $\mathcal{O}(N^2)$.
+        This approach avoids re-doing the $O(N^3)$ elimination 1000 times.
 
-**3. Why is it considered poor numerical practice to solve a system by computing the matrix inverse, $\mathbf{x} = \mathbf{A}^{-1}\mathbf{b}$?**
-
-* a) Because the solution vector $\mathbf{x}$ must be determined iteratively.
-* b) Because the solution requires back substitution.
-* c) **Because matrix inversion is slow, unnecessary, and numerically unstable (prone to round-off error)**. (**Correct**)
-* d) Because $\mathbf{A}^{-1}$ is always a sparse matrix.
-
-**4. For a large, sparse matrix resulting from an FDM problem, what is the primary advantage of using an **iterative solver** (like Gauss-Seidel or Conjugate Gradient) over a **direct solver** (like LU Decomposition)?**
-
-* a) The direct solver only works for small matrices.
-* b) **Iterative solvers exploit sparsity, avoiding the $O(N^3)$ storage and time cost of dense matrices**. (**Correct**)
-* c) Iterative solvers provide an exact answer faster than direct solvers.
-* d) Iterative solvers bypass the need for boundary conditions.
-
-**5. What is the computational complexity of the **forward/back substitution** steps required to solve $\mathbf{L}\mathbf{U}\mathbf{x} = \mathbf{b}$?**
-
-* a) $O(N^3)$.
-* b) $O(N \log N)$.
-* c) **$O(N^2)$**. (**Correct**)
-* d) $O(N)$.
-
-#### Interview-Style Question
-
-**Question:** You need to solve $\mathbf{A}\mathbf{x} = \mathbf{b}$ one thousand times, where the matrix $\mathbf{A}$ is constant, but the vector $\mathbf{b}$ changes in every step. Explain the steps and the corresponding computational cost of the most efficient approach using a direct solver.
-
-**Answer Strategy:** The most efficient approach is **LU Decomposition**.
-1.  **Factorization (Pre-processing):** Factor the constant matrix $\mathbf{A}$ into $\mathbf{L}\mathbf{U}$ once. The cost of this step is $\mathcal{O}(N^3)$.
-2.  **Solving:** For each of the 1000 steps, solve the two triangular systems ($\mathbf{L}\mathbf{y} = \mathbf{b}$ and $\mathbf{U}\mathbf{x} = \mathbf{y}$) using forward and back substitution. The cost for *each* solve is only $\mathcal{O}(N^2)$.
-This approach avoids re-doing the $O(N^3)$ elimination 1000 times.
-
-# **Chapter 13: On Projects: Linear Systems and Circuits () () (Workbook)**
+## **13.8 Hands-On Projects** {.heading-with-pill}
 
 **1. Project: Simulating a Resistor Network (Core Application)**
 

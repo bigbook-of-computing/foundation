@@ -2,14 +2,19 @@
 
 ---
 
+This Codebook implements the final pillar of the computational toolkit: **Stochastic Methods**. We demonstrate the **Random Walk** as a microscopic model for diffusion and use **Monte Carlo Integration** to solve integrals with characteristic $1/\sqrt{N}$ convergence.
+
+---
+
 ## Project 1: The Random Walk (Microscopic Diffusion)
 
-| Feature | Description |
+| Component | Description |
 | :--- | :--- |
-| **Goal** | Simulate a **1D Random Walk** (modeling a particle's random motion due to collisions) to verify the microscopic law of diffusion: the **Root Mean Square (RMS) displacement** scales with the **square root of time** ($\Delta x_{\text{RMS}} \propto \sqrt{t}$). |
-| **Model** | At each time step, the walker moves $\mathbf{+1}$ or $\mathbf{-1}$ unit with equal probability. |
-| **Method** | **Stochastic Simulation** using a **Pseudo-Random Number Generator (PRNG)** to decide the direction of each step. The result is averaged over many walkers to find the statistical RMS displacement. |
-| **Physical Result** | The final plot must confirm the $\mathbf{\Delta x \propto \sqrt{t}}$ relationship, linking the random walk to the macroscopic **Heat Equation** (Chapter 11). |
+| **Objective** | Simulate 5000 random walkers to verify $\Delta x_{\text{RMS}} \propto \sqrt{t}$. |
+| **Mathematical Concept** | Microscopic stochastic process; ensemble averaging. |
+| **Experiment Setup** | 1000 step walks; $\pm 1$ step size; seed-locked PRNG. |
+| **Expected Behavior** | RMS displacement grows linearly with the square root of time. |
+| **Verification Goal** | Match the simulated growth rate to the theoretical $\sqrt{t}$ curve. |
 
 ---
 
@@ -177,12 +182,13 @@ as a stochastic model for diffusion.
 ```
 ## Project 2: Monte Carlo Integration (Area Under a Curve)
 
-| Feature | Description |
+| Component | Description |
 | :--- | :--- |
-| **Goal** | Calculate the area of a simple 2D region (an integral) using **Monte Carlo Integration** (the "dart-throwing" method) to demonstrate the method's feasibility and convergence rate ($\propto 1/\sqrt{N}$). |
-| **Model** | Integrate the function $f(x) = x^2$ over the domain $[0, 1]$. The analytic integral is $\int_0^1 x^2 dx = \frac{1}{3} \approx 0.3333$. |
-| **Method** | The integral is approximated as the average function value $\langle f \rangle$ times the domain volume $V$: $I \approx V \cdot \langle f \rangle = (1-0) \cdot \frac{1}{N} \sum_{i=1}^N f(x_i)$, where $x_i$ are uniform random samples. |
-| **Core Concept** | The error is statistical, controlled only by the number of samples ($N$), not the complexity of the function or the dimensionality of the problem. |
+| **Objective** | Calculate $\int_0^1 x^2 dx$ using stochastic sampling. |
+| **Mathematical Concept** | Mean Value Theorem: $I \approx (b-a) \cdot \frac{1}{N} \sum f(x_i)$. |
+| **Experiment Setup** | Increasing $N$ from $10^1$ to $10^6$ to track convergence. |
+| **Expected Behavior** | Error decreases as $1/\sqrt{N}$ (power law with slope -0.5). |
+| **Verification Goal** | Demonstrate statistical convergence regardless of $N$ magnitude. |
 
 ---
 

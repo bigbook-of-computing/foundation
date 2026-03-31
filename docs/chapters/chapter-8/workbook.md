@@ -1,49 +1,35 @@
-# **Chapter 8: Initial Value Problems II — The Leapfrog & Verlet (Workbook)**
+# **Chapter 8: Initial Value Problems II (Workbook)**
 
-### 8.1 Chapter Opener: The Problem of "Forever"
+---
 
-> Summary: For long-term conservative systems (like orbits), the $\mathcal{O}(h^4)$ RK4 method fails due to slow, accumulating energy drift. The solution is the **symplectic integrator**, which preserves the Hamiltonian geometry for infinite-term stability.
+> **Summary:** This workbook moves beyond simple accuracy to explore the **Geometry of Phase Space**. For long-term conservative systems (like planetary orbits), even high-order methods like RK4 fail due to secular energy drift. We introduce **Symplectic Integrators**—specifically the **Verlet** and **Leapfrog** families—which preserve the Hamiltonian structure, ensuring physical fidelity over infinite timescales.
 
-In Chapter 7, we established the **Runge–Kutta 4th Order (RK4)** integrator as the numerical masterpiece for short-term motion and systems that *lose* energy (dissipative systems). However, for systems that must **conserve** total energy (conservative systems, such as orbits, springs, and molecular dynamics simulations), RK4 is inadequate.
+---
 
-**The Problem: RK4 Energy Drift**
+## **8.1 The Problem of "Forever"** {.heading-with-pill}
 
-RK4, despite its high local accuracy ($\mathcal{O}(h^5)$ local error), does **not** respect the hidden symmetries of Hamiltonian physics. Every step introduces a tiny numerical imbalance; over millions of steps, these errors accumulate, causing the total energy ($E$) to slowly **drift** upward or downward.
+> **Difficulty:** ★★★☆☆
+> 
+> **Concept:** Symplecticity vs. Absolute Accuracy
+> 
+> **Summary:** For systems that must conserve total energy, such as orbits or molecular dynamics, standard integrators suffer from "Numerical Heat Death." This section explains why $O(h^4)$ precision is secondary to structural preservation in long-term simulations.
 
-* **Consequence:** A stable orbit spirals away, or a molecular box heats up for no physical reason, leading to a numerical "**heat death**".
+### **Comprehension Check**
 
-**The Solution: Symplectic Integrators**
+!!! note "Quiz"
+    1. Why does the RK4 method, despite its high local accuracy, fail to conserve total energy in a long-term simulation of a harmonic oscillator?
+    2. How do symplectic integrators behave with respect to energy conservation over long time periods?
 
-We adopt a new philosophy: sacrifice some short-term precision for long-term fidelity. **Symplectic integrators** are structure-preserving algorithms designed to conserve the **geometry of phase space** (the invariant area/volume of all possible states) dictated by Hamilton’s equations.
+??? info "See Answer"
+    1. **RK4 does not preserve the symplectic geometry of Hamiltonian systems, leading to accumulating error.**
+    2. **The energy oscillates around the true mean value but remains bounded.**
 
-* **Energy Behavior:** Symplectic algorithms conserve a **shadow Hamiltonian** ($\tilde{H}$). This means the energy will gently **oscillate** about the true value but will **never drift away**.
-* **Time Reversibility:** These methods are inherently **time-reversible**—running the simulation backward exactly recovers the initial state.
-
-### Comprehension & Conceptual Questions
-
-#### Quiz Questions
-
-**1. Why does the RK4 method, despite its high local accuracy, fail to conserve total energy in a long-term simulation of a harmonic oscillator?**
-
-* a) RK4 uses variable step sizes that cause numerical instability.
-* b) RK4 is only a first-order accurate method.
-* c) RK4 does **not** preserve the symplectic geometry of Hamiltonian systems, leading to accumulating error. (**Correct**)
-* d) RK4 is too slow for millions of steps.
-
-**2. How do symplectic integrators behave with respect to energy conservation over long time periods?**
-
-* a) The energy slowly drifts away from the starting value.
-* b) The energy is perfectly conserved to machine precision.
-* c) The energy **oscillates** around the true mean value but remains **bounded**. (**Correct**)
-* d) They systematically subtract energy, simulating friction.
-
-#### Interview-Style Question
-
-**Question:** Explain the difference between *accuracy per step* and *global stability* in numerical integration, using the "circle-drawing" analogy provided in the chapter.
-
-**Answer Strategy:**
-* **Accuracy (RK4):** RK4 focuses on *local precision*—making each small step as close as possible to the true analytical curve. However, because it breaks the inherent geometry, the accumulation of tiny errors causes the overall trajectory (the circle) to **drift** into a spiral.
-* **Global Stability (Verlet):** Symplectic integrators sacrifice a little local precision (the steps might "wiggle") to focus on preserving the **structure** (the phase-space area). This structural conservation guarantees that the trajectory (the circle) remains **closed and bounded** forever.
+!!! abstract "Interview-Style Question"
+    **Question:** Explain the difference between *accuracy per step* and *global stability* in numerical integration, using the "circle-drawing" analogy provided in the chapter.
+    
+    ???+ info "Answer Strategy"
+        - **Accuracy (RK4):** RK4 focuses on *local precision*—making each small step as close as possible to the true analytical curve. However, because it breaks the inherent geometry, the accumulation of tiny errors causes the overall trajectory (the circle) to **drift** into a spiral.
+        - **Global Stability (Verlet):** Symplectic integrators sacrifice a little local precision (the steps might "wiggle") to focus on preserving the **structure** (the phase-space area). This structural conservation guarantees that the trajectory (the circle) remains **closed and bounded** forever.
 
 ### Hands-On Project
 
@@ -162,76 +148,30 @@ The stability of Velocity–Verlet ensures that these simulated orbits remain pe
 
 ---
 
-# **Chapter 8: Symplectic Integrators and Long-Term Dynamics () () (Workbook)**
+### **Comprehension Check**
 
-**1. What is the main limitation of RK4 that motivates the use of symplectic integrators?**
+!!! note "Quiz"
+    1. What is the main limitation of RK4 that motivates the use of symplectic integrators?
+    2. What mathematical property does a symplectic integrator preserve to ensure long-term stability?
+    3. What is the order of accuracy of the basic Verlet algorithm?
+    4. How is the Verlet algorithm formula derived?
+    5. Why is the Velocity–Verlet algorithm often preferred over the original Verlet algorithm?
+    6. The Velocity–Verlet method is structured as a sequence of:
+    7. In the Leapfrog scheme, if $x_n$ is known at time $t_n$, at what time is the velocity $v$ known?
+    8. Which statement about the relationship between Leapfrog and Velocity–Verlet is true?
+    9. For a three-body planetary simulation, what is the computational cost of the `get_accelerations` function per time step?
+    10. What is the total energy of a conservative harmonic oscillator?
 
-* a) RK4 is too slow for real-time simulations.
-* b) RK4 does not conserve total energy in Hamiltonian systems, causing secular drift. (**Correct**)
-* c) RK4 is only first-order accurate.
-* d) RK4 cannot handle vector systems.
-
-**2. What mathematical property does a symplectic integrator preserve to ensure long-term stability?**
-
-* a) The maximum position ($x_{\max}$).
-* b) The phase-space area/volume. (**Correct**)
-* c) The derivative $f'(x)$.
-* d) The initial condition $x_0$.
-
-**3. What is the order of accuracy of the basic Verlet algorithm?**
-
-* a) $\mathcal{O}(h)$
-* b) $\mathcal{O}(h^2)$ (**Correct**)
-* c) $\mathcal{O}(h^4)$
-* d) $\mathcal{O}(h^5)$
-
-**4. How is the Verlet algorithm formula derived?**
-
-* a) By subtracting the forward and backward Taylor expansions, canceling the even terms.
-* b) By adding the forward and backward Taylor expansions, canceling the odd terms ($v, b$). (**Correct**)
-* c) By using a high-order polynomial fit.
-* d) By solving the $2 \times 2$ matrix system.
-
-**5. Why is the Velocity–Verlet algorithm often preferred over the original Verlet algorithm?**
-
-* a) It has a higher order of accuracy ($\mathcal{O}(h^4)$).
-* b) It is non-symplectic, making it faster.
-* c) It explicitly calculates both position ($x$) and velocity ($v$) synchronously at every step. (**Correct**)
-* d) It only requires one initial guess.
-
-**6. The Velocity–Verlet method is structured as a sequence of:**
-
-* a) Predictor–Corrector–Averager.
-* b) Forward–Centered–Backward.
-* c) Kick–Drift–Kick (half-step velocity, full-step position, half-step velocity). (**Correct**)
-* d) $\mathcal{O}(h^4)$ approximation, $\mathcal{O}(h^2)$ approximation.
-
-**7. In the Leapfrog scheme, if $x_n$ is known at time $t_n$, at what time is the velocity $v$ known?**
-
-* a) $t_n$ (synchronous)
-* b) $t_{n+1}$ (ahead of time)
-* c) $t_{n+1/2}$ (staggered by half a step) (**Correct**)
-* d) $t_{n-1}$ (behind time)
-
-**8. Which statement about the relationship between Leapfrog and Velocity–Verlet is true?**
-
-* a) They have different accuracy orders.
-* b) They are non-symplectic.
-* c) They are mathematically equivalent, representing the same symplectic map with different variable timing. (**Correct**)
-* d) Leapfrog is RK4, and Velocity–Verlet is RK2.
-
-**9. For a three-body planetary simulation, what is the computational cost of the `get_accelerations` function per time step?**
-
-* a) $\mathcal{O}(N)$
-* b) $\mathcal{O}(N \log N)$
-* c) $\mathcal{O}(N^2)$ (**Correct**)
-* d) $\mathcal{O}(N^3)$
-
-**10. What is the total energy of a conservative harmonic oscillator?**
-
-* a) $E = \frac{p^2}{2m} + F(x)$
-* b) $E = \frac{1}{2}v^2 + \frac{1}{2}x^2$ (**Correct**)
-* c) $E = m \cdot x''$
-* d) $E = x_n - x_{n-1}$
+??? info "See Answer"
+    1. **RK4 does not conserve total energy in Hamiltonian systems, causing secular drift.**
+    2. **The phase-space area/volume.**
+    3. **$\mathcal{O}(h^2)$**.
+    4. **By adding the forward and backward Taylor expansions, canceling the odd terms ($v, b$).**
+    5. **It explicitly calculates both position ($x$) and velocity ($v$) synchronously at every step.**
+    6. **Kick–Drift–Kick (half-step velocity, full-step position, half-step velocity).**
+    7. **$t_{n+1/2}$ (staggered by half a step)**.
+    8. **They are mathematically equivalent, representing the same symplectic map with different variable timing.**
+    9. **$\mathcal{O}(N^2)$**.
+    10. **$E = \frac{1}{2}v^2 + \frac{1}{2}x^2$**.
 
 ***

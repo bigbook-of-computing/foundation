@@ -1,17 +1,20 @@
 # **Chapter 13: Systems of Linear Equations (Codebook)**
 
-This Python Code Book for **Chapter 13: Systems of Linear Equations**, focusing on demonstrating the efficient solution of systems, particularly the specialized method for tridiagonal matrices common in FDM.
+---
+
+This Codebook implements the core algorithms for solving $\mathbf{A}\mathbf{x} = \mathbf{b}$. We demonstrate the efficiency of the specialized **Thomas Algorithm** for tridiagonal systems and perform a **Numerical Stability Check** to empirically prove why explicit matrix inversion is flawed.
 
 ---
 
 ## Project 1: Tridiagonal System Solver (Thomas Algorithm)
 
-| Feature | Description |
+| Component | Description |
 | :--- | :--- |
-| **Goal** | Solve a linear system $\mathbf{A}\mathbf{x} = \mathbf{b}$ where the matrix $\mathbf{A}$ is **tridiagonal**, representing a steady-state 1D BVP (Chapter 9) or an implicit PDE step (Chapter 11). |
-| **Model** | Solve a system where $\mathbf{A}$ is a uniform tridiagonal matrix: main diagonal elements are $\mathbf{2.0}$ and off-diagonal elements are $\mathbf{-1.0}$. This structure is the result of applying the $O(h^2)$ FDM stencil for $y''=0$. |
-| **Method** | **Thomas Algorithm** (a simplified, $\mathcal{O}(N)$ version of LU Decomposition). We use the highly optimized `scipy.linalg.solve_banded`. |
-| **Core Concept** | Demonstrate the massive efficiency gain of the $\mathcal{O}(N)$ Thomas Algorithm over the general $\mathcal{O}(N^3)$ Gaussian Elimination for sparse, banded matrices. |
+| **Objective** | Solve a large tridiagonal system $\mathbf{A}\mathbf{x} = \mathbf{b}$ ($N=1000$). |
+| **Mathematical Concept** | Thomas Algorithm: A specialized $O(N)$ version of LU Decomposition. |
+| **Experiment Setup** | Comparing `solve_banded` (Thomas) vs. general `lu_solve` ($O(N^3)$). |
+| **Expected Behavior** | Massive speedup (up to 100x+) for the specialized solver on sparse grids. |
+| **Verification Goal** | Quantify the performance gain of exploiting matrix sparsity. |
 
 ---
 
@@ -212,13 +215,15 @@ exploiting the sparse matrix structure (O(N) vs. O(N³)).
 
 
 ```
-## Project 2: Stability Check (Avoiding $\mathbf{A}^{-1}$)
+## Project 2: Stability Check (Avoiding A⁻¹)
 
-| Feature | Description |
+| Component | Description |
 | :--- | :--- |
-| **Goal** | Empirically demonstrate the numerical instability and time cost of calculating the explicit matrix inverse $\mathbf{A}^{-1}$ to solve $\mathbf{A}\mathbf{x} = \mathbf{b}$, reinforcing the principle: **never compute $\mathbf{A}^{-1}$**. |
-| **Method** | Calculate the solution $\mathbf{x}$ using three methods: $\mathbf{x} = \mathbf{A}^{-1}\mathbf{b}$, $\mathbf{x} = \text{Thomas Algorithm}$, and $\mathbf{x} = \text{scipy.linalg.solve}$ (standard general solver). |
-| **Core Concept** | The error in the solution derived from the inverse $\mathbf{A}^{-1}$ is typically much larger than the error from $\mathbf{x} = \text{solve}(\mathbf{A}, \mathbf{b})$, despite both being $\mathcal{O}(N^3)$ in complexity. |
+| **Objective** | Prove that $\mathbf{x} = \mathbf{A}^{-1}\mathbf{b}$ is numerically inferior to $\text{solve}(\mathbf{A}, \mathbf{b})$. |
+| **Mathematical Concept** | Comparing explicit inversion vs. decomposition-based solvers. |
+| **Experiment Setup** | Measuring execution time and absolute error against a known solution. |
+| **Expected Behavior** | Inversion is both slower and leads to higher round-off error accumulation. |
+| **Verification Goal** | Enforce the best practice of using built-in solvers over inversion. |
 
 ---
 

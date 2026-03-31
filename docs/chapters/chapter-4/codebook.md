@@ -1,311 +1,128 @@
-# **Chapter 4: End-to-End Interpolation and Fitting Workflow (Codebook)**
+# **Chapter 4: Interpolation, Fitting, and Residual Judgment (Codebook)**
 
 ---
 
-## Project Scope
-
-This codebook provides a complete modeling workflow from raw data behavior inspection to interpolation, fitting, and residual diagnostics.
-
-Generated artifacts:
-
-- `codes/ch4_interpolation_comparison.png`
-- `codes/ch4_runge_phenomenon.png`
-- `codes/ch4_fit_residuals.png`
-- `codes/ch4_model_selection_metrics.png`
+This Codebook provides the technical implementation for modeling datasets. We explore the two fundamental strategies: **Interpolation** (treating data as exact constraints) and **Least-Squares Fitting** (treating data as noisy observations). We also demonstrate the dangerous instability of high-degree polynomials known as **Runge's Phenomenon**.
 
 ---
 
-## Step 1: Synthetic Dataset Construction
+## Project 1: Splines vs. Global Polynomials
+
+| Feature | Description |
+| :--- | :--- |
+| **Goal** | Interpolate a sparse set of 10 points using both a 9th-degree Lagrange polynomial and a Piecewise Cubic Spline. |
+| **Mathematical Model** | Runge's test function: $f(x) = 1 / (1 + 25x^2)$. |
+| **Core Concept** | Identifying the **boundary oscillations** characteristic of high-degree global interpolation. |
+
+### Complete Python Code
 
 ```python
-import numpy as np
-
-rng = np.random.default_rng(123)
-
-## Clean reference signal
-
-x_clean = np.linspace(0.0, 6.0, 25)
-y_clean = np.sin(x_clean)
-
-## Noisy observation set
-
-noise_sigma = 0.12
-y_noisy = y_clean + noise_sigma * rng.standard_normal(len(x_clean))
-
-print("N samples:", len(x_clean))
-print("Noise sigma:", noise_sigma)
-print("y mean:", float(np.mean(y_noisy)))
-print("y std:", float(np.std(y_noisy)))
-```
-**Sample Output:**
-```python
-N samples: 25
-Noise sigma: 0.12
-y mean: 0.020236479105575248
-y std: 0.714938022076501
-```
-
----
-
-## Step 2: Interpolation vs Trend Fit Visualization
-
-```python
-from pathlib import Path
 import numpy as np
 import matplotlib.pyplot as plt
-from scipy.interpolate import CubicSpline
+from scipy.interpolate import BarycentricInterpolator, CubicSpline
 
-codes_dir = Path("docs/chapters/chapter-4/codes")
-codes_dir.mkdir(parents=True, exist_ok=True)
+def compare_interpolation_methods():
+    """Demonstrates Runge's Phenomenon and the stability of Cubic Splines."""
+    
+    # 1. Target function (Runge's function)
+    f = lambda x: 1.0 / (1.0 + 25.0 * x**2)
+    
+    # 2. Sparse interpolation nodes (Uniform)
+    x_nodes = np.linspace(-1, 1, 11)
+    y_nodes = f(x_nodes)
+    
+    # 3. Interpolants
+    poly = BarycentricInterpolator(x_nodes, y_nodes)
+    spline = CubicSpline(x_nodes, y_nodes)
+    
+    # 4. Evaluation grid
+    x_dense = np.linspace(-1, 1, 500)
+    
+    # Visualization
+    plt.figure(figsize=(10, 6), dpi=150)
+    plt.plot(x_dense, f(x_dense), 'k--', alpha=0.5, label='True Function')
+    plt.plot(x_dense, poly(x_dense), 'r-', label='9th-Degree Polynomial')
+    plt.plot(x_dense, spline(x_dense), 'b-', label='Cubic Spline')
+    plt.scatter(x_nodes, y_nodes, color='black', s=20, zorder=3)
+    
+    plt.ylim(-0.5, 1.5)
+    plt.title("Runge's Phenomenon: The Danger of Global Interpolation")
+    plt.legend()
+    plt.grid(True, alpha=0.2)
+    plt.savefig("codes/ch4_interpolation_comparison.png")
+    plt.close()
 
-rng = np.random.default_rng(123)
-x = np.linspace(0.0, 6.0, 25)
-y_true = np.sin(x)
-y_noisy = y_true + 0.12 * rng.standard_normal(len(x))
-
-x_dense = np.linspace(x.min(), x.max(), 500)
-
-## Interpolation through all noisy points
-
-spline = CubicSpline(x, y_noisy)
-y_spline = spline(x_dense)
-
-## Quadratic least-squares trend
-
-coef2 = np.polyfit(x, y_noisy, deg=2)
-y_fit2 = np.polyval(coef2, x_dense)
-
-fig, ax = plt.subplots(figsize=(8.4, 5.0))
-ax.plot(x_dense, np.sin(x_dense), linestyle="--", color="black", linewidth=1.5, label="true sin(x)")
-ax.scatter(x, y_noisy, color="tab:blue", s=20, alpha=0.75, label="noisy samples")
-ax.plot(x_dense, y_spline, color="tab:orange", linewidth=2.0, label="cubic spline interpolation")
-ax.plot(x_dense, y_fit2, color="tab:green", linewidth=2.0, label="quadratic least-squares fit")
-
-ax.set_title("Chapter 4: Interpolation vs Trend Fitting")
-ax.set_xlabel("x")
-ax.set_ylabel("y")
-ax.grid(True, alpha=0.3)
-ax.legend()
-
-out_file = codes_dir / "ch4_interpolation_comparison.png"
-fig.savefig(out_file, dpi=160, bbox_inches="tight")
-plt.close(fig)
-
-print(f"Saved figure to: {out_file}")
+if __name__ == "__main__":
+    compare_interpolation_methods()
 ```
 
-![Interpolation vs fitting](codes/ch4_interpolation_comparison.png)
+### Expected Outcome and Interpretation
+
+The output clearly shows the **Runge Ripple**. While the global polynomial is exact at the 11 nodes, it oscillates wildly between the nodes near the edges ($\pm 1$). The Cubic Spline, being piecewise, remains perfectly stable and follows the true function much more faithfully. This validates a core principle: **Global degree $N$ is almost never the answer for large $N$.**
 
 ---
 
-## Step 3: Runge Phenomenon Demonstration
+## Project 2: Noisy Data & Residual Analysis
+
+| Feature | Description |
+| :--- | :--- |
+| **Goal** | Fit a linear model to noisy synthetic data and analyze the distribution of errors (residuals). |
+| **Mathematical Model** | $y_i = a x_i + b + \epsilon$; Least-Squares Regression. |
+| **Core Concept** | Using **Residual Plots** to verify model adequacy and detect hidden bias. |
+
+### Complete Python Code
 
 ```python
-from pathlib import Path
 import numpy as np
 import matplotlib.pyplot as plt
 
-codes_dir = Path("docs/chapters/chapter-4/codes")
-codes_dir.mkdir(parents=True, exist_ok=True)
+def audit_linear_fit():
+    """Fits noisy linear data and analyzes the residuals."""
+    
+    # 1. Generate data
+    np.random.seed(42)
+    x = np.linspace(0, 10, 50)
+    y_true = 2.5 * x + 5.0
+    noise = np.random.normal(0, 2.0, size=x.shape)
+    y_obs = y_true + noise
+    
+    # 2. Least-Squares Fit
+    slope, intercept = np.polyfit(x, y_obs, deg=1)
+    y_fit = slope * x + intercept
+    residuals = y_obs - y_fit
+    
+    # 3. Create Multi-Panel Diagnostic Plot
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 5))
+    
+    # Panel A: The Fit
+    ax1.scatter(x, y_obs, color='gray', alpha=0.6, label='Observations')
+    ax1.plot(x, y_fit, 'r-', linewidth=2, label=f'Fit: {slope:.2f}x + {intercept:.2f}')
+    ax1.set_title("Linear Least-Squares Fit")
+    ax1.legend()
+    
+    # Panel B: Residuals
+    ax2.scatter(x, residuals, color='purple', alpha=0.7)
+    ax2.axhline(0, color='black', linestyle='--')
+    ax2.set_title("Residual Distribution (Noise Analysis)")
+    ax2.set_ylabel("Error ($y_{obs} - y_{fit}$)")
+    
+    plt.savefig("codes/ch4_fit_residuals.png")
+    plt.close()
 
-
-def runge(x):
-    return 1.0 / (1.0 + 25.0 * x * x)
-
-x_dense = np.linspace(-1.0, 1.0, 1200)
-y_dense = runge(x_dense)
-
-## Uniform-node interpolation (high-degree)
-
-n = 16
-x_uni = np.linspace(-1.0, 1.0, n)
-y_uni = runge(x_uni)
-coef_uni = np.polyfit(x_uni, y_uni, deg=n - 1)
-y_uni_interp = np.polyval(coef_uni, x_dense)
-
-## Chebyshev-like nodes
-
-k = np.arange(n)
-x_cheb = np.cos((2 * k + 1) * np.pi / (2 * n))
-x_cheb = np.sort(x_cheb)
-y_cheb = runge(x_cheb)
-coef_cheb = np.polyfit(x_cheb, y_cheb, deg=n - 1)
-y_cheb_interp = np.polyval(coef_cheb, x_dense)
-
-fig, ax = plt.subplots(figsize=(8.4, 5.0))
-ax.plot(x_dense, y_dense, color="black", linewidth=2.0, label="true Runge function")
-ax.plot(x_dense, y_uni_interp, color="tab:red", linewidth=1.7, label="uniform-node interpolation")
-ax.plot(x_dense, y_cheb_interp, color="tab:blue", linewidth=1.7, label="chebyshev-node interpolation")
-ax.scatter(x_uni, y_uni, color="tab:red", s=16, alpha=0.6)
-ax.scatter(x_cheb, y_cheb, color="tab:blue", s=16, alpha=0.6)
-
-ax.set_ylim(-0.6, 1.4)
-ax.set_title("Chapter 4: Runge Phenomenon and Node Choice")
-ax.set_xlabel("x")
-ax.set_ylabel("f(x)")
-ax.grid(True, alpha=0.3)
-ax.legend(loc="upper center")
-
-out_file = codes_dir / "ch4_runge_phenomenon.png"
-fig.savefig(out_file, dpi=160, bbox_inches="tight")
-plt.close(fig)
-
-max_err_uni = float(np.max(np.abs(y_uni_interp - y_dense)))
-max_err_cheb = float(np.max(np.abs(y_cheb_interp - y_dense)))
-
-print(f"Saved figure to: {out_file}")
-print("max error (uniform nodes):", max_err_uni)
-print("max error (chebyshev nodes):", max_err_cheb)
+if __name__ == "__main__":
+    audit_linear_fit()
 ```
 
-![Runge phenomenon](codes/ch4_runge_phenomenon.png)
+### Expected Outcome and Interpretation
+
+The residual plot (Panel B) shows points randomly scattered around zero with no visible trend (no "smile" or "frown"). This confirms that the **Linear Model is adequate** for this data. If the residuals showed a curved pattern, it would be a signal that our data is actually non-linear (e.g., quadratic) and that we are **Underfitting** the physics.
 
 ---
 
-## Step 4: Fit Residual Diagnostics (Linear, Quadratic, Cubic)
+## **References**
 
-```python
-from pathlib import Path
-import numpy as np
-import matplotlib.pyplot as plt
+[1] de Boor, C. (1978). *A Practical Guide to Splines*. Springer-Verlag.
 
-codes_dir = Path("docs/chapters/chapter-4/codes")
-codes_dir.mkdir(parents=True, exist_ok=True)
+[2] Trefethen, L. N. (2012). *Approximation Theory and Approximation Practice*. SIAM.
 
-rng = np.random.default_rng(321)
-x = np.linspace(-2.0, 2.0, 80)
-y_true = 0.4 * x ** 3 - 0.8 * x + 0.5
-y = y_true + 0.35 * rng.standard_normal(len(x))
-
-models = {}
-for deg in [1, 2, 3]:
-    coef = np.polyfit(x, y, deg=deg)
-    y_hat = np.polyval(coef, x)
-    resid = y - y_hat
-    rmse = float(np.sqrt(np.mean(resid ** 2)))
-    models[deg] = {"coef": coef, "y_hat": y_hat, "resid": resid, "rmse": rmse}
-
-fig, axes = plt.subplots(2, 2, figsize=(10.2, 7.2), constrained_layout=True)
-ax_fit = axes[0, 0]
-ax_r1 = axes[0, 1]
-ax_r2 = axes[1, 0]
-ax_r3 = axes[1, 1]
-
-x_dense = np.linspace(x.min(), x.max(), 500)
-ax_fit.scatter(x, y, s=16, alpha=0.6, color="tab:gray", label="data")
-for deg, color in [(1, "tab:red"), (2, "tab:blue"), (3, "tab:green")]:
-    ax_fit.plot(x_dense, np.polyval(models[deg]["coef"], x_dense), color=color, linewidth=2.0, label=f"deg {deg}")
-ax_fit.set_title("Model Fits")
-ax_fit.set_xlabel("x")
-ax_fit.set_ylabel("y")
-ax_fit.grid(True, alpha=0.3)
-ax_fit.legend()
-
-for ax, deg, color in [(ax_r1, 1, "tab:red"), (ax_r2, 2, "tab:blue"), (ax_r3, 3, "tab:green")]:
-    ax.scatter(x, models[deg]["resid"], s=14, alpha=0.65, color=color)
-    ax.axhline(0.0, color="black", linewidth=1.0)
-    ax.set_title(f"Residuals (deg {deg}), RMSE={models[deg]['rmse']:.3f}")
-    ax.set_xlabel("x")
-    ax.set_ylabel("residual")
-    ax.grid(True, alpha=0.3)
-
-out_file = codes_dir / "ch4_fit_residuals.png"
-fig.savefig(out_file, dpi=160, bbox_inches="tight")
-plt.close(fig)
-
-print(f"Saved figure to: {out_file}")
-for deg in [1, 2, 3]:
-    print(f"degree {deg} RMSE: {models[deg]['rmse']:.5f}")
-```
-
-![Fit residuals](codes/ch4_fit_residuals.png)
-
----
-
-## Step 5: Model Selection Summary Plot
-
-```python
-from pathlib import Path
-import numpy as np
-import matplotlib.pyplot as plt
-
-codes_dir = Path("docs/chapters/chapter-4/codes")
-codes_dir.mkdir(parents=True, exist_ok=True)
-
-rng = np.random.default_rng(321)
-x = np.linspace(-2.0, 2.0, 80)
-y_true = 0.4 * x ** 3 - 0.8 * x + 0.5
-y = y_true + 0.35 * rng.standard_normal(len(x))
-
-rmse_vals = []
-aic_vals = []
-
-for deg in [1, 2, 3, 4, 5]:
-    coef = np.polyfit(x, y, deg=deg)
-    y_hat = np.polyval(coef, x)
-    resid = y - y_hat
-    rss = float(np.sum(resid ** 2))
-    n = len(x)
-    k = deg + 1
-    rmse = float(np.sqrt(rss / n))
-    aic = float(n * np.log(rss / n) + 2 * k)
-    rmse_vals.append(rmse)
-    aic_vals.append(aic)
-
-deg_axis = np.array([1, 2, 3, 4, 5])
-
-fig, ax1 = plt.subplots(figsize=(8.4, 5.0))
-ax1.plot(deg_axis, rmse_vals, marker="o", color="tab:blue", linewidth=2.0, label="RMSE")
-ax1.set_xlabel("polynomial degree")
-ax1.set_ylabel("RMSE", color="tab:blue")
-ax1.tick_params(axis="y", labelcolor="tab:blue")
-ax1.grid(True, alpha=0.3)
-
-ax2 = ax1.twinx()
-ax2.plot(deg_axis, aic_vals, marker="s", color="tab:orange", linewidth=2.0, label="AIC")
-ax2.set_ylabel("AIC", color="tab:orange")
-ax2.tick_params(axis="y", labelcolor="tab:orange")
-
-ax1.set_title("Chapter 4: Error-Complexity Tradeoff (RMSE vs AIC)")
-
-out_file = codes_dir / "ch4_model_selection_metrics.png"
-fig.savefig(out_file, dpi=160, bbox_inches="tight")
-plt.close(fig)
-
-print(f"Saved figure to: {out_file}")
-print("RMSE values:", rmse_vals)
-print("AIC values:", aic_vals)
-```
-
-![Model selection metrics](codes/ch4_model_selection_metrics.png)
-
----
-
-## Step 6: Validation Checklist
-
-1. State whether task is interpolation or fitting.
-2. Use domain-safe evaluation range and flag extrapolation.
-3. Pair scalar metrics with residual plots.
-4. Report model complexity and uncertainty considerations.
-5. Keep generated outputs chapter-local for reproducibility.
-
----
-
-## Step 7: Git Snapshot
-
-```python
-git add docs/chapters/chapter-4/essay.md
-git add docs/chapters/chapter-4/workbook.md
-git add docs/chapters/chapter-4/codebook.md
-git add docs/chapters/chapter-4/codes/ch4_interpolation_comparison.png
-git add docs/chapters/chapter-4/codes/ch4_runge_phenomenon.png
-git add docs/chapters/chapter-4/codes/ch4_fit_residuals.png
-git add docs/chapters/chapter-4/codes/ch4_model_selection_metrics.png
-git commit -m "Chapter 4: full-depth pedagogical and codebook upgrade"
-```
-
----
-
-## Bridge
-
-Chapter 4 formalized data-to-model decisions. Chapter 5 will use these approximations to compute derivatives and integrals from discrete samples while managing noise amplification and truncation behavior.
+[3] Draper, N. R., & Smith, H. (1998). *Applied Regression Analysis*. Wiley-Interscience.

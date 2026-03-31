@@ -1,51 +1,34 @@
-# **Chapter 7: Initial Value Problems I: The Basics (Workbook)**
+# **Chapter 7: Initial Value Problems I (Workbook)**
 
-### 7.1 Chapter Opener: The Physics of "What Happens Next?"
+---
 
-> Summary: Dynamics in physics are governed by differential equations (ODEs), creating the **Initial Value Problem (IVP)**: predicting a system's future trajectory given its current state and the "rules of change" ($dx/dt$).
+> **Summary:** This workbook introduces the "March of Time"—the computational process of predicting a system's future trajectory from its current state. We move from the conceptually simple but unstable **Euler's Method** ($O(h)$) to the industry-standard **Fourth-Order Runge-Kutta (RK4)** ($O(h^4)$) method. You will learn how to convert high-order physical laws into first-order systems and analyze the critical role of **Stability** and **Accuracy** in dynamic simulations.
 
-We have built our "digital workbench" (Chapters 1-2) and mastered the "static" tools of calculus (Chapters 3-6). We are now ready to model **dynamic systems**. The most fundamental laws of nature are not static equations, but **differential equations** that describe the *evolution* of a system in time.
+---
 
-**The "Why" (Physical Examples)**
+## **7.1 The Physics of "What Happens Next?"** {.heading-with-pill}
 
-* **Newton's Second Law:** The master equation, which is a **second-order** ODE: $F = ma \implies \frac{d^2x}{dt^2} = \frac{F(x, v, t)}{m}$.
-* **Radioactive Decay:** A **first-order** ODE: $\frac{dN}{dt} = -\lambda N$.
-* **Population Dynamics (Lotka-Volterra):** **Coupled** first-order ODEs, such as $\frac{dx}{dt} = \alpha x - \beta xy$.
+> **Difficulty:** ★★☆☆☆
+> 
+> **Concept:** The Initial Value Problem (IVP)
+> 
+> **Summary:** Dynamics in physics are governed by differential equations (ODEs). Predicting the future requires both the "rules of change" (the ODE) and the "initial state" ($t_0, x_0$). This section defines the IVP and the strategy for its discrete numerical solution.
 
-**The "Problem": The Initial Value Problem (IVP)**
+### **Comprehension Check**
 
-The IVP requires two things: the "rules of change" in the form of a derivative ($\frac{dx}{dt} = f(x, t)$) and the **initial condition** (the state of the system *now*, at time $t_0$). The goal is to predict the entire future *trajectory* ($x(t)$ for all $t > t_0$).
+!!! note "Quiz"
+    1. Why do we need numerical methods for Initial Value Problems (IVPs)?
+    2. What is the general mathematical form of an Initial Value Problem (IVP)?
 
-**The "Solution": The Discrete "March of Time"**
+??? info "See Answer"
+    1. **Because differential equations describe continuous change, but computers only work with discrete time steps.**
+    2. **$\dfrac{dx}{dt} = f(x, t)$ with $x(t_0) = x_0$**.
 
-A computer cannot solve the integral $\int f(x,t) dt$ analytically. Instead, we must convert the continuous ODE into a discrete, step-by-step algorithm: the **"march of time"**.
-$$x_{n+1} \approx x_n + h \cdot f(x_n, t_n)$$
-
-The final goal is to develop an algorithm for this march that is both **accurate** (low **truncation error**) and **stable** (does not amplify **round-off error**).
-
-### Comprehension & Conceptual Questions
-
-#### Quiz Questions
-
-**1. Why do we need numerical methods for Initial Value Problems (IVPs)?**
-
-* a) Because all physical systems can be solved analytically.
-* b) Because differential equations describe continuous change, but computers only work with discrete time steps. (**Correct**)
-* c) Because derivatives are always constant in time.
-* d) Because we cannot calculate forces numerically.
-
-**2. What is the general mathematical form of an Initial Value Problem (IVP)?**
-
-* a) $f(x) = 0$
-* b) $\dfrac{dx}{dt} = f(x, t)$ with $x(t_0) = x_0$ (**Correct**)
-* c) $\dfrac{d^2x}{dt^2} = f(x)$
-* d) $x(t+h) = x(t) + h f(x, t)$
-
-#### Interview-Style Question
-
-**Question:** Why must we convert higher-order ODEs (like Newton’s $\ddot{x} = F/m$) into systems of first-order ODEs before applying numerical solvers like RK4?
-
-**Answer Strategy:** Solvers like the Runge-Kutta family (RK) are designed to integrate **first-order** differential equations (ODEs) of the form $\dot{x} = f(x, t)$ directly. They do not naturally handle second derivatives. We convert a second-order equation $\ddot{x} = f$ into a coupled system of two first-order equations by defining an auxiliary variable, usually the velocity, $v = \dot{x}$. The new system becomes: $\dot{x} = v$ and $\dot{v} = f(x, v, t)$.
+!!! abstract "Interview-Style Question"
+    **Question:** Why must we convert higher-order ODEs (like Newton’s $\ddot{x} = F/m$) into systems of first-order ODEs before applying numerical solvers like RK4?
+    
+    ???+ info "Answer Strategy"
+        Solvers like the Runge-Kutta family (RK) are designed to integrate **first-order** differential equations (ODEs) of the form $\dot{x} = f(x, t)$ directly. They do not naturally handle second derivatives. We convert a second-order equation $\ddot{x} = f$ into a coupled system of two first-order equations by defining an auxiliary variable, usually the velocity, $v = \dot{x}$. The new system becomes: $\dot{x} = v$ and $\dot{v} = f(x, v, t)$.
 
 ### Hands-On Project
 
@@ -77,29 +60,21 @@ Euler's method is highly **unstable** for certain systems. Analyzing the method 
 
 Euler's method should be avoided for most long-term simulations, especially those involving oscillations or conservation laws.
 
-### Comprehension & Conceptual Questions
+### **Comprehension Check**
 
-#### Quiz Questions
+!!! note "Quiz"
+    1. What is the order of accuracy (global truncation error) of Euler’s Method?
+    2. Why is Euler’s method *unstable* for oscillatory systems (like springs)?
 
-**1. What is the order of accuracy (global truncation error) of Euler’s Method?**
+??? info "See Answer"
+    1. **$\mathcal O(h)$ (first-order accurate)**.
+    2. **It consistently “overshoots” the true curve, adding artificial energy each step.**
 
-* a) $\mathcal O(h)$ (first-order accurate) (**Correct**)
-* b) $\mathcal O(h^2)$ (second-order accurate)
-* c) $\mathcal O(h^3)$
-* d) $\mathcal O(h^4)$
-
-**2. Why is Euler’s method *unstable* for oscillatory systems (like springs)?**
-
-* a) It assumes velocity is zero.
-* b) It consistently “overshoots” the true curve, adding artificial energy each step. (**Correct**)
-* c) It subtracts too much energy each step.
-* d) It uses variable step sizes.
-
-#### Interview-Style Question
-
-**Question:** Derive Euler’s method starting from the **Taylor series expansion** of $x(t + h)$. Which term do we truncate, and what is the resulting local truncation error?
-
-**Answer Strategy:** The derivation starts with the Taylor series: $x(t+h) = x(t) + h\dot x(t) + \frac{h^2}{2}\ddot x(\xi)$. We use the substitution $\dot x(t) = f(x(t), t)$. We then **truncate** the second-order term ($\frac{h^2}{2}\ddot x(\xi)$) and all higher-order terms. The resulting **local truncation error** (error per step) is $\mathcal O(h^2)$.
+!!! abstract "Interview-Style Question"
+    **Question:** Derive Euler’s method starting from the **Taylor series expansion** of $x(t + h)$. Which term do we truncate, and what is the resulting local truncation error?
+    
+    ???+ info "Answer Strategy"
+        The derivation starts with the Taylor series: $x(t+h) = x(t) + h\dot x(t) + \frac{h^2}{2}\ddot x(\xi)$. We use the substitution $\dot x(t) = f(x(t), t)$. We then **truncate** the second-order term ($\frac{h^2}{2}\ddot x(\xi)$) and all higher-order terms. The resulting **local truncation error** (error per step) is $\mathcal O(h^2)$.
 
 ### Hands-On Project
 
@@ -129,31 +104,23 @@ $$\boxed{x_{n+1} = x_n + h\, k_2}\qquad\text{with global error } \mathcal O(h^2)
 * **Accuracy:** RK2 is **second-order accurate** ($\mathcal O(h^2)$ global error). Halving $h$ reduces the error by a factor of $\mathbf{4}$.
 * **Mechanism:** Comparing the RK2 result to the full Taylor expansion shows that the RK2 formula perfectly matches terms up to $\mathcal O(h^2)$, causing the local truncation error to start at $\mathcal O(h^3)$.
 
-### Comprehension & Conceptual Questions
+### **Comprehension Check**
 
-#### Quiz Questions
+!!! note "Quiz"
+    1. The Midpoint (RK2) Method improves on Euler’s method by:
+    2. What is the order of accuracy (global truncation error) of the RK2 (Midpoint) Method?
 
-**1. The Midpoint (RK2) Method improves on Euler’s method by:**
+??? info "See Answer"
+    1. **Using the average of the slope at the start and midpoint of the interval.**
+    2. **$\mathcal O(h^2)$**.
 
-* a) Taking a backward difference instead of forward.
-* b) Using the average of the slope at the start and midpoint of the interval. (**Correct**)
-* c) Reducing the time step by half.
-* d) Ignoring curvature of the function.
-
-**2. What is the order of accuracy (global truncation error) of the RK2 (Midpoint) Method?**
-
-* a) $\mathcal O(h)$
-* b) $\mathcal O(h^2)$ (**Correct**)
-* c) $\mathcal O(h^3)$
-* d) $\mathcal O(h^4)$
-
-#### Interview-Style Question
-
-**Question:** In the RK family of methods, why is RK2 conceptually called a "predictor-corrector" scheme?
-
-**Answer Strategy:** RK2 is a two-stage process:
-1.  **Predictor ($k_1$):** It first uses the simple Euler slope ($k_1$) to predict the system's state halfway across the step.
-2.  **Corrector ($k_2$):** It then calculates the derivative $k_2$ at that predicted midpoint and uses this better-informed slope to perform the final step correction.
+!!! abstract "Interview-Style Question"
+    **Question:** In the RK family of methods, why is RK2 conceptually called a "predictor-corrector" scheme?
+    
+    ???+ info "Answer Strategy"
+        RK2 is a two-stage process:
+        1.  **Predictor ($k_1$):** It first uses the simple Euler slope ($k_1$) to predict the system's state halfway across the step.
+        2.  **Corrector ($k_2$):** It then calculates the derivative $k_2$ at that predicted midpoint and uses this better-informed slope to perform the final step correction.
 
 ### Hands-On Project
 
@@ -186,29 +153,21 @@ RK4 applies seamlessly to coupled systems by integrating the **state vector** $\
 * RK4 is the **default integrator** for smooth, non-stiff ODEs.
 * While accurate, it still exhibits a slow **energy drift** for long-term **Hamiltonian simulations** (motivating Chapter 8).
 
-### Comprehension & Conceptual Questions
+### **Comprehension Check**
 
-#### Quiz Questions
+!!! note "Quiz"
+    1. How many derivative evaluations does the RK4 method make per time step?
+    2. What is the truncation error of RK4?
 
-**1. How many derivative evaluations does the RK4 method make per time step?**
+??? info "See Answer"
+    1. **4**.
+    2. **$\mathcal O(h^4)$**.
 
-* a) 1
-* b) 2
-* c) 3
-* d) 4 (**Correct**)
-
-**2. What is the truncation error of RK4?**
-
-* a) $\mathcal O(h)$
-* b) $\mathcal O(h^2)$
-* c) $\mathcal O(h^3)$
-* d) $\mathcal O(h^4)$ (**Correct**)
-
-#### Interview-Style Question
-
-**Question:** The "1–2–2–1" pattern in the final RK4 step corresponds to what concept we studied in the previous chapter on Numerical Integration (Quadrature)?
-
-**Answer Strategy:** The $1–2–2–1$ pattern corresponds to the **weights used in Simpson's Rule**. Simpson's Rule averages the function value at the start, two times the midpoint, and the end. RK4 mirrors this, but applies the weighting to the four calculated derivative slopes ($k_1, k_2, k_3, k_4$) to approximate the average slope across the entire time step.
+!!! abstract "Interview-Style Question"
+    **Question:** The "1–2–2–1" pattern in the final RK4 step corresponds to what concept we studied in the previous chapter on Numerical Integration (Quadrature)?
+    
+    ???+ info "Answer Strategy"
+        The $1–2–2–1$ pattern corresponds to the **weights used in Simpson's Rule**. Simpson's Rule averages the function value at the start, two times the midpoint, and the end. RK4 mirrors this, but applies the weighting to the four calculated derivative slopes ($k_1, k_2, k_3, k_4$) to approximate the average slope across the entire time step.
 
 ### Hands-On Project
 
@@ -242,32 +201,24 @@ The step is accepted or rejected based on the error tolerance (tol):
 
 Professional solvers like SciPy’s **`solve_ivp`** use **embedded Runge–Kutta pairs** (e.g., Dormand–Prince RK45) that compute two error estimates "for free" within the four slope evaluations, providing robust and efficient control.
 
-### Comprehension & Conceptual Questions
+### **Comprehension Check**
 
-#### Quiz Questions
+!!! note "Quiz"
+    1. What is the main purpose of Adaptive Step-Size Control?
+    2. Which SciPy function implements an adaptive Runge–Kutta method (RK45) for IVPs?
 
-**1. What is the main purpose of Adaptive Step-Size Control?**
+??? info "See Answer"
+    1. **To automatically adjust $h$ to keep error below a tolerance.**
+    2. **`scipy.integrate.solve_ivp`**.
 
-* a) To make the time step $h$ constant.
-* b) To automatically adjust $h$ to keep error below a tolerance. (**Correct**)
-* c) To speed up the CPU clock.
-* d) To reduce floating-point round-off errors.
-
-**2. Which SciPy function implements an adaptive Runge–Kutta method (RK45) for IVPs?**
-
-* a) `scipy.integrate.quad`
-* b) `scipy.integrate.solve_ivp` (**Correct**)
-* c) `scipy.integrate.simpson`
-* d) `scipy.optimize.root`
-
-#### Interview-Style Question
-
-**Question:** What is the difference between **absolute error tolerance** and **relative error tolerance** in adaptive ODE solvers like `scipy.integrate.solve_ivp`?
-
-**Answer Strategy:** This follows the pattern of robust stopping criteria (Chapter 3).
-* **Absolute Tolerance ($\text{atol}$):** Controls the error when the solution $x(t)$ is close to zero. The maximum acceptable error is fixed (e.g., $\pm 10^{-9}$).
-* **Relative Tolerance ($\text{rtol}$):** Controls the error when the solution $x(t)$ is large. The maximum acceptable error scales with the size of the solution (e.g., $0.001\%$ of $x(t)$).
-* **Pro Use:** Solvers use a combination of both to maintain high accuracy across the entire range of the trajectory.
+!!! abstract "Interview-Style Question"
+    **Question:** What is the difference between **absolute error tolerance** and **relative error tolerance** in adaptive ODE solvers like `scipy.integrate.solve_ivp`?
+    
+    ???+ info "Answer Strategy"
+        This follows the pattern of robust stopping criteria (Chapter 3).
+        - **Absolute Tolerance ($\text{atol}$):** Controls the error when the solution $x(t)$ is close to zero. The maximum acceptable error is fixed (e.g., $\pm 10^{-9}$).
+        - **Relative Tolerance ($\text{rtol}$):** Controls the error when the solution $x(t)$ is large. The maximum acceptable error scales with the size of the solution (e.g., $0.001\%$ of $x(t)$).
+        - **Pro Use:** Solvers use a combination of both to maintain high accuracy across the entire range of the trajectory.
 
 ### Hands-On Project
 
@@ -297,29 +248,21 @@ $$\frac{d\mathbf{S}}{dt} = f(t, \mathbf{S}) = [v_x, v_y, a_x, a_y]$$
 * **Terminal Velocity:** The vertical velocity ($v_y$) approaches a final constant value, the terminal velocity ($v_T = \sqrt{mg/k}$), for large times.
 * **Tool:** The RK4 method (or adaptive RK45) handles this coupled nonlinear system efficiently and accurately.
 
-### Comprehension & Conceptual Questions
+### **Comprehension Check**
 
-#### Quiz Questions
+!!! note "Quiz"
+    1. Why must we convert higher-order ODEs (like $x'' = -x$) into first-order systems before using RK4?
+    2. In the projectile motion with drag example, what causes the ODEs to be nonlinear?
 
-**1. Why must we convert higher-order ODEs (like $x'' = -x$) into first-order systems before using RK4?**
+??? info "See Answer"
+    1. **Because RK4 cannot handle derivatives higher than first order directly.**
+    2. **The drag force depends on $v^2$, making it nonlinear in velocity.**
 
-* a) Because RK4 cannot handle derivatives higher than first order directly. (**Correct**)
-* b) Because second derivatives are less accurate numerically.
-* c) Because it is faster to compute one equation than two.
-* d) Because higher-order derivatives cause division by zero errors.
-
-**2. In the projectile motion with drag example, what causes the ODEs to be nonlinear?**
-
-* a) The drag force depends on $v^2$, making it nonlinear in velocity. (**Correct**)
-* b) Gravity changes direction with height.
-* c) The air density is constant.
-* d) The drag force depends only on time.
-
-#### Interview-Style Question
-
-**Question:** If you are implementing a simulation of the projectile with drag using the RK4 method, what would your function `f(t, S)` need to return if the input state vector is $\mathbf{S} = [x, y, v_x, v_y]^T$?
-
-**Answer Strategy:** The derivative function $f(t, \mathbf{S})$ must return the vector containing the derivatives of each component in $\mathbf{S}$, which is $[\dot{x}, \dot{y}, \dot{v}_x, \dot{v}_y]$. This translates to the vector of **velocities and accelerations**: $[v_x, v_y, a_x, a_y]$.
+!!! abstract "Interview-Style Question"
+    **Question:** If you are implementing a simulation of the projectile with drag using the RK4 method, what would your function `f(t, S)` need to return if the input state vector is $\mathbf{S} = [x, y, v_x, v_y]^T$?
+    
+    ???+ info "Answer Strategy"
+        The derivative function $f(t, \mathbf{S})$ must return the vector containing the derivatives of each component in $\mathbf{S}$, which is $[\dot{x}, \dot{y}, \dot{v}_x, \dot{v}_y]$. This translates to the vector of **velocities and accelerations**: $[v_x, v_y, a_x, a_y]$.
 
 ### Hands-On Project
 

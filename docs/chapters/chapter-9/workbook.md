@@ -1,17 +1,18 @@
 # **Chapter 9: Boundary Value Problems (Workbook)**
 
-### 9.1 Chapter Opener: The "In-Between" Problem
+---
 
-> Summary: Dynamics are solved by Initial Value Problems (IVPs), but **Boundary Value Problems (BVPs)**—where conditions are known at two different spatial points—require new methods because the crucial **initial slope ($y'(0)$) is unknown**.
+> **Summary:** This workbook bridges the gap between dynamics and statics. Unlike IVPs, where the system's state is known at a single "start" point, **Boundary Value Problems (BVPs)** are defined by conditions at two distinct spatial limits. We explore the **Shooting Method**, which iteratively reconstructs initial conditions, and the robust **Finite Difference Method (FDM)**, which maps differential equations onto linear algebraic systems.
 
-In **Part 3** (Chapters 7 and 8), we solved **Initial Value Problems (IVPs)**, which involve predicting a system's evolution forward from a single starting point where all conditions (like $x(t_0)$ and $v(t_0)$) are known.
+---
 
-However, a critical class of problems is defined by conditions at the **physical limits** of a system—the **boundaries**. These are **Boundary Value Problems (BVPs)**.
+## **9.1 The "In-Between" Problem** {.heading-with-pill}
 
-**Physical Examples of BVPs**:
-* **Structural Engineering:** Finding the **static shape** ($y(x)$) of a bridge fixed at both ends ($y(0)=0, y(L)=0$).
-* **Heat Flow:** Determining the **steady-state temperature profile** ($T(x)$) of a rod held at two different temperatures.
-* **Quantum Mechanics:** Finding the stationary **wavefunction $\psi(x)$** of a bound particle ($\psi(0)=0, \psi(L)=0$).
+> **Difficulty:** ★★☆☆☆
+> 
+> **Concept:** BVP vs. IVP Fundamentals
+> 
+> **Summary:** Many physical systems—from bridge deflections to quantum wavefunctions—are defined by boundary constraints rather than initial velocities. This section defines the BVP challenge: solving an ODE when the initial slope ($y'(0)$) is unknown.
 
 **The "Problem" for Solvers**
 
@@ -21,31 +22,22 @@ A second-order ODE like $y''(x) = f(x)$ requires **two** conditions at the start
 1.  **The Shooting Method:** Converts the BVP into an IVP by iteratively guessing the missing initial slope ($y'(0)$).
 2.  **The Finite Difference Method (FDM):** Solves the entire domain simultaneously by converting the ODE into a large system of linear algebra equations.
 
-### Comprehension & Conceptual Questions
+### **Comprehension Check**
 
-#### Quiz Questions
+!!! note "Quiz"
+    1. What is the core difference between an **Initial Value Problem (IVP)** and a **Boundary Value Problem (BVP)**?
+    2. The core challenge in solving a BVP like $y(0)=A, y(L)=B$ with an IVP solver is that you are missing which required initial condition?
 
-**1. What is the core difference between an **Initial Value Problem (IVP)** and a **Boundary Value Problem (BVP)**?**
+??? info "See Answer"
+    1. **IVPs specify all conditions at a single point; BVPs specify conditions at two different points (boundaries).**
+    2. **The initial slope $y'(0)$**.
 
-* a) IVPs are solved with matrices; BVPs are solved with root finding.
-* b) IVPs are linear; BVPs are always nonlinear.
-* c) IVPs specify all conditions at a **single point** (e.g., $x(t_0), v(t_0)$); BVPs specify conditions at **two different points** (boundaries). (**Correct**)
-* d) IVPs solve for shape; BVPs solve for time evolution.
-
-**2. The core challenge in solving a BVP like $y(0)=A, y(L)=B$ with an IVP solver is that you are missing which required initial condition?**
-
-* a) The initial position $y(0)$
-* b) The final position $y(L)$
-* c) The final slope $y'(L)$
-* d) The **initial slope $y'(0)$** (**Correct**)
-
-#### Interview-Style Question
-
-**Question:** Give two examples of BVPs, and for each, explain why the problem cannot be solved by simply integrating forward in time as we did in the RK4 chapter.
-
-**Answer Strategy:**
-1.  **The Bridge Problem:** We know $y(0)$ and $y(L)$. We cannot integrate forward because the resulting trajectory is determined by the **initial slope $y'(0)$**, which is unknown. Only one trajectory will hit the target height $y(L)$.
-2.  **The Stationary Wavefunction Problem:** We know $\psi(0)=0$ and $\psi(L)=0$. The problem is *not* one of time evolution, but of finding the **static spatial shape** $\psi(x)$ that satisfies the ends. RK4 (a time-stepper) is fundamentally the wrong tool for finding a stationary spatial solution.
+!!! abstract "Interview-Style Question"
+    **Question:** Give two examples of BVPs, and for each, explain why the problem cannot be solved by simply integrating forward in time as we did in the RK4 chapter.
+    
+    ???+ info "Answer Strategy"
+        1.  **The Bridge Problem:** We know $y(0)$ and $y(L)$. We cannot integrate forward because the resulting trajectory is determined by the **initial slope $y'(0)$**, which is unknown. Only one trajectory will hit the target height $y(L)$.
+        2.  **The Stationary Wavefunction Problem:** We know $\psi(0)=0$ and $\psi(L)=0$. The problem is *not* one of time evolution, but of finding the **static spatial shape** $\psi(x)$ that satisfies the ends. RK4 (a time-stepper) is fundamentally the wrong tool for finding a stationary spatial solution.
 
 ### Hands-On Project
 
@@ -55,7 +47,7 @@ A second-order ODE like $y''(x) = f(x)$ requires **two** conditions at the start
 * **Formulation:** Convert the second-order BVP to a first-order IVP (e.g., $\dot{\mathbf{S}} = [z, C]$).
 * **Goal:** Use a placeholder root solver to solve the BVP for the correct initial slope $g=y'(0)$.
 
-## 🎯 9.2 Method 1: The Shooting Method
+## **9.2 Method 1: The Shooting Method** {.heading-with-pill}
 
 > Summary: The Shooting Method converts a BVP into a **root-finding problem** by defining an **Error Function $E(g)$** equal to the miss distance at the boundary, which is solved by iteratively adjusting the initial slope guess ($g=y'(0)$).
 
@@ -78,29 +70,21 @@ $$g_{n+1} = g_n - E(g_n) \left[ \frac{g_n - g_{n-1}}{E(g_n) - E(g_{n-1})} \right
 * **Instability:** Errors in the initial slope $g$ are **exponentially amplified** over the trajectory, causing $y_{\text{final}}$ to quickly fly off to $\pm\infty$.
 * **Inefficiency:** It requires running a full IVP simulation for *every single step* of the root-finding algorithm.
 
-### Comprehension & Conceptual Questions
+### **Comprehension Check**
 
-#### Quiz Questions
+!!! note "Quiz"
+    1. The "Aha! Moment" of the Shooting Method is that the entire BVP is converted into what kind of problem?
+    2. What is the primary disadvantage of the Shooting Method, especially for chaotic or exponentially growing ODEs?
 
-**1. The "Aha! Moment" of the Shooting Method is that the entire BVP is converted into what kind of problem?**
+??? info "See Answer"
+    1. **A Root-Finding Problem.**
+    2. **It is very unstable, as small errors in the initial slope are exponentially amplified.**
 
-* a) A Matrix Eigenvalue Problem.
-* b) A **Root-Finding Problem**. (**Correct**)
-* c) A Spline Interpolation Problem.
-* d) A Monte Carlo Simulation.
-
-**2. What is the primary disadvantage of the Shooting Method, especially for chaotic or exponentially growing ODEs?**
-
-* a) It requires an $O(h^4)$ RK4 solver.
-* b) It runs an entire simulation only once.
-* c) It is **very unstable**, as small errors in the initial slope are exponentially amplified. (**Correct**)
-* d) It requires the analytical derivative $E'(g)$.
-
-#### Interview-Style Question
-
-**Question:** The Shooting Method is a hybrid algorithm. Which two core algorithms from earlier chapters are essential components of the method, and what does the Secant Method's root represent?
-
-**Answer Strategy:** The two core components are the **IVP Solver** (RK4/`solve_ivp` from Chapter 7) and the **Root Finder** (Secant Method from Chapter 3). The root of the error function $E(g)$ represents the **optimal initial slope $y'(0)$** that ensures the trajectory hits the far boundary condition $y(L)$.
+!!! abstract "Interview-Style Question"
+    **Question:** The Shooting Method is a hybrid algorithm. Which two core algorithms from earlier chapters are essential components of the method, and what does the Secant Method's root represent?
+    
+    ???+ info "Answer Strategy"
+        The two core components are the **IVP Solver** (RK4/`solve_ivp` from Chapter 7) and the **Root Finder** (Secant Method from Chapter 3). The root of the error function $E(g)$ represents the **optimal initial slope $y'(0)$** that ensures the trajectory hits the far boundary condition $y(L)$.
 
 ### Hands-On Project
 
@@ -112,7 +96,7 @@ $$g_{n+1} = g_n - E(g_n) \left[ \frac{g_n - g_{n-1}}{E(g_n) - E(g_{n-1})} \right
     * Use `scipy.optimize.root_scalar` with `method='secant'` and two initial guesses for $g$ to find the optimal slope.
 3.  **Goal:** Plot the final trajectory $y(x)$, which should be a symmetric parabola that starts and ends at zero.
 
-## 🧊 9.3 Method 2: The Finite Difference (Relaxation) Method
+## **9.3 Method 2: The Finite Difference (Relaxation) Method** {.heading-with-pill}
 
 > Summary: The Finite Difference Method (FDM) converts the BVP into a stable **System of Linear Equations** ($\mathbf{A}\mathbf{y} = \mathbf{b}$) by substituting the $O(h^2)$ Central Difference stencil for $y''$ at every grid point.
 
@@ -136,31 +120,22 @@ $$\mathbf{A} \mathbf{y} = \mathbf{b}$$
 **Solution and Advantages**
 The final solution $\mathbf{y}$ is found by solving the system using fast, specialized **Linear Algebra** techniques (e.g., LU Decomposition, solved efficiently via `solve_banded` or `np.linalg.solve` from **Chapter 13**).
 
-### Comprehension & Conceptual Questions
+### **Comprehension Check**
 
-#### Quiz Questions
+!!! note "Quiz"
+    1. The "Aha! Moment" of the Finite Difference Method (FDM) is that it solves the BVP by converting the calculus problem into what?
+    2. Why is the tridiagonal structure of the matrix $\mathbf{A}$ highly advantageous for computation?
 
-**1. The "Aha! Moment" of the Finite Difference Method (FDM) is that it solves the BVP by converting the calculus problem into what?**
+??? info "See Answer"
+    1. **A System of Linear Equations ($\mathbf{A}\mathbf{y} = \mathbf{b}$).**
+    2. **It can be solved rapidly (in $O(N)$ time) using specialized linear algebra algorithms.**
 
-* a) A single nonlinear equation.
-* b) A chaotic system of ODEs.
-* c) A time-stepping integration problem.
-* d) A **System of Linear Equations** ($\mathbf{A}\mathbf{y} = \mathbf{b}$). (**Correct**)
-
-**2. Why is the tridiagonal structure of the matrix $\mathbf{A}$ highly advantageous for computation?**
-
-* a) It guarantees the existence of an analytic solution.
-* b) It can be solved directly in $O(N^3)$ time.
-* c) It **can be solved rapidly** (in $O(N)$ time) using specialized linear algebra algorithms. (**Correct**)
-* d) It prevents the solution from spiraling outward.
-
-#### Interview-Style Question
-
-**Question:** Explain the distinction between the FDM approach (a "global" method) and the Shooting Method (a "local" method) in terms of how they generate the final solution.
-
-**Answer Strategy:**
-* **FDM (Global):** The FDM sets up a system of equations that links **every single point** on the grid simultaneously. The solver then computes the final solution $y(x)$ for the *entire domain at once*.
-* **Shooting (Local):** The Shooting Method is local and sequential. It only solves the solution one point at a time, repeatedly trying a local trajectory ($y(0), y'(0)$) to see if it reaches the correct far boundary $y(L)$.
+!!! abstract "Interview-Style Question"
+    **Question:** Explain the distinction between the FDM approach (a "global" method) and the Shooting Method (a "local" method) in terms of how they generate the final solution.
+    
+    ???+ info "Answer Strategy"
+        - **FDM (Global):** The FDM sets up a system of equations that links **every single point** on the grid simultaneously. The solver then computes the final solution $y(x)$ for the *entire domain at once*.
+        - **Shooting (Local):** The Shooting Method is local and sequential. It only solves the solution one point at a time, repeatedly trying a local trajectory ($y(0), y'(0)$) to see if it reaches the correct far boundary $y(L)$.
 
 ### Hands-On Project
 
@@ -173,7 +148,7 @@ The final solution $\mathbf{y}$ is found by solving the system using fast, speci
     * Use `scipy.linalg.solve_banded` to find the interior solution $\mathbf{y}$.
 3.  **Goal:** Plot the FDM solution and the analytic solution $y(x) = -x^3 + 3x$ on the same graph to demonstrate convergence.
 
-## ⚛️ 9.4 Core Application: 1D Time-Independent Schrödinger Equation
+## **9.4 Core Application: 1D Time-Independent Schrödinger Equation** {.heading-with-pill}
 
 > Summary: Applying FDM to the Schrödinger Equation ($\frac{-\hbar^2}{2m}\frac{d^2\psi}{dx^2} + V(x)\psi = E\psi$) transforms it into the **Matrix Eigenvalue Problem** ($\mathbf{H}\boldsymbol{\psi} = E\boldsymbol{\psi}$), where the **eigenvalues ($E$) are the energy levels** and the **eigenvectors ($\boldsymbol{\psi}$) are the wavefunctions**.
 
@@ -190,31 +165,22 @@ This is the eigenvalue problem $\mathbf{H}\boldsymbol{\psi} = E\boldsymbol{\psi}
 
 **The Solution:** The FDM transforms the differential equation into a matrix equation, which is solved by finding the eigenvalues and eigenvectors (using specialized solvers like `scipy.linalg.eigh_tridiagonal` from **Chapter 14**).
 
-### Comprehension & Conceptual Questions
+### **Comprehension Check**
 
-#### Quiz Questions
+!!! note "Quiz"
+    1. When FDM is applied to the Schrödinger equation, the problem naturally maps to which category of linear algebra problem?
+    2. In the resulting matrix equation $\mathbf{H}\boldsymbol{\psi} = E\boldsymbol{\psi}$, the **unknown energy $E$** corresponds to which component of the matrix solution?
 
-**1. When FDM is applied to the Schrödinger equation, the problem naturally maps to which category of linear algebra problem?**
+??? info "See Answer"
+    1. **A Matrix Eigenvalue Problem ($\mathbf{H}\boldsymbol{\psi} = E\boldsymbol{\psi}$).**
+    2. **The eigenvalue.**
 
-* a) A System of Linear Equations ($\mathbf{A}\mathbf{x} = \mathbf{b}$).
-* b) A **Matrix Eigenvalue Problem** ($\mathbf{H}\boldsymbol{\psi} = E\boldsymbol{\psi}$). (**Correct**)
-* c) A Matrix Inversion Problem.
-* d) A LU Decomposition Problem.
-
-**2. In the resulting matrix equation $\mathbf{H}\boldsymbol{\psi} = E\boldsymbol{\psi}$, the **unknown energy $E$** corresponds to which component of the matrix solution?**
-
-* a) The eigenvector.
-* b) The Hamiltonian matrix.
-* c) The potential $V(x)$.
-* d) The **eigenvalue**. (**Correct**)
-
-#### Interview-Style Question
-
-**Question:** In the resulting equation $\mathbf{H}\boldsymbol{\psi} = E\boldsymbol{\psi}$, which physical quantity corresponds to the **eigenvalue $E$**, and which corresponds to the **eigenvector $\boldsymbol{\psi}$**?
-
-**Answer Strategy:** This is a direct mapping:
-* The **Eigenvalue $E$** represents the set of allowed, discrete **Energy Levels** (the physically observable quantities).
-* The **Eigenvector $\boldsymbol{\psi}$** represents the spatial profile of the corresponding **Wavefunction** (the probability distribution).
+!!! abstract "Interview-Style Question"
+    **Question:** In the resulting equation $\mathbf{H}\boldsymbol{\psi} = E\boldsymbol{\psi}$, which physical quantity corresponds to the **eigenvalue $E$**, and which corresponds to the **eigenvector $\boldsymbol{\psi}$**?
+    
+    ???+ info "Answer Strategy"
+        - The **Eigenvalue $E$** represents the set of allowed, discrete **Energy Levels** (the physically observable quantities).
+        - The **Eigenvector $\boldsymbol{\psi}$** represents the spatial profile of the corresponding **Wavefunction** (the probability distribution).
 
 ### Hands-On Project
 
@@ -226,7 +192,7 @@ This is the eigenvalue problem $\mathbf{H}\boldsymbol{\psi} = E\boldsymbol{\psi}
     * Solve the eigenvalue problem using `scipy.linalg.eigh_tridiagonal`.
 3.  **Goal:** Plot the first three wavefunctions and verify that the energy eigenvalues are close to the expected half-integer values $E_n \approx (n + 1/2)$.
 
-## 🧭 9.5 Chapter Summary & Next Steps
+## **9.5 Chapter Summary & Next Steps** {.heading-with-pill}
 
 **What We Built: A Boundary Value Problem (BVP) Toolkit**:
 | Method | Core Concept | Stability & Use Case |

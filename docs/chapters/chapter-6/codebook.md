@@ -2,16 +2,19 @@
 
 ---
 
-## Project 1: Quadrature Showdown (Trapezoidal vs. Simpson's Rule)
+This Codebook provides the exact, reproducible Python implementation for numerical quadrature. We compare the **Trapezoidal Rule** ($O(h^2)$) and **Simpson's Rule** ($O(h^4)$) convergence rates and explore adaptive integration for singular problems like the **Nonlinear Pendulum**.
 
-### Project Detail
+---
 
-| Feature | Description |
+## Project 1: Quadrature Showdown (Trapezoidal vs. Simpson's)
+
+| Component | Description |
 | :--- | :--- |
-| **Goal** | Compare the convergence rate and accuracy of the $\mathcal{O}(h^2)$ **Trapezoidal Rule** against the $\mathcal{O}(h^4)$ **Simpson's Rule** by integrating a known function and measuring the absolute error as the grid size $N$ increases. |
-| **Method** | **Extended Quadrature Formulas**. The total integral is the sum of the areas of simple geometric tiles (trapezoids or parabolas). |
-| **Mathematical Concept** | The error in the Trapezoidal Rule is $\propto \mathcal{O}(h^2)$; the error in Simpson's Rule is $\propto \mathcal{O}(h^4)$. This project verifies the predicted scaling. |
-| **Test Integral** | $$I = \int_{0}^{\pi} \sin(x) dx = 2.0$$ |
+| **Objective** | Compare the convergence rate of the $O(h^2)$ **Trapezoidal Rule** vs. the $O(h^4)$ **Simpson's Rule**. |
+| **Mathematical Concept** | Integrating $f(x) = \sin(x)$ over $[0, \pi]$; analytical solution $I = 2.0$. |
+| **Experiment Setup** | Python, NumPy for vectorized summation; log-log visualization of error vs. $N$. |
+| **Expected Behavior** | Simpson's Rule should show a much steeper error decline (slope $\approx -4$) than Trapezoidal (slope $\approx -2$). |
+| **Verification Goal** | Verify the "Order of Accuracy" through empirical slope measurement. |
 
 ---
 
@@ -186,14 +189,13 @@ method error decreases quartically (slope ~4), making Simpson's method vastly mo
 ```
 ## Project 2: Taming a Singular Integral (Nonlinear Pendulum)
 
-### Project Detail
-
-| Feature | Description |
+| Component | Description |
 | :--- | :--- |
-| **Goal** | Accurately calculate the exact period ($T$) of a nonlinear pendulum released from a large initial angle ($\theta_0 = 170^\circ$). |
-| **Core Challenge** | The integral contains a **singularity** at the upper limit ($\theta = \theta_0$), as the denominator approaches zero. Standard grid-based methods (Trapezoidal/Simpson's) would fail catastrophically. |
-| **Method** | **Adaptive Gaussian Quadrature** using `scipy.integrate.quad`. This method is chosen because it uses a sophisticated, internal strategy to detect and handle the singularity, providing a high-accuracy result and a reliable error estimate. |
-| **Test Integral** | $$T = \sqrt{\frac{8L}{g}} \int_{0}^{\theta_0} \frac{d\theta}{\sqrt{\cos\theta - \cos\theta_0}}$$ |
+| **Objective** | Accurately calculate the exact period ($T$) of a nonlinear pendulum released from $\theta_0 = 170^\circ$. |
+| **Core Challenge** | The integral contains a **singularity** as $\theta \to \theta_0$. |
+| **Method** | **Adaptive Gaussian Quadrature** using `scipy.integrate.quad`. |
+| **Expected Behavior** | The period should grow dramatically as $\theta_0 \to 180^\circ$ (the vertical unstable equilibrium). |
+| **Verification Goal** | Successfully integrate a singular function using adaptive subdivision. |
 
 ---
 
@@ -275,10 +277,10 @@ def integrand_T(theta, theta_0):
 
 result = quad(
     integrand_T,
-    A=0.0,
-    B=THETA_0,
-    args=(THETA_0,), # Pass theta_0 as a fixed parameter to the integrand
-    limit=1000       # Increase the limit for recursive subdivisions near the singularity
+    0.0,
+    THETA_0,
+    args=(THETA_0,), 
+    limit=1000       
 )
 
 I_numerical = result[0]

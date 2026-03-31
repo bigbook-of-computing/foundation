@@ -1,10 +1,18 @@
 # **Chapter 15: Fourier Analysis & The FFT (Workbook)**
 
-### 15.1 Chapter Opener: The Physics of "Content"
+---
 
-> Summary: Our data, generated in the time or space domain (e.g., $y(t)$), is a messy composite signal. **Fourier Analysis** provides the necessary **change of basis** to translate this data to the **frequency domain**, revealing its underlying periodic components.
+> **Summary:** This workbook explores the physics of **Content**. We transition from the time/space domain to the **Frequency Domain** using the Fast Fourier Transform (FFT). You will learn the $O(N \log N)$ miracle of the FFT, the critical **Nyquist-Shannon** sampling limit, and how to deconstruct complex signals—like a plucked string—into their fundamental harmonics.
 
-Up to this point, our numerical journey has generated data primarily in the **time domain** ($y(t)$, from wave simulations) or the **space domain** ($\psi(x)$, from the Schrödinger solver). This raw data is a complex, composite wiggle, making it difficult to identify the individual components.
+---
+
+## **15.1 The Physics of "Content"** {.heading-with-pill}
+
+> **Difficulty:** ★★☆☆☆
+> 
+> **Concept:** Frequency Domain and FFT
+> 
+> **Summary:** Raw signals are often a "messy composite" of periodic wiggles. Fourier Analysis provides the change of basis needed to reveal the underlying frequencies. This section introduces the concept of the spectrum as the fingerprint of a signal.
 
 The physical questions we now face are about the **content** or **composition** of that signal:
 * What specific **notes** (frequencies) are present in the *plucked string* simulation (Chapter 12)?
@@ -13,7 +21,7 @@ The physical questions we now face are about the **content** or **composition** 
 To answer these, we must fundamentally change our perspective and translate the data to the **frequency domain**.
 
 
-### 15.2 The Discrete Fourier Transform (DFT)
+## **15.2 The Discrete Fourier Transform (DFT)** {.heading-with-pill}
 
 > Summary: The DFT transforms $N$ data points ($y_n$) into $N$ frequency components ($Y_k$). The straightforward implementation of the DFT formula involves nested loops, resulting in an expensive $\mathcal{O}(N^2)$ computational cost.
 
@@ -32,30 +40,24 @@ Implementing the DFT formula directly requires a **nested loop**: one loop over 
 * **Cost:** $\mathcal{O}(N^2)$
 * **Consequence:** For large signals (e.g., $N=1,000,000$ points), $N^2$ results in $10^{12}$ operations. This is computationally **unusable** and made digital signal processing impractical for decades.
 
-#### Quiz Questions
+### **Comprehension Check**
 
-**1. The Discrete Fourier Transform (DFT) is primarily used for what purpose?**
+!!! note "Quiz"
+    1. The Discrete Fourier Transform (DFT) is primarily used for what purpose?
+    2. The major limitation of a direct implementation of the DFT formula is its computational cost, which scales as:
 
-* a) Converting a time-domain signal to the amplitude domain.
-* b) Solving linear algebra systems $\mathbf{A}\mathbf{x} = \mathbf{b}$.
-* c) **Converting a time-domain signal to the frequency domain** (the spectrum). (**Correct**)
-* d) Finding the smallest eigenvalue of a matrix.
+??? info "See Answer"
+    1. **Converting a time-domain signal to the frequency domain (the spectrum).**
+    2. **$\mathcal{O}(N^2)$**.
 
-**2. The major limitation of a direct implementation of the DFT formula is its computational cost, which scales as:**
-
-* a) $\mathcal{O}(N \log N)$.
-* b) $\mathcal{O}(N)$.
-* c) $\mathcal{O}(\log N)$.
-* d) **$\mathcal{O}(N^2)$**. (**Correct**)
-
-#### Interview-Style Question
-
-**Question:** The DFT produces $N$ frequency components $Y_k$. Explain what the component $k=0$ represents physically.
-
-**Answer Strategy:** The $k=0$ component is the **DC component** (Zero Frequency). It is calculated by $\sum y_n e^0 = \sum y_n$. This value is proportional to the total integral of the signal, meaning it represents the **average value** or baseline offset of the time series data.
+!!! abstract "Interview-Style Question"
+    **Question:** The DFT produces $N$ frequency components $Y_k$. Explain what the component $k=0$ represents physically.
+    
+    ???+ info "Answer Strategy"
+        The $k=0$ component is the **DC component** (Zero Frequency). It is calculated by $\sum y_n e^0 = \sum y_n$. This value is proportional to the total integral of the signal, meaning it represents the **average value** or baseline offset of the time series data.
 
 
-### 15.3 The Fast Fourier Transform (FFT)
+## **15.3 The Fast Fourier Transform (FFT)** {.heading-with-pill}
 
 > Summary: The **Fast Fourier Transform (FFT)** is a "Divide and Conquer" algorithm that is mathematically equivalent to the DFT but reduces the computational cost to an efficient $\mathcal{O}(N \log N)$, making large-scale signal analysis possible.
 
@@ -77,30 +79,24 @@ The FFT is **not** an approximation; it is simply the most efficient way to comp
 
 **Practical Tool:** For real work, the highly optimized NumPy function **`numpy.fft.fft()`** (which uses C/Fortran libraries) is the only tool to use.
 
-#### Quiz Questions
+### **Comprehension Check**
 
-**1. The primary advantage of the Fast Fourier Transform (FFT) over the direct DFT calculation is that it reduces the cost from $\mathcal{O}(N^2)$ to:**
+!!! note "Quiz"
+    1. The primary advantage of the Fast Fourier Transform (FFT) over the direct DFT calculation is that it reduces the cost from $\mathcal{O}(N^2)$ to:
+    2. The FFT algorithm is based on the recursive strategy known as:
 
-* a) $\mathcal{O}(\log N)$.
-* b) $\mathcal{O}(N^2 / \log N)$.
-* c) **$\mathcal{O}(N \log N)$**. (**Correct**)
-* d) $\mathcal{O}(N)$.
+??? info "See Answer"
+    1. **$\mathcal{O}(N \log N)$**.
+    2. **Divide and Conquer (Cooley-Tukey).**
 
-**2. The FFT algorithm is based on the recursive strategy known as:**
-
-* a) Monte Carlo estimation.
-* b) **Divide and Conquer** (Cooley-Tukey). (**Correct**)
-* c) Power Iteration.
-* d) The Central Limit Theorem.
-
-#### Interview-Style Question
-
-**Question:** The mantra of this section is "never write your own FFT." What two key properties of the complex exponential term ($e^{-i 2\pi k n / N}$) are exploited by the FFT to achieve the $\mathcal{O}(N \log N)$ speed-up?
-
-**Answer Strategy:** The speed-up comes from exploiting the **periodicity** and **symmetry** of the complex exponential function. This allows a single calculation involving a segment of the input data to be reused multiple times in the computation of different frequency bins, rather than recomputing it for every frequency pair.
+!!! abstract "Interview-Style Question"
+    **Question:** The mantra of this section is "never write your own FFT." What two key properties of the complex exponential term ($e^{-i 2\pi k n / N}$) are exploited by the FFT to achieve the $\mathcal{O}(N \log N)$ speed-up?
+    
+    ???+ info "Answer Strategy"
+        The speed-up comes from exploiting the **periodicity** and **symmetry** of the complex exponential function. This allows a single calculation involving a segment of the input data to be reused multiple times in the computation of different frequency bins, rather than recomputing it for every frequency pair.
 
 
-### 15.4 Nyquist-Shannon and Aliasing
+## **15.4 Nyquist-Shannon and Aliasing** {.heading-with-pill}
 
 > Summary: The **Nyquist-Shannon Sampling Theorem** imposes a hard limit on data capture: the sampling rate ($f_s$) must be greater than twice the maximum frequency ($f_{\text{max}}$) in the signal. Failure to meet this condition causes **aliasing**.
 
@@ -119,29 +115,23 @@ If the sampling rate is too low ($f_s < 2 f_{\text{max}}$), a high-frequency com
 * **Analogy:** The classic example is the wagon wheel in old movies: when filmed at a low frame rate, a rapidly spinning wheel appears to slow down or even spin backward.
 * **Consequence:** Aliasing **irreversibly contaminates** the signal's spectrum; once aliased, the original high-frequency information cannot be recovered.
 
-#### Quiz Questions
+### **Comprehension Check**
 
-**1. The Nyquist-Shannon Sampling Theorem states that the sampling rate ($f_s$) must be:**
+!!! note "Quiz"
+    1. The Nyquist-Shannon Sampling Theorem states that the sampling rate ($f_s$) must be:
+    2. What is the consequence of failing to meet the Nyquist-Shannon criterion?
 
-* a) Equal to the maximum frequency ($f_{\text{max}}$).
-* b) **Greater than twice the maximum frequency ($2f_{\text{max}}$)**. (**Correct**)
-* c) Less than the Nyquist frequency ($f_s/2$).
-* d) Exactly $1$ Hz.
+??? info "See Answer"
+    1. **Greater than twice the maximum frequency ($2f_{\text{max}}$).**
+    2. **The high-frequency components are irreversibly misinterpreted as false, lower frequencies (aliasing).**
 
-**2. What is the consequence of failing to meet the Nyquist-Shannon criterion?**
+!!! abstract "Interview-Style Question"
+    **Question:** An engineer samples a signal at 10 kHz. They see a peak in their FFT plot at 8 kHz. Why is this result highly suspect, and what should they do to verify its validity?
+    
+    ???+ info "Answer Strategy"
+        A sampling rate of $f_s = 10$ kHz sets the **Nyquist Frequency** at $f_{\text{Nyquist}} = 5$ kHz. Any frequency component detected above $5$ kHz is highly suspect because it could be an **alias**. The true frequency might be $12$ kHz, which would be folded back into the $10 - 12 = -2$ kHz spot (interpreted as 2 kHz) or $18$ kHz, folded to $10 - 18 = -8$ kHz (interpreted as 8 kHz). To verify, the engineer must increase the sampling rate ($f_s$) until the peak either remains stable or shifts to a much higher frequency.
 
-* a) The signal is perfectly preserved, but the DFT is slow.
-* b) The calculation suffers from catastrophic cancellation.
-* c) The high-frequency components are **irreversibly misinterpreted as false, lower frequencies (aliasing)**. (**Correct**)
-* d) The total energy of the system grows exponentially.
-
-#### Interview-Style Question
-
-**Question:** An engineer samples a signal at 10 kHz. They see a peak in their FFT plot at 8 kHz. Why is this result highly suspect, and what should they do to verify its validity?
-
-**Answer Strategy:** A sampling rate of $f_s = 10$ kHz sets the **Nyquist Frequency** at $f_{\text{Nyquist}} = 5$ kHz. Any frequency component detected above $5$ kHz is highly suspect because it could be an **alias**. The true frequency might be $12$ kHz, which would be folded back into the $10 - 12 = -2$ kHz spot (interpreted as 2 kHz) or $18$ kHz, folded to $10 - 18 = -8$ kHz (interpreted as 8 kHz). To verify, the engineer must increase the sampling rate ($f_s$) until the peak either remains stable or shifts to a much higher frequency.
-
-### 15.5 Core Application: Plucked String Harmonics
+## **15.5 Core Application: Plucked String Harmonics** {.heading-with-pill}
 
 > Summary: Applying the FFT to the time series of a simulated vibrating string allows a direct calculation of the sound's **spectrum**, revealing the **fundamental frequency** (the note) and the relative strengths of the **harmonics** (the timbre).
 
@@ -152,29 +142,23 @@ The simulation of the "Plucked Guitar String" (Chapter 12) generates a time-doma
 * **The Harmonics:** The spectrum will show subsequent peaks at integer multiples of the fundamental ($2f_1, 3f_1, \dots$).
 * **Timbre:** The **relative height** and **number** of these harmonic peaks defines the **timbre** (the "quality" or "color") of the sound. For instance, a string plucked exactly in the middle will have a spectrum where all the even-numbered harmonics ($2f_1, 4f_1, \dots$) are theoretically absent.
 
-#### Quiz Questions
+### **Comprehension Check**
 
-**1. In the Power Spectrum of a musical note, the largest peak ($f_1$) primarily represents what physical property?**
+!!! note "Quiz"
+    1. In the Power Spectrum of a musical note, the largest peak ($f_1$) primarily represents what physical property?
+    2. The specific quality or "color" of the sound produced by the string (the timbre) is determined by which aspect of the Power Spectrum?
 
-* a) The amplitude of the pluck.
-* b) The total number of points in the simulation.
-* c) **The fundamental frequency (the note)**. (**Correct**)
-* d) The energy drift.
+??? info "See Answer"
+    1. **The fundamental frequency (the note).**
+    2. **The relative height and number of the harmonic peaks ($2f_1, 3f_1, \dots$).**
 
-**2. The specific quality or "color" of the sound produced by the string (the timbre) is determined by which aspect of the Power Spectrum?**
+!!! abstract "Interview-Style Question"
+    **Question:** If you simulate a vibrating string and then calculate its FFT, you notice that all the even harmonics ($2f_1, 4f_1, \dots$) are missing or negligible. What physical detail of the initial condition would explain this specific result?
+    
+    ???+ info "Answer Strategy"
+        The missing even harmonics indicate that the string was excited **symmetrically**. For the $n$-th harmonic to be excited, the initial condition must have a component that is non-zero at the $n$-th harmonic's antinodes. If the string was **plucked exactly at its center** ($x=L/2$), that point is a **node** for all the even harmonics, meaning they were not initially excited, and their corresponding peaks are absent from the spectrum.
 
-* a) The Nyquist frequency.
-* b) The slope of the error line.
-* c) **The relative height and number of the harmonic peaks** ($2f_1, 3f_1, \dots$). (**Correct**)
-* d) The phase information.
-
-#### Interview-Style Question
-
-**Question:** If you simulate a vibrating string and then calculate its FFT, you notice that all the even harmonics ($2f_1, 4f_1, \dots$) are missing or negligible. What physical detail of the initial condition would explain this specific result?
-
-**Answer Strategy:** The missing even harmonics indicate that the string was excited **symmetrically**. For the $n$-th harmonic to be excited, the initial condition must have a component that is non-zero at the $n$-th harmonic's antinodes. If the string was **plucked exactly at its center** ($x=L/2$), that point is a **node** for all the even harmonics, meaning they were not initially excited, and their corresponding peaks are absent from the spectrum.
-
-### 15.6 Chapter Summary & Next Steps
+## **15.6 Chapter Summary & Next Steps** {.heading-with-pill}
 
 > Summary: The FFT provides a critical $\mathcal{O}(N \log N)$ **change of basis** from the time domain to the frequency domain, but its accuracy is fundamentally limited by the Nyquist-Shannon Sampling Theorem.
 
@@ -192,7 +176,7 @@ What if our data is a complex, high-dimensional **data cloud** (e.g., millions o
 
 This final data analysis tool is **Principal Component Analysis (PCA)**, which is just the application of the **Eigenvalue Problem (Chapter 14)** to a data matrix. This technique, which finds the most important underlying patterns, is the subject of **Chapter 16**.
 
-# **Chapter 15: On Projects: Frequency Analysis and Filter Design () () (Workbook)**
+## **15.8 Hands-On Projects** {.heading-with-pill}
 
 **1. Project: Simulating Aliasing and Spectral Folding**
 

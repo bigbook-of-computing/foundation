@@ -1,165 +1,126 @@
-# **Chapter 1: End-to-End Reproducible First Experiment (Codebook)**
+# **Chapter 1: Digital Lab Notebook (Codebook)**
 
 ---
 
-## Project Scope
-
-This codebook implements Chapter 1 from setup verification to saved visualization and experiment record.
-
-Project outputs (inside this chapter):
-
-- Environment diagnostics in terminal output.
-- Plot image: `codes/ch1_sin_plot.png`
+This Codebook provides the exact, reproducible Python implementation for the foundational lab setup. We focus on environment verification, literate programming standards, and data artifact generation.
 
 ---
 
-## Step 1: Environment Verification Script
+## Project 1: Environment Diagnostics & Verification
 
-Run this first to ensure toolchain consistency.
+| Feature | Description |
+| :--- | :--- |
+| **Goal** | Verify the integrity of the scientific Python stack (NumPy, SciPy, Matplotlib) and record versions for reproducibility. |
+| **Model** | System-level diagnostic script. |
+| **Core Concept** | Auditing the "Digital Lab" before conducting physical simulations. |
+
+### Complete Python Code
 
 ```python
 import sys
 import numpy as np
 import matplotlib
 import scipy
+import pandas as pd
 
-print("=== Chapter 1 Environment Check ===")
-print("Python:", sys.version.split()[0])
-print("NumPy:", np.__version__)
-print("Matplotlib:", matplotlib.__version__)
-print("SciPy:", scipy.__version__)
+def run_diagnostics():
+    """Prints the versions of all core libraries in the current environment."""
+    print("=== Foundation Lab: Environment Check ===")
+    print(f"Python:     {sys.version.split()[0]}")
+    print(f"NumPy:      {np.__version__}")
+    print(f"SciPy:      {scipy.__version__}")
+    print(f"Matplotlib: {matplotlib.__version__}")
+    print(f"Pandas:     {pd.__version__}")
+    print("=" * 40)
+
+if __name__ == "__main__":
+    run_diagnostics()
 ```
+
 **Sample Output:**
-```python
-=== Chapter 1 Environment Check ===
-Python: 3.13.9
-NumPy: 2.2.6
+```text
+=== Foundation Lab: Environment Check ===
+Python:     3.13.9
+NumPy:      2.2.6
+SciPy:      1.16.3
 Matplotlib: 3.10.6
-SciPy: 1.16.3
+Pandas:     2.2.3
+========================================
 ```
 
+### Expected Outcome and Interpretation
 
-Interpretation:
-
-- If imports fail, resolve environment before continuing.
-- Record versions in your experiment notes for reproducibility.
+The script should run without `ImportError`. If any library is missing, the environment must be rebuilt using the provided `environment.yml`. Recording these versions is the first step in any scientific publication to ensure that future researchers can recreate your numerical conditions exactly.
 
 ---
 
-## Step 2: Core Experiment Script (Generate and Save Plot)
+## Project 2: Reproducible Figure Generation
 
-This script builds the first scientific figure and saves it to chapter assets.
+| Feature | Description |
+| :--- | :--- |
+| **Goal** | Generate a high-resolution scientific plot of $\sin(x)$ and $\cos(x)$ and save it as a permanent artifact. |
+| **Mathematical Model** | $y_1 = \sin(x)$, $y_2 = \cos(x)$ for $x \in [0, 2\pi]$. |
+| **Core Concept** | Standardizing plot aesthetics (labels, grids, legends) and file-system discipline. |
+
+### Complete Python Code
 
 ```python
-from pathlib import Path
 import numpy as np
 import matplotlib.pyplot as plt
-
-## Resolve output location relative to the chapter directory
-
-codes_dir = Path("docs/chapters/chapter-1/codes")
-codes_dir.mkdir(parents=True, exist_ok=True)
-
-## 1. Generate data
-
-x = np.linspace(0.0, 2.0 * np.pi, 400)
-y = np.sin(x)
-
-## 2. Plot with scientific labeling
-
-fig, ax = plt.subplots(figsize=(8, 4.5))
-ax.plot(x, y, color="tab:blue", linewidth=2.0, label="sin(x)")
-ax.set_title("Chapter 1: First Reproducible Plot")
-ax.set_xlabel("x (radians)")
-ax.set_ylabel("Amplitude")
-ax.grid(True, alpha=0.35)
-ax.legend()
-
-## 3. Save artifact for docs and reports
-
-out_file = codes_dir / "ch1_sin_plot.png"
-fig.savefig(out_file, dpi=160, bbox_inches="tight")
-plt.close(fig)
-
-print(f"Saved figure to: {out_file}")
-```
-**Sample Output:**
-```python
-Saved figure to: docs/chapters/chapter-1/codes/ch1_sin_plot.png
-```
-
----
-
-## Step 3: Experiment Metadata Summary
-
-Create a concise run summary directly in console output.
-
-```python
 from pathlib import Path
-from datetime import datetime
-import numpy as np
 
-x = np.linspace(0.0, 2.0 * np.pi, 400)
-y = np.sin(x)
+def generate_lab_artifact():
+    """Generates and saves a standardized scientific plot."""
+    
+    # 1. Setup paths
+    output_dir = Path("codes")
+    output_dir.mkdir(exist_ok=True)
+    
+    # 2. Generate data
+    x = np.linspace(0, 2*np.pi, 500)
+    y_sin = np.sin(x)
+    y_cos = np.cos(x)
+    
+    # 3. Create High-Quality Plot
+    fig, ax = plt.subplots(figsize=(10, 5), dpi=150)
+    
+    ax.plot(x, y_sin, label=r'$\sin(x)$', color='#1f77b4', linewidth=2)
+    ax.plot(x, y_cos, label=r'$\cos(x)$', color='#d62728', linestyle='--', linewidth=2)
+    
+    # Aesthetics
+    ax.set_title("Chapter 1: Initial Lab Verification", fontsize=14, fontweight='bold')
+    ax.set_xlabel("Phase Angle $\theta$ (rad)", fontsize=12)
+    ax.set_ylabel("Amplitude $A$", fontsize=12)
+    ax.grid(True, linestyle=':', alpha=0.6)
+    ax.axhline(0, color='black', linewidth=1)
+    ax.legend(loc='upper right', frameon=True)
+    
+    # 4. Save and Close
+    output_path = output_dir / "ch1_verification_plot.png"
+    plt.savefig(output_path, bbox_inches='tight')
+    plt.close()
+    
+    print(f"Artifact successfully saved to: {output_path}")
 
-summary_text = "\n".join([
-    "Chapter 1 Experiment Log",
-    f"Timestamp (UTC): {datetime.utcnow().isoformat()}Z",
-    "Experiment: Plot sin(x) on [0, 2pi]",
-    f"Samples: {len(x)}",
-    f"x_min: {x.min():.6f}",
-    f"x_max: {x.max():.6f}",
-    f"y_min: {y.min():.6f}",
-    f"y_max: {y.max():.6f}",
-    "Notes: Figure generated with NumPy + Matplotlib and saved to codes/ch1_sin_plot.png"
-])
-
-print(summary_text)
+if __name__ == "__main__":
+    generate_lab_artifact()
 ```
+
 **Sample Output:**
-```python
-Chapter 1 Experiment Log
-Timestamp (UTC): 2026-03-20T05:19:25.198013Z
-Experiment: Plot sin(x) on [0, 2pi]
-Samples: 400
-x_min: 0.000000
-x_max: 6.283185
-y_min: -0.999992
-y_max: 0.999992
-Notes: Figure generated with NumPy + Matplotlib and saved to codes/ch1_sin_plot.png
+```text
+Artifact successfully saved to: codes/ch1_verification_plot.png
 ```
 
----
+### Expected Outcome and Interpretation
 
-## Step 4: Documentation Asset Preview
-
-Rendered artifact expected from Step 2:
-
-![Chapter 1 sin plot](codes/ch1_sin_plot.png)
+The script produces a `.png` file with professional LaTeX-style labels. The visualization reveals the $90^\circ$ $(\pi/2)$ phase shift between the two functions. This project validates that the **visualization pipeline** is functional and that you can export high-resolution assets for documentation or publication.
 
 ---
 
-## Step 5: Reproducibility Checklist
+## **References**
 
-1. All scripts run without manual edits.
-2. Output files are created under this chapter only.
-3. Plot has title, labels, legend, and grid.
-4. Console summary captures enough metadata to reproduce later.
+[1] Hunter, J. D. (2007). Matplotlib: A 2D graphics environment. *Computing in Science & Engineering*.
 
----
+[2] Harris, C. R., et al. (2020). Array programming with NumPy. *Nature*.
 
-## Step 6: Git Snapshot
-
-After generating outputs, track them in version history.
-
-```python
-git add docs/chapters/chapter-1/codebook.md
-git add docs/chapters/chapter-1/codes/ch1_sin_plot.png
-git commit -m "Chapter 1: add reproducible end-to-end codebook workflow"
-```
-
----
-
-## Notes For Chapter Bridge
-
-You now have a baseline reproducible workflow. In Chapter 2, the same workflow will be used to study floating-point representation error, precision limits, and numerical stability.
+[3] Perez, F., & Granger, B. E. (2007). IPython: A system for interactive scientific computing. *Computing in Science & Engineering*.

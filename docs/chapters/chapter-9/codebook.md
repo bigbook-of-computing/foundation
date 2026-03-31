@@ -2,14 +2,19 @@
 
 ---
 
+This Codebook provides the numerical tools for solving problems with two-point constraints. We implement the **Shooting Method** (root-finding on initial slopes) and the **Finite Difference Method (FDM)**, focusing on the Time-Independent Schrödinger Equation (TISE) as a matrix eigenvalue problem.
+
+---
+
 ## Project 1: The Shooting Method — Instability Demonstration
 
-| Feature | Description |
+| Component | Description |
 | :--- | :--- |
-| **Goal** | Solve a simple linear **Boundary Value Problem (BVP)** using the **Shooting Method** and demonstrate its inherent instability and inefficiency. |
-| **BVP Model** | A second-order linear ODE: $y''(x) = \frac{1}{4}y(x)$. |
-| **Boundary Conditions (BCs)** | $y(0)=1$ and $y(2)=0.5$.|
-| **Method** | **Converts the BVP to an IVP**. A root-finding algorithm (here, `scipy.optimize.root_scalar` with Brent's method) iteratively searches for the correct initial slope, $g=y'(0)$. |
+| **Objective** | Solve a linear BVP ($y'' = \frac{1}{4}y$) using the **Shooting Method**. |
+| **Mathematical Concept** | Converting BVP to IVP by searching for the root of the error function $E(g) = y(L;g) - B$. |
+| **Experiment Setup** | Python `solve_ivp` for the integration engine and `root_scalar` for the shooting intelligence. |
+| **Expected Behavior** | Iterative convergence to the correct initial slope $y'(0) \approx -0.443$. |
+| **Verification Goal** | Demonstrate the hybrid nature of the shooting algorithm. |
 
 ---
 
@@ -181,12 +186,13 @@ Final Value Check (y(2.0)): 0.500000 (Target: 0.5)
 ```
 ## Project 2: FDM & Quantum Mechanics (TISE Solver)
 
-| Feature | Description |
+| Component | Description |
 | :--- | :--- |
-| **Goal** | Solve the **Time-Independent Schrödinger Equation (TISE)** for a 1D system (the particle in a box) using the **Finite Difference Method (FDM)**. |
-| **Model** | **Particle in a Box ($V(x)=0$)**. Boundary conditions: $\psi(0)=0$ and $\psi(L)=0$. |
-| **Mathematical Detail** | The FDM converts the TISE into the **Matrix Eigenvalue Problem** $\mathbf{H}\boldsymbol{\psi} = E\boldsymbol{\psi}$. The solution involves finding the eigenvalues (energy levels $E$) and eigenvectors (wavefunctions $\boldsymbol{\psi}$) of the Hamiltonian matrix $\mathbf{H}$. |
-| **Core Advantage** | FDM provides a **stable and highly efficient** solution method by converting the differential equation into a simple **tridiagonal** matrix structure. |
+| **Objective** | Solve the **TISE** for a Particle in a Box using the **Finite Difference Method**. |
+| **Mathematical Concept** | Mapping $\hat{H}\psi = E\psi$ onto the matrix system $\mathbf{H}\boldsymbol{\psi} = E\boldsymbol{\psi}$. |
+| **Experiment Setup** | Tridiagonal Hamiltonian construction; `scipy.linalg.eigh_tridiagonal` eigensolver. |
+| **Expected Behavior** | Quantized energy levels $E_n \propto n^2$; sinusoidal wavefunctions mirroring analytic results. |
+| **Verification Goal** | High-precision eigenvalues ($< 10^{-5}$ relative error). |
 
 ---
 

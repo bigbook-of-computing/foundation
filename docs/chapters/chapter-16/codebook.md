@@ -1,14 +1,20 @@
-# **Chapter 16: Data-Driven Analysis: SVD & PCA (Codebook)**
+# **Chapter 16: Data-Driven Analysis (Codebook)**
+
+---
+
+This Codebook implements advanced data distillation techniques. We perform **Principal Component Analysis (PCA)** to find the "long" axes of variance in correlated data and use **Singular Value Decomposition (SVD)** to demonstrate rank-based data compression and noise filtering.
 
 ---
 
 ## Project 1: Principal Component Analysis (PCA) on Data
 
-| Feature | Description |
+| Component | Description |
 | :--- | :--- |
-| **Goal** | Apply **Principal Component Analysis (PCA)** to a synthetic, high-dimensional dataset (representing observations of three coupled variables) to find the **principal components** and visualize the data in a reduced 2D space. |
-| **Method** | 1. **Center** the data. 2. Calculate the **Covariance Matrix**. 3. Solve the **Eigenvalue Problem** on the covariance matrix to obtain eigenvalues (variance) and eigenvectors (Principal Components). |
-| **Core Concept** | PCA is a specialized application of the **Eigenvalue Problem (Chapter 14)** to data analysis, finding the new orthogonal axes that capture maximum variance. |
+| **Objective** | Extract dominant patterns from a 3D correlated data cloud. |
+| **Mathematical Concept** | Eigenvalue decomposition of the $N \times N$ Covariance Matrix. |
+| **Experiment Setup** | 500 observations of 3 synthetic variables with built-in correlations. |
+| **Expected Behavior** | PC1 captures the majority of variance; PCs are orthogonal. |
+| **Verification Goal** | Successfully reduce 3D data to 2D while retaining >95% info. |
 
 ---
 
@@ -216,11 +222,13 @@ allowing the 3D system to be accurately reduced to a 2D plot.
 ```
 ## Project 2: SVD for Noise Filtering (Image Compression)
 
-| Feature | Description |
+| Component | Description |
 | :--- | :--- |
-| **Goal** | Use **Singular Value Decomposition (SVD)**, the master factorization, to perform a controlled **noise filtering and compression** on a simple 2D dataset (an image). |
-| **Method** | 1. Compute $\mathbf{U}\mathbf{\Sigma}\mathbf{V}^T$. 2. **Truncate** the factorization by keeping only the top $K$ singular values ($\sigma_k$) and their corresponding vectors. 3. Reconstruct the matrix using the truncated components. |
-| **Core Concept** | Singular values ($\sigma_k$) quantify the contribution of each rank-1 component to the total matrix. Filtering involves zeroing out small singular values, which represent noise or minor details. |
+| **Objective** | Filter noisy matrix data using rank-based truncation. |
+| **Mathematical Concept** | SVD factorization: $\mathbf{A} = \mathbf{U}\boldsymbol{\Sigma}\mathbf{V}^T$. |
+| **Experiment Setup** | 20x20 noisy pattern matrix; reconstruction with rank $K=5$. |
+| **Expected Behavior** | Significant noise suppression compared to the raw input. |
+| **Verification Goal** | Demonstrate that small singular values correspond to noise. |
 
 ---
 

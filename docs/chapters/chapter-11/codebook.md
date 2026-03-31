@@ -1,15 +1,20 @@
-# **Chapter 11: Parabolic Partial Differential Equations (e.g., The Heat/Diffusion Equation) (Codebook)**
+# **Chapter 11: Parabolic PDEs (Codebook)**
+
+---
+
+This Codebook implement the numerical solutions for transient diffusion. We demonstrate the **CFL Stability Crisis** using the explicit **FTCS** method and provide the high-fidelity, unconditionally stable **Crank-Nicolson** (Implicit) solver for long-term heat evolution.
 
 ---
 
 ## Project 1: CFL Stability Crisis (FTCS vs. Explosion)
 
-| Feature | Description |
+| Component | Description |
 | :--- | :--- |
-| **Goal** | Simulate the Heat Equation using the **Explicit FTCS (Forward-Time Centered-Space) Method** and demonstrate its **conditional stability** by running one case where the CFL condition is met ($\alpha \le 0.5$) and one case where it is violated ($\alpha > 0.5$). |
-| **Model** | **1D Heat Equation**: $\frac{\partial T}{\partial t} = D \frac{\partial^2 T}{\partial x^2}$. |
-| **Stability Constraint** | The **CFL Condition** for FTCS is $\mathbf{\alpha = D \frac{h_t}{h_x^2} \le 0.5}$. Violation leads to numerical explosion. |
-| **Core Concept** | FTCS is easy to implement but is **impractically slow** for high spatial resolution due to the $h_t \propto h_x^2$ restriction. |
+| **Objective** | Demonstrate the conditional stability of **FTCS** ($\alpha = D\Delta t / \Delta x^2$). |
+| **Mathematical Concept** | Explicit time-marching using the 2nd-order spatial Laplacian. |
+| **Experiment Setup** | 1D rod with Dirichlet BCs; running $\alpha = 0.5$ (stable) vs $\alpha = 0.75$ (unstable). |
+| **Expected Behavior** | Stable cooling for $\alpha \le 0.5$; immediate non-physical oscillations for $\alpha > 0.5$. |
+| **Verification Goal** | Visually confirm the CFL stability boundary. |
 
 ---
 
@@ -229,11 +234,13 @@ Case B: Unstable (α = 0.7500)
 ```
 ## Project 2: The Gold Standard (Crank-Nicolson)
 
-| Feature | Description |
+| Component | Description |
 | :--- | :--- |
-| **Goal** | Solve the Heat Equation using the **Crank-Nicolson Method** (the "gold standard"). The solver must remain **stable and accurate** even when using a time step that grossly **violates** the explicit FTCS CFL condition. |
-| **Method** | **Implicit Scheme** solved by the **Thomas Algorithm** (or equivalent, here implemented using `np.linalg.solve` on the tridiagonal matrix). |
-| **Core Advantage** | Crank-Nicolson is **unconditionally stable** (A-stable) and **second-order accurate in time** ($\mathcal{O}(h_t^2)$). This allows for much larger, efficiency-gaining time steps. |
+| **Objective** | Implement the unconditionally stable **Crank-Nicolson** (Implicit) Method. |
+| **Mathematical Concept** | Averaging present ($n$) and future ($n+1$) stencils; solving tridiagonal systems. |
+| **Experiment Setup** | 1D rod simulation with $\alpha = 13.0$ (grossly violating the FTCS limit). |
+| **Expected Behavior** | Perfect stability and higher-order ($\mathcal{O}(h_t^2)$) temporal accuracy. |
+| **Verification Goal** | Demonstrate stable, large-step integration for diffusion. |
 
 ---
 

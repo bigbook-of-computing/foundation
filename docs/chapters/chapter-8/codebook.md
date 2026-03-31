@@ -1,14 +1,20 @@
-# **Chapter 8: Initial Value Problems II — The Leapfrog & Verlet (Codebook)**
+# **Chapter 8: Initial Value Problems II (Codebook)**
+
+---
+
+This Codebook implement the **Verlet** and **Leapfrog** integration schemes. We demonstrate their superior long-term energy conservation in purely conservative (Hamiltonian) systems, specifically the Simple Harmonic Oscillator and stable N-body planetary orbits.
 
 ---
 
 ## Project 1: Energy Conservation Showdown (RK4 vs. Velocity-Verlet)
 
-| Feature | Description |
+| Component | Description |
 | :--- | :--- |
-| **Goal** | Simulate a **Simple Harmonic Oscillator (SHO)**, a purely conservative system, using both the non-symplectic **RK4** (Chapter 7) and the symplectic **Velocity-Verlet** algorithm to demonstrate the long-term energy drift inherent in RK4. |
-| **Model** | **Simple Harmonic Oscillator (SHO)**: $x''(t) = -x$. The system's total energy, $E = \frac{1}{2}(v^2 + x^2)$, must remain constant. |
-| **Core Concept** | **Velocity-Verlet** is a **symplectic integrator**; it preserves the geometry of phase space, causing energy error to **oscillate and remain bounded**, preventing the secular drift seen in RK4. |
+| **Objective** | Compare long-term energy stability of **RK4** vs. **Velocity-Verlet** (Symplectic). |
+| **Mathematical Concept** | Solving $\mathbf{S}'' = -k\mathbf{x}/m$; monitoring the drift in $E = K + U$. |
+| **Experiment Setup** | Python, NumPy; $t \in [0, 500]$ with 50,000 steps ($h = 0.01$). |
+| **Expected Behavior** | RK4 energy will drift monotonically (log-linear); Verlet energy will stay bounded. |
+| **Verification Goal** | Prove that symplecticity is more important than order for long-term physics. |
 
 ---
 
@@ -226,12 +232,13 @@ Velocity-Verlet Method (Symplectic):
 ```
 ## Project 2: N-Body Simulation (Two-Body Orbit)
 
-| Feature | Description |
+| Component | Description |
 | :--- | :--- |
-| **Goal** | Simulate a circular **Two-Body Gravitational Orbit** using the **Velocity-Verlet** algorithm over many periods to demonstrate its long-term stability, focusing on the lack of secular drift that plagues RK4. |
-| **Model** | **Inverse-Square Law:** $\mathbf{a} = -\frac{GM}{r^2} \hat{\mathbf{r}}$. This is a purely **conservative** system. |
-| **System Conversion** | The 2D (x, y) motion is treated as a **4D coupled system**: $\mathbf{S} = [x, y, v_x, v_y]$. Velocity-Verlet is applied to this system. |
-| **Core Concept** | A stable, structure-preserving integrator is necessary for orbit mechanics. Velocity-Verlet guarantees that the orbit remains **bounded** and stable over thousands of periods. |
+| **Objective** | Simulate a stable circular **Two-Body Orbit** over 100 periods. |
+| **Mathematical Concept** | Newton's Law of Gravitation: $\mathbf{a} = -(GM/r^3)\mathbf{r}$. |
+| **Experiment Setup** | Velocity-Verlet integrator; tracking $x$ vs. $y$ and $\Delta E$ vs. time. |
+| **Expected Behavior** | Orbit should remain circular and perfectly closed due to energy conservation. |
+| **Verification Goal** | Demonstrate stable orbital dynamics for astrophysical simulations. |
 
 ---
 

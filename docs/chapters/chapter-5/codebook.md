@@ -1,16 +1,20 @@
 # **Chapter 5: Numerical Differentiation (Codebook)**
 
-This Code Book is for **Chapter 5: Numerical Differentiation**, focusing on implementing the core concepts of finite difference stencils and analyzing the critical trade-off between truncation error and round-off error.
+---
+
+This Codebook implement the core stencils for finite difference approximations. We analyze the **Forward**, **Backward**, and **Central Difference** methods and identify the "Sweet Spot" step size ($h$) where truncation error and round-off error are balanced.
 
 ---
 
 ## Project 1: The Great Error Showdown (V-Plot Analysis)
 
-| Project Title | Relevant Theoretical Background |
+| Component | Description |
 | :--- | :--- |
-| **The Great Error Showdown (V-Plot Analysis)** | The total error in a numerical derivative is the sum of two competing terms: **Truncation Error** ($E_{\text{trunc}} \propto \mathcal{O}(h^2)$), which decreases as the step size ($h$) decreases, and **Round-off Error** ($E_{\text{round}} \propto \frac{\epsilon_m}{h}$), which increases as $h$ decreases due to catastrophic cancellation. |
-| **Core Concept** | The **V-Plot** (log-log plot of Error vs. $h$) shows these two error sources, revealing the **"sweet spot"**—the optimal $h$ where the total error is minimized. |
-| **Mathematical Goal** | Determine the optimal step size $h_{\text{opt}}$ for the Central Difference stencil applied to $f(x) = \sin(x)$ at $x=1$. |
+| **Objective** | Determine the optimal step size $h_{\text{opt}}$ for the Central Difference stencil applied to $f(x) = \sin(x)$ at $x=1$. |
+| **Mathematical Concept** | The V-Plot (log-log plot of Error vs. $h$) shows the interplay of Truncation ($O(h^2)$) and Round-off ($O(\epsilon_m/h)$) errors. |
+| **Experiment Setup** | Python, NumPy `logspace` for $h \in [10^{-1}, 10^{-16}]$. |
+| **Expected Behavior** | Error should decrease linearly with $h^2$, reach a minimum at $\sim 10^{-6}$, and then increase due to round-off. |
+| **Verification Goal** | Identify the numerical "Sweet Spot" for double-precision differentiation. |
 
 ---
 

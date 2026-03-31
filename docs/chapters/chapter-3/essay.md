@@ -1,222 +1,151 @@
-# **Chapter 3: Root Finding as a Scientific Instrument**
+# **Chapter 3: Root Finding**
 
 ---
 
 # **Introduction**
 
-Chapter 2 established an uncomfortable truth: numerical computation is approximate by construction. Chapter 3 answers the next professional question: if every model evaluation is approximate, how do we still solve equations reliably?
+In the "Digital Lab," we rarely encounter physical equations that can be solved with simple algebra. Instead, the core parameters of a system—equilibrium positions, orbital periods, or quantum energy levels—are often buried within nonlinear, transcendental equations of the form $f(x) = 0$. Finding the "roots" of these equations is not merely a mathematical exercise; it is a fundamental scientific instrument used to extract physical truth from numerical models.
 
-In scientific computing, many core tasks reduce to finding roots:
-
-$$
-f(x) = 0
-$$
-
-A root is not just a mathematical object. It can represent a physical equilibrium, a conservation boundary, a resonance condition, or an eigenvalue constraint. Root finding is therefore not a side topic. It is a central scientific instrument.
-
-This chapter develops root finding from a practitioner viewpoint:
-
-1. Method mechanics (what the algorithm does).
-2. Convergence behavior (how fast and under what assumptions).
-3. Failure modes (how and why methods break).
-4. Professional stopping criteria (how to decide you are done).
-5. Physical application (finite square well energy states).
-
----
-
-## Learning Outcomes
-
-By the end of this chapter, you should be able to:
-
-1. Distinguish bracketing methods from open methods.
-2. Explain linear, superlinear, and quadratic convergence in practical terms.
-3. Choose a root-finding strategy based on smoothness, derivative access, and safety requirements.
-4. Define robust multi-condition stopping criteria.
-5. Solve a transcendental physics equation using a defendable workflow.
+This chapter explores the algorithmic strategies for root finding, moving from the rock-solid reliability of **Bracketing Methods** (Bisection) to the high-speed but fragile world of **Open Methods** (Newton-Raphson). We will define the "Standard" for a robust root-finding workflow: one that balances speed with safety, employs rigorous stopping criteria, and accounts for the numerical artifacts introduced by finite precision.
 
 ---
 
 # **Chapter 3: Outline**
 
-| Sec. | Title | Core Idea |
+| **Sec.** | **Title** | **Core Ideas & Examples** |
 | :--- | :--- | :--- |
-| 3.1 | Why Roots Matter in Physics | Root equations as physical constraints |
-| 3.2 | Bisection: Safety First | Guaranteed convergence under sign change |
-| 3.3 | Newton-Raphson: Local Speed | Derivative-informed updates and fragility |
-| 3.4 | Secant and Hybrid Practice | Derivative-free acceleration and robust combinations |
-| 3.5 | Stopping Criteria and Verification | Tolerance design, residual traps, and sanity checks |
-| 3.6 | Core Case Study: Finite Square Well | Bound-state roots from transcendental equations |
+| **3.1** | **The Physics of Zeros** | Root finding as equilibrium detection; the transcendental equation problem; residual functions. |
+| **3.2** | **Bracketing Methods (Bisection)** | Intermediate Value Theorem; "Safety First" approach; linear convergence; guaranteed success. |
+| **3.3** | **Open Methods (Newton-Raphson)** | Taylor series derivation; tangent line approximation; quadratic convergence; failure modes and fragility. |
+| **3.4** | **The Secant Method** | Derivative-free acceleration; superlinear convergence ($1.618 \dots$); the finance and engineering compromise. |
+| **3.5** | **Hybrid Methods (Brent's)** | The production standard; merging Bisection robustness with Inverse Quadratic Interpolation speed. |
+| **3.6** | **Professional Stopping Criteria** | Absolute vs. Relative tolerance; residual limits; the "Double-Check" requirement. |
 
 ---
 
-## 3.1 Why Roots Matter in Physics
-
-Many equations in applied physics are not solved in explicit form. Instead, the target variable is embedded nonlinearly, and we solve for where a residual function crosses zero.
-
-Examples:
-
-1. Force balance: $F_{\text{net}}(x)=0$.
-2. Nonlinear circuit operating point: $I(V)-I_{\text{load}}(V)=0$.
-3. Dispersion relations: $D(\omega, k)=0$.
-4. Quantum boundary constraints: transcendental matching equations.
-
-A root-finding workflow translates physical interpretation into numerical procedure:
-
-1. Build a residual function from governing equations.
-2. Inspect domain, singularities, and expected root count.
-3. Choose algorithm class (safe vs fast vs hybrid).
-4. Validate with tolerance and physical checks.
+## **3.1 The Physics of Zeros: Residual Functions**
 
 ---
 
-## 3.2 Bisection: Safety First
+In computation, we rarely solve $A = B$ directly. Instead, we define a **residual function** $R(x) = A(x) - B(x)$ and seek the point where $R(x) = 0$.
 
-Bisection is the method of controlled narrowing. If $f(a)$ and $f(b)$ have opposite signs and $f$ is continuous on $[a,b]$, then at least one root lies inside.
+- **Equilibrium:** Finding where net force $F(x) = 0$.
+- **Quantum Mechanics:** Finding energy levels $E$ that satisfy boundary matching $f(E) = 0$.
+- **Thermodynamics:** Finding the state $(P, V, T)$ that satisfies the equation of state.
 
-Algorithm:
-
-1. Compute midpoint $m=(a+b)/2$.
-2. Keep the half interval that preserves sign change.
-3. Repeat until interval width or residual is below tolerance.
-
-Convergence is linear: interval width halves each iteration.
-
-$$
-|I_n| = \frac{|I_0|}{2^n}
-$$
-
-Professional interpretation:
-
-- Strength: global reliability with minimal assumptions.
-- Limitation: slow near final digits compared with Newton-type methods.
-
-When safety dominates speed, bisection is often the first pass.
+!!! tip "Visualize First"
+    Before running any root-finding algorithm, **plot the function**. A simple plot reveals singularities, multiple roots, and the general "landscape" of the problem, allowing you to provide a meaningful initial guess.
 
 ---
 
-## 3.3 Newton-Raphson: Local Speed, Global Risk
-
-Newton uses first-order local linearization:
-
-$$
-x_{n+1} = x_n - \frac{f(x_n)}{f'(x_n)}
-$$
-
-Near a simple root, convergence is typically quadratic, meaning error roughly squares each step.
-
-$$
-|e_{n+1}| \approx C |e_n|^2
-$$
-
-However, Newton can fail if:
-
-1. Initial guess is poor.
-2. Derivative is small or noisy.
-3. Function has non-smooth structure.
-4. Update jumps outside physically meaningful domain.
-
-Professional use of Newton includes safeguards:
-
-1. Step damping.
-2. Domain clipping.
-3. Derivative floor checks.
-4. Fallback to bracketed updates when needed.
+## **3.2 Bracketing Methods: Bisection**
 
 ---
 
-## 3.4 Secant and Hybrid Practice
+The **Bisection Method** is the "Tank" of numerical analysis: slow, but nearly impossible to stop. It relies on the **Intermediate Value Theorem**: if $f(a)$ and $f(b)$ have opposite signs, and $f$ is continuous, there *must* be at least one root between $a$ and $b$.
 
-Secant approximates the derivative using two recent iterates:
+**The Process:** 
+1. Bisect the interval: $c = (a+b)/2$.
+2. Check the sign of $f(c)$.
+3. Replace the boundary ($a$ or $b$) that preserves the sign change.
 
-$$
-x_{n+1} = x_n - f(x_n) \frac{x_n - x_{n-1}}{f(x_n)-f(x_{n-1})}
-$$
+$$ \text{Interval Width after } n \text{ steps: } \Delta x_n = \frac{b-a}{2^n} $$
 
-It avoids explicit derivatives and is often superlinear in convergence (faster than bisection, usually slower than ideal Newton).
-
-Practical reality in production workflows:
-
-- No single method dominates all problems.
-- Robust solvers combine bracketing safety with interpolation speed.
-
-Hybrid mindset:
-
-1. Bracket root first.
-2. Attempt fast step (secant/newton/inverse quadratic).
-3. Accept only if step is safe and progress is credible.
-4. Otherwise fall back to bracket contraction.
-
-This is the logic behind widely used methods such as Brent-style solvers.
+!!! example "Linear Convergence"
+    Bisection is **linearly convergent**. Each step provides exactly 1 bit of additional precision. To gain 16 digits of precision (the limit of `float64`), you need approximately $\log_2(10^{16}) \approx 54$ iterations. It is slow, but its success is mathematically guaranteed.
 
 ---
 
-## 3.5 Stopping Criteria and Verification
-
-A professional root solver never stops on one condition alone.
-
-Common stopping metrics:
-
-1. Step size: $|x_{n+1}-x_n| < \tau_x$.
-2. Residual size: $|f(x_n)| < \tau_f$.
-3. Bracket width: $|b-a| < \tau_b$.
-4. Iteration cap: $n \le n_{\max}$.
-
-Why this matters:
-
-- Small residual alone can be misleading for very flat functions.
-- Small step alone can be misleading if stagnation occurs away from root.
-- Tight tolerance without scale awareness can waste computation.
-
-Recommended practical rule:
-
-1. Use absolute + relative tolerance for $x$.
-2. Use residual tolerance scaled to model units.
-3. Require at least two criteria simultaneously.
-4. Log final metrics for auditability.
+## **3.3 Open Methods: Newton-Raphson**
 
 ---
 
-## 3.6 Core Case Study: Finite Square Well
+If Bisection is a tank, **Newton-Raphson** is a Formula 1 car: extremely fast, but prone to crashing if the track is bumpy. It uses the function's derivative to "shoot" toward the root along the tangent line.
 
-For a 1D finite square well, bound states are determined by transcendental equations from continuity and boundary matching. For odd parity (in one normalized form), one encounters equations like:
+$$ x_{n+1} = x_n - \frac{f(x_n)}{f'(x_n)} $$
 
-$$
--k \cot(k) = \sqrt{\alpha^2 - k^2}
-$$
+**Convergence:** Near a simple root, Newton is **quadratically convergent**. The number of correct digits roughly **doubles** with every iteration ($1 \to 2 \to 4 \to 8 \to 16$).
 
-with $0 < k < \alpha$ and singularities from $\cot(k)$.
+```mermaid
+graph TD
+    A[Initial Guess x0] --> B[Calculate f(x0) and f'(x0)]
+    B --> C[Update x_next = x - f/f']
+    C --> D{Converged?}
+    D -- No --> B
+    D -- Yes --> E[Root Found]
+```
 
-Professional solution workflow:
-
-1. Plot both sides or equivalent residual first.
-2. Identify admissible intervals between singularities.
-3. Build valid brackets around each expected state.
-4. Use a safe method (bisection/hybrid) to isolate roots.
-5. Convert roots to energies and verify physical ordering.
-
-This is where Chapter 2 principles become operational: finite precision, sensitivity, and stopping criteria determine whether the computed spectrum is trustworthy.
-
----
-
-## Summary
-
-Chapter 3 reframes root finding as methodological design, not just formula application.
-
-Key professional takeaways:
-
-1. Safety and speed are distinct properties.
-2. Method selection is problem-dependent.
-3. Stopping criteria are part of scientific validity.
-4. Physical interpretation must close the loop after convergence.
-
-Chapter 4 will extend this mindset from root location to local approximation and interpolation, where we trade model evaluations for surrogate structure.
+!!! failure "When Newton Crashes"
+    Newton-Raphson fails if:
+    1.  **Stationary Points:** If $f'(x) \approx 0$, the update "shoots" the guess to infinity.
+    2.  **Oscillations:** The guess gets trapped jumping back and forth across the root.
+    3.  **Fractal Basins:** A small change in initial guess leads to a completely different root.
 
 ---
 
-## References
+## **3.4 The Secant Method**
 
-1. Burden, R. L., and Faires, J. D. Numerical Analysis. Brooks/Cole.
-2. Quarteroni, A., Sacco, R., and Saleri, F. Numerical Mathematics. Springer.
-3. Press, W. H., et al. Numerical Recipes. Cambridge University Press.
-4. Heath, M. T. Scientific Computing. McGraw-Hill.
-5. Trefethen, L. N., and Bau, D. Numerical Linear Algebra. SIAM.
+---
+
+What if you don't have the derivative? The **Secant Method** replaces the exact derivative $f'(x)$ with a finite-difference approximation using the two most recent points:
+
+$$ x_{n+1} = x_n - f(x_n) \frac{x_n - x_{n-1}}{f(x_n) - f(x_{n-1})} $$
+
+**Speed:** It achieves **superlinear convergence** with a rate of $\phi \approx 1.618$ (the Golden Ratio). It is faster than Bisection but avoids the manual derivation of $f'(x)$ required by Newton.
+
+---
+
+## **3.5 Hybrid Methods: The Brent Standard**
+
+---
+
+In professional libraries (like `scipy.optimize.brentq`), we use **Hybrid Methods**. These algorithms monitor the convergence:
+1.  They attempt a fast step (Newton or Inverse Quadratic Interpolation).
+2.  If the fast step jumps outside the "bracket" or fails to converge quickly, they **fall back** to Bisection.
+
+!!! tip "Standard Practice"
+    **Never** use a pure Newton solver for critical production code without a bracketing fallback. Brent’s Method is the industry standard because it provides the speed of interpolation with the guaranteed convergence of Bisection.
+
+---
+
+## **3.6 Professional Stopping Criteria**
+
+---
+
+How do you know when to stop? A "Standard" solver requires meeting multiple conditions simultaneously:
+
+1.  **X-Tolerance:** $|x_{n+1} - x_n| < \text{tol}_x$ (The location is stable).
+2.  **Y-Tolerance (Residual):** $|f(x_n)| < \text{tol}_f$ (The value is near zero).
+3.  **Iteration Cap:** $n < N_{\text{max}}$ (Prevent infinite loops).
+
+??? question "Should I use absolute or relative tolerance?"
+    **Both.** Use $|x_{new} - x_{old}| < \max(\epsilon_{abs}, \epsilon_{rel} \cdot |x_{new}|)$. This ensures accuracy for both very large and very small numbers.
+
+---
+
+## **Summary: Root-Finding Comparison**
+
+---
+
+| Method | Convergence Rate | Requirements | Reliability | Best For |
+| :--- | :--- | :--- | :--- | :--- |
+| **Bisection** | Linear (1.0) | Multi-sign interval | **Guaranteed** | Initial isolation of roots |
+| **Secant** | Superlinear (1.618) | 2 initial points | Moderate | Derivative-free speed |
+| **Newton** | Quadratic (2.0) | $f(x)$ and $f'(x)$ | Fragile | Polishing a good guess |
+| **Brent's** | Hybrid | Multi-sign interval | **Guaranteed** | **Professional Standard** |
+
+---
+
+## **References**
+
+---
+
+[1] Brent, R. P. (1973). *Algorithms for Minimization Without Derivatives*. Prentice-Hall.
+
+[2] Press, W. H., et al. (2007). *Numerical Recipes: The Art of Scientific Computing*. Cambridge University Press.
+
+[3] Burden, R. L., & Faires, J. D. (2011). *Numerical Analysis*. Brooks/Cole.
+
+[4] Acton, F. S. (1990). *Numerical Methods That Work*. Mathematical Association of America.
+
+[5] Ralston, A., & Rabinowitz, P. (2001). *A First Course in Numerical Analysis*. Dover.

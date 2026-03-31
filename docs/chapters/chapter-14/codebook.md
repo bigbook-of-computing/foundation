@@ -1,17 +1,20 @@
 # **Chapter 14: Eigenvalue Problems (Codebook)**
 
-This Python Code Book is for **Chapter 14: Eigenvalue Problems**, focusing on solving the two core applications: quantum energy levels (TISE) and classical normal modes.
+---
+
+This Codebook implement the numerical solutions for natural systems. We solve for the **Quantum Harmonic Oscillator** energy levels using specialized tridiagonal eigensolvers and calculate the **Normal Modes** of a classical multi-mass system.
 
 ---
 
 ## Project 1: Quantum Eigenvalues (TISE Solver)
 
-| Feature | Description |
+| Component | Description |
 | :--- | :--- |
-| **Goal** | Solve the **Time-Independent Schrödinger Equation (TISE)** for the **Simple Harmonic Oscillator (SHO)** potential, $V(x) = \frac{1}{2}kx^2$. |
-| **Model** | The **FDM** (Finite Difference Method) converts the TISE ($\mathbf{H}\boldsymbol{\psi} = E\boldsymbol{\psi}$) into a **tridiagonal matrix eigenvalue problem**. |
-| **Method** | **Specialized Eigensolver** (`scipy.linalg.eigh_tridiagonal`). This $\mathcal{O}(N^2)$ method exploits the matrix's **symmetric, tridiagonal structure** for maximum efficiency and numerical stability. |
-| **Physical Result** | The eigenvalues ($E$) are the quantized energy levels, and the eigenvectors ($\boldsymbol{\psi}$) are the corresponding wavefunctions. |
+| **Objective** | Solve the TISE for the Simple Harmonic Oscillator ($\mathbf{H}\boldsymbol{\psi} = E\boldsymbol{\psi}$). |
+| **Mathematical Concept** | Mapping the Hamiltonian to a symmetric tridiagonal matrix via FDM. |
+| **Experiment Setup** | Python, `scipy.linalg.eigh_tridiagonal` on $N=500$ grid. |
+| **Expected Behavior** | Energy levels spaced as $E_n \propto (n + 1/2)$; wavefunctions with $n$ nodes. |
+| **Verification Goal** | Match numerical results to the analytic result ($E_n = n + 1/2$). |
 
 ---
 
@@ -227,12 +230,13 @@ tridiagonal solver is key to the performance of this quantum model.
 ```
 ## Project 2: Classical Eigenvalues (Coupled Oscillators)
 
-| Feature | Description |
+| Component | Description |
 | :--- | :--- |
-| **Goal** | Find the **normal modes** (natural frequencies $\omega$) and **mode shapes** (eigenvectors) of a system of three coupled masses and springs. |
-| **Model** | The equation of motion leads to the generalized eigenvalue problem: $\mathbf{K}\mathbf{x} = \omega^2\mathbf{M}\mathbf{x}$, where $\mathbf{M}$ is the Mass Matrix and $\mathbf{K}$ is the Stiffness Matrix. |
-| **Method** | **Generalized Eigensolver** (`scipy.linalg.eigh`). This is necessary because the problem is not in the standard $\mathbf{A}\mathbf{x} = \lambda \mathbf{x}$ form (the mass matrix $\mathbf{M}$ is not the identity). |
-| **Physical Result** | The eigenvalues ($\lambda = \omega^2$) yield the natural frequencies, and the eigenvectors ($\mathbf{x}$) define the specific, decoupled motions of the masses. |
+| **Objective** | Find the natural frequencies and modes of three coupled masses. |
+| **Mathematical Concept** | Solving the generalized eigenvalue problem $\mathbf{K}\mathbf{x} = \omega^2\mathbf{M}\mathbf{x}$. |
+| **Experiment Setup** | Defining $3\times 3$ Mass ($\mathbf{M}$) and Stiffness ($\mathbf{K}$) matrices. |
+| **Expected Behavior** | Three distinct modes: Symmetric, Anti-Symmetric, and Twisting. |
+| **Verification Goal** | Decouple the motion into independent characteristic frequencies. |
 
 ---
 

@@ -1,304 +1,103 @@
-# **Chapter 3: Root Finding for Scientific Reliability (Workbook)**
+# **Chapter 3: Root Finding (Workbook)**
 
 ---
 
-## Workbook Purpose
-
-This workbook is designed for active, assessable participation.
-
-By the end, you should be able to:
-
-1. Translate physical constraints into root equations.
-2. Compare bisection, Newton, and secant on safety and speed.
-3. Select stopping criteria appropriate to scale and physics.
-4. Diagnose and fix convergence failures.
-5. Implement a mini root-finding study with reproducible evidence.
+> **Summary:** This workbook bridges the gap between pure algebra and numerical approximation. We move from "solving for $x$" to "approximating $x$" through iterative refinement. We will analyze the absolute safety of **Bisection**, the aggressive speed of **Newton-Raphson**, and the practical balance of the **Secant Method**. By the end, you will be able to diagnose convergence failures and select the robust stopping criteria required for scientific-grade solvers.
 
 ---
 
-## Part A: Concept Quiz (Foundations)
+## **3.1 Bracketing: The Safety First Approach** {.heading-with-pill}
 
-!!! note "Quiz 1"
-    A bracketing method requires:
-    
-    - A. A derivative function
-    - B. Two points with opposite signs in a continuous interval
-    - C. A second derivative
-    - D. A random initial guess
-    
-!!! note "Quiz 2"
-    Newton-Raphson is generally fast when:
-    
-    - A. The initial guess is near a simple root and derivative is well-behaved
-    - B. The function is discontinuous
-    - C. The derivative is always zero
-    - D. No initial guess is provided
-    
-!!! note "Quiz 3"
-    Secant method is attractive because:
-    
-    - A. It guarantees convergence globally
-    - B. It avoids explicit derivative evaluation
-    - C. It always outperforms Newton
-    - D. It needs only one iterate
-    
-!!! note "Quiz 4"
-    The most robust stopping design is:
-    
-    - A. Residual-only criterion
-    - B. Iteration-count-only criterion
-    - C. Multi-condition criterion combining step, residual, and safeguards
-    - D. Stop after fixed wall-clock time
-    
-!!! note "Quiz 5"
-    Catastrophic cancellation is most related to:
-    
-    - A. Multiplication overflow
-    - B. Subtracting nearly equal quantities
-    - C. FFT aliasing
-    - D. Integer truncation
-    
----
-
-## Part B: Concept Quiz (Professional Practice)
-
-!!! note "Quiz 6"
-    A solver reports $|f(x)|$ very small, but $x$ is physically impossible. Best interpretation:
-    
-    - A. Converged and valid
-    - B. Numerical convergence must still be checked against domain constraints
-    - C. Physics constraints are optional
-    - D. Residual always dominates physical checks
-    
-!!! note "Quiz 7"
-    If Newton diverges from a valid bracket, a practical response is:
-    
-    - A. Increase iteration limit only
-    - B. Use damped or bracketed fallback steps
-    - C. Remove tolerance checks
-    - D. Assume model is wrong
-    
-!!! note "Quiz 8"
-    For reproducibility, the most important metadata includes:
-    
-    - A. Plot colors only
-    - B. Hardware RGB profile
-    - C. Tolerances, initial guesses/brackets, iteration counts, and solver type
-    - D. Window size of IDE only
-    
-!!! note "Quiz 9"
-    In bisection, interval width after $n$ steps is:
-    
-    - A. $|I_0| / n$
-    - B. $|I_0| / 2^n$
-    - C. $|I_0| \times n$
-    - D. Constant
-    
-!!! note "Quiz 10"
-    A root-finding method is numerically stable when:
-    
-    - A. It amplifies tiny perturbations unpredictably
-    - B. It is fastest on one benchmark
-    - C. It tends to control and not explosively amplify perturbations
-    - D. It uses symbolic algebra only
-    
----
-
-## Part C: Interview-Style Questions
-
-Answer each in 6 to 12 sentences.
-
-1. Why should method selection be tied to model smoothness and derivative availability?
-2. Explain the difference between algorithm failure and model failure in nonlinear solving.
-3. Describe a strategy to detect false convergence in a root-finding report.
-4. In safety-critical computation, when is slower bisection preferable to faster Newton?
-5. How does Chapter 2 (floating-point limits) influence Chapter 3 stopping tolerance choices?
+> **Difficulty:** ★★☆☆☆
+> 
+> **Concept:** The Intermediate Value Theorem
+> 
+> **Summary:** If a continuous function changes sign between two points $a$ and $b$, there MUST be a root. Bracketing methods like Bisection exploit this "no-fail" logic to trap the root in an ever-shrinking interval.
 
 ---
 
-## Part D: Guided Lab 1 (Method Behavior)
+### **Theoretical Background**
 
-### Objective
+**Bisection Logic:**
+1.  **Initial Bracket:** Find $[a, b]$ such that $f(a) \cdot f(b) < 0$.
+2.  **Midpoint:** $c = (a + b) / 2$.
+3.  **Update:** If $f(a) \cdot f(c) < 0$, the root is in $[a, c]$. Otherwise, it's in $[c, b]$.
+4.  **Convergence:** The interval size after $n$ steps is $(b-a) / 2^n$.
 
-Compare convergence traces for bisection, Newton, and secant on:
-
-$$
-f(x) = \cos(x) - x
-$$
-
-### Setup Code
-
-```python
-import numpy as np
-
-
-def f(x):
-    return np.cos(x) - x
-
-
-def df(x):
-    return -np.sin(x) - 1.0
-```
-
-### Task
-
-1. Implement bisection using bracket $[0,1]$.
-2. Implement Newton using $x_0=0.5$.
-3. Implement secant using $(x_0,x_1)=(0,1)$.
-4. Record per-iteration: $x_n$, $|f(x_n)|$, and step size.
-5. Compare iteration counts to hit $|f(x)| < 1e-12$.
-
-### Reflection
-
-- Which method converged fastest?
-- Which method had strongest safety guarantee?
-- How would you justify choice for production?
+!!! tip "Slow but Certain"
+    Bisection is the only method that **guarantees** convergence even if the function has nasty wiggles or steep slopes. It is the "Safe Mode" of numerical solvers.
 
 ---
 
-## Part E: Guided Lab 2 (Stopping Criteria Stress Test)
+### **Comprehension Check**
 
-### Objective
+!!! note "Quiz"
+    1. If your initial bracket is $[0, 10]$, how many iterations are needed to reach a precision of $10^{-6}$?
+    2. What is the fundamental requirement for a bracketing method to work?
 
-Show why residual-only stopping is risky.
-
-### Setup Function
-
-```python
-import numpy as np
-
-
-def g(x):
-    # Flat near root region to stress residual-only logic
-    return (x - 1.0) ** 7
-```
-
-### Task
-
-1. Use Newton-like updates or fixed-point updates to approach root near $x=1$.
-2. Stop once with residual-only threshold.
-3. Stop again with combined criteria:
-   - $|f(x)| < 1e-10$
-   - and $|x_{n+1} - x_n| < 1e-10$
-4. Compare final $x$, final residual, and step size.
-
-### Reflection
-
-- Did residual-only stop too early or too late?
-- What condition prevented false confidence?
+??? info "See Answer"
+    1. **Approximately 24 iterations.** $10/2^n \approx 10^{-6} \Rightarrow 2^n \approx 10^7$. Since $2^{10} \approx 10^3$, $2^{20} \approx 10^6$, and $2^{24} \approx 1.6 \times 10^7$.
+    2. **A Sign Change.** The function must be continuous and have opposite signs at the two ends of the bracket.
 
 ---
 
-## Part F: Guided Lab 3 (Finite Square Well Bracketing)
+## **3.2 Open Methods: Newton-Raphson & Secant** {.heading-with-pill}
 
-### Objective
-
-Build physically meaningful brackets for odd-state roots.
-
-### Residual Form
-
-$$
-R(k) = -k \cot(k) - \sqrt{\alpha^2-k^2}
-$$
-
-with $\alpha > 0$ and $0 < k < \alpha$.
-
-### Task
-
-1. Choose $\alpha=8.0$.
-2. Identify singular points of $\cot(k)$.
-3. Construct candidate intervals between singularities.
-4. Evaluate sign changes to isolate valid brackets.
-5. Solve each bracket with bisection or hybrid method.
-
-### Reflection
-
-- Why is pre-plotting essential before solving?
-- Which intervals were invalid and why?
+> **Difficulty:** ★★★★☆
+> 
+> **Concept:** Gradient-Driven Search
+> 
+> **Summary:** "Open" methods use local derivatives to guess the next position of the root. They are exponentially faster than Bisection but can "explode" if the initial guess is poor or the function is nearly flat.
 
 ---
 
-## Part G: Participation Project
+### **Theoretical Background**
 
-### Project Title
+**Newton-Raphson Formula:**
+$$ x_{n+1} = x_n - \frac{f(x_n)}{f'(x_n)} $$
+It approximates the function as a straight line at point $x_n$ and follows that line to where it hits the x-axis.
 
-Root-Finding Reliability Report for a Physical Residual
+**The Secant Method:**
+If you don't know the derivative $f'(x)$, you can use two previous points to estimate the slope:
+$$ f'(x_n) \approx \frac{f(x_n) - f(x_{n-1})}{x_n - x_{n-1}} $$
 
-### Project Goal
-
-Produce a comparative solver report that demonstrates method behavior, stopping logic, and physical interpretation.
-
-### Required Deliverables
-
-1. Notebook with complete workflow and narrative.
-2. Two required figures in this chapter's codes folder:
-   - `codes/ch3_method_convergence.png`
-   - `codes/ch3_residual_landscape.png`
-3. One comparative table:
-   - solver
-   - iterations
-   - final root
-   - final residual
-   - termination reason
-4. One short discussion (300 to 500 words) answering:
-   - What failed in at least one method setup?
-   - How was failure detected?
-   - What mitigation did you apply?
-
-### Technical Standards
-
-- Include explicit tolerances and maximum iteration cap.
-- Use at least two stopping criteria.
-- Show at least one case where initial guess quality changes behavior.
-- Keep all generated artifacts in this chapter only.
-
-### Scoring Rubric (25 points)
-
-- Correct solver implementation (8)
-- Quality of convergence analysis (6)
-- Stopping-criteria rigor (5)
-- Physical interpretation quality (4)
-- Reproducibility and clarity (2)
-
----
-
-## Part H: Error Analysis Prompt
-
-Write a short technical memo (200 to 300 words):
-
-"If two teams report different roots for the same residual, what diagnostics would you run before concluding one team is wrong?"
-
-Expected dimensions:
-
-1. Numerical tolerance and stopping policy.
-2. Initial guess or bracket dependence.
-3. Floating-point sensitivity.
-4. Residual scaling and conditioning.
-5. Domain and physical constraints.
-
----
-
-## Part I: Self-Check Answers
-
-!!! success "Quiz Key"
-        1. B
-        2. A
-        3. B
-        4. C
-        5. B
-        6. B
-        7. B
-        8. C
-        9. B
-        10. C
+!!! abstract "Interview-Style Question"
     
+    Why does Newton-Raphson fail if $f'(x) \approx 0$ near the root? How would you modify the solver to handle this?
+    
+    ???+ info "Answer Strategy"
+        When the derivative is zero, the tangent line is horizontal—it never hits the x-axis. Numerically, the formula becomes $x - f(x)/0$, leading to an infinite step.
+        
+        **Modification (The Hybrid Strategy):**
+        Use a **Hybrid Solver** (like Brent's Method). Keep a bracket $[a, b]$ at all times. Attempt a Newton step; if the step lands outside the bracket or is too small, "fall back" to a Bisection step to ensure progress. This combines the speed of Newton with the safety of Bisection.
+
 ---
 
-## Exit Ticket
+## **3.3 Hands-On Projects** {.heading-with-pill}
 
-Before moving to Chapter 4, confirm:
+### **Project Blueprint: Root-Finding Reliability Report**
 
-- I can justify solver choice, not just run a formula.
-- I can design robust stopping logic.
-- I can detect divergence, stagnation, and false convergence.
-- I can connect numerical roots back to physical meaning.
+| Component | Description |
+| :--- | :--- |
+| **Objective** | Compare Bisection, Newton, and Secant on the transcendental equation: $f(x) = \cos(x) - x$. |
+| **Mathematical Concept** | Convergence rates: Linear (Bisection) vs. Quadratic (Newton). |
+| **Experiment Setup** | Python, NumPy, and a custom `solver_audit` function to track `(x, f(x), error)` per iteration. |
+| **Process Steps** | 1. Implement 3 solvers. 2. Solve $\cos(x)-x=0$. 3. Plot error vs. iteration count. |
+| **Expected Behavior** | Newton should solve in $< 5$ steps; Bisection will take $\sim 50$ steps for the same tolerance. |
+| **Verification Goal** | Identify the fixed decimal digits gained per step (e.g., bits per iteration). |
+
+---
+
+#### **Outcome and Interpretation**
+
+Executing this project proves that **Speed comes with a Price**. Newton is remarkably fast but requires a derivative and a good initial guess. In production physics, we often use Bisection to find the "neighborhood" of the root and then switch to Newton to polish the final decimal places.
+
+---
+
+## **Exit Ticket**
+
+Before moving to **Chapter 4: Interpolation**, verify:
+- [ ] I can describe the "Bracket" condition $f(a) \cdot f(b) < 0$.
+- [ ] I understand why a flat derivative ($f' \to 0$) is catastrophic for Newton.
+- [ ] I can implement a multi-condition stopping criteria (Residual AND Step Size).
+- [ ] I have solved at least one root-finding problem from a random starting point.

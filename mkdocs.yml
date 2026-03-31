@@ -68,7 +68,7 @@ markdown_extensions:
 theme:
   name: 'material'
   language: en
-  custom_dir: overrides
+  # custom_dir: overrides
   highlightjs: true
   hljs_languages: [python]
   include_homepage_in_sidebar: true
@@ -182,7 +182,7 @@ extra:
 
 
 nav:
-- Home: home.md
+- Home: index.md
 - Contents: chapters/contents.md
 - Introduction: chapters/introduction.md
 - Style Guides: chapters/styles.md

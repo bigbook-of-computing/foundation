@@ -1,14 +1,20 @@
-# **Chapter 7: Initial Value Problems I: The Basics (Codebook)**
+# **Chapter 7: Initial Value Problems I (Codebook)**
+
+---
+
+This Codebook provides the baseline implementations for solving **Initial Value Problems (IVPs)**. We Implement **Euler's Method** and **RK4**, focusing on their performance for the Simple Harmonic Oscillator and nonlinear projectile motion with air resistance.
 
 ---
 
 ## Project 1: Accuracy and Stability Showdown (Euler vs. RK4)
 
-| Feature | Description |
+| Component | Description |
 | :--- | :--- |
-| **Goal** | Simulate the **Simple Harmonic Oscillator (SHO)** using **Euler's Method** ($\mathcal{O}(h)$) and **RK4** ($\mathcal{O}(h^4)$) to demonstrate the critical difference between a low-order and a high-order integrator, particularly RK4's local accuracy and Euler's exponential instability. |
-| **Model** | **Simple Harmonic Oscillator (SHO)**: $x''(t) = -x$. This second-order ODE is converted into a **coupled first-order system**: $\mathbf{S}' = [v, -x]$, where $\mathbf{S}=[x, v]$. |
-| **Core Concept** | **Euler's Method** assumes a constant slope over $\Delta t$, causing systematic **energy injection**. **RK4** uses a weighted average of four slopes, maintaining local stability but still suffering from long-term energy drift (a problem solved in Chapter 8). |
+| **Objective** | Compare the stability of **Euler's Method** ($O(h)$) vs. **RK4** ($O(h^4)$) using the Simple Harmonic Oscillator (SHO). |
+| **Mathematical Concept** | Solving $\mathbf{S}' = [v, -x]$; energy $E = \frac{1}{2}(v^2 + x^2)$ should be constant in the exact solution. |
+| **Experiment Setup** | Python, NumPy for step-by-step vector iteration; simulation time $t \in [0, 50]$. |
+| **Expected Behavior** | Euler's method should spirally diverge (energy injection), while RK4 remains stable on this timescale. |
+| **Verification Goal** | Demonstrate why high-order methods are essential for orbital/oscillatory stability. |
 
 ---
 
@@ -217,12 +223,13 @@ a general-purpose integrator.
 ```
 ## Project 2: Coupled Systems — Projectile Motion with Drag
 
-| Feature | Description |
+| Component | Description |
 | :--- | :--- |
-| **Goal** | Simulate **Projectile Motion with Quadratic Air Resistance (Drag)**, demonstrating how to convert a second-order vector problem into a coupled system of first-order ODEs and solve it using the stable **RK4** method. |
-| **Model** | **Vectorial Second-Order ODE**: $\mathbf{r}''(t) = \mathbf{a}$. Force is gravity plus quadratic drag: $\mathbf{F} = m\mathbf{g} - k|\mathbf{v}|\mathbf{v}$. |
-| **System Conversion** | The 2D (x, y) second-order system is converted into a **4D coupled first-order system**: $\mathbf{S}' = [v_x, v_y, a_x, a_y]$, where the state vector is $\mathbf{S} = [x, y, v_x, v_y]$. |
-| **Core Concept** | This system is **non-conservative** and **dissipative** (energy is lost due to drag), making the high-order RK4 method the ideal and most stable choice for a general prediction of the trajectory. |
+| **Objective** | Simulate **Projectile Motion with Quadratic Air Resistance (Drag)**. |
+| **Mathematical Concept** | Force model: $\mathbf{r}''(t) = \mathbf{g} - (k/m)|\mathbf{v}|\mathbf{v}$. This is a 4D coupled system $(x, y, v_x, v_y)$. |
+| **Experiment Setup** | RK4 integrator with a ground-strike stopping condition ($y < 0$). |
+| **Expected Behavior** | Asymmetric trajectory; shorter range and lower height compared to the vacuum (parabolic) case. |
+| **Verification Goal** | Successfully model a nonlinear, non-conservative physical system. |
 
 ---
 

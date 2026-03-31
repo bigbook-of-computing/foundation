@@ -1,6 +1,6 @@
 # **Chapter 16: Data-Driven Analysis: SVD & PCA (Workbook)**
 
-### 16.1 Chapter Opener: The "Data Deluge" Problem
+## **16.1 Chapter Opener: The "Data Deluge" Problem** {.heading-with-pill}
 
 > Summary: The success of numerical solvers creates a **Data Deluge** of high-dimensional data matrices ($\mathbf{X}$). The challenge is to find the dominant, underlying patterns within these data clouds, which requires techniques like SVD and PCA for dimensionality reduction.
 
@@ -20,7 +20,7 @@ Just as the **FFT** (Chapter 15) provided a "change of basis" for signals, **Sin
 
 ---
 
-### 16.2 The "Master" Tool: Singular Value Decomposition (SVD)
+## **16.2 The "Master" Tool: Singular Value Decomposition (SVD)** {.heading-with-pill}
 
 > Summary: **SVD** is the master matrix factorization tool, breaking any matrix $\mathbf{A}$ into three components ($\mathbf{U}\boldsymbol{\Sigma}\mathbf{V}^T$), where the **Singular Values ($\boldsymbol{\sigma}$)** quantify the "importance" of each axis for data transformation.
 
@@ -40,7 +40,7 @@ The singular values ($\sigma_1 \ge \sigma_2 \ge \dots \ge 0$) are always positiv
 
 ---
 
-### 16.3 Application 1: Data Compression & Noise Filtering
+## **16.3 Application 1: Data Compression & Noise Filtering** {.heading-with-pill}
 
 > Summary: SVD enables **dimensionality reduction** by allowing **truncation**—discarding the components associated with the smallest singular values ($\sigma_k$), which often correspond to negligible noise.
 
@@ -55,29 +55,23 @@ $$\mathbf{A}_{\text{approx}} = \mathbf{U}_k \boldsymbol{\Sigma}_k \mathbf{V}^T_k
 * **Compression:** If a matrix is $500 \times 500$, reconstructing it with only $k=20$ singular values ($96\%$ compression) often yields an image visually identical to the original.
 * **Noise Filtering:** The smallest singular values ($\sigma_{\text{tiny}}$) often correspond to random, high-frequency noise. By discarding them, $\mathbf{A}_{\text{approx}}$ acts as a "de-noised" version of the original data.
 
-#### Quiz Questions
+### **Comprehension Check**
 
-**1. The SVD factors a matrix $\mathbf{A}$ into $\mathbf{U}\boldsymbol{\Sigma}\mathbf{V}^T$. What component directly quantifies the "importance" or magnitude of the information along each axis?**
+!!! note "Quiz"
+    1. The SVD factors a matrix $\mathbf{A}$ into $\mathbf{U}\boldsymbol{\Sigma}\mathbf{V}^T$. What component directly quantifies the "importance" or magnitude of the information along each axis?
+    2. Truncated SVD is an effective method for data compression and noise filtering because:
 
-* a) The Left Singular Vectors ($\mathbf{U}$).
-* b) The Right Singular Vectors ($\mathbf{V}^T$).
-* c) The **Singular Values ($\boldsymbol{\sigma}$)**. (**Correct**)
-* d) The Covariance Matrix.
+??? info "See Answer"
+    1. **The Singular Values ($\boldsymbol{\sigma}$).**
+    2. **Information is ranked, allowing the low-magnitude, high-frequency noise components (small $\sigma_k$) to be discarded.**
 
-**2. Truncated SVD is an effective method for data compression and noise filtering because:**
+!!! abstract "Interview-Style Question"
+    **Question:** An image is stored as a large $M \times N$ matrix. You calculate its SVD and find that 99% of the variance is captured by the first 50 singular values. What does the SVD tell you about the image that a simple inspection does not?
+    
+    ???+ info "Answer Strategy"
+        The SVD reveals that the image is **low-rank** and has **significant redundancy**. The image, despite its $M \times N$ complexity, is fundamentally built from only 50 **dominant patterns** (the first 50 eigenvectors/singular vectors). The remaining singular values describe negligible detail or random noise, allowing the image to be compressed by a large factor without noticeable degradation.
 
-* a) It is $O(N^3)$ and is always accurate.
-* b) **Information is ranked, allowing the low-magnitude, high-frequency noise components (small $\sigma_k$) to be discarded**. (**Correct**)
-* c) It transforms the data into the frequency domain.
-* d) It only works on symmetric matrices.
-
-#### Interview-Style Question
-
-**Question:** An image is stored as a large $M \times N$ matrix. You calculate its SVD and find that 99% of the variance is captured by the first 50 singular values. What does the SVD tell you about the image that a simple inspection does not?
-
-**Answer Strategy:** The SVD reveals that the image is **low-rank** and has **significant redundancy**. The image, despite its $M \times N$ complexity, is fundamentally built from only 50 **dominant patterns** (the first 50 eigenvectors/singular vectors). The remaining singular values describe negligible detail or random noise, allowing the image to be compressed by a large factor without noticeable degradation.
-
-### 16.4 The "Physics" Tool: Principal Component Analysis (PCA)
+## **16.4 The "Physics" Tool: Principal Component Analysis (PCA)** {.heading-with-pill}
 
 > Summary: **Principal Component Analysis (PCA)** is the physical application of SVD/Eigendecomposition. It transforms the data into a new, orthogonal basis where the axes (the **Principal Components**) are aligned with the system's directions of **greatest variance**.
 
@@ -90,7 +84,7 @@ $$\mathbf{A}_{\text{approx}} = \mathbf{U}_k \boldsymbol{\Sigma}_k \mathbf{V}^T_k
 **The Insight:** The "physics" of the system is often simpler when expressed in this new coordinate system defined by the PCs than in the original $x, y, z$ coordinates.
 
 
-### 16.5 The "Chapter 14 Connection": PCA is an Eigenvalue Problem
+## **16.5 The "Chapter 14 Connection": PCA is an Eigenvalue Problem** {.heading-with-pill}
 
 > Summary: PCA is mathematically achieved by solving the **eigenvalue problem** for the **Covariance Matrix ($\mathbf{C}$)** of the data. The eigenvectors are the PCs, and the eigenvalues are the variance along those PCs.
 
@@ -110,29 +104,23 @@ $$\mathbf{C} \mathbf{v} = \lambda \mathbf{v}$$
 
 **The Tool:** Since $\mathbf{C}$ is always **symmetric**, the correct, fast solver to use is **$\text{np.linalg.eigh()}$** (Chapter 14).
 
-#### Quiz Questions
+### **Comprehension Check**
 
-**1. In Principal Component Analysis (PCA), the Principal Components themselves are given by which component of the covariance matrix solution?**
+!!! note "Quiz"
+    1. In Principal Component Analysis (PCA), the Principal Components themselves are given by which component of the covariance matrix solution?
+    2. The magnitude of the **eigenvalues ($\lambda$)** resulting from the covariance matrix gives a direct measure of what physical quantity along the corresponding Principal Component axis?
 
-* a) The eigenvalues ($\lambda$).
-* b) The total variance.
-* c) The **eigenvectors ($\mathbf{v}$)**. (**Correct**)
-* d) The singular values ($\sigma$).
+??? info "See Answer"
+    1. **The eigenvectors ($\mathbf{v}$).**
+    2. **The Variance (the measure of spread/energy).**
 
-**2. The magnitude of the **eigenvalues ($\lambda$)** resulting from the covariance matrix gives a direct measure of what physical quantity along the corresponding Principal Component axis?**
+!!! abstract "Interview-Style Question"
+    **Question:** Why is calculating the covariance matrix ($\mathbf{C}$) a necessary step in PCA? What information about the data does this matrix capture before the eigenvalue decomposition?
+    
+    ???+ info "Answer Strategy"
+        The covariance matrix is necessary because the eigenvalue decomposition ($\mathbf{C}\mathbf{v} = \lambda\mathbf{v}$) only finds the axes of the largest variance if the matrix is symmetric, which $\mathbf{C}$ always is. More importantly, $\mathbf{C}$ captures the **correlations** between all pairs of variables. PCA is looking for the transformation that decorrelates the data; the eigenvectors of the covariance matrix are precisely those orthogonal axes that eliminate all pairwise correlations.
 
-* a) The mean.
-* b) The standard deviation.
-* c) The **Variance** (the measure of spread/energy). (**Correct**)
-* d) The frequency.
-
-#### Interview-Style Question
-
-**Question:** Why is calculating the covariance matrix ($\mathbf{C}$) a necessary step in PCA? What information about the data does this matrix capture before the eigenvalue decomposition?
-
-**Answer Strategy:** The covariance matrix is necessary because the eigenvalue decomposition ($\mathbf{C}\mathbf{v} = \lambda\mathbf{v}$) only finds the axes of the largest variance if the matrix is symmetric, which $\mathbf{C}$ always is. More importantly, $\mathbf{C}$ captures the **correlations** between all pairs of variables. PCA is looking for the transformation that decorrelates the data; the eigenvectors of the covariance matrix are precisely those orthogonal axes that eliminate all pairwise correlations.
-
-### 16.6 Core Application: Collective Motion in Molecular Dynamics
+## **16.6 Core Application: Collective Motion in Molecular Dynamics** {.heading-with-pill}
 
 > Summary: PCA is used to analyze chaotic N-body trajectories, effectively **separating coherent physical motion** (translation, rotation, vibration) from **random thermal noise** by isolating the components associated with the largest eigenvalues.
 
@@ -148,7 +136,7 @@ The trajectory of a molecular dynamics or N-body system (Chapter 8) is a huge da
 
 **The Result:** PCA successfully **separates coherent physics from random heat**, achieving a massive **dimensionality reduction** that allows the researcher to understand the system's essential dynamics.
 
-# **Chapter 16: On Projects: SVD and PCA () () (Workbook)**
+## **16.8 Hands-On Projects** {.heading-with-pill}
 
 **1. Project: N-Body PCA for Collective Motion (Core Application)**
 
@@ -180,7 +168,7 @@ The trajectory of a molecular dynamics or N-body system (Chapter 8) is a huge da
 
 
 
-## 16.7 Chapter Summary & Next Steps
+## **16.7 Chapter Summary & Next Steps** {.heading-with-pill}
 
 > Summary: PCA and SVD provide the essential **change of basis** for high-dimensional data, transforming chaos into structure. This tool completes the deterministic half of the Volume I toolkit, preparing for the final challenge of modeling chance.
 

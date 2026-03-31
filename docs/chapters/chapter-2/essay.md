@@ -1,184 +1,132 @@
-# **Chapter 2: The Nature of Computational Numbers**
+# **Chapter 2: Computational Numbers**
 
 ---
 
 # **Introduction**
 
-This chapter transitions from the abstract world of theoretical physics to the practical constraints of the "Digital Lab." Before we can simulate any physical system, we must first confront the tool itself: the computer. The central theme of this chapter is that a computer is not a perfect calculator. It does not work with the infinite, continuous Real Numbers ($\mathbb{R}$) of theoretical mathematics, but with finite, discrete approximations.
+In theoretical physics, we operate in the realm of **Real Numbers** ($\mathbb{R}$)—an infinite, continuous continuum where values like $\pi$ or $\sqrt{2}$ possess arbitrary precision. However, as we step into the "Digital Lab," we must confront a fundamental reality: the computer is a finite machine. It does not possess an infinite ruler; it possesses a digital one with discrete, non-uniform gaps.
 
-This fundamental discrepancy is the source of all computational error. This chapter will deconstruct this "foundational crisis," introducing the standard compromise used to represent numbers (floating-point) and then building a rigorous framework for understanding, classifying, and mitigating the different types of errors that arise. Mastering these concepts is the first and most critical step toward building numerical models that are not just mathematically correct, but computationally stable and reliable.
+This discrepancy between the continuous nature of physical laws and the discrete nature of digital hardware is the primary source of **numerical error**. This chapter deconstructs the "Digital Ruler," introducing the **IEEE 754 Floating-Point Standard** and building a rigorous framework for understanding, classifying, and mitigating the errors that arise from finite precision. Mastering these concepts is the "safety manual" for computational science; without it, even the most sophisticated simulation is prone to "catastrophic cancellation" and numerical instability.
 
 ---
 
 # **Chapter 2: Outline**
 
 | **Sec.** | **Title** | **Core Ideas & Examples** |
-| -------- | ----------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
-| **2.1**  | **Theory vs. Reality**                    | Continuous $\mathbb{R}$ vs. finite binary registers; irrational numbers stored approximately; binary limits on representing values like $0.1$. |
-| **2.2**  | **Floating-Point Standard (IEEE 754)**    | Sign–exponent–mantissa structure; spaced representable numbers; ULPs; examples from Binary32/64.                                               |
-| **2.3**  | **Inherent Limits of the Digital System** | Machine epsilon $\epsilon_m$; rounding; overflow and underflow; subnormal numbers; exponent range boundaries.                                  |
-| **2.4**  | **Two Types of Error**                    | Round-off (hardware precision limits) vs. truncation (algorithmic approximation); Taylor truncation; floating-point noise.                     |
-| **2.5**  | **Error Amplification Mechanisms**        | Catastrophic cancellation; conditioning; subtracting close numbers such as $10^6 - (10^6 - 10^{-6})$; sensitivity of ill-conditioned matrices. |
-| **2.6**  | **Stability of Algorithms**               | Error propagation in iterative updates; damping vs. growth; stability of Euler's method; long-step sensitivity in solvers.                     |
-
----
-
-## **2.1 The Foundational Crisis of Digital Physics**
-
-### **The Continuum vs. The Finite Register**
-
-Theoretical physics is predicated on the **Real Numbers** ($\mathbb{R}$), an **infinite continuum** where concepts like velocity, field strength, and position are assumed to possess arbitrary precision. In this abstract framework, one can always locate a unique number between any two given real numbers, embodying the perfect granularity of pure mathematics.
-
-!!! tip "Key Insight"
-    The *first* step in computational physics is accepting that numbers are **never exact** — not even the ones that look simple.
-    
-    The **digital computer**, by its very nature, operates on a **finite, discrete set** of electrical states — a fixed number of bits. The unavoidable mandate of computational science is to approximate the infinite granularity of $\mathbb{R}$ using these finite resources. This fundamental conflict between the infinite perfection of theory and the finite reality of hardware constitutes the **foundational crisis of computational physics**.
-    
-    This inherent limitation necessitates the abandonment of the assumption of **exact numbers** in the "Digital Lab." Instead, every calculated quantity is an approximation, and we must embrace the concept of **error** as an intrinsic feature of computation. The magnitude of this unavoidable deviation is measured by the **Relative Error**, which contextualizes the error against the true value:
-    
-    $$\text{Relative Error} = \frac{|x_{\text{true}} - x_{\text{computed}}|}{|x_{\text{true}}|}$$
-    
-!!! example "Representation Error in Practice"
-    The decimal number $0.1$ cannot be represented exactly in binary (just like $1/3$ in decimal). When stored as `float64`, it becomes `0.1000000000000000055511151231257827021181583404541015625`, introducing error before any computation begins.
-    
----
-
-## **2.2 The Standard Compromise: Floating-Point Representation (IEEE 754)**
-
-### **The Need for Range and Precision**
-
-To model physical systems, a computer must simultaneously handle extremely large and extremely small numbers — from the size of the observable universe ($\sim 10^{+26}$ m) down to the radius of a proton ($\sim 10^{-15}$ m). The **floating-point number** is the computer's binary adaptation of **scientific notation**, decomposing a number into a **Significand** (precision) and an **Exponent** (scale).
-
-The **IEEE 754 standard** is the universal blueprint for floating-point arithmetic. The 64-bit **double precision** float allocates its bits as follows:
-
-| Component | Bits | Role |
 | :--- | :--- | :--- |
-| **Sign** | 1 | Determines if the number is positive or negative. |
-| **Exponent** | 11 | Sets the scale factor (the **range**), $\approx 10^{\pm 308}$. |
-| **Mantissa** | 52 | Stores the significant digits (the **precision**), $\approx 15$–$16$ decimal digits. |
+| **2.1** | **The Digital Ruler (IEEE 754)** | Sign, Exponent, and Mantissa; scientific notation in binary; why $0.1 + 0.2 \neq 0.3$. |
+| **2.2** | **Machine Precision ($\epsilon_m$)** | The "Planck length" of computation; the gap between $1.0$ and the next representable number; calculating $\epsilon_m$. |
+| **2.3** | **Round-off vs. Truncation Error** | Hardware limits (round-off) vs. algorithmic approximations (truncation); the Taylor series trade-off. |
+| **2.4** | **Catastrophic Cancellation** | Subtracting nearly equal numbers; loss of significance; the quadratic formula trap. |
+| **2.5** | **Numerical Stability** | Error propagation in iterative loops; stable vs. unstable algorithms; the recurrence relation case study. |
 
-??? question "Why does the gap between adjacent floating-point numbers increase with magnitude?"
-    Because precision (52 bits) is constant while the exponent scales the number. Near zero, numbers are densely packed; at large magnitudes, the absolute spacing grows exponentially, though relative precision remains constant.
-    
-    This fixed allocation leads to the **"gappy ruler" consequence**: the **absolute gap** between adjacent representable numbers is not constant. Numbers near the origin are spaced very closely, but numbers far from the origin have exponentially larger gaps between them. This design provides an enormous range at the cost of uniform spacing.
-    
 ---
 
-## **2.3 Machine Epsilon ($\epsilon_m$) and Critical Error Modes**
+## **2.1 The Digital Ruler: IEEE 754 Standard**
 
-### **Machine Epsilon: The Planck Constant of Computation**
+---
 
-The finite 52-bit mantissa creates an unbridgeable distance between the number $1.0$ and the very next representable number. This fundamental unit of relative imprecision is called **Machine Epsilon** ($\epsilon_m$) — the smallest positive number that, when added to $1.0$, yields a result numerically distinguishable from $1.0$.
+To represent a vast range of physical scales—from the radius of a proton ($10^{-15}$ m) to the size of the observable universe ($10^{26}$ m)—computers use **floating-point arithmetic**. This is essentially binary scientific notation:
 
-$$\text{Machine Epsilon } \epsilon_m = 2^{-52} \approx 2.22 \times 10^{-16}$$
+$$ \text{Value} = (-1)^s \times (1.f) \times 2^{E - \text{bias}} $$
 
-!!! tip "Machine Epsilon as the Computational Planck Constant"
-    Machine epsilon $\epsilon_m$ acts as the fundamental limit of relative precision — the "quantum" of computational accuracy. Any change smaller than this relative to the current value is quantized out of existence.
-    
-    The finite space allocated to the Exponent and Mantissa defines the primary failure modes of floating-point arithmetic:
-    
-    - **Overflow:** Number is too large for the exponent field → result is `inf`.
-    - **Underflow:** Non-zero number is too small → result is flushed to `0.0`.
-    - **Rounding Error:** Exact result requires more digits than the 52-bit Mantissa → rounded to nearest representable value.
-    
-    ```python
-## Illustrative algorithm to find machine epsilon
+In the standard 64-bit **double precision** (`float64`) format, the bits are allocated to balance range and precision:
 
-def find_machine_epsilon():
-    epsilon = 1.0
-    while (1.0 + (epsilon / 2.0)) != 1.0:
-        epsilon = epsilon / 2.0
-    return epsilon
+```mermaid
+bit-field
+  0-0: "Sign (1 bit)"
+  1-11: "Exponent (11 bits)"
+  12-63: "Mantissa/Fraction (52 bits)"
 ```
 
----
-
-## **2.4 Two Types of Error: Round-off vs. Truncation**
-
-Three ideas must be separated clearly.
-
-1. **Round-off error**: Introduced by finite representation and arithmetic rounding. Present in every floating-point operation.
-2. **Truncation error**: Introduced by approximation methods — for example, finite differences or series truncation. A property of the algorithm.
-3. **Conditioning**: A property of the problem itself: how sensitive output is to small input perturbations.
-
-The **condition number** $\kappa$ measures how much a relative change in input is magnified in the output:
-
-$$\kappa(f) \approx \left|\frac{x f'(x)}{f(x)}\right|$$
-
-A stable algorithm can still struggle on an ill-conditioned ($\kappa \gg 1$) problem. Conversely, a well-conditioned problem can be damaged by an unstable implementation.
+!!! tip "The 0.1 + 0.2 Trap"
+    Many decimal numbers, like $0.1$, cannot be represented exactly in binary (much like $1/3$ cannot be represented exactly in decimal). In a computer, $0.1$ is stored as a slightly larger value. This is why `0.1 + 0.2` results in `0.30000000000000004` rather than exactly `0.3`.
 
 ---
 
-## **2.5 Error Amplification: Catastrophic Cancellation**
+## **2.2 Machine Precision ($\epsilon_m$)**
 
-When two nearly equal numbers are subtracted, leading digits cancel, and the result keeps mostly low-significance digits contaminated by round-off.
+---
 
-**Classic example:** computing $f(x) = 1 - \cos(x)$ for very small $x$.
+Because the mantissa has a finite number of bits (52), there is a smallest possible change that a computer can record. This is **Machine Epsilon** ($\epsilon_m$), defined as the smallest positive number that, when added to $1.0$, yields a result distinguishable from $1.0$.
 
-- $\cos(x) \approx 1$ for small $x$, so the subtraction cancels almost all significant digits.
-- **Stable alternative:** $f(x) = 2\sin^2(x/2)$, which avoids the cancellation entirely.
+$$ \epsilon_m = 2^{-52} \approx 2.22 \times 10^{-16} $$
 
-!!! example "Quadratic Formula Instability"
-    When $b \gg \sqrt{b^2-4ac}$, the formula $x = \frac{-b + \sqrt{b^2-4ac}}{2a}$ subtracts nearly equal quantities. The stable fix is to compute the well-conditioned root first, then use $x_1 x_2 = c/a$ to find the second.
+!!! example "Finding $\epsilon_m$ via Algorithm"
+    You can measure the resolution of your own digital ruler using a simple iterative loop:
+    ```python
+    eps = 1.0
+    while (1.0 + eps/2.0) > 1.0:
+        eps /= 2.0
+    print(f"Machine Epsilon: {eps}")
+    ```
+
+---
+
+## **2.3 Round-off and Truncation Errors**
+
+---
+
+It is critical to distinguish between errors caused by the hardware and errors caused by our math.
+
+1.  **Round-off Error:** Caused by the finite precision of the `float64` representation. It occurs every time a number is stored or an arithmetic operation is performed.
+2.  **Truncation Error:** Caused by approximating an infinite mathematical process with a finite one. For example, using a few terms of a Taylor series to approximate $\sin(x)$ or using discrete steps to approximate a derivative.
+
+??? question "Can we eliminate error by using more bits?"
+    While "quadruple precision" (128-bit) reduces round-off error, it does not eliminate it, and it significantly slows down computation. Furthermore, it does nothing to solve **truncation error**, which is a property of the algorithm, not the hardware.
+
+---
+
+## **2.4 Catastrophic Cancellation**
+
+---
+
+The most dangerous error in computational physics is **catastrophic cancellation**. This occurs when two nearly equal numbers are subtracted. The leading identical digits cancel out, leaving only the "garbage" bits in the lower-order mantissa as the result.
+
+!!! example "The Quadratic Formula Trap"
+    Consider $x^2 + 10^8x + 1 = 0$. The standard formula $x = \frac{-b + \sqrt{b^2-4ac}}{2a}$ involves subtracting $\sqrt{b^2-4ac}$ (which is very close to $b$) from $b$. This leads to a massive loss of precision.
     
-    Professional mitigation strategies:
-    
-    1. Algebraic reformulation to avoid subtracting near-equal terms.
-    2. Scaling and nondimensionalization.
-    3. Using numerically stable identities (e.g., half-angle formulas).
-    4. Performing sensitivity checks with perturbed inputs.
-    
----
-
-## **2.6 Stability of Algorithms**
-
-Numerical stability is not an afterthought — it is a design criterion.
-
-**Illustrative unstable recurrence:** the formula $y_n = \frac{10}{3} y_{n-1} - y_{n-2}$ is mathematically correct for computing $(1/3)^n$, but numerically unstable: initial rounding errors in $y_0$ and $y_1$ seed a growing $3^n$ component that overwhelms the true solution after only a few dozen steps.
-
-Before trusting an algorithm, ask:
-
-1. Does the method dampen or amplify small perturbations?
-2. What operations are numerically risky in this formulation?
-3. How does error change with step size, iteration count, and magnitude scale?
-4. Are there stable alternatives for equivalent mathematics?
-
-A professional workflow includes benchmark problems, convergence checks, and reproducibility logs for numerical settings.
+    **Numerical Fix:** Compute the "safe" root first: $x_1 = \frac{-b - \text{sgn}(b)\sqrt{b^2-4ac}}{2a}$, then find the second root using the identity $x_1 x_2 = c/a$.
 
 ---
 
-## **2.7 Summary and Bridge**
+## **2.5 Numerical Stability**
 
-Chapter 2 establishes the safety manual for computational numbers.
+---
 
-- Numbers are approximations, not exact reals.
-- Error is unavoidable but measurable and classifiable.
-- Stability depends on both problem structure and algorithm design.
-- Catastrophic cancellation and ill-conditioning are diagnosable and often curable by reformulation.
+An algorithm is **stable** if small errors (like round-off) are dampened over time. It is **unstable** if those errors are amplified, eventually overwhelming the true physical solution.
 
-In Chapter 3, we move from representation limits to controlled numerical approximation, where we intentionally trade computation for accuracy and measure that trade rigorously.
+### **Case Study: The Golden Ratio Recurrence**
+Consider the sequence $x_n = \phi^n$ where $\phi = (\sqrt{5}-1)/2$. Mathematically, this follows $x_{n+1} = x_{n-1} - x_n$.
+- **Theory:** The values should decrease toward zero ($0.618 \dots^n$).
+- **Reality:** Because of initial round-off, an "unphysical" growing component $(\phi+1)^n$ is seeded. After $\sim 40$ iterations, the result explodes to infinity, producing total nonsense.
+
+---
+
+## **Summary: Computational vs. Mathematical Reality**
+
+---
+
+| Feature | Mathematical Reals ($\mathbb{R}$) | Computational Floats (`float64`) |
+| :--- | :--- | :--- |
+| **Precision** | Infinite | Terminated at 16 decimal digits |
+| **Continuity** | Perfect continuum | Discrete gaps ("Gappy Ruler") |
+| **Associativity** | $(a+b)+c = a+(b+c)$ | **Not guaranteed** due to rounding |
+| **Operations** | Exact | Probabilistic noise in the 16th digit |
+| **Failure Modes** | None | Overflow (`inf`), Underflow, `NaN` |
 
 ---
 
 ## **References**
 
-### **Scientific References**
+---
 
-[1] Higham, N.J. (2002). *Accuracy and Stability of Numerical Algorithms*. SIAM.
-[2] IEEE Standard for Floating-Point Arithmetic (IEEE 754).
-[3] Quarteroni, A., Sacco, R., & Saleri, F. (2007). *Numerical Mathematics*. Springer.
-[4] Heath, M.T. (2002). *Scientific Computing: An Introductory Survey*. McGraw-Hill.
-[5] Stoer, J., & Bulirsch, R. (2002). *Introduction to Numerical Analysis*. Springer.
-[6] Dahlquist, G., & Björck, Å. (2008). *Numerical Methods in Scientific Computing*. SIAM.
-[7] Burden, R.L., & Faires, J.D. (2011). *Numerical Analysis*. Brooks/Cole.
-[8] Suli, E., & Mayers, D.F. (2003). *An Introduction to Numerical Analysis*. Cambridge University Press.
+[1] Goldberg, D. (1991). What Every Computer Scientist Should Know About Floating-Point Arithmetic. *ACM Computing Surveys*.
 
-### **Historical References**
+[2] Higham, N. J. (2002). *Accuracy and Stability of Numerical Algorithms*. SIAM.
 
-[1] Patriot Missile Failure: Kopp, C. (1995). "Patriot Missile Failure". *IEEE Spectrum*.
-[2] Ariane 5 Disaster: Leveson, N.G., & Turner, C.S. (1993). "An Investigation of the Therac-25 Accidents". *IEEE Computer*.
-[3] Goldberg, D. (1991). "What Every Computer Scientist Should Know About Floating-Point Arithmetic". *ACM Computing Surveys*.
-[4] Wilkinson, J.H. (1963). *Rounding Errors in Algebraic Processes*. Prentice-Hall.
-[5] Trefethen, L.N., & Bau, D. (1997). *Numerical Linear Algebra*. SIAM.
-[6] Press, W.H., Teukolsky, S.A., Vetterling, W.T., & Flannery, B.P. (2007). *Numerical Recipes: The Art of Scientific Computing*. Cambridge University Press.
-[7] Knuth, D.E. (1997). *The Art of Computer Programming, Volume 2: Seminumerical Algorithms*. Addison-Wesley.
+[3] IEEE Computer Society. (2008). *IEEE Standard for Floating-Point Arithmetic (IEEE 754-2008)*.
+
+[4] Trefethen, L. N., & Bau, D. (1997). *Numerical Linear Algebra*. SIAM.
+
+[5] Muller, J. M., et al. (2018). *Handbook of Floating-Point Arithmetic*. Birkhäuser.

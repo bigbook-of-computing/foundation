@@ -1,17 +1,20 @@
-# **Chapter 10: Elliptic Partial Differential Equations (Codebook)**
+# **Chapter 10: Elliptic PDEs (Codebook)**
 
-This Python Code Book is for **Chapter 10: Elliptic Partial Differential Equations (e.g., Laplace's Equation)**, focusing on implementing and comparing the iterative relaxation techniques used to solve static field problems.
+---
+
+This Codebook implements the **Finite Difference Method (FDM)** in 2D to solve **Laplace's Equation** ($\nabla^2 \phi = 0$). We demonstrate the classic Electrostatic Box problem using the family of **Relaxation Methods** (Jacobi, Gauss-Seidel, and SOR), comparing their convergence rates and efficiency.
 
 ---
 
 ## Project 1: Electrostatic Potential (Gauss-Seidel Relaxation)
 
-| Feature | Description |
+| Component | Description |
 | :--- | :--- |
-| **Goal** | Simulate the **steady-state electrostatic potential** ($\phi$) inside a 2D box ($\nabla^2 \phi = 0$) using the **Gauss-Seidel Method**. |
-| **Model** | **Laplace's Equation** ($\nabla^2 \phi = 0$). |
-| **Boundary Conditions (BCs)** | **Dirichlet Conditions** (fixed voltage) applied to the boundaries: one side fixed at $100$ V and the other three sides fixed at $0$ V. |
-| **Method** | **Finite Difference Method (FDM)** iteration using the **Five-Point Stencil**: the potential at a point is the average of its four neighbors. Gauss-Seidel updates points sequentially, using refreshed values immediately. |
+| **Objective** | Solve the 2D Electrostatic Box problem using **Gauss-Seidel**. |
+| **Mathematical Concept** | Iteratively satisfying $\phi_{i,j} = \frac{1}{4}(\phi_{i+1,j} + \phi_{i-1,j} + \phi_{i,j+1} + \phi_{i,j-1})$. |
+| **Experiment Setup** | Python, NumPy array for the 2D potential field $\phi(x, y)$; Dirichlet boundaries. |
+| **Expected Behavior** | Exponential decrease in residual until numerical equilibrium is reached. |
+| **Verification Goal** | Converge to a stable potential distribution within the box. |
 
 ---
 
@@ -202,11 +205,13 @@ potential distribution, confirmed by the exponential decrease of the maximum res
 ```
 ## Project 2: Comparative Efficiency (Jacobi vs. Gauss-Seidel)
 
-| Feature | Description |
+| Component | Description |
 | :--- | :--- |
-| **Goal** | Compare the **convergence speed** of the **Jacobi Method** (synchronous update) and the **Gauss-Seidel Method** (sequential update) for a fixed FDM problem. |
-| **Model** | Laplace's Equation ($\nabla^2 \phi = 0$) on a 2D domain. |
-| **Core Concept** | **Gauss-Seidel** is expected to converge nearly **twice as fast** as Jacobi because it immediately uses the refreshed, better information from neighboring points in the current iteration, leading to faster information propagation. |
+| **Objective** | Quantify the performance gap between Jacobi and Gauss-Seidel updates. |
+| **Mathematical Concept** | Synchronous (Jacobi) vs. In-Place/Sequential (Gauss-Seidel) updates. |
+| **Experiment Setup** | Running both solvers on the same $50 \times 50$ grid until tolerance $\epsilon = 10^{-4}$. |
+| **Expected Behavior** | Gauss-Seidel should require $\approx 50\%$ fewer iterations than Jacobi. |
+| **Verification Goal** | Demonstrate speedup factor $\approx 1.8x - 2.0x$. |
 
 ---
 

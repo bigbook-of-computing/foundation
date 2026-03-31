@@ -1,10 +1,18 @@
-# **Chapter 5: 5.1 The Physics of "Change" {.heading-with-pill} (Workbook)**
-
-> **Concept:** Discrete Grid vs. Continuous Derivatives • **Difficulty:** ★★☆☆☆
-
-> **Summary:** Physics is the study of change, defined by the derivative ($\frac{df}{dx}$). The core computational problem is finding the slope of a continuous function when only discrete data points on a grid are available.
+# **Chapter 5: Numerical Differentiation (Workbook)**
 
 ---
+
+> **Summary:** This workbook explores the fundamental physics of "change" through the lens of finite differences. We move from the continuous limit of calculus to the discrete grid of computation, where we must manage the delicate balance between **Truncation Error** and **Round-off Error**. By analyzing the **Forward**, **Backward**, and **Central Difference** stencils, you will learn to find the "Sweet Spot" for step size ($h$) that maximizes numerical reliability.
+
+---
+
+## **5.1 The Physics of "Change"** {.heading-with-pill}
+
+> **Difficulty:** ★★☆☆☆
+> 
+> **Concept:** Discrete Grid vs. Continuous Derivatives
+> 
+> **Summary:** Physics is the study of change, defined by the derivative ($df/dx$). The core computational problem is approximating the slope of a continuous function when only discrete data points are available.
 
 ### Theoretical Background
 
@@ -101,7 +109,7 @@ We will derive our "derivative-finders" from the **Taylor series**, using it to 
     
 ---
 
-### <i class="fa-solid fa-flask"></i> Hands-On Project
+### **Hands-On Project**
 
 #### **Project:** Electric Field from a Potential Grid
 
@@ -327,7 +335,7 @@ This algebraic manipulation transforms infinite series involving derivatives int
     
 ---
 
-### <i class="fa-solid fa-flask"></i> Hands-On Project
+### **Hands-On Project**
 
 #### **Project:** Verifying Taylor Series Convergence
 
@@ -572,7 +580,7 @@ This inefficiency is why the Forward Difference, despite its simplicity, is rare
     
 ---
 
-### <i class="fa-solid fa-flask"></i> Hands-On Project
+### **Hands-On Project**
 
 #### **Project:** Convergence Analysis of Forward Difference
 
@@ -839,7 +847,7 @@ Unless you are at a boundary where only forward or backward differences are avai
     
 ---
 
-### <i class="fa-solid fa-flask"></i> Hands-On Project
+### **Hands-On Project**
 
 #### **Project:** Comparing First-Order vs. Second-Order Convergence
 
@@ -1161,7 +1169,7 @@ The one-dimensional case is simply $\nabla^2 f = \frac{d^2f}{dx^2}$. Our stencil
     
 ---
 
-### <i class="fa-solid fa-flask"></i> Hands-On Project
+### **Hands-On Project**
 
 #### **Project:** Verifying Second-Order Convergence of the Laplacian
 
@@ -1457,7 +1465,7 @@ The mantra **"smaller $h$ is always better"** is fundamentally wrong in finite-p
     
 ---
 
-### <i class="fa-solid fa-flask"></i> Hands-On Project
+### **Hands-On Project**
 
 #### **Project:** Visualizing the V-Plot for Exponential Function
 
@@ -1790,7 +1798,7 @@ This problem provides a perfect **"ground truth" test case**:
     
 ---
 
-### <i class="fa-solid fa-flask"></i> Hands-On Project
+### **Hands-On Project**
 
 #### **Project:** Computing Force from Morse Potential
 

@@ -1,17 +1,20 @@
 # **Chapter 15: Fourier Analysis & The FFT (Codebook)**
 
-This Python Code Book is for **Chapter 15: Fourier Analysis & The FFT**, focusing on implementing the Fast Fourier Transform to analyze the frequency content of a signal and perform noise reduction.
+---
+
+This Codebook implement the Fast Fourier Transform (FFT) for signal processing. We demonstrate the **Spectral Decomposition** of composite signals and implement a **Low-Pass Filter** to recover clean signals from noisy time-domain data.
 
 ---
 
 ## Project 1: Spectral Analysis (Frequency Decomposition)
 
-| Feature | Description |
+| Component | Description |
 | :--- | :--- |
-| **Goal** | Use the **Fast Fourier Transform (FFT)** to decompose a complex, composite signal (made up of two distinct sine waves) into its fundamental frequency components. |
-| **Model** | **Composite Signal**: $y(t) = A_1 \sin(2\pi f_1 t) + A_2 \sin(2\pi f_2 t) + \text{Noise}$. |
-| **Method** | 1. Compute the **FFT** of the signal. 2. Calculate the **Power Spectrum** $\mathbf{P}_k = |Y_k|^2$. 3. Use $\text{np.fft.fftfreq}$ to map the frequency index $k$ to the physical frequency $f_k$. |
-| **Core Concept** | The FFT performs a **change of basis** from the time domain to the frequency domain, where the original frequencies appear as sharp peaks in the power spectrum. |
+| **Objective** | Decompose a multi-frequency signal into its constituent parts. |
+| **Mathematical Concept** | FFT $O(N \log N)$ transformation to the frequency domain ($Y_k = \text{FFT}(y_n)$). |
+| **Experiment Setup** | Signal $y(t)$ with $5.0$ Hz and $30.0$ Hz components plus additive noise. |
+| **Expected Behavior** | Two sharp peaks in the power spectrum corresponding to input frequencies. |
+| **Verification Goal** | Accurately identify peak frequencies using `fftfreq`. |
 
 ---
 
@@ -184,11 +187,13 @@ TypeError: unsupported format string passed to numpy.ndarray.__format__
 ```
 ## Project 2: Spectral Filtering (Noise Reduction)
 
-| Feature | Description |
+| Component | Description |
 | :--- | :--- |
-| **Goal** | Use the FFT to perform a **Low-Pass Filter** on the noisy signal from Project 1. The goal is to remove the high-frequency random noise while preserving the low-frequency signal content. |
-| **Method** | 1. Calculate $Y_k$. 2. Define a **cutoff frequency ($f_{cutoff}$)**. 3. Zero out all coefficients $Y_k$ where $|f_k| > f_{cutoff}$. 4. Apply the **Inverse FFT (IFFT)** to return the cleaned data to the time domain. |
-| **Core Concept** | Noise is typically spread across all frequencies, while signals are concentrated at specific peaks. Filtering removes the high-frequency components that primarily constitute the random noise. |
+| **Objective** | Implement a frequency-domain Low-Pass Filter. |
+| **Mathematical Concept** | Zeroing high-frequency spectral coefficients $Y_k$ before inversion via IFFT. |
+| **Experiment Setup** | Noisy signal from Project 1 with a 50 Hz cutoff filter. |
+| **Expected Behavior** | Smooth time-domain reconstruction; reduction in signal RMS error. |
+| **Verification Goal** | Visually and mathematically confirm noise suppression. |
 
 ---
 

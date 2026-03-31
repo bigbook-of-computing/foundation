@@ -1,17 +1,20 @@
-# **Chapter 12: Hyperbolic PDEs (e.g., The Wave Equation) (Codebook)**
+# **Chapter 12: Hyperbolic PDEs (Codebook)**
 
-This Code Book is for **Chapter 12: Hyperbolic PDEs (e.g., The Wave Equation)**, focusing on implementing the explicit FTCS scheme, testing the CFL stability condition, and solving the "first step" problem.
+---
+
+This Codebook implements the numerical solutions for wave propagation. We demonstrate the **CFL stability boundary** for hyperbolic systems and provide the **plucked string** simulation, highlighting the **two-stage initialization** required for second-order time derivatives.
 
 ---
 
 ## Project 1: CFL Stability Crisis (Wave Equation)
 
-| Feature | Description |
+| Component | Description |
 | :--- | :--- |
-| **Goal** | Simulate the **1D Wave Equation** using the **Explicit FTCS scheme** to demonstrate its **conditional stability**. We run one case that obeys the CFL condition ($C \le 1$) and one case that violates it ($C > 1$). |
-| **Model** | **1D Wave Equation**: $\frac{\partial^2 y}{\partial t^2} = v^2 \frac{\partial^2 y}{\partial x^2}$. |
-| **Stability Constraint** | The **CFL Condition** for the explicit wave scheme is $\mathbf{C = \frac{v h_t}{h_x} \le 1}$. Violation leads to catastrophic numerical explosion. |
-| **Core Concept** | The explicit wave scheme is equivalent to the **Verlet algorithm** (Chapter 8). It is stable only when the wave's physical travel distance per step ($v h_t$) is less than one grid box ($h_x$). |
+| **Objective** | Demonstrate the conditional stability of the Wave Equation ($C = v\Delta t / \Delta x$). |
+| **Mathematical Concept** | Explicit time-marching using the Central-Time Central-Space (CTCS) stencil. |
+| **Experiment Setup** | 1D string with stationary Gaussian pulse; $C = 0.9$ (stable) vs $C = 1.1$ (unstable). |
+| **Expected Behavior** | Stable propagation for $C \le 1$; catastrophic explosion for $C > 1$. |
+| **Verification Goal** | Confirm the "Information Speed Limit" of the numerical grid. |
 
 ---
 
@@ -224,12 +227,13 @@ Case B: Unstable (C=1.1)
 ```
 ## Project 2: Plucked String Simulation (Verlet and First Step)
 
-| Feature | Description |
+| Component | Description |
 | :--- | :--- |
-| **Goal** | Simulate the classical **Plucked String** problem, which requires solving the $\mathcal{O}(h^2)$ FTCS recurrence relation and correctly handling the **two-stage initialization** for the second-order time derivative. |
-| **Initial Conditions** | **Position:** Triangular "plucked" profile ($y(x, 0)$). **Velocity:** Released from rest ($v(x, 0) = 0$). |
-| **Core Process** | 1. **First Step:** Use the special initialization formula simplified for $v=0$. 2. **Main March:** Use the standard FTCS/Verlet formula. |
-| **Physical Result** | Visualization must show the initial shape breaking into two waves that propagate and reflect, forming standing wave patterns. |
+| **Objective** | Simulate a fundamental **Plucked String** (Dirichlet BCs). |
+| **Mathematical Concept** | Solving $\partial_t^2 y = v^2 \partial_x^2 y$ with a two-step initialization for $y(x, t=1)$. |
+| **Experiment Setup** | Triangular initial profile; released from rest ($v_{init}=0$). |
+| **Expected Behavior** | Separation into two counter-propagating waves; stable reflection at boundaries. |
+| **Verification Goal** | Visualize harmonic motion and standing wave formation. |
 
 ---
 

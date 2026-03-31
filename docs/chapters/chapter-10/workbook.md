@@ -1,15 +1,18 @@
-# **Chapter 10: Elliptic PDEs (e.g., Laplace's Equation) (Workbook)**
+# **Chapter 10: Elliptic PDEs (Workbook)**
 
-### 10.1 Chapter Opener: The Physics of "Steady State"
+---
 
-> Summary: Elliptic Partial Differential Equations (PDEs), such as **Laplace's Equation** ($\nabla^2 \phi = 0$), govern **static, steady-state fields** (electrostatics, heat flow) and are pure **Boundary Value Problems (BVPs)**, requiring a solution that models global equilibrium.
+> **Summary:** This workbook explores the physics of **Static Fields** and steady-state equilibrium. We re-introduce the Laplacian operator ($\nabla^2$) in 2D and discretize it using the **Five-Point Stencil**. You will learn the family of **Relaxation Methods**—Jacobi, Gauss-Seidel, and SOR—which simulate a system "relaxing" into its final, stable equilibrium shape.
 
-Our computational journey now extends to model **fields** in two or three dimensions. This chapter addresses systems that have reached **equilibrium**, meaning their properties are no longer changing with respect to time ($\frac{\partial}{\partial t} = 0$).
+---
 
-**Physical Examples of Static Fields**:
-* **Electrostatics:** Finding the electric potential $\phi(x, y)$ between fixed voltage boundaries, governed by **Laplace's Equation**: $\nabla^2 \phi = 0$.
-* **Heat Flow:** Determining the stable temperature $T(x, y)$ on a plate, governed by $\nabla^2 T = 0$.
-* **Gravitation:** Finding the potential $\phi(x, y, z)$ created by a fixed mass distribution $\rho$, governed by **Poisson's Equation**: $\nabla^2 \phi = 4\pi G\rho$.
+## **10.1 The Physics of "Steady State"** {.heading-with-pill}
+
+> **Difficulty:** ★★☆☆☆
+> 
+> **Concept:** Elliptic PDEs and Equilibrium
+> 
+> **Summary:** Systems in equilibrium (like static heat distributions or electric potentials) are governed by Elliptic PDEs where time is no longer a variable. We define Laplace’s and Poisson’s equations as the governing laws of these fields.
 
 **The "Problem": Elliptic PDEs**
 These problems are described by **Elliptic Partial Differential Equations (PDEs)**, defined by the **Laplacian operator** ($\nabla^2$):
@@ -20,31 +23,22 @@ The "Elliptic" nature means the solution is a single, static **shape** determine
 **The "Solution": Relaxation**
 We extend the **Finite Difference Method (FDM)** from Chapter 9 into two dimensions. This converts the calculus problem into a large **system of linear equations** (algebra), which we solve using an iterative technique called **relaxation**.
 
-### Comprehension & Conceptual Questions
+### **Comprehension Check**
 
-#### Quiz Questions
+!!! note "Quiz"
+    1. What class of Partial Differential Equations (PDEs) governs static, steady-state field problems like electrostatics and equilibrium heat flow?
+    2. Laplace's Equation, $\nabla^2 \phi = 0$, implies what physical condition at every point in a charge-free region?
 
-**1. What class of Partial Differential Equations (PDEs) governs static, steady-state field problems like electrostatics and equilibrium heat flow?**
+??? info "See Answer"
+    1. **Elliptic PDEs**.
+    2. **The field is at equilibrium, with no net flux (or source) at that point**.
 
-* a) Hyperbolic PDEs.
-* b) Parabolic PDEs.
-* c) **Elliptic PDEs**. (**Correct**)
-* d) Ordinary Differential Equations (ODEs).
-
-**2. Laplace's Equation, $\nabla^2 \phi = 0$, implies what physical condition at every point in a charge-free region?**
-
-* a) The field must be zero.
-* b) The field must be changing linearly in time.
-* c) **The field is at equilibrium, with no net flux (or source) at that point**. (**Correct**)
-* d) The field is propagating as a wave.
-
-#### Interview-Style Question
-
-**Question:** Give two distinct physical examples of static fields governed by Elliptic PDEs, and explain why the main difference between Elliptic and Parabolic PDEs is the presence of the time derivative.
-
-**Answer Strategy:**
-1.  **Examples:** Electrostatic Potential ($\nabla^2 \phi = 0$) and Steady-State Heat Flow ($\nabla^2 T = 0$).
-2.  **Difference:** Elliptic PDEs model systems that have reached **equilibrium**; thus, the $\frac{\partial}{\partial t}$ term is zero. Parabolic PDEs (Chapter 11) model **dynamic diffusion** ($\frac{\partial T}{\partial t} = D \nabla^2 T$), which is inherently time-dependent.
+!!! abstract "Interview-Style Question"
+    **Question:** Give two distinct physical examples of static fields governed by Elliptic PDEs, and explain why the main difference between Elliptic and Parabolic PDEs is the presence of the time derivative.
+    
+    ???+ info "Answer Strategy"
+        1.  **Examples:** Electrostatic Potential ($\nabla^2 \phi = 0$) and Steady-State Heat Flow ($\nabla^2 T = 0$).
+        2.  **Difference:** Elliptic PDEs model systems that have reached **equilibrium**; thus, the $\frac{\partial}{\partial t}$ term is zero. Parabolic PDEs (Chapter 11) model **dynamic diffusion** ($\frac{\partial T}{\partial t} = D \nabla^2 T$), which is inherently time-dependent.
 
 ### Hands-On Project
 
@@ -53,7 +47,7 @@ We extend the **Finite Difference Method (FDM)** from Chapter 9 into two dimensi
 * **Task:** Set up a rectangular plate with four fixed, uneven boundary temperatures (e.g., Left $= 100^\circ\text{C}$, Right $= 50^\circ\text{C}$).
 * **Goal:** Visualize the resulting temperature field $T(x, y)$ using a **heatmap** and overlay the **isothermal contour lines** (lines of equal temperature), demonstrating the final equilibrium shape.
 
-## 📐 10.2 The 2D Laplacian: The "Five-Point Stencil"
+## **10.2 The 2D Laplacian: The "Five-Point Stencil"** {.heading-with-pill}
 
 > Summary: The 2D Laplacian is discretized by summing the Central Difference stencils for $\frac{\partial^2}{\partial x^2}$ and $\frac{\partial^2}{\partial y^2}$. This yields the **Five-Point Stencil** rule: $\phi_{i, j} \approx \frac{1}{4} (\text{Average of 4 Neighbors})$.
 
@@ -74,29 +68,21 @@ This **Five-Point Stencil** is the entire algorithm. It means the potential at a
 
 **Accuracy:** Because it uses the $O(h^2)$ Central Difference stencil, the approximation maintains **second-order accuracy** ($O(h^2)$).
 
-### Comprehension & Conceptual Questions
+### **Comprehension Check**
 
-#### Quiz Questions
+!!! note "Quiz"
+    1. The final FDM algebraic rule for Laplace's Equation (the Five-Point Stencil) dictates that the potential $\phi_{i,j}$ is equal to:
+    2. What is the order of the **Truncation Error** for the FDM stencil used to solve Laplace's Equation?
 
-**1. The final FDM algebraic rule for Laplace's Equation (the Five-Point Stencil) dictates that the potential $\phi_{i,j}$ is equal to:**
+??? info "See Answer"
+    1. **The average of the potentials of its four nearest neighbors.**
+    2. **$O(h^2)$**.
 
-* a) The sum of its four nearest neighbors.
-* b) **The average of the potentials of its four nearest neighbors.** (**Correct**)
-* c) The first derivative in the $x$-direction.
-* d) The potential from the previous iteration.
-
-**2. What is the order of the **Truncation Error** for the FDM stencil used to solve Laplace's Equation?**
-
-* a) $O(h)$.
-* b) **$O(h^2)$**. (**Correct**)
-* c) $O(h^4)$.
-* d) $O(\epsilon_m/h)$.
-
-#### Interview-Style Question
-
-**Question:** Explain the physical meaning of the Five-Point Stencil rule ($\phi_{i, j} \approx \frac{1}{4} (\text{Average of 4 Neighbors})$). Why does this simple algebraic statement define "equilibrium" in a static field?
-
-**Answer Strategy:** This rule defines **perfect equilibrium**. If the potential at the center $\phi_{i,j}$ were *not* the average of its surroundings, there would be a non-zero **second derivative** (curvature). In physical terms, this non-zero curvature indicates a source/sink or a net flux (heat flow or electrical current). Since Laplace's Equation ($\nabla^2 \phi = 0$) defines a charge-free, static state, the potential must perfectly average out the influences of its neighbors.
+!!! abstract "Interview-Style Question"
+    **Question:** Explain the physical meaning of the Five-Point Stencil rule ($\phi_{i, j} \approx \frac{1}{4} (\text{Average of 4 Neighbors})$). Why does this simple algebraic statement define "equilibrium" in a static field?
+    
+    ???+ info "Answer Strategy"
+        This rule defines **perfect equilibrium**. If the potential at the center $\phi_{i,j}$ were *not* the average of its surroundings, there would be a non-zero **second derivative** (curvature). In physical terms, this non-zero curvature indicates a source/sink or a net flux (heat flow or electrical current). Since Laplace's Equation ($\nabla^2 \phi = 0$) defines a charge-free, static state, the potential must perfectly average out the influences of its neighbors.
 
 ### Hands-On Project
 
@@ -105,7 +91,7 @@ This **Five-Point Stencil** is the entire algorithm. It means the potential at a
 * **Task:** Write a function `phi_update(i, j, phi)` that applies the Five-Point Stencil rule to a central point $(i, j)$ using the surrounding grid values.
 * **Goal:** This function is the single, non-iterative core of all the relaxation methods (Jacobi, Gauss-Seidel, SOR) that will be implemented in the following sections.
 
-## 🍮 10.3 The "Relaxation" Analogy
+## **10.3 The "Relaxation" Analogy** {.heading-with-pill}
 
 > Summary: The iterative solution process is called **relaxation** because it simulates a physical system (like a taut rubber sheet) settling from an initial guess into its final, stable equilibrium shape, defined by the Five-Point Stencil.
 
@@ -119,7 +105,7 @@ The process can be visualized as a **taut rubber sheet** (or trampoline) where t
 2.  **Sweep:** Repeatedly loop across every interior grid point $(i, j)$ and update its value using the Five-Point Stencil.
 3.  **Convergence:** The iterations stop when the maximum change in potential between successive full sweeps falls below a set **tolerance**, signifying **numerical equilibrium**.
 
-## 🕰️ 10.4 Method 1: The Jacobi Method
+## **10.4 Method 1: The Jacobi Method** {.heading-with-pill}
 
 > Summary: The **Jacobi Method** is the conceptually simplest relaxation method, requiring **two copies** of the grid to update all points **synchronously**, using only $\phi_{\text{old}}$ values. It is highly parallelizable but suffers from **slow convergence**.
 
@@ -130,7 +116,7 @@ The Jacobi Method calculates all new values based **only** on the values that ex
 * **Update:** $\phi_{\text{new}}[i, j]$ is calculated using the average of the four neighbors from $\phi_{\text{old}}[i\pm 1, j\pm 1]$.
 * **Limitation:** **Slow Convergence**. Information from the boundary propagates inward by only **one grid unit per iteration**.
 
-## 🧠 10.5 Method 2: The Gauss-Seidel Method
+## **10.5 Method 2: The Gauss-Seidel Method** {.heading-with-pill}
 
 > Summary: The **Gauss-Seidel Method** utilizes only **one array** and updates points **sequentially**, using newly calculated values immediately. This accelerates information propagation and is typically **twice as fast** as Jacobi.
 
@@ -141,7 +127,7 @@ The **Gauss-Seidel Method** is an efficient improvement that utilizes the newest
 * **Update:** Updates are performed **sequentially**. When calculating $\phi_{i, j}$, the method uses $\phi_{\text{new}}$ values for the already-updated neighbors (e.g., $\phi_{i-1, j}$ and $\phi_{i, j-1}$) and $\phi_{\text{old}}$ values for the yet-to-be-updated neighbors ($\phi_{i+1, j}$ and $\phi_{i, j+1}$).
 * **Advantage:** **Faster Convergence**. Information propagation is accelerated because the boundary influence travels inward faster. It is approximately **twice as fast** as the Jacobi method.
 
-## 🚀 10.6 Method 3: Successive Over-Relaxation (SOR)
+## **10.6 Method 3: Successive Over-Relaxation (SOR)** {.heading-with-pill}
 
 > Summary: **SOR** is the fastest iterative method, building on Gauss-Seidel by using an **over-relaxation factor** ($\omega$, where $1 < \omega < 2$) to intentionally **overshoot** the equilibrium value, dramatically accelerating convergence.
 
@@ -154,36 +140,23 @@ $$\phi[i, j] = \phi_{\text{old}}[i, j] + \mathbf{\omega} \cdot (\phi_{\text{GS}}
 * **Over-Relaxation Factor ($\omega$):** The factor must satisfy **$1 < \omega < 2$**.
 * **Tuning:** When $\omega$ is tuned correctly (often $\approx 1.8$ to $1.9$), SOR can reduce the total number of iterations by an **order of magnitude** compared to Gauss-Seidel.
 
-### Comprehension & Conceptual Questions
+### **Comprehension Check**
 
-#### Quiz Questions
+!!! note "Quiz"
+    1. What is the primary characteristic of the **Jacobi Method**?
+    2. The **Gauss-Seidel Method** improves upon the Jacobi Method by making what adjustment?
+    3. What is the purpose of the **over-relaxation factor $\omega$** in the **SOR Method**?
 
-**1. What is the primary characteristic of the **Jacobi Method**?**
+??? info "See Answer"
+    1. **All new values are calculated based *only* on the potentials from the previous iteration ($\phi_{\text{old}}$)**.
+    2. **Using newly calculated potential values immediately within the current sweep** (sequential update).
+    3. **To push the updated potential past its equilibrium value to accelerate dampening.**
 
-* a) It is the fastest method.
-* b) **All new values are calculated based *only* on the potentials from the previous iteration ($\phi_{\text{old}}$)**. (**Correct**)
-* c) It uses an over-relaxation factor $\omega$.
-* d) It is not parallelizable.
-
-**2. The **Gauss-Seidel Method** improves upon the Jacobi Method by making what adjustment?**
-
-* a) Using a larger grid spacing $h$.
-* b) **Using newly calculated potential values immediately within the current sweep** (sequential update). (**Correct**)
-* c) Switching to a spectral method.
-* d) Requiring only one iteration.
-
-**3. What is the purpose of the **over-relaxation factor $\omega$** in the **SOR Method**?**
-
-* a) To decrease the total memory required.
-* b) **To push the updated potential past its equilibrium value to accelerate dampening.** (**Correct**)
-* c) To prevent the solution from exceeding the boundary conditions.
-* d) It reduces memory usage by eliminating the need for a second array.
-
-#### Interview-Style Question
-
-**Question:** Explain why the **Gauss-Seidel Method** is typically more efficient for a single-processor (serial) implementation compared to the **Jacobi Method**.
-
-**Answer Strategy:** The efficiency gain comes from **faster information propagation**. Gauss-Seidel updates the grid **in place** (one array) and uses the newest calculated values immediately within the current sweep, accelerating the transmission of boundary influence to the interior. Jacobi, requiring two arrays, forces a full wait until the end of the iteration, resulting in slower convergence.
+!!! abstract "Interview-Style Question"
+    **Question:** Explain why the **Gauss-Seidel Method** is typically more efficient for a single-processor (serial) implementation compared to the **Jacobi Method**.
+    
+    ???+ info "Answer Strategy"
+        The efficiency gain comes from **faster information propagation**. Gauss-Seidel updates the grid **in place** (one array) and uses the newest calculated values immediately within the current sweep, accelerating the transmission of boundary influence to the interior. Jacobi, requiring two arrays, forces a full wait until the end of the iteration, resulting in slower convergence.
 
 ### Hands-On Project
 
@@ -193,7 +166,7 @@ $$\phi[i, j] = \phi_{\text{old}}[i, j] + \mathbf{\omega} \cdot (\phi_{\text{GS}}
 2.  **Tasks:** Implement both the Jacobi and Gauss-Seidel Methods.
 3.  **Goal:** Create a **semilog plot** showing $\log_{10}(\text{Max Change})$ versus the $\text{Iteration Number}$ for both methods, visually proving that Gauss-Seidel requires fewer iterations to reach the same tolerance.
 
-## ⚡ 10.7 Core Application: The Electrostatic Box
+## **10.7 Core Application: The Electrostatic Box** {.heading-with-pill}
 
 > Summary: The electrostatic box governed by Laplace's Equation is solved via the Gauss-Seidel Method, iteratively applying the Five-Point Stencil until the potential field stabilizes, yielding equipotential contour lines perpendicular to the field.
 
@@ -207,7 +180,7 @@ The **Electrostatic Box** is the classic application of FDM relaxation.
 * **Heatmap:** Shows the final static potential distribution $\phi(x, y)$.
 * **Contour Lines:** Trace the **equipotential lines** (paths of constant $\phi$). The hidden **electric field ($\mathbf{E}$) is always perpendicular** to these lines.
 
-## ⏳ 10.8 Chapter Summary & Next Steps
+## **10.8 Chapter Summary & Next Steps** {.heading-with-pill}
 
 **What We Built: A 2D Static Solver**
 * **Operator:** Discretized the 2D Laplacian into the **Five-Point Stencil** ($O(h^2)$ accurate).

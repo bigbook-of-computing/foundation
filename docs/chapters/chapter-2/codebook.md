@@ -1,187 +1,125 @@
-# **Chapter 2: End-to-End Numerical Reliability Workflow (Codebook)**
+# **Chapter 2: Precision, Error, and Numerical Judgment (Codebook)**
 
 ---
 
-## Project Scope
-
-This codebook executes a complete Chapter 2 workflow using reproducible scripts and chapter-local artifacts.
-
-Expected outputs in this chapter:
-
-- `codes/ch2_gap_scaling.png`
-- `codes/ch2_cancellation_error.png`
-- `codes/ch2_stability_recurrence.png`
+This Codebook implements the core diagnostic tools for assessing numerical reliability. We move from measuring hardware constants like **Machine Epsilon** to observing the catastrophic failure of algorithms through **Cancellation** and **Instability**.
 
 ---
 
-## Step 1: Representation and Epsilon Baseline
+## Project 1: Measuring the "Grid of Numbers"
+
+| Feature | Description |
+| :--- | :--- |
+| **Goal** | Quantify the absolute and relative spacing between floating-point numbers across 16 orders of magnitude. |
+| **Model** | Spacing analysis using `np.nextafter`. |
+| **Core Concept** | Understanding that the "density" of representable numbers decreases as magnitude increases. |
+
+### Complete Python Code
 
 ```python
 import numpy as np
+import matplotlib.pyplot as plt
+from pathlib import Path
 
-print("=== Chapter 2 Baseline ===")
-print("float64 epsilon:", np.finfo(np.float64).eps)
-print("0.1 as stored:", format(np.float64(0.1), ".55f"))
-print("0.1 + 0.2:", np.float64(0.1) + np.float64(0.2))
-print("0.3:", np.float64(0.3))
-print("equality check:", (np.float64(0.1) + np.float64(0.2)) == np.float64(0.3))
+def audit_float_spacing():
+    """Plots the absolute and relative gap between adjacent float64 numbers."""
+    
+    # 1. Generate magnitudes from 10^0 to 10^16
+    x = np.logspace(0, 16, 100)
+    
+    # 2. Find the "next" representable number
+    next_x = np.nextafter(x, np.inf)
+    
+    # 3. Calculate gaps
+    abs_gap = next_x - x
+    rel_gap = abs_gap / x
+    
+    # 4. Visualize
+    fig, ax1 = plt.subplots(figsize=(10, 6), dpi=150)
+    
+    color1 = 'tab:blue'
+    ax1.set_xlabel('Magnitude of $x$ (log scale)')
+    ax1.set_ylabel('Absolute Gap $\Delta x$', color=color1)
+    ax1.loglog(x, abs_gap, color=color1, linewidth=2, label='Absolute Gap')
+    ax1.tick_params(axis='y', labelcolor=color1)
+    
+    ax2 = ax1.twinx()
+    color2 = 'tab:red'
+    ax2.set_ylabel('Relative Gap $\Delta x / x$', color=color2)
+    ax2.loglog(x, rel_gap, color=color2, linestyle='--', label='Relative Gap')
+    ax2.tick_params(axis='y', labelcolor=color2)
+    
+    plt.title("The 'Staircase of Error': Growth of Representation Gaps")
+    ax1.grid(True, which="both", ls="-", alpha=0.2)
+    plt.tight_layout()
+    
+    # Save artifact
+    output_path = Path("codes/ch2_gap_scaling.png")
+    output_path.parent.mkdir(exist_ok=True)
+    plt.savefig(output_path)
+    plt.close()
+    
+    print(f"Machine Epsilon (measured at 1.0): {abs_gap[0]:.2e}")
+
+if __name__ == "__main__":
+    audit_float_spacing()
 ```
-**Sample Output:**
-```python
-=== Chapter 2 Baseline ===
-float64 epsilon: 2.220446049250313e-16
-0.1 as stored: 0.1000000000000000055511151231257827021181583404541015625
-0.1 + 0.2: 0.30000000000000004
-0.3: 0.3
-equality check: False
-```
 
+### Expected Outcome and Interpretation
 
-Interpretation:
-
-- Representation is approximate from the first assignment.
-- Equality checks on decimal fractions can fail despite mathematically correct intent.
+The output shows that while the **Relative Gap** remains constant near $10^{-16}$ (Machine Epsilon), the **Absolute Gap** grows linearly. At $x=10^{16}$, the distance between representable numbers is approximately $2.0$. This means that in this regime, the computer cannot distinguish between $10^{16}$ and $10^{16} + 1$. This "graininess" is the fundamental limit of all digital physics.
 
 ---
 
-## Step 2: Gap Scaling Experiment (with Plot)
+## Project 2: Stress-Testing Loss of Significance
+
+| Feature | Description |
+| :--- | :--- |
+| **Goal** | Observe the exponential collapse of precision when subtracting nearly identical large numbers. |
+| **Mathematical Model** | $f(x, \Delta) = (x + \Delta) - x$ for large $x$ and small $\Delta$. |
+| **Core Concept** | **Catastrophic Cancellation**: the leading bits cancel, leaving only trailing noise. |
+
+### Complete Python Code
 
 ```python
-from pathlib import Path
 import numpy as np
 import matplotlib.pyplot as plt
 
-codes_dir = Path("docs/chapters/chapter-2/codes")
-codes_dir.mkdir(parents=True, exist_ok=True)
+def test_cancellation():
+    """Measures relative error for (x + delta) - x as delta shrinks."""
+    
+    x = 1.0e8  # Large base
+    deltas = np.logspace(-2, -14, 100)
+    
+    # Theoretical result should be exactly 'delta'
+    computed = (x + deltas) - x
+    rel_error = np.abs(computed - deltas) / deltas
+    
+    plt.figure(figsize=(10, 5))
+    plt.loglog(deltas, rel_error, 'o-', color='darkred', markersize=3)
+    plt.axhline(1.0, color='black', linestyle='--')
+    plt.title("Relative Error vs. Perturbation Size (x=10^8)")
+    plt.xlabel("True $\Delta$")
+    plt.ylabel("Relative Error")
+    plt.grid(True, which="both", alpha=0.3)
+    
+    plt.savefig("codes/ch2_cancellation_error.png")
+    plt.close()
 
-x = np.logspace(0, 16, 60)
-next_x = np.nextafter(x, np.inf)
-abs_gap = next_x - x
-rel_gap = abs_gap / x
-
-fig, ax = plt.subplots(figsize=(8, 4.8))
-ax.loglog(x, abs_gap, label="absolute gap")
-ax.loglog(x, rel_gap, label="relative gap")
-ax.set_title("Chapter 2: Float Spacing vs Magnitude")
-ax.set_xlabel("x")
-ax.set_ylabel("gap")
-ax.grid(True, which="both", alpha=0.3)
-ax.legend()
-
-out_file = codes_dir / "ch2_gap_scaling.png"
-fig.savefig(out_file, dpi=160, bbox_inches="tight")
-plt.close(fig)
-
-print(f"Saved figure to: {out_file}")
-print("Median relative gap:", float(np.median(rel_gap)))
+if __name__ == "__main__":
+    test_cancellation()
 ```
 
-![Gap scaling](codes/ch2_gap_scaling.png)
+### Expected Outcome and Interpretation
+
+The resulting plot shows a "V-shape" error profile. As $\Delta$ becomes smaller than $10^{-8}$ (the precision limit relative to $x=10^8$), the relative error hits **100%**. At this point, the calculation returns $0.0$ or a random bit pattern, effectively "losing" the entire physical signal. This highlights why subtraction is the most dangerous operation in numerical analysis.
 
 ---
 
-## Step 3: Catastrophic Cancellation Experiment (with Plot)
+## **References**
 
-```python
-from pathlib import Path
-import numpy as np
-import matplotlib.pyplot as plt
+[1] Higham, N. J. (2002). *Accuracy and Stability of Numerical Algorithms*. SIAM.
 
-codes_dir = Path("docs/chapters/chapter-2/codes")
-codes_dir.mkdir(parents=True, exist_ok=True)
+[2] Goldberg, D. (1991). What every computer scientist should know about floating-point arithmetic. *ACM Computing Surveys*.
 
-x = np.float64(1e8)
-delta = np.logspace(-2, -14, 50)
-recovered = (x + delta) - x
-rel_err = np.abs(recovered - delta) / delta
-
-fig, ax = plt.subplots(figsize=(8, 4.8))
-ax.loglog(delta, rel_err, color="tab:red")
-ax.set_title("Chapter 2: Relative Error from Cancellation")
-ax.set_xlabel("true delta")
-ax.set_ylabel("relative error")
-ax.grid(True, which="both", alpha=0.3)
-
-out_file = codes_dir / "ch2_cancellation_error.png"
-fig.savefig(out_file, dpi=160, bbox_inches="tight")
-plt.close(fig)
-
-print(f"Saved figure to: {out_file}")
-print("Worst relative error:", float(np.max(rel_err)))
-```
-
-![Cancellation error](codes/ch2_cancellation_error.png)
-
----
-
-## Step 4: Stability Demonstration via Recurrence (with Plot)
-
-This example contrasts a stable forward recurrence with an unstable one.
-
-```python
-from pathlib import Path
-import numpy as np
-import matplotlib.pyplot as plt
-
-codes_dir = Path("docs/chapters/chapter-2/codes")
-codes_dir.mkdir(parents=True, exist_ok=True)
-
-n = np.arange(0, 40)
-true_y = (1.0 / 3.0) ** n
-
-## Unstable recurrence: y_n = (10/3) y_{n-1} - y_{n-2}
-
-unstable = np.zeros_like(true_y)
-unstable[0] = 1.0
-unstable[1] = 1.0 / 3.0
-for k in range(2, len(n)):
-    unstable[k] = (10.0 / 3.0) * unstable[k - 1] - unstable[k - 2]
-
-fig, ax = plt.subplots(figsize=(8, 4.8))
-ax.semilogy(n, np.abs(true_y), label="true |(1/3)^n|", linewidth=2)
-ax.semilogy(n, np.abs(unstable), label="unstable recurrence", linewidth=2)
-ax.set_title("Chapter 2: Stability vs Mathematical Correctness")
-ax.set_xlabel("n")
-ax.set_ylabel("absolute value (log scale)")
-ax.grid(True, alpha=0.3)
-ax.legend()
-
-out_file = codes_dir / "ch2_stability_recurrence.png"
-fig.savefig(out_file, dpi=160, bbox_inches="tight")
-plt.close(fig)
-
-print(f"Saved figure to: {out_file}")
-print("Final true value:", float(true_y[-1]))
-print("Final unstable value:", float(unstable[-1]))
-```
-
-![Recurrence stability](codes/ch2_stability_recurrence.png)
-
----
-
-## Step 5: Professional Reproducibility Checklist
-
-1. Scripts run top-to-bottom without manual patching.
-2. All generated assets are in this chapter's `codes` folder.
-3. Every figure has title, labels, and grid.
-4. Numerical claims are tied to printed metrics.
-
----
-
-## Step 6: Git Snapshot
-
-```python
-git add docs/chapters/chapter-2/essay.md
-git add docs/chapters/chapter-2/workbook.md
-git add docs/chapters/chapter-2/codebook.md
-git add docs/chapters/chapter-2/codes/ch2_gap_scaling.png
-git add docs/chapters/chapter-2/codes/ch2_cancellation_error.png
-git add docs/chapters/chapter-2/codes/ch2_stability_recurrence.png
-git commit -m "Chapter 2: polish pedagogy and add reproducible codebook artifacts"
-```
-
----
-
-## Bridge
-
-With Chapter 2 complete, we now have the numerical safety mindset required for Chapter 3: building approximation methods while tracking accuracy and stability explicitly.
+[3] Knuth, D. E. (1997). *The Art of Computer Programming, Volume 2: Seminumerical Algorithms*. Addison-Wesley.

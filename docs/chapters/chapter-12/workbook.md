@@ -1,10 +1,18 @@
-# **Chapter 12: Hyperbolic PDEs (e.g., The Wave Equation) (Workbook)**
+# **Chapter 12: Hyperbolic PDEs (Workbook)**
 
-### 12.1 Chapter Opener: The Physics of "Propagation"
+---
 
-> Summary: Wave phenomena are governed by **Hyperbolic PDEs** which feature a **second-order time derivative** ($\frac{\partial^2 y}{\partial t^2}$), enabling **propagation** without the dissipation that defines the diffusion processes of Chapter 11.
+> **Summary:** This workbook explores the physics of **Propagation**. Unlike diffusion, which smooths out irregularities, **Hyperbolic PDEs** (the Wave Equation) allow disturbances to travel through space while ideally retaining their shape. We implement the explicit **Verlet-like** wave scheme, solve the "First Step" initial velocity problem, and analyze the **CFL "Speed Limit"** for stable wave propagation.
 
-Our previous work categorized dynamic phenomena into two types: **Elliptic PDEs** (Chapter 10) gave us static equilibrium, and **Parabolic PDEs** (Chapter 11) modeled **diffusion**—systems that smooth out irregularities over time.
+---
+
+## **12.1 The Physics of "Propagation"** {.heading-with-pill}
+
+> **Difficulty:** ★★★☆☆
+> 
+> **Concept:** Wave Motion and Hyperbolic PDEs
+> 
+> **Summary:** We define the 1D Wave Equation ($\partial_t^2 y = v^2 \partial_x^2 y$) as the governing law of sound, light, and mechanical vibrations. This section introduces the requirement for two initial conditions (position and velocity) and the fundamental difference between spreading and traveling.
 
 This chapter introduces the physics of **waves**, which are distinct because they **propagate** energy through space while, ideally, **retaining** their original shape without dissipation.
 
@@ -25,7 +33,7 @@ The key difference from the Heat Equation (Chapter 11) is the **second-order tim
 
 ---
 
-### 12.2 Method 1: The "Verlet" of PDEs: The FTCS Algorithm
+## **12.2 Method 1: The "Verlet" of PDEs: The FTCS Algorithm** {.heading-with-pill}
 
 > Summary: The Wave Equation is discretized using the **Central Difference stencil** for *both* time and space, resulting in an explicit recurrence relation structurally identical to the **Verlet algorithm** (Chapter 8).
 
@@ -45,7 +53,7 @@ This equation is structurally identical to the **Verlet algorithm** (Chapter 8):
 
 ---
 
-### 12.3 The "Speed Limit": The CFL Condition
+## **12.3 The "Speed Limit": The CFL Condition** {.heading-with-pill}
 
 > Summary: The explicit FDM scheme for the Wave Equation is **conditionally stable**, requiring the **Courant Number ($C = \frac{v h_t}{h_x}$)** to be less than or equal to one. Violating this **CFL condition** causes the numerical solution to explode.
 
@@ -65,7 +73,7 @@ This **Courant–Friedrichs–Lewy (CFL) condition** states that **information c
 
 ---
 
-### 12.4 The "First Step" Problem
+## **12.4 The "First Step" Problem** {.heading-with-pill}
 
 > Summary: The two-step recurrence relation requires $y_{i, n-1}$ to begin. The missing initial profile is found by using a Central Difference approximation for the **initial velocity** condition ($\frac{\partial y}{\partial t} (x, 0)$).
 
@@ -85,7 +93,7 @@ After this first step, the simulation uses $y_{i, 0}$ and $y_{i, 1}$ to drive th
 
 ---
 
-### 12.5 Core Application: The "Plucked" Guitar String
+## **12.5 Core Application: The "Plucked" Guitar String** {.heading-with-pill}
 
 > Summary: The **"Plucked String"** models a string fixed at both ends (Dirichlet BCs) and released from an initial shape (IVP). The simulation yields harmonics (standing waves) and demonstrates the conservation of energy inherent in the scheme.
 
@@ -102,45 +110,31 @@ The classic application of the Wave Equation is simulating a vibrating string (l
 
 ---
 
-# **Chapter 12: and Project Questions () () (Workbook)**
+---
 
-#### Quiz Questions
+## **12.7 Comprehensive Review** {.heading-with-pill}
 
-**1. What is the fundamental difference between the Heat Equation (Chapter 11) and the Wave Equation?**
+### **Section Quiz**
 
-* a) The Heat Equation is solved with FDM; the Wave Equation is solved with RK4.
-* b) The Heat Equation models **diffusion** ($\frac{\partial T}{\partial t}$); the Wave Equation models **propagation** ($\frac{\partial^2 y}{\partial t^2}$). (**Correct**)
-* c) The Wave Equation is unconditionally stable.
-* d) The Heat Equation only requires one initial condition.
+!!! note "Quiz"
+    1. What is the fundamental difference between the Heat Equation (Chapter 11) and the Wave Equation?
+    2. The FDM recurrence relation for the Wave Equation is structurally identical to which other integrator from this volume?
+    3. The CFL stability condition for the Wave Equation, $C \le 1$, states that in one time step ($\Delta t$):
+    4. The Wave Equation recurrence relation is a two-step algorithm. The missing initial profile ($y_{i, -1}$) is found by combining the initial position $y_{i, 0}$ with what other initial condition?
 
-**2. The FDM recurrence relation for the Wave Equation is structurally identical to which other integrator from this volume?**
+??? info "See Answer"
+    1. **The Heat Equation models diffusion ($\frac{\partial T}{\partial t}$); the Wave Equation models propagation ($\frac{\partial^2 y}{\partial t^2}$).**
+    2. **The Verlet Algorithm.**
+    3. **The numerical wave cannot travel more than one spatial grid box ($\Delta x$).**
+    4. **The initial velocity ($v_{i, 0}$).**
 
-* a) Euler's Method.
-* b) The RK4 Method.
-* c) The **Verlet Algorithm**. (**Correct**)
-* d) The Secant Method.
+!!! abstract "Interview-Style Question"
+    **Question:** The FDM scheme for the Wave Equation is explicit and only $\mathcal{O}(h^2)$ accurate, yet it is often preferred over a high-order implicit scheme like Crank-Nicolson for wave simulation. Why might a lower-order, explicit method be a better choice for a wave problem?
+    
+    ???+ info "Answer Strategy"
+        The explicit FDM scheme for the wave equation is $\mathcal{O}(h^2)$ accurate and, crucially, is **non-dissipative** (it mimics the energy-conserving structure of the **Verlet algorithm**). Waves must conserve energy and retain their shape. Implicit methods (like Crank-Nicolson, Chapter 11) introduce numerical damping (dissipation), which would artificially **smooth out and dampen** the wave over time. Explicit methods, when stable, preserve the wave's amplitude and shape more faithfully over long distances.
 
-**3. The CFL stability condition for the Wave Equation, $C \le 1$, states that in one time step ($\Delta t$):**
-
-* a) The Courant Number must be zero.
-* b) The wave speed must be less than $v^2$.
-* c) The numerical wave cannot travel more than **one spatial grid box ($\Delta x$)**. (**Correct**)
-* d) The error must be less than $\mathcal{O}(h^4)$.
-
-**4. The Wave Equation recurrence relation is a two-step algorithm. The missing initial profile ($y_{i, -1}$) is found by combining the initial position $y_{i, 0}$ with what other initial condition?**
-
-* a) The final position $y_{i, L}$.
-* b) The initial **velocity** ($v_{i, 0}$). (**Correct**)
-* c) The acceleration $a_{i, 0}$.
-* d) The Courant number $C$.
-
-#### Interview-Style Question
-
-**Question:** The FDM scheme for the Wave Equation is explicit and only $\mathcal{O}(h^2)$ accurate, yet it is often preferred over a high-order implicit scheme like Crank-Nicolson for wave simulation. Why might a lower-order, explicit method be a better choice for a wave problem?
-
-**Answer Strategy:** The explicit FDM scheme for the wave equation is $\mathcal{O}(h^2)$ accurate and, crucially, is **non-dissipative** (it mimics the energy-conserving structure of the **Verlet algorithm**). Waves must conserve energy and retain their shape. Implicit methods (like Crank-Nicolson, Chapter 11) introduce numerical damping (dissipation), which would artificially **smooth out and dampen** the wave over time. Explicit methods, when stable, preserve the wave's amplitude and shape more faithfully over long distances.
-
-# **Chapter 12: On Projects: Wave Propagation Dynamics () () (Workbook)**
+## **12.8 Hands-On Projects** {.heading-with-pill}
 
 **1. Project: The CFL Stability Catastrophe for Waves**
 * **Problem:** Demonstrate the instability of the explicit wave scheme when the Courant number $C$ is violated.
@@ -178,7 +172,9 @@ The classic application of the Wave Equation is simulating a vibrating string (l
 
 ---
 
-### 12.6 Chapter Summary & Next Steps
+---
+
+## **12.6 Chapter Summary & Next Steps** {.heading-with-pill}
 
 > Summary: We've established the FDM-based recurrence relation for the **Hyperbolic PDE** (Wave Equation), noting its connection to the **Verlet algorithm**. We learned the explicit scheme is critically restricted by the **CFL stability condition** ($C \le 1$) and requires a special formula to handle the initial velocity condition.
 

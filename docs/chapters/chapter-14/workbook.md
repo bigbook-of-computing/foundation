@@ -1,10 +1,18 @@
 # **Chapter 14: Eigenvalue Problems (Workbook)**
 
-### 14.1 Chapter Opener: The Physics of "Natural States"
+---
 
-> Summary: The **Eigenvalue Problem** ($\mathbf{A}\mathbf{v} = \lambda\mathbf{v}$) solves the **natural problem**—calculating the intrinsic, characteristic properties of a system ($\mathbf{A}$), such as allowed energies or normal mode frequencies, without external driving forces.
+> **Summary:** This workbook explores the physics of **Natural States**. We solve the "Natural Problem" ($\mathbf{A}\mathbf{x} = \lambda \mathbf{x}$) to find intrinsic properties like atomic energy levels, vibration frequencies, and principal directions. You will learn the **Power Method**, the robust **QR Algorithm**, and how to find the Quantum Ground State using **Inverse Iteration**.
 
-Our previous work in **Chapter 13** focused on the **driven problem**, solving the linear system $\mathbf{A}\mathbf{x} = \mathbf{b}$. This chapter pivots to the **natural problem**: calculating the **intrinsic, fundamental properties** of the system matrix $\mathbf{A}$ itself, assuming there is no external driving force ($\mathbf{b} = \mathbf{0}$).
+---
+
+## **14.1 The Physics of "Natural States"** {.heading-with-pill}
+
+> **Difficulty:** ★★★★☆
+> 
+> **Concept:** Natural Modes and Eigenvalues
+> 
+> **Summary:** We define the Eigenvalue Problem as the search for the characteristic states of a system matrix. This section bridges mechanical oscillators and the Schrödinger Equation, identifying why "natural" frequencies and energies are the eigenvalues of our physical operators.
 
 These intrinsic properties define the core characteristics of a physical system:
 * **Allowed Energies:** The discrete, quantized energy levels of a quantum particle.
@@ -23,7 +31,7 @@ We are looking for the "special" vectors $\mathbf{v}$ (**eigenvectors**) that, w
 
 ---
 
-### 14.2 Method 1: The Power Iteration
+## **14.2 Method 1: The Power Iteration** {.heading-with-pill}
 
 > Summary: The **Power Iteration** is a simple iterative method that finds the **dominant eigenvalue** ($\lambda_{\text{dom}}$, the largest in magnitude) by repeatedly multiplying the system matrix $\mathbf{A}$ by a random initial vector $\mathbf{v}_0$.
 
@@ -40,41 +48,25 @@ To find the **smallest** eigenvalue (like the quantum ground state energy), the 
 
 **Limitations:** The Power Iteration is slow if $\lambda_{\text{dom}}$ is very close to the next largest eigenvalue, and it only finds one eigenvalue at a time.
 
-#### Quiz Questions
+### **Comprehension Check**
 
-**1. The Power Iteration algorithm is best suited for finding which component of the eigenvalue spectrum?**
+!!! note "Quiz"
+    1. The Power Iteration algorithm is best suited for finding which component of the eigenvalue spectrum?
+    2. To find the smallest eigenvalue using the Power Iteration method, one must apply the iteration to which matrix?
 
-* a) All eigenvalues simultaneously.
-* b) The smallest eigenvalue only.
-* c) The **dominant eigenvalue** (largest in magnitude). (**Correct**)
-* d) Only complex eigenvalues.
+??? info "See Answer"
+    1. **The dominant eigenvalue (largest in magnitude).**
+    2. **The inverse matrix, $\mathbf{A}^{-1}$.**
 
-**2. To find the smallest eigenvalue using the Power Iteration method, one must apply the iteration to which matrix?**
-
-* a) $\mathbf{A}^T$
-* b) $\mathbf{A}^2$
-* c) The **inverse matrix, $\mathbf{A}^{-1}$**. (**Correct**)
-* d) The tridiagonal matrix.
-
-#### Interview-Style Question
-
-**Question:** Explain the philosophical reason why one must normalize the resulting vector ($\mathbf{v}_{k+1} = \mathbf{w} / ||\mathbf{w}||$) at each step of the Power Iteration.
-
-**Answer Strategy:** Normalization prevents the components of the vector from growing indefinitely and causing a **floating-point overflow** (Chapter 2). The eigenvalue $\lambda_{\text{dom}}$ is simply the magnitude of the growth ($||\mathbf{w}||$), and the normalized vector $\mathbf{v}$ converges to the **direction** of the eigenvector.
-
-### Hands-On Project
-
-**Project: The Inverse Power Iteration (Quantum Ground State Preview)**
-
-1.  **Formulation:** Set up the $N \times N$ Hamiltonian matrix $\mathbf{H}$ for the **Particle in a Box** problem (Chapter 9, $V=0$). The ground state energy $E_1$ is the smallest eigenvalue.
-2.  **Tasks:**
-    * Implement the Inverse Power Iteration using `np.linalg.solve(H, v_old)` to avoid explicit inversion.
-    * Start with a random initial vector $\mathbf{v}_0$ and iterate until the solution converges.
-3.  **Goal:** Show that the resulting eigenvalue $\lambda$ converges to the known analytical ground state energy $E_1$.
+!!! abstract "Interview-Style Question"
+    **Question:** Explain the philosophical reason why one must normalize the resulting vector ($\mathbf{v}_{k+1} = \mathbf{w} / ||\mathbf{w}||$) at each step of the Power Iteration.
+    
+    ???+ info "Answer Strategy"
+        Normalization prevents the components of the vector from growing indefinitely and causing a **floating-point overflow** (Chapter 2). The eigenvalue $\lambda_{\text{dom}}$ is simply the magnitude of the growth ($||\mathbf{w}||$), and the normalized vector $\mathbf{v}$ converges to the **direction** of the eigenvector.
 
 ---
 
-### 14.3 Method 2: The QR Algorithm
+## **14.3 Method 2: The QR Algorithm** {.heading-with-pill}
 
 > Summary: The **QR Algorithm** is the iterative, $\mathcal{O}(N^3)$ workhorse for finding **all** eigenvalues and eigenvectors of a dense matrix simultaneously. It works by iteratively rotating the matrix until it converges to a triangular form where the eigenvalues lie on the diagonal.
 
@@ -90,29 +82,23 @@ This process iteratively rotates the matrix $\mathbf{A}$ until it converges to a
 
 **Performance:** The QR Algorithm is an $\mathcal{O}(N^3)$ method, suitable for small-to-medium-sized **dense** matrices where *all* states are required.
 
-#### Quiz Questions
+### **Comprehension Check**
 
-**1. The QR Algorithm works by iteratively transforming the matrix $\mathbf{A}$ until the eigenvalues are found where?**
+!!! note "Quiz"
+    1. The QR Algorithm works by iteratively transforming the matrix $\mathbf{A}$ until the eigenvalues are found where?
+    2. The QR Algorithm is generally used when the user needs:
 
-* a) In the off-diagonal elements.
-* b) In the final eigenvector matrix.
-* c) On the **main diagonal** of the resulting triangular matrix. (**Correct**)
-* d) By finding the determinant.
+??? info "See Answer"
+    1. **On the main diagonal of the resulting triangular matrix.**
+    2. **All eigenvalues and eigenvectors simultaneously for a dense matrix.**
 
-**2. The QR Algorithm is generally used when the user needs:**
+!!! abstract "Interview-Style Question"
+    **Question:** The QR Algorithm relies on the $\mathbf{A}_{k+1} = \mathbf{R}_k \mathbf{Q}_k$ step. Why does the matrix $\mathbf{A}_{k+1}$ have the *same* eigenvalues as $\mathbf{A}_k$?
+    
+    ???+ info "Answer Strategy"
+        The step $\mathbf{A}_{k+1} = \mathbf{R}_k \mathbf{Q}_k$ can be rewritten as a **similarity transformation**: $\mathbf{A}_{k+1} = (\mathbf{Q}_k^T \mathbf{A}_k) \mathbf{Q}_k$. A similarity transformation preserves the eigenvalues of the matrix. The iterative process applies a sequence of orthogonal rotations (which preserve lengths and angles) until the new basis (the eigenvectors) naturally reveals the scaling factors (the eigenvalues).
 
-* a) Only the dominant eigenvalue.
-* b) A solution to a linear system $\mathbf{A}\mathbf{x} = \mathbf{b}$.
-* c) **All eigenvalues and eigenvectors simultaneously** for a dense matrix. (**Correct**)
-* d) The solution to a sparse matrix.
-
-#### Interview-Style Question
-
-**Question:** The QR Algorithm relies on the $\mathbf{A}_{k+1} = \mathbf{R}_k \mathbf{Q}_k$ step. Why does the matrix $\mathbf{A}_{k+1}$ have the *same* eigenvalues as $\mathbf{A}_k$?
-
-**Answer Strategy:** The step $\mathbf{A}_{k+1} = \mathbf{R}_k \mathbf{Q}_k$ can be rewritten as a **similarity transformation**: $\mathbf{A}_{k+1} = (\mathbf{Q}_k^T \mathbf{A}_k) \mathbf{Q}_k$. A similarity transformation preserves the eigenvalues of the matrix. The iterative process applies a sequence of orthogonal rotations (which preserve lengths and angles) until the new basis (the eigenvectors) naturally reveals the scaling factors (the eigenvalues).
-
-### 14.4 Method 3: Specialized Solvers and the Hermitian Property
+## **14.4 Method 3: Specialized Solvers and the Hermitian Property** {.heading-with-pill}
 
 > Summary: Professional libraries provide specialized solvers (like $\text{eigh}$) that exploit the **Hermitian (symmetric)** property of many physics matrices ($\mathbf{A} = \mathbf{A}^T$) for guaranteed real eigenvalues and significantly faster, more stable computation.
 
@@ -127,41 +113,25 @@ This process iteratively rotates the matrix $\mathbf{A}$ until it converges to a
 
 **Solving Sparse Problems:** For huge, sparse matrices (e.g., 2D PDEs), specialized sparse solvers are required, such as `scipy.sparse.linalg.eigsh`, which only calculates a few of the most important (smallest or largest) eigenvalues.
 
-#### Quiz Questions
+### **Comprehension Check**
 
-**1. The primary reason a specialized solver like $\text{eigh}$ is used instead of the general $\text{eig}$ in computational physics is that $\text{eigh}$ is designed to exploit which property of the Hamiltonian matrix?**
+!!! note "Quiz"
+    1. The primary reason a specialized solver like $\text{eigh}$ is used instead of the general $\text{eig}$ in computational physics is that $\text{eigh}$ is designed to exploit which property of the Hamiltonian matrix?
+    2. Which specialized solver is recommended for the tridiagonal matrix that results from the 1D FDM Schrödinger Equation?
 
-* a) The tridiagonal structure.
-* b) The **Hermitian (symmetric)** property. (**Correct**)
-* c) The $\mathcal{O}(N)$ efficiency.
-* d) The non-linear structure.
+??? info "See Answer"
+    1. **The Hermitian (symmetric) property.**
+    2. **`scipy.linalg.eigh_tridiagonal`**.
 
-**2. Which specialized solver is recommended for the tridiagonal matrix that results from the 1D FDM Schrödinger Equation?**
-
-* a) `np.linalg.eig`
-* b) `np.linalg.eigh`
-* c) **`scipy.linalg.eigh_tridiagonal`** (**Correct**)
-* d) `scipy.sparse.linalg.eigsh`
-
-#### Interview-Style Question
-
-**Question:** The mantra of this section is "never write your own eigensolver." Besides stability, what is the major computational advantage that a specialized library function (like $\text{eigh\_tridiagonal}$) has over a generic $\mathcal{O}(N^3)$ solver?
-
-**Answer Strategy:** A specialized solver exploits the **sparsity** and **structure** of the matrix. For a tridiagonal matrix, the algorithm can be simplified to a recursive process (like the Thomas Algorithm), reducing the complexity from $\mathcal{O}(N^3)$ (for a general matrix) down to **$\mathcal{O}(N)$** or **$\mathcal{O}(N^2)$**. This is essential for large-scale FDM problems where $N$ can be $10^5$.
-
-### Hands-On Project
-
-**Project: Comparing Eigensolvers**
-
-1.  **Formulation:** Set up the tridiagonal Hamiltonian matrix $\mathbf{H}$ for the **Particle in a Box** problem (Chapter 9, $V=0$).
-2.  **Tasks:**
-    * Solve for the eigenvalues using both the general `np.linalg.eig()` and the specialized `scipy.linalg.eigh_tridiagonal()`.
-    * Use Python's `time` module to measure the execution time for both methods on a large matrix (e.g., $N=5000$).
-3.  **Goal:** Show that the specialized solver is significantly faster, validating its use in professional codes.
+!!! abstract "Interview-Style Question"
+    **Question:** The mantra of this section is "never write your own eigensolver." Besides stability, what is the major computational advantage that a specialized library function (like $\text{eigh\_tridiagonal}$) has over a generic $\mathcal{O}(N^3)$ solver?
+    
+    ???+ info "Answer Strategy"
+        A specialized solver exploits the **sparsity** and **structure** of the matrix. For a tridiagonal matrix, the algorithm can be simplified to a recursive process (like the Thomas Algorithm), reducing the complexity from $\mathcal{O}(N^3)$ (for a general matrix) down to **$\mathcal{O}(N)$** or **$\mathcal{O}(N^2)$**. This is essential for large-scale FDM problems where $N$ can be $10^5$.
 
 ---
 
-### 14.5 Core Application 1: Normal Modes of Coupled Oscillators
+## **14.5 Core Application 1: Normal Modes of Coupled Oscillators** {.heading-with-pill}
 
 > Summary: The system of $F=ma$ equations for coupled oscillators naturally simplifies to a **generalized eigenvalue problem** ($\mathbf{K}\mathbf{v} = \lambda\mathbf{M}\mathbf{v}$), where the **eigenvalues ($\lambda$) are the squared frequencies ($\omega^2$)** and the **eigenvectors ($\mathbf{v}$) are the normal modes** (the intrinsic patterns of motion).
 
@@ -178,7 +148,7 @@ Where $\mathbf{K}$ is the stiffness matrix, $\mathbf{M}$ is the mass matrix, and
 
 ---
 
-### 14.6 Core Application 2: 1D Time-Independent Schrödinger Equation
+## **14.6 Core Application 2: 1D Time-Independent Schrödinger Equation** {.heading-with-pill}
 
 > Summary: The FDM discretization of the Schrödinger Equation ($\mathbf{H}\boldsymbol{\psi} = E\boldsymbol{\psi}$) is the final, most powerful demonstration of the FDM-to-Eigenvalue mapping, yielding the complete spectrum of **allowed energies ($E_n$) and corresponding wavefunctions ($\boldsymbol{\psi}_n$)**.
 
@@ -192,7 +162,25 @@ $$\mathbf{H}\boldsymbol{\psi} = E\boldsymbol{\psi}$$
 
 ---
 
-### 14.7 Chapter Summary & Next Steps
+## **14.8 Hands-On Projects** {.heading-with-pill}
+
+**1. Project: The Inverse Power Iteration (Quantum Ground State Preview)**
+* **Formulation:** Set up the $N \times N$ Hamiltonian matrix $\mathbf{H}$ for the **Particle in a Box** problem (Chapter 9, $V=0$). The ground state energy $E_1$ is the smallest eigenvalue.
+* **Tasks:**
+    1. Implement the Inverse Power Iteration using `np.linalg.solve(H, v_old)` to avoid explicit inversion.
+    2. Start with a random initial vector $\mathbf{v}_0$ and iterate until the solution converges.
+* **Goal:** Show that the resulting eigenvalue $\lambda$ converges to the known analytical ground state energy $E_1$.
+
+**2. Project: Comparing Eigensolvers**
+* **Formulation:** Set up the tridiagonal Hamiltonian matrix $\mathbf{H}$ for the **Particle in a Box** problem (Chapter 9, $V=0$).
+* **Tasks:**
+    1. Solve for the eigenvalues using both the general `np.linalg.eig()` and the specialized `scipy.linalg.eigh_tridiagonal()`.
+    2. Use Python's `time` module to measure the execution time for both methods on a large matrix (e.g., $N=5000$).
+* **Goal:** Show that the specialized solver is significantly faster, validating its use in professional codes.
+
+---
+
+## **14.7 Chapter Summary & Next Steps** {.heading-with-pill}
 
 > Summary: We've established that the most fundamental physics problems (oscillators, quantum states) naturally map to the eigenvalue problem $\mathbf{A}\mathbf{v} = \lambda\mathbf{v}$. Efficiency requires choosing specialized solvers that exploit matrix structure (like $\text{eigh}$ or $\text{eigh\_tridiagonal}$).
 
