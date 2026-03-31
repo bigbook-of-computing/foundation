@@ -157,18 +157,48 @@ This is the *exact* mathematical form of the **Schrödinger Equation** (Chapter 
 ### **Section Quiz**
 
 !!! note "Quiz"
-    1. What is the fundamental algebraic structure that most complex FDM/Implicit PDE problems simplify to?
-    2. Which direct solution method is the foundation for all professional linear algebra solvers and is broken down into two matrices $\mathbf{L}$ and $\mathbf{U}$?
-    3. Why is it considered poor numerical practice to solve a system by computing the matrix inverse, $\mathbf{x} = \mathbf{A}^{-1}\mathbf{b}$?
-    4. For a large, sparse matrix resulting from an FDM problem, what is the primary advantage of using an **iterative solver** (like Gauss-Seidel or Conjugate Gradient) over a **direct solver** (like LU Decomposition)?
-    5. What is the computational complexity of the **forward/back substitution** steps required to solve $\mathbf{L}\mathbf{U}\mathbf{x} = \mathbf{b}$?
-
+    **1. What is the fundamental algebraic structure that most complex FDM and Implicit PDE problems eventually simplify to?**
+    
+    - A. A single nonlinear equation.
+    - B. A system of linear equations ($\mathbf{A}\mathbf{x} = \mathbf{b}$).
+    - C. A symbolic derivative.
+    - D. A Monte Carlo simulation.
+    
+    **2. Which direct solution method is the foundation for all professional linear algebra solvers and is broken down into two matrices $\mathbf{L}$ and $\mathbf{U}$?**
+    
+    - A. Gaussian Elimination
+    - B. LU Decomposition
+    - C. Singular Value Decomposition (SVD)
+    - D. Principal Component Analysis (PCA)
+    
+    **3. Why is it considered poor numerical practice to solve a system by computing the explicit matrix inverse, $\mathbf{x} = \mathbf{A}^{-1}\mathbf{b}$?**
+    
+    - A. It is too simple.
+    - B. It is slow, unnecessary, and numerically unstable (prone to round-off error amplification).
+    - C. It only works for $2 \times 2$ matrices.
+    - D. Computers cannot calculate inverses.
+    
+    **4. For a large, sparse matrix resulting from an FDM problem, what is the primary advantage of using an iterative solver (like Conjugate Gradient) over a direct solver?**
+    
+    - A. It is always more accurate.
+    - B. It exploits the sparsity ($\mathbf{A}$ being mostly zeros), avoiding the massive $O(N^3)$ cost and memory requirements of direct methods.
+    - C. it is easier to implement.
+    - D. It does not require a right-hand side vector $\mathbf{b}$.
+    
+    **5. After a matrix $\mathbf{A}$ is factored into $\mathbf{L}\mathbf{U}$, what is the computational complexity of the forward and back substitution steps required to find the solution $\mathbf{x}$?**
+    
+    - A. $\mathcal{O}(N)$
+    - B. $\mathcal{O}(N^2)$
+    - C. $\mathcal{O}(N^3)$
+    - D. $\mathcal{O}(\log N)$
+    
 ??? info "See Answer"
-    1. **A system of linear equations $\mathbf{A}\mathbf{x} = \mathbf{b}$**.
-    2. **LU Decomposition**.
-    3. **Because matrix inversion is slow, unnecessary, and numerically unstable (prone to round-off error)**.
-    4. **Iterative solvers exploit sparsity, avoiding the $O(N^3)$ storage and time cost of dense matrices**.
-    5. **$O(N^2)$**.
+        **Correct: 1. B, 2. B, 3. B, 4. B, 5. B**  
+        1. **B.** Discretization turns calculus (derivatives) into algebra (linear systems).
+        2. **B.** Factoring once allows for very fast solves with changing right-hand sides.
+        3. **B.** Inversion calculates $N^2$ elements when only $N$ values of the solution vector are needed.
+        4. **B.** Storing only non-zero entries saves gigabytes of memory for large simulations.
+        5. **B.** Triangular systems are solved in quadratic time, much faster than the cubic time of factorization.
 
 !!! abstract "Interview-Style Question"
     **Question:** You need to solve $\mathbf{A}\mathbf{x} = \mathbf{b}$ one thousand times, where the matrix $\mathbf{A}$ is constant, but the vector $\mathbf{b}$ changes in every step. Explain the steps and the corresponding computational cost of the most efficient approach using a direct solver.

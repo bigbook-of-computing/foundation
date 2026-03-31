@@ -32,12 +32,24 @@
 ### **Comprehension Check**
 
 !!! note "Quiz"
-    1. If your initial bracket is $[0, 10]$, how many iterations are needed to reach a precision of $10^{-6}$?
-    2. What is the fundamental requirement for a bracketing method to work?
+    **1. If your initial bracket is $[0, 10]$, how many iterations are needed to reach a precision of $10^{-6}$?**
+    
+    - A. 6 iterations (one per decimal place).
+    - B. 10 iterations.
+    - C. **Approximately 24 iterations, as $2^{24} \approx 1.6 \times 10^7$.**
+    - D. 1,000,000 iterations (linear scaling).
+    
+    **2. What is the fundamental requirement for a bracketing method to work?**
+    
+    - A. The function must be a polynomial.
+    - B. **The function must be continuous and have opposite signs at the two ends of the bracket ($f(a) \cdot f(b) < 0$).**
+    - C. The initial guess must be within 1% of the true root.
+    - D. The derivative of the function must be known.
 
 ??? info "See Answer"
-    1. **Approximately 24 iterations.** $10/2^n \approx 10^{-6} \Rightarrow 2^n \approx 10^7$. Since $2^{10} \approx 10^3$, $2^{20} \approx 10^6$, and $2^{24} \approx 1.6 \times 10^7$.
-    2. **A Sign Change.** The function must be continuous and have opposite signs at the two ends of the bracket.
+    **Correct: C, B**  
+    1. **C.** Each iteration of Bisection halves the interval. $(10 / 2^n) \approx 10^{-6} \Rightarrow 2^n \approx 10^7$. Since $2^{10} \approx 10^3$ and $2^{20} \approx 10^6$, 24 iterations are required.
+    2. **B.** The Intermediate Value Theorem guarantees a root exists only if the function is continuous and changes sign across the interval.
 
 ---
 

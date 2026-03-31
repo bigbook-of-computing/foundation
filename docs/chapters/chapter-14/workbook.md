@@ -51,12 +51,24 @@ To find the **smallest** eigenvalue (like the quantum ground state energy), the 
 ### **Comprehension Check**
 
 !!! note "Quiz"
-    1. The Power Iteration algorithm is best suited for finding which component of the eigenvalue spectrum?
-    2. To find the smallest eigenvalue using the Power Iteration method, one must apply the iteration to which matrix?
-
+    **1. The Power Iteration algorithm is best suited for finding which component of the eigenvalue spectrum?**
+    
+    - A. The median eigenvalue.
+    - B. The smallest eigenvalue.
+    - C. The dominant eigenvalue (largest in magnitude).
+    - D. All eigenvalues simultaneously.
+    
+    **2. To find the smallest eigenvalue using the Power Iteration method, one must apply the iteration to which matrix?**
+    
+    - A. The original matrix $\mathbf{A}$.
+    - B. The inverse matrix $\mathbf{A}^{-1}$ (using a solver to avoid explicit inversion).
+    - C. The transpose matrix $\mathbf{A}^T$.
+    - D. The identity matrix.
+    
 ??? info "See Answer"
-    1. **The dominant eigenvalue (largest in magnitude).**
-    2. **The inverse matrix, $\mathbf{A}^{-1}$.**
+        **Correct: 1. C, 2. B**  
+        1. **C.** Like a plucked string, the strongest mode eventually dominates after repeated applications.
+        2. **B.** The smallest eigenvalue of $\mathbf{A}$ is the reciprocal of the largest eigenvalue of $\mathbf{A}^{-1}$.
 
 !!! abstract "Interview-Style Question"
     **Question:** Explain the philosophical reason why one must normalize the resulting vector ($\mathbf{v}_{k+1} = \mathbf{w} / ||\mathbf{w}||$) at each step of the Power Iteration.
@@ -85,12 +97,24 @@ This process iteratively rotates the matrix $\mathbf{A}$ until it converges to a
 ### **Comprehension Check**
 
 !!! note "Quiz"
-    1. The QR Algorithm works by iteratively transforming the matrix $\mathbf{A}$ until the eigenvalues are found where?
-    2. The QR Algorithm is generally used when the user needs:
-
+    **1. The QR Algorithm works by iteratively transforming the matrix $\mathbf{A}$ until the eigenvalues are found where?**
+    
+    - A. In the first column.
+    - B. On the main diagonal of the resulting triangular matrix.
+    - C. In the determinant.
+    - D. They vanish.
+    
+    **2. The QR Algorithm is generally used when the user needs:**
+    
+    - A. Only the largest eigenvalue.
+    - B. Only the eigenvectors.
+    - C. All eigenvalues and eigenvectors simultaneously for a dense matrix.
+    - D. To solve a linear system $\mathbf{A}\mathbf{x} = \mathbf{b}$.
+    
 ??? info "See Answer"
-    1. **On the main diagonal of the resulting triangular matrix.**
-    2. **All eigenvalues and eigenvectors simultaneously for a dense matrix.**
+        **Correct: 1. B, 2. C**  
+        1. **B.** Each iteration "pushes" non-zero values towards the diagonal.
+        2. **C.** It is the "gold-standard" direct method for full spectrum analysis.
 
 !!! abstract "Interview-Style Question"
     **Question:** The QR Algorithm relies on the $\mathbf{A}_{k+1} = \mathbf{R}_k \mathbf{Q}_k$ step. Why does the matrix $\mathbf{A}_{k+1}$ have the *same* eigenvalues as $\mathbf{A}_k$?
@@ -116,12 +140,24 @@ This process iteratively rotates the matrix $\mathbf{A}$ until it converges to a
 ### **Comprehension Check**
 
 !!! note "Quiz"
-    1. The primary reason a specialized solver like $\text{eigh}$ is used instead of the general $\text{eig}$ in computational physics is that $\text{eigh}$ is designed to exploit which property of the Hamiltonian matrix?
-    2. Which specialized solver is recommended for the tridiagonal matrix that results from the 1D FDM Schrödinger Equation?
-
+    **1. The primary reason a specialized solver like $\text{eigh}$ is used instead of the general $\text{eig}$ in computational physics is that $\text{eigh}$ is designed to exploit which property of the Hamiltonian matrix?**
+    
+    - A. The fact that it is a small matrix.
+    - B. The Hermitian (symmetric) property, ensuring real eigenvalues and faster computation.
+    - C. The fact that it is mostly zeros.
+    - D. The presence of complex numbers.
+    
+    **2. Which specialized solver is recommended for the tridiagonal matrix that results from the 1D FDM Schrödinger Equation?**
+    
+    - A. `np.linalg.inv`
+    - B. `scipy.linalg.eigh_tridiagonal`
+    - C. `np.fft.fft`
+    - D. `scipy.optimize.minimize`
+    
 ??? info "See Answer"
-    1. **The Hermitian (symmetric) property.**
-    2. **`scipy.linalg.eigh_tridiagonal`**.
+        **Correct: 1. B, 2. B**  
+        1. **B.** Symmetry is a fundamental physical law that allows for significant algorithmic optimization.
+        2. **B.** This specialized $O(N)$ solver is the "magic bullet" for 1D quantum problems.
 
 !!! abstract "Interview-Style Question"
     **Question:** The mantra of this section is "never write your own eigensolver." Besides stability, what is the major computational advantage that a specialized library function (like $\text{eigh\_tridiagonal}$) has over a generic $\mathcal{O}(N^3)$ solver?

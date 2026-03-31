@@ -32,12 +32,24 @@ While mathematically pure, global polynomials are prone to **Runge's Phenomenon*
 ### **Comprehension Check**
 
 !!! note "Quiz"
-    1. What happens to a high-degree polynomial fit if you add a new data point at the center of the interval?
-    2. Why are "Splines" generally preferred over high-degree "Lagrange" polynomials?
+    **1. What happens to a high-degree polynomial fit if you add a new data point at the center of the interval?**
+    
+    - A. Only the local value at that point changes.
+    - B. **A "Global Ripple" occurs, where the change at the center can cause massive oscillations at the distant boundaries.**
+    - C. The polynomial degree decreases to accommodate the new point.
+    - D. The interpolation fails and returns a linear fit.
+    
+    **2. Why are "Splines" generally preferred over high-degree "Lagrange" polynomials?**
+    
+    - A. Splines are always lower error than polynomials.
+    - B. **Splines offer "Local Control," meaning a change in one area does not cause artificial oscillations to propagate across the entire dataset.**
+    - C. Splines are easier to integrate analytically.
+    - D. Lagrange polynomials only work for evenly spaced data.
 
 ??? info "See Answer"
-    1. **Global Ripple.** Because the polynomial is global, a change at the center can cause massive oscillations at the distant boundaries.
-    2. **Local Control.** A spline is piecewise; changing a point in one area only affects the local cubic segments, preventing oscillations from propagating across the entire dataset.
+    **Correct: B, B**  
+    1. **B.** Because a global polynomial must pass through all points using a single equation, a small change anywhere is felt everywhere, often leading to Runge's Phenomenon.
+    2. **B.** Cubic splines are piecewise; they only connect adjacent nodes, which isolates local changes and prevents the "Global Ripple" effect.
 
 ---
 

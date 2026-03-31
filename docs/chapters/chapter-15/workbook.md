@@ -43,12 +43,24 @@ Implementing the DFT formula directly requires a **nested loop**: one loop over 
 ### **Comprehension Check**
 
 !!! note "Quiz"
-    1. The Discrete Fourier Transform (DFT) is primarily used for what purpose?
-    2. The major limitation of a direct implementation of the DFT formula is its computational cost, which scales as:
-
+    **1. The Discrete Fourier Transform (DFT) is primarily used for what purpose?**
+    
+    - A. Solving differential equations.
+    - B. Converting a time-domain signal to the frequency domain (the spectrum).
+    - C. Multiplying large matrices.
+    - D. Generating random numbers.
+    
+    **2. The major limitation of a direct implementation of the DFT formula is its computational cost, which scales as:**
+    
+    - A. $\mathcal{O}(N)$
+    - B. $\mathcal{O}(N \log N)$
+    - C. $\mathcal{O}(N^2)$
+    - D. $\mathcal{O}(2^N)$
+    
 ??? info "See Answer"
-    1. **Converting a time-domain signal to the frequency domain (the spectrum).**
-    2. **$\mathcal{O}(N^2)$**.
+        **Correct: 1. B, 2. C**  
+        1. **B.** The DFT reveals the "ingredients" (frequencies) that make up a complex signal.
+        2. **C.** This quadratic scaling makes the direct DFT unusable for large datasets.
 
 !!! abstract "Interview-Style Question"
     **Question:** The DFT produces $N$ frequency components $Y_k$. Explain what the component $k=0$ represents physically.
@@ -82,12 +94,24 @@ The FFT is **not** an approximation; it is simply the most efficient way to comp
 ### **Comprehension Check**
 
 !!! note "Quiz"
-    1. The primary advantage of the Fast Fourier Transform (FFT) over the direct DFT calculation is that it reduces the cost from $\mathcal{O}(N^2)$ to:
-    2. The FFT algorithm is based on the recursive strategy known as:
-
+    **1. The primary advantage of the Fast Fourier Transform (FFT) over the direct DFT calculation is that it reduces the cost from $\mathcal{O}(N^2)$ to:**
+    
+    - A. $\mathcal{O}(N)$
+    - B. $\mathcal{O}(N \log N)$
+    - C. $\mathcal{O}(\sqrt{N})$
+    - D. $\mathcal{O}(N^{1.5})$
+    
+    **2. The FFT algorithm is based on the recursive strategy known as:**
+    
+    - A. Brute Force
+    - B. Greedy Search
+    - C. Divide and Conquer (Cooley-Tukey)
+    - D. Monte Carlo
+    
 ??? info "See Answer"
-    1. **$\mathcal{O}(N \log N)$**.
-    2. **Divide and Conquer (Cooley-Tukey).**
+        **Correct: 1. B, 2. C**  
+        1. **B.** This reduction is one of the most important algorithmic "miracles" in computation.
+        2. **C.** Breaking the problem into smaller, even/odd pieces eliminates redundant work.
 
 !!! abstract "Interview-Style Question"
     **Question:** The mantra of this section is "never write your own FFT." What two key properties of the complex exponential term ($e^{-i 2\pi k n / N}$) are exploited by the FFT to achieve the $\mathcal{O}(N \log N)$ speed-up?
@@ -118,12 +142,24 @@ If the sampling rate is too low ($f_s < 2 f_{\text{max}}$), a high-frequency com
 ### **Comprehension Check**
 
 !!! note "Quiz"
-    1. The Nyquist-Shannon Sampling Theorem states that the sampling rate ($f_s$) must be:
-    2. What is the consequence of failing to meet the Nyquist-Shannon criterion?
-
+    **1. The Nyquist-Shannon Sampling Theorem states that the sampling rate ($f_s$) must be:**
+    
+    - A. Exactly equal to the maximum frequency ($f_{\text{max}}$).
+    - B. Less than the maximum frequency.
+    - C. Greater than twice the maximum frequency ($2f_{\text{max}}$).
+    - D. Ten times the maximum frequency.
+    
+    **2. What is the consequence of failing to meet the Nyquist-Shannon criterion?**
+    
+    - A. The computer will crash.
+    - B. The high-frequency components are irreversibly misinterpreted as false, lower frequencies (aliasing).
+    - C. The signal becomes louder.
+    - D. The frequency spectrum disappears.
+    
 ??? info "See Answer"
-    1. **Greater than twice the maximum frequency ($2f_{\text{max}}$).**
-    2. **The high-frequency components are irreversibly misinterpreted as false, lower frequencies (aliasing).**
+        **Correct: 1. C, 2. B**  
+        1. **C.** This ensuring that at least two samples are taken per cycle for the highest frequency.
+        2. **B.** Aliasing "folds" high frequencies into the low-frequency range, confusing the data.
 
 !!! abstract "Interview-Style Question"
     **Question:** An engineer samples a signal at 10 kHz. They see a peak in their FFT plot at 8 kHz. Why is this result highly suspect, and what should they do to verify its validity?
@@ -145,12 +181,24 @@ The simulation of the "Plucked Guitar String" (Chapter 12) generates a time-doma
 ### **Comprehension Check**
 
 !!! note "Quiz"
-    1. In the Power Spectrum of a musical note, the largest peak ($f_1$) primarily represents what physical property?
-    2. The specific quality or "color" of the sound produced by the string (the timbre) is determined by which aspect of the Power Spectrum?
-
+    **1. In the Power Spectrum of a musical note, the largest peak ($f_1$) primarily represents what physical property?**
+    
+    - A. The loudness.
+    - B. The fundamental frequency (the note being played).
+    - C. The speed of sound.
+    - D. Random noise.
+    
+    **2. The specific quality or "color" of the sound produced by the string (the timbre) is determined by which aspect of the Power Spectrum?**
+    
+    - A. The position of the first peak.
+    - B. The total area under the curve.
+    - C. The relative height and number of the harmonic peaks ($2f_1, 3f_1, \dots$).
+    - D. The Nyquist frequency.
+    
 ??? info "See Answer"
-    1. **The fundamental frequency (the note).**
-    2. **The relative height and number of the harmonic peaks ($2f_1, 3f_1, \dots$).**
+        **Correct: 1. B, 2. C**  
+        1. **B.** The fundamental defines the pitch we perceive as the note.
+        2. **C.** Distinguishing a violin from a guitar is all about the "recipe" of harmonics.
 
 !!! abstract "Interview-Style Question"
     **Question:** If you simulate a vibrating string and then calculate its FFT, you notice that all the even harmonics ($2f_1, 4f_1, \dots$) are missing or negligible. What physical detail of the initial condition would explain this specific result?

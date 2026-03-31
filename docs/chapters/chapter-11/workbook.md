@@ -35,12 +35,24 @@ The key numerical challenge is the interaction between the time step ($\Delta t$
 ### **Comprehension Check**
 
 !!! note "Quiz"
-    1. What class of Partial Differential Equations (PDEs) governs diffusion and transient heat flow ($\frac{\partial T}{\partial t}$ is present)?
-    2. The Heat/Diffusion Equation, $\frac{\partial T}{\partial t} = D \nabla^2 T$, is classified as a "hybrid" problem because it is an IVP in time and what kind of problem in space?
-
+    **1. What class of Partial Differential Equations (PDEs) governs diffusion and transient heat flow ($\frac{\partial T}{\partial t}$ is present)?**
+    
+    - A. Elliptic PDEs
+    - B. Parabolic PDEs
+    - C. Hyperbolic PDEs
+    - D. Static PDEs
+    
+    **2. The Heat/Diffusion Equation, $\frac{\partial T}{\partial t} = D \nabla^2 T$, is classified as a "hybrid" problem because it is an IVP in time and what kind of problem in space?**
+    
+    - A. Also an IVP
+    - B. A Random Walk
+    - C. A Boundary Value Problem (BVP)
+    - D. A logic problem
+    
 ??? info "See Answer"
-    1. **Parabolic PDEs**.
-    2. **A Boundary Value Problem (BVP)**.
+        **Correct: 1. B, 2. C**  
+        1. **B.** Parabolic PDEs describe systems that "spread" or diffuse over time.
+        2. **C.** It requires both initial conditions (time) and boundary conditions (space).
 
 !!! abstract "Interview-Style Question"
     **Question:** Explain why the **Black-Scholes equation** for option pricing is mathematically equivalent to the Heat Equation. What quantity in finance is "diffusing"?
@@ -92,12 +104,24 @@ This shows that the temperature at point $i$ in the future ($n+1$) is its curren
 ### **Comprehension Check**
 
 !!! note "Quiz"
-    1. The FTCS (Forward-Time Centered-Space) Method is created by calculating the spatial derivative at which time level?
-    2. The constant $\alpha$ (alpha) in the FTCS equation is defined as:
-
+    **1. The FTCS (Forward-Time Centered-Space) Method is created by calculating the spatial derivative at which time level?**
+    
+    - A. Time $n$ (present)
+    - B. Time $n+1$ (future)
+    - C. Time $n-1$ (past)
+    - D. An average of current and future time
+    
+    **2. The constant $\alpha$ (alpha) in the FTCS equation is defined as:**
+    
+    - A. $\alpha = D \frac{h_x}{h_t}$
+    - B. $\alpha = D \frac{h_t}{h_x^2}$
+    - C. $\alpha = \frac{h_x^2}{D h_t}$
+    - D. $\alpha = D^2 \frac{h_t}{h_x}$
+    
 ??? info "See Answer"
-    1. **Time $n$ (present)**.
-    2. **$\alpha = D \frac{h_t}{h_x^2}$**.
+        **Correct: 1. A, 2. B**  
+        1. **A.** Using present values makes the formula explicit and easy to solve directly.
+        2. **B.** This dimensionless "diffusion number" controls the stability of the simulation.
 
 !!! abstract "Interview-Style Question"
     **Question:** Why is the overall accuracy of the FTCS method limited by the $O(h_t)$ time term, even though the spatial part of the scheme uses a highly accurate $O(h_x^2)$ Central Difference stencil?
@@ -163,12 +187,24 @@ WARNING: α = 0.7500 > 0.5 → Instability expected (explosive growth likely).
 ### **Comprehension Check**
 
 !!! note "Quiz"
-    1. What is the CFL stability condition for the FTCS method?
-    2. Why is the CFL stability restriction a "crippling" problem for high-resolution FTCS simulations?
-
+    **1. What is the CFL stability condition for the FTCS method?**
+    
+    - A. $\alpha \le 1.0$
+    - B. $\alpha \le 0.5$
+    - C. $\alpha \le 0.25$
+    - D. $\alpha \ge 0.5$
+    
+    **2. Why is the CFL stability restriction a "crippling" problem for high-resolution FTCS simulations?**
+    
+    - A. Because code becomes too complex to write.
+    - B. Because decreasing the spatial step $h_x$ by 10x forces the time step $h_t$ to decrease by 100x to maintain stability.
+    - C. Because it requires infinite memory.
+    - D. Because it only works for symmetric systems.
+    
 ??? info "See Answer"
-    1. **$\alpha \le 0.5$**.
-    2. **Because decreasing the spatial step $h_x$ by 10x forces the time step $h_t$ to decrease by 100x**.
+        **Correct: 1. B, 2. B**  
+        1. **B.** Von Neumann analysis proves the solution explodes if this is violated.
+        2. **B.** The $h_x^2$ dependence in the denominator leads to a quadratic increase in computation time.
 
 !!! abstract "Interview-Style Question"
     **Question:** A physics student chooses a fixed spatial grid ($h_x$) and a fixed time step ($h_t$) to simulate heat flow, but the solution explodes. They immediately try reducing the time step by $10\%$. Explain why this minor reduction is a flawed strategy and what they should have done instead.
@@ -311,28 +347,88 @@ This leads to the **Hyperbolic PDE** (Wave Equation), which introduces new chall
 ### **Section Quiz**
 
 !!! note "Quiz"
-    1. What class of Partial Differential Equations (PDEs) governs diffusion and transient heat flow ($\frac{\partial T}{\partial t}$ is present)?
-    2. The FTCS (Forward-Time Centered-Space) Method is constructed using the $\mathcal{O}(h_t)$ Forward Difference for time with which stencil for space?
-    3. What is the CFL stability condition for the FTCS method?
-    4. Why is the BTCS (Backward-Time Centered-Space) method classified as an implicit scheme?
-    5. What is the most significant advantage of the implicit BTCS and Crank-Nicolson schemes?
-    6. The Crank-Nicolson Method is the gold standard because it is unconditionally stable and achieves what level of temporal accuracy?
-    7. If you decrease the spatial step $h_x$ by 10x in an FTCS simulation, what must happen to the maximum stable time step $h_t$?
-    8. The matrix $\mathbf{A}$ that results from the Crank-Nicolson scheme has what structure?
-    9. The final destination of the Heat Equation, the steady-state solution $T_{\text{steady}}(x)$, is equivalent to the solution of what other PDE?
-    10. What specific $O(N)$ algorithm is typically used to efficiently solve the tridiagonal system $\mathbf{A} \mathbf{T}_{n+1} = \mathbf{b}$ at each time step?
-
+    **1. What class of Partial Differential Equations (PDEs) governs diffusion and transient heat flow?**
+    
+    - A. Elliptic
+    - B. Parabolic
+    - C. Hyperbolic
+    - D. Linear
+    
+    **2. The FTCS (Forward-Time Centered-Space) Method is constructed using the $\mathcal{O}(h_t)$ Forward Difference for time with which stencil for space?**
+    
+    - A. Forward Difference
+    - B. Backward Difference
+    - C. Central Difference ($\mathcal{O}(h_x^2)$)
+    - D. Average of all neighbors
+    
+    **3. What is the CFL stability condition for the FTCS method?**
+    
+    - A. $\alpha \le 0.5$
+    - B. $\alpha \le 1.0$
+    - C. $\alpha > 0.5$
+    - D. $C \le 1.0$
+    
+    **4. Why is the BTCS (Backward-Time Centered-Space) method classified as an implicit scheme?**
+    
+    - A. Because it's hard to understand.
+    - B. Because it uses past values only.
+    - C. Because the unknown future state $T_{n+1}$ is linked to itself and its neighbors, requiring a matrix solution.
+    - D. Because it uses random guesses.
+    
+    **5. What is the most significant advantage of the implicit BTCS and Crank-Nicolson schemes?**
+    
+    - A. They are faster per individual step than FTCS.
+    - B. They are unconditionally stable (A-stable), allowing much larger time steps.
+    - C. They use less memory.
+    - D. They are third-order accurate.
+    
+    **6. The Crank-Nicolson Method is the gold standard because it is unconditionally stable and achieves what level of temporal accuracy?**
+    
+    - A. $\mathcal{O}(h_t)$
+    - B. $\mathcal{O}(h_t^2)$ (second-order)
+    - C. $\mathcal{O}(h_t^4)$
+    - D. $\mathcal{O}(1)$
+    
+    **7. If you decrease the spatial step $h_x$ by 10x in an FTCS simulation, what must happen to the maximum stable time step $h_t$?**
+    
+    - A. It must decrease by 10x.
+    - B. It must stay the same.
+    - C. It must decrease by 100x.
+    - D. It must increase by 100x.
+    
+    **8. The matrix $\mathbf{A}$ that results from the Crank-Nicolson scheme for 1D diffusion has what structure?**
+    
+    - A. A full dense matrix.
+    - B. A diagonal matrix.
+    - C. A tridiagonal matrix.
+    - D. An upper triangular matrix.
+    
+    **9. The final destination of the Heat Equation (the steady-state solution $T_{\text{steady}}(x)$) is equivalent to the solution of what other PDE?**
+    
+    - A. Wave Equation
+    - B. Laplace's Equation ($\nabla^2 T = 0$)
+    - C. Black-Scholes Equation
+    - D. Schrodinger Equation
+    
+    **10. What specific $O(N)$ algorithm is typically used to efficiently solve the tridiagonal system $\mathbf{A}\mathbf{T}_{n+1} = \mathbf{b}$?**
+    
+    - A. Gaussian Elimination
+    - B. Matrix Inversion
+    - C. Thomas Algorithm (or specialized banded solvers)
+    - D. Random Search
+    
 ??? info "See Answer"
-    1. **Parabolic PDEs**.
-    2. **Central Difference** ($\mathcal{O}(h_x^2)$).
-    3. **$\alpha \le 0.5$**.
-    4. **Because the scheme builds a system of equations where the unknown $T_{n+1}$ is linked to itself and its future neighbors**.
-    5. **They are unconditionally stable (A-stable)**.
-    6. **$\mathcal{O}(h_t^2)$** (second-order).
-    7. **It must decrease by 100x**.
-    8. **A tridiagonal matrix**.
-    9. **Laplace's Equation ($\nabla^2 T = 0$)**.
-    10. **The Thomas Algorithm (or specialized banded solvers)**.
+        **Correct: 1. B, 2. C, 3. A, 4. C, 5. B, 6. B, 7. C, 8. C, 9. B, 10. C**  
+        1. **B.** Diffusion is the defining behavior of Parabolic PDEs.
+        2. **C.** Central difference ensures second-order spatial accuracy.
+        3. **A.** Violating this causes exponential amplification of errors.
+        4. **C.** Implicit schemes "look ahead," coupling future points together.
+        5. **B.** Decoupling stability from step size is the key to efficiency.
+        6. **B.** Averaging the stencils gives second-order accuracy in both time and space.
+        7. **C.** This is the "bad news" of the $h_x^2$ dependence.
+        8. **C.** Each point $i$ is only linked to $i-1$ and $i+1$.
+        9. **B.** Steady-state means temporal change is zero, leaving only the Laplacian.
+        10. **C.** Specialized linear algebra is the engine room of implicit solvers.
 
 ---
 

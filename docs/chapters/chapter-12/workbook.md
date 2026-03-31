@@ -117,16 +117,40 @@ The classic application of the Wave Equation is simulating a vibrating string (l
 ### **Section Quiz**
 
 !!! note "Quiz"
-    1. What is the fundamental difference between the Heat Equation (Chapter 11) and the Wave Equation?
-    2. The FDM recurrence relation for the Wave Equation is structurally identical to which other integrator from this volume?
-    3. The CFL stability condition for the Wave Equation, $C \le 1$, states that in one time step ($\Delta t$):
-    4. The Wave Equation recurrence relation is a two-step algorithm. The missing initial profile ($y_{i, -1}$) is found by combining the initial position $y_{i, 0}$ with what other initial condition?
-
+    **1. What is the fundamental difference between the Heat Equation (Chapter 11) and the Wave Equation?**
+    
+    - A. The Heat Equation is 1D, the Wave Equation is 2D.
+    - B. The Heat Equation models diffusion ($\frac{\partial T}{\partial t}$); the Wave Equation models propagation ($\frac{\partial^2 y}{\partial t^2}$), requiring two initial conditions.
+    - C. The Heat Equation is deterministic, the Wave Equation is stochastic.
+    - D. There is no mathematical difference.
+    
+    **2. The FDM recurrence relation for the Wave Equation is structurally identical to which other integrator from this volume?**
+    
+    - A. Euler's Method
+    - B. RK4
+    - C. The Verlet Algorithm (Chapter 8)
+    - D. Simpson's Rule
+    
+    **3. The CFL stability condition for the Wave Equation, $C = \frac{v h_t}{h_x} \le 1$, states that in one time step ($\Delta t$):**
+    
+    - A. The wave must travel across the entire grid.
+    - B. The numerical wave cannot travel more than one spatial grid box ($\Delta x$).
+    - C. The amplitude must double.
+    - D. The velocity must be zero.
+    
+    **4. The Wave Equation recurrence relation is a two-step algorithm. The missing initial profile ($y_{i, -1}$) is found by combining the initial position $y_{i, 0}$ with what other initial condition?**
+    
+    - A. The initial acceleration $a_{i, 0}$.
+    - B. The initial velocity ($v_{i, 0}$), typically using a central difference in time.
+    - C. The boundary potential.
+    - D. A random seed.
+    
 ??? info "See Answer"
-    1. **The Heat Equation models diffusion ($\frac{\partial T}{\partial t}$); the Wave Equation models propagation ($\frac{\partial^2 y}{\partial t^2}$).**
-    2. **The Verlet Algorithm.**
-    3. **The numerical wave cannot travel more than one spatial grid box ($\Delta x$).**
-    4. **The initial velocity ($v_{i, 0}$).**
+        **Correct: 1. B, 2. C, 3. B, 4. B**  
+        1. **B.** Propagation preserves shape, while diffusion smooths it out.
+        2. **C.** Both are two-step explicit schemes that conserve the system's "energy" or structure.
+        3. **B.** If information travels faster than the grid can "see," the simulation explodes.
+        4. **B.** Centering the velocity approximation at $t=0$ ensures second-order accuracy for the first step.
 
 !!! abstract "Interview-Style Question"
     **Question:** The FDM scheme for the Wave Equation is explicit and only $\mathcal{O}(h^2)$ accurate, yet it is often preferred over a high-order implicit scheme like Crank-Nicolson for wave simulation. Why might a lower-order, explicit method be a better choice for a wave problem?

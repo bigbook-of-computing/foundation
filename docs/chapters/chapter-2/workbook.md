@@ -32,12 +32,24 @@ The IEEE 754 floating-point standard represents numbers as $sign \times mantissa
 ### **Comprehension Check**
 
 !!! note "Quiz"
-    1. Why does `0.1 + 0.2` not equal `0.3` exactly in binary?
-    2. If $x = 10^{16}$, what is the smallest number you can add to $x$ such that the computer notices the change?
+    **1. Why does `0.1 + 0.2` not equal `0.3` exactly in binary?**
+    
+    - A. Binary numbers can only represent integers.
+    - B. **The decimal value 0.1 is a repeating (non-terminating) sequence in binary that must be truncated.**
+    - C. The CPU performs addition differently than human logic.
+    - D. Standard Python uses 32-bit floats by default, which are too small.
+    
+    **2. If $x = 10^{16}$, what is the smallest number you can add to $x$ such that the computer notices the change?**
+    
+    - A. $1.0 \times 10^{-16}$
+    - B. $1.0$
+    - C. **Approximately 2.0, due to the absolute gap defined by Machine Epsilon.**
+    - D. $10^{16}$ itself.
 
 ??? info "See Answer"
-    1. **Binary Non-Termination.** Just as $1/3$ is $0.333...$ in decimal, the fraction $1/10$ is a repeating sequence in binary ($0.000110011...$). The computer must truncate this sequence, leading to a tiny representation error.
-    2. **Approximately 2.0.** At the scale of $10^{16}$, the absolute gap between representable numbers is $\epsilon_m \times 10^{16} \approx 2.22$. Any addition smaller than this (like adding 1.0) will be "rounded away."
+    **Correct: B, C**  
+    1. **B.** Just as $1/3$ is $0.333...$ in decimal, the fraction $1/10$ is a repeating sequence in binary ($0.000110011...$). The computer must truncate this sequence, leading to a tiny representation error.
+    2. **C.** At the scale of $10^{16}$, the absolute gap between representable numbers is $\epsilon_m \times 10^{16} \approx 2.22$. Any addition smaller than this will be "rounded away."
 
 ---
 

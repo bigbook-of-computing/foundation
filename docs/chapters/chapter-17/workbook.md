@@ -39,12 +39,24 @@ We need an algorithm that can reliably "roll a die"—a way for a 100% determini
 ### **Comprehension Check**
 
 !!! note "Quiz"
-    1. Why is a Pseudo-Random Number Generator (PRNG) considered "deterministic"?
-    2. What is the key scientific advantage of the PRNG property that the results are the same when the same seed is used?
-
+    **1. Why is a Pseudo-Random Number Generator (PRNG) considered "deterministic"?**
+    
+    - A. Because it can predict the future.
+    - B. Because it uses a fixed starting seed and a fixed formula, meaning it produces the same sequence every time.
+    - C. Because it is 100% truly random.
+    - D. Because it only generates even numbers.
+    
+    **2. What is the key scientific advantage of the PRNG property where results are identical when using the same seed?**
+    
+    - A. It makes the code run faster.
+    - B. It saves memory.
+    - C. It ensures the exact reproducibility of stochastic simulations for verification and debugging.
+    - D. It eliminates the need for random numbers.
+    
 ??? info "See Answer"
-    1. **It uses a fixed starting seed and a fixed formula, meaning it produces the same sequence every time it is run.**
-    2. **It ensures the reproducibility of stochastic simulations for verification and debugging.**
+        **Correct: 1. B, 2. C**  
+        1. **B.** PRNGs are complex mathematical cycles, not physical dice rolls.
+        2. **C.** Reproducibility is a pillar of the scientific method (Chapter 1).
 
 !!! abstract "Interview-Style Question"
     **Question:** In scientific computing, why is it considered best practice to use a **random number seed** (e.g., `np.random.seed(42)`) when testing a simulation that incorporates random perturbations?
@@ -81,12 +93,24 @@ This is the most important algorithm for translating uniform randomness into phy
 ### **Comprehension Check**
 
 !!! note "Quiz"
-    1. The **Inverse Transform Method** finds the desired sampled value $x$ by using a uniform random number $r$ and solving for $x$ using which mathematical function?
-    2. The **Box-Muller Transform** is an efficient and specialized technique used to generate random numbers following which distribution?
-
+    **1. The Inverse Transform Method finds the desired sampled value $x$ by using a uniform random number $r$ and solving for $x$ using which mathematical function?**
+    
+    - A. The square root of $r$.
+    - B. The Inverse of the Cumulative Distribution Function ($P^{-1}(r)$).
+    - C. The determinant of $r$.
+    - D. The Fourier Transform of $r$.
+    
+    **2. The Box-Muller Transform is an efficient and specialized technique used to generate random numbers following which distribution?**
+    
+    - A. Uniform distribution.
+    - B. Exponential distribution.
+    - C. Gaussian (Normal) distribution.
+    - D. Poisson distribution.
+    
 ??? info "See Answer"
-    1. **The Inverse of the Cumulative Distribution Function ($P^{-1}(r)$).**
-    2. **The Gaussian (Normal) distribution.**
+        **Correct: 1. B, 2. C**  
+        1. **B.** Mapping the range $[0, 1]$ onto the inverse CDF is the "Rosetta Stone" of sampling.
+        2. **C.** High-quality Gaussian noise is essential for most physics simulations.
 
 !!! abstract "Interview-Style Question"
     **Question:** Explain the conceptual logic of why the Inverse Transform Method works. Why is setting a uniform random number $r$ equal to the Cumulative Distribution Function $P(x)$ a valid operation?
@@ -112,12 +136,24 @@ This proves a major synthesis point: the **Random Walk** (a microscopic particle
 ### **Comprehension Check**
 
 !!! note "Quiz"
-    1. The **Random Walk** is classified as a microscopic, stochastic model for which macroscopic physical process studied in Chapter 11?
-    2. When the final positions of a large number of random walkers are plotted, the resulting probability distribution is a:
-
+    **1. The Random Walk is classified as a microscopic, stochastic model for which macroscopic physical process studied in Chapter 11?**
+    
+    - A. Wave propagation.
+    - B. Diffusion (the Heat Equation).
+    - C. Static equilibrium.
+    - D. Linear regression.
+    
+    **2. When the final positions of a large number of independent random walkers are plotted, the resulting probability distribution is a:**
+    
+    - A. Uniform distribution.
+    - B. Delta function.
+    - C. Gaussian (Normal) distribution.
+    - D. Power law.
+    
 ??? info "See Answer"
-    1. **Diffusion (the Heat Equation).**
-    2. **Gaussian (Normal) distribution.**
+        **Correct: 1. B, 2. C**  
+        1. **B.** The random jiggling of particles is what causes macroscopic heat to spread.
+        2. **C.** This is a consequence of the Central Limit Theorem.
 
 !!! abstract "Interview-Style Question"
     **Question:** Tracking the average position ($\langle x \rangle$) of a single random walker over time gives no useful information (it converges to zero). What metric is tracked instead, and how does it relate the Random Walk to the Diffusion Equation?
@@ -144,12 +180,24 @@ The integral is approximated by multiplying the size of the integration domain $
 ### **Comprehension Check**
 
 !!! note "Quiz"
-    1. The most efficient Monte Carlo integration method approximates the integral by finding the domain size multiplied by what quantity?
-    2. For a 1000-dimensional integral, which solver is the only computationally feasible method?
-
+    **1. The most efficient Monte Carlo integration method approximates the integral by finding the domain size multiplied by what quantity?**
+    
+    - A. The maximum value of the function.
+    - B. The sample mean (average) value of the function ($\langle f \rangle$).
+    - C. The slope of the function.
+    - D. A random constant.
+    
+    **2. For a 1000-dimensional integral, which solver is the only computationally feasible method?**
+    
+    - A. Simpson's Rule.
+    - B. Gaussian Quadrature.
+    - C. The Monte Carlo Method.
+    - D. The Trapezoidal Rule.
+    
 ??? info "See Answer"
-    1. **The mean (average) value of the function ($\langle f \rangle$).**
-    2. **The Monte Carlo Method.**
+        **Correct: 1. B, 2. C**  
+        1. **B.** Mean Value Monte Carlo is the standard for high-performance integration.
+        2. **C.** Monte Carlo's $\mathcal{O}(1/\sqrt{N})$ error is independent of the dimension $D$.
 
 !!! abstract "Interview-Style Question"
     **Question:** Compare the accuracy of Simpson's Rule and Monte Carlo Integration for a 1D problem versus a 10D problem. Why does this contrast define the respective use cases for each method?

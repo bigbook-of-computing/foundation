@@ -25,12 +25,24 @@ A second-order ODE like $y''(x) = f(x)$ requires **two** conditions at the start
 ### **Comprehension Check**
 
 !!! note "Quiz"
-    1. What is the core difference between an **Initial Value Problem (IVP)** and a **Boundary Value Problem (BVP)**?
-    2. The core challenge in solving a BVP like $y(0)=A, y(L)=B$ with an IVP solver is that you are missing which required initial condition?
-
+    **1. What is the core difference between an Initial Value Problem (IVP) and a Boundary Value Problem (BVP)?**
+    
+    - A. IVPs are for linear equations; BVPs are for nonlinear equations.
+    - B. IVPs specify all conditions at a single point; BVPs specify conditions at two different points (boundaries).
+    - C. IVPs only use first derivatives; BVPs use second derivatives.
+    - D. There is no mathematical difference.
+    
+    **2. The core challenge in solving a BVP like $y(0)=A, y(L)=B$ with an IVP solver is that you are missing which required initial condition?**
+    
+    - A. The initial position $y(0)$.
+    - B. The final position $y(L)$.
+    - C. The initial slope $y'(0)$.
+    - D. The acceleration constant.
+    
 ??? info "See Answer"
-    1. **IVPs specify all conditions at a single point; BVPs specify conditions at two different points (boundaries).**
-    2. **The initial slope $y'(0)$**.
+        **Correct: 1. B, 2. C**  
+        1. **B.** IVPs "march" forward from a start; BVPs must satisfy constraints at both ends.
+        2. **C.** To start an IVP solver for a second-order ODE, you need both position and slope.
 
 !!! abstract "Interview-Style Question"
     **Question:** Give two examples of BVPs, and for each, explain why the problem cannot be solved by simply integrating forward in time as we did in the RK4 chapter.
@@ -73,12 +85,24 @@ $$g_{n+1} = g_n - E(g_n) \left[ \frac{g_n - g_{n-1}}{E(g_n) - E(g_{n-1})} \right
 ### **Comprehension Check**
 
 !!! note "Quiz"
-    1. The "Aha! Moment" of the Shooting Method is that the entire BVP is converted into what kind of problem?
-    2. What is the primary disadvantage of the Shooting Method, especially for chaotic or exponentially growing ODEs?
-
+    **1. The "Aha! Moment" of the Shooting Method is that the entire BVP is converted into what kind of problem?**
+    
+    - A. A linear regression problem.
+    - B. A root-finding problem for the "miss" distance.
+    - C. A numerical integration problem only.
+    - D. A logic puzzle.
+    
+    **2. What is the primary disadvantage of the Shooting Method, especially for chaotic or exponentially growing ODEs?**
+    
+    - A. It is too simple to code.
+    - B. It is extremely stable but slow.
+    - C. It is very unstable, as small errors in the initial slope guess are exponentially amplified.
+    - D. It cannot handle second-order equations.
+    
 ??? info "See Answer"
-    1. **A Root-Finding Problem.**
-    2. **It is very unstable, as small errors in the initial slope are exponentially amplified.**
+        **Correct: 1. B, 2. C**  
+        1. **B.** We search for the slope $g$ that makes the error function $E(g) = 0$.
+        2. **C.** This sensitivity makes it difficult for complex physical systems.
 
 !!! abstract "Interview-Style Question"
     **Question:** The Shooting Method is a hybrid algorithm. Which two core algorithms from earlier chapters are essential components of the method, and what does the Secant Method's root represent?
@@ -123,12 +147,24 @@ The final solution $\mathbf{y}$ is found by solving the system using fast, speci
 ### **Comprehension Check**
 
 !!! note "Quiz"
-    1. The "Aha! Moment" of the Finite Difference Method (FDM) is that it solves the BVP by converting the calculus problem into what?
-    2. Why is the tridiagonal structure of the matrix $\mathbf{A}$ highly advantageous for computation?
-
+    **1. The "Aha! Moment" of the Finite Difference Method (FDM) is that it solves the BVP by converting the calculus problem into what?**
+    
+    - A. A series of random guesses.
+    - B. A system of linear algebra equations ($\mathbf{A}\mathbf{y} = \mathbf{b}$).
+    - C. A set of independent initial value problems.
+    - D. A graphical derivation.
+    
+    **2. Why is the tridiagonal structure of the matrix $\mathbf{A}$ highly advantageous for computation?**
+    
+    - A. It looks pretty in a plot.
+    - B. It means the matrix is mostly full of ones.
+    - C. It can be solved rapidly in $\mathcal{O}(N)$ time using specialized algorithms like the Thomas Algorithm.
+    - D. It eliminates the need for boundary conditions.
+    
 ??? info "See Answer"
-    1. **A System of Linear Equations ($\mathbf{A}\mathbf{y} = \mathbf{b}$).**
-    2. **It can be solved rapidly (in $O(N)$ time) using specialized linear algebra algorithms.**
+        **Correct: 1. B, 2. C**  
+        1. **B.** FDM links every point on the grid simultaneously.
+        2. **C.** Tridiagonal systems are the "Golden Case" for linear algebra efficiency.
 
 !!! abstract "Interview-Style Question"
     **Question:** Explain the distinction between the FDM approach (a "global" method) and the Shooting Method (a "local" method) in terms of how they generate the final solution.
@@ -168,12 +204,24 @@ This is the eigenvalue problem $\mathbf{H}\boldsymbol{\psi} = E\boldsymbol{\psi}
 ### **Comprehension Check**
 
 !!! note "Quiz"
-    1. When FDM is applied to the Schrödinger equation, the problem naturally maps to which category of linear algebra problem?
-    2. In the resulting matrix equation $\mathbf{H}\boldsymbol{\psi} = E\boldsymbol{\psi}$, the **unknown energy $E$** corresponds to which component of the matrix solution?
-
+    **1. When FDM is applied to the Schrödinger equation, the problem naturally maps to which category of linear algebra problem?**
+    
+    - A. A matrix inversion problem.
+    - B. A matrix eigenvalue problem ($\mathbf{H}\boldsymbol{\psi} = E\boldsymbol{\psi}$).
+    - C. A basic multiplication problem.
+    - D. A determinant calculation.
+    
+    **2. In the resulting matrix equation $\mathbf{H}\boldsymbol{\psi} = E\boldsymbol{\psi}$, the unknown energy $E$ corresponds to which component of the matrix solution?**
+    
+    - A. The eigenvector.
+    - B. The determinant.
+    - C. The eigenvalue.
+    - D. The trace.
+    
 ??? info "See Answer"
-    1. **A Matrix Eigenvalue Problem ($\mathbf{H}\boldsymbol{\psi} = E\boldsymbol{\psi}$).**
-    2. **The eigenvalue.**
+        **Correct: 1. B, 2. C**  
+        1. **B.** Discretization transforms the operator into a Hamiltonian matrix.
+        2. **C.** The allowed discrete energies of the quantum system are the eigenvalues of $\mathbf{H}$.
 
 !!! abstract "Interview-Style Question"
     **Question:** In the resulting equation $\mathbf{H}\boldsymbol{\psi} = E\boldsymbol{\psi}$, which physical quantity corresponds to the **eigenvalue $E$**, and which corresponds to the **eigenvector $\boldsymbol{\psi}$**?

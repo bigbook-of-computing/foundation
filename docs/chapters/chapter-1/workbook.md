@@ -33,12 +33,24 @@ In computational physics, the result of a simulation can change subtly if the un
 ### **Comprehension Check**
 
 !!! note "Quiz"
-    1. Why is "it works on my machine" considered a failure in scientific computing?
-    2. Which command ensures your terminal is using the project-specific library versions?
+    **1. Why is "it works on my machine" considered a failure in scientific computing?**
+    
+    - A. It indicates the computer hardware is failing.
+    - B. **It represents a lack of Reproducibility across different systems.**
+    - C. It means the user has not installed Python correctly.
+    - D. It shows that the code is optimized for only one specific CPU architecture.
+    
+    **2. Which command ensures your terminal is using the project-specific library versions?**
+    
+    - A. `pip install [package_name]`
+    - B. `conda create -n [env_name]`
+    - C. **`conda activate [env_name]`**
+    - D. `jupyter notebook [file_name].ipynb`
 
 ??? info "See Answer"
-    1. **Lack of Reproducibility.** If a result cannot be replicated on a different machine with a standard setup, it is not a scientific result—it is an anecdote.
-    2. **`conda activate [env_name]`**. This modifies the PATH variable to prioritize the environment's binaries.
+    **Correct: B, C**  
+    1. **B.** If a result cannot be replicated on a different machine with a standard setup, it is not a scientific result—it is an anecdote.
+    2. **C.** `conda activate` modifies the PATH variable to prioritize the environment's binaries.
 
 !!! abstract "Interview-Style Question"
     
