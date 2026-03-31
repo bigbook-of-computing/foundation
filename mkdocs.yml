@@ -2,13 +2,13 @@ site_name: Big Book of Computing | Foundation of Computational Science
 site_description: A comprehensive guide to the foundations of computational science
 site_author: Big Book of Computing
 site_url: https://bigbookofcomputing.github.io
-site_language: en
 
 repo_url: https://github.com/bigbookofcomputing/foundation
 
 extra_javascript:
   - static/mathjax-config.js
   - https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.0/es5/tex-mml-chtml.js
+
 
 extra_css:
   - https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css
@@ -53,12 +53,6 @@ markdown_extensions:
         - name: mermaid
           class: mermaid
           format: !!python/name:pymdownx.superfences.fence_code_format
-  - pymdownx.tabbed:
-      alternate_style: true
-      combine_header_slug: true
-      slugify: !!python/object/apply:pymdownx.slugs.slugify
-        kwds:
-          case: lower
   - pymdownx.tasklist:
       custom_checkbox: true
   - codehilite:
@@ -73,7 +67,8 @@ markdown_extensions:
   
 theme:
   name: 'material'
-  #custom_dir: overrides
+  language: en
+  custom_dir: overrides
   highlightjs: true
   hljs_languages: [python]
   include_homepage_in_sidebar: true
@@ -135,12 +130,14 @@ theme:
     text: Roboto
     code: Roboto Mono
 # Plugins
-  plugins:
-    - blog
-    - search:
-        separator: '[\s\u200b\-_,:!=\[\]()"`/]+|\.(?!\d)|&[lg]t;|(?!\b)(?=[A-Z][a-z])'
-    - minify:
-        minify_html: true
+# Plugins
+plugins:
+  - blog
+  - search:
+      separator: '[\s\u200b\-_,:!=\[\]()"`/]+|\.(?!\d)|&[lg]t;|(?!\b)(?=[A-Z][a-z])'
+
+
+
   
 
 
@@ -185,65 +182,65 @@ extra:
 
 
 nav:
-- Home: index.md
+- Home: home.md
 - Contents: chapters/contents.md
 - Introduction: chapters/introduction.md
-
+- Style Guides: chapters/styles.md
 
 - Chapters:
-  - 1. Digital Lab Notebook: chapters/chapter-1/Chapter-1-Essay.md
-  - 2. Computational Numbers: chapters/chapter-2/Chapter-2-Essay.md
-  - 3. Root Finding: chapters/chapter-3/Chapter-3-Essay.md
-  - 4. Interpolation & Fitting: chapters/chapter-4/Chapter-4-Essay.md
-  - 5. Numerical Differentiation: chapters/chapter-5/Chapter-5-Essay.md
-  - 6. Numerical Integration: chapters/chapter-6/Chapter-6-Essay.md
-  - 7. Initial Value Problems I: chapters/chapter-7/Chapter-7-Essay.md
-  - 8. Initial Value Problems II: chapters/chapter-8/Chapter-8-Essay.md
-  - 9. Boundary Value Problems: chapters/chapter-9/Chapter-9-Essay.md
-  - 10. Elliptic PDEs : chapters/chapter-10/Chapter-10-Essay.md
-  - 11. Parabolic PDEs : chapters/chapter-11/Chapter-11-Essay.md
-  - 12. Hyperbolic PDEs : chapters/chapter-12/Chapter-12-Essay.md
-  - 13. Systems of Linear Equations: chapters/chapter-13/Chapter-13-Essay.md
-  - 14. Eigenvalue Problems: chapters/chapter-14/Chapter-14-Essay.md
-  - 15. Fourier Analysis & The FFT: chapters/chapter-15/Chapter-15-Essay.md
-  - 16. Data-Driven Analysis: chapters/chapter-16/Chapter-16-Essay.md
-  - 17. Randomness in Physics: chapters/chapter-17/Chapter-17-Essay.md
+  - 1. Digital Lab Notebook: chapters/chapter-1/essay.md
+  - 2. Computational Numbers: chapters/chapter-2/essay.md
+  - 3. Root Finding: chapters/chapter-3/essay.md
+  - 4. Interpolation & Fitting: chapters/chapter-4/essay.md
+  - 5. Numerical Differentiation: chapters/chapter-5/essay.md
+  - 6. Numerical Integration: chapters/chapter-6/essay.md
+  - 7. Initial Value Problems I: chapters/chapter-7/essay.md
+  - 8. Initial Value Problems II: chapters/chapter-8/essay.md
+  - 9. Boundary Value Problems: chapters/chapter-9/essay.md
+  - 10. Elliptic PDEs : chapters/chapter-10/essay.md
+  - 11. Parabolic PDEs : chapters/chapter-11/essay.md
+  - 12. Hyperbolic PDEs : chapters/chapter-12/essay.md
+  - 13. Systems of Linear Equations: chapters/chapter-13/essay.md
+  - 14. Eigenvalue Problems: chapters/chapter-14/essay.md
+  - 15. Fourier Analysis & The FFT: chapters/chapter-15/essay.md
+  - 16. Data-Driven Analysis: chapters/chapter-16/essay.md
+  - 17. Randomness in Physics: chapters/chapter-17/essay.md
 - WorkBooks:
-  - 1. Digital Lab Notebook: chapters/chapter-1/Chapter-1-WorkBook.md
-  - 2. Computational Numbers: chapters/chapter-2/Chapter-2-WorkBook.md
-  - 3. Root Finding: chapters/chapter-3/Chapter-3-WorkBook.md
-  - 4. Interpolation & Fitting: chapters/chapter-4/Chapter-4-WorkBook.md
-  - 5. Numerical Differentiation: chapters/chapter-5/Chapter-5-WorkBook.md
-  - 6. Numerical Integration: chapters/chapter-6/Chapter-6-WorkBook.md
-  - 7. Initial Value Problems I: chapters/chapter-7/Chapter-7-WorkBook.md
-  - 8. Initial Value Problems II: chapters/chapter-8/Chapter-8-WorkBook.md
-  - 9. Boundary Value Problems: chapters/chapter-9/Chapter-9-WorkBook.md
-  - 10. Elliptic PDEs : chapters/chapter-10/Chapter-10-WorkBook.md
-  - 11. Parabolic PDEs : chapters/chapter-11/Chapter-11-WorkBook.md
-  - 12. Hyperbolic PDEs : chapters/chapter-12/Chapter-12-WorkBook.md
-  - 13. Systems of Linear Equations: chapters/chapter-13/Chapter-13-WorkBook.md  
-  - 14. Eigenvalue Problems: chapters/chapter-14/Chapter-14-WorkBook.md
-  - 15. Fourier Analysis & The FFT: chapters/chapter-15/Chapter-15-WorkBook.md
-  - 16. Data-Driven Analysis: chapters/chapter-16/Chapter-16-WorkBook.md
-  - 17. Randomness in Physics: chapters/chapter-17/Chapter-17-WorkBook.md
+  - 1. Digital Lab Notebook: chapters/chapter-1/workbook.md
+  - 2. Computational Numbers: chapters/chapter-2/workbook.md
+  - 3. Root Finding: chapters/chapter-3/workbook.md
+  - 4. Interpolation & Fitting: chapters/chapter-4/workbook.md
+  - 5. Numerical Differentiation: chapters/chapter-5/workbook.md
+  - 6. Numerical Integration: chapters/chapter-6/workbook.md
+  - 7. Initial Value Problems I: chapters/chapter-7/workbook.md
+  - 8. Initial Value Problems II: chapters/chapter-8/workbook.md
+  - 9. Boundary Value Problems: chapters/chapter-9/workbook.md
+  - 10. Elliptic PDEs : chapters/chapter-10/workbook.md
+  - 11. Parabolic PDEs : chapters/chapter-11/workbook.md
+  - 12. Hyperbolic PDEs : chapters/chapter-12/workbook.md
+  - 13. Systems of Linear Equations: chapters/chapter-13/workbook.md  
+  - 14. Eigenvalue Problems: chapters/chapter-14/workbook.md
+  - 15. Fourier Analysis & The FFT: chapters/chapter-15/workbook.md
+  - 16. Data-Driven Analysis: chapters/chapter-16/workbook.md
+  - 17. Randomness in Physics: chapters/chapter-17/workbook.md
 - CodeBooks:
-  - 1. Digital Lab Notebook: chapters/chapter-1/Chapter-1-CodeBook.md
-  - 2. Computational Numbers: chapters/chapter-2/Chapter-2-CodeBook.md
-  - 3. Root Finding: chapters/chapter-3/Chapter-3-CodeBook.md
-  - 4. Interpolation & Fitting: chapters/chapter-4/Chapter-4-CodeBook.md
-  - 5. Numerical Differentiation: chapters/chapter-5/Chapter-5-CodeBook.md
-  - 6. Numerical Integration: chapters/chapter-6/Chapter-6-CodeBook.md
-  - 7. Initial Value Problems I: chapters/chapter-7/Chapter-7-CodeBook.md
-  - 8. Initial Value Problems II: chapters/chapter-8/Chapter-8-CodeBook.md
-  - 9. Boundary Value Problems: chapters/chapter-9/Chapter-9-CodeBook.md
-  - 10. Elliptic PDEs : chapters/chapter-10/Chapter-10-CodeBook.md
-  - 11. Parabolic PDEs : chapters/chapter-11/Chapter-11-CodeBook.md
-  - 12. Hyperbolic PDEs : chapters/chapter-12/Chapter-12-CodeBook.md
-  - 13. Systems of Linear Equations: chapters/chapter-13/Chapter-13-CodeBook.md  
-  - 14. Eigenvalue Problems: chapters/chapter-14/Chapter-14-CodeBook.md
-  - 15. Fourier Analysis & The FFT: chapters/chapter-15/Chapter-15-CodeBook.md
-  - 16. Data-Driven Analysis: chapters/chapter-16/Chapter-16-CodeBook.md
-  - 17. Randomness in Physics: chapters/chapter-17/Chapter-17-CodeBook.md
+  - 1. Digital Lab Notebook: chapters/chapter-1/codebook.md
+  - 2. Computational Numbers: chapters/chapter-2/codebook.md
+  - 3. Root Finding: chapters/chapter-3/codebook.md
+  - 4. Interpolation & Fitting: chapters/chapter-4/codebook.md
+  - 5. Numerical Differentiation: chapters/chapter-5/codebook.md
+  - 6. Numerical Integration: chapters/chapter-6/codebook.md
+  - 7. Initial Value Problems I: chapters/chapter-7/codebook.md
+  - 8. Initial Value Problems II: chapters/chapter-8/codebook.md
+  - 9. Boundary Value Problems: chapters/chapter-9/codebook.md
+  - 10. Elliptic PDEs : chapters/chapter-10/codebook.md
+  - 11. Parabolic PDEs : chapters/chapter-11/codebook.md
+  - 12. Hyperbolic PDEs : chapters/chapter-12/codebook.md
+  - 13. Systems of Linear Equations: chapters/chapter-13/codebook.md  
+  - 14. Eigenvalue Problems: chapters/chapter-14/codebook.md
+  - 15. Fourier Analysis & The FFT: chapters/chapter-15/codebook.md
+  - 16. Data-Driven Analysis: chapters/chapter-16/codebook.md
+  - 17. Randomness in Physics: chapters/chapter-17/codebook.md
 
 
 

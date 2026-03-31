@@ -1,128 +1,61 @@
-# **Welcome to *Foundations of Computation***
+# **Introduction**
 
-*A modern guide to the numerical, computational, and mathematical tools that power the physical sciences.*
+Computational science begins with a simple fact: most problems that matter are too complicated to solve exactly. Real systems are nonlinear, data is imperfect, governing equations are coupled, and even when formal solutions exist, they are often unusable in practice. Computation is the discipline that turns those difficult problems into tractable procedures.
 
-Computational science has become the central engine of modern discovery. From modeling planetary orbits to simulating molecular dynamics, from solving Maxwell’s equations on a grid to analyzing massive datasets from experiments, computation is now as essential as theory and experiment themselves. This book introduces the mathematical foundations, numerical techniques, and computational workflows that every scientist, engineer, and researcher needs to work effectively in the digital era.
+But that transformation is never neutral. The moment a mathematical problem is moved into a machine, it is changed. Continuous variables become finite representations. Exact operations become floating-point arithmetic. Differential equations become discrete updates on grids or timesteps. Proof gives way to approximation, and approximation must be analyzed.
 
-Whether you are a student encountering scientific computation for the first time or a practitioner seeking a deeper conceptual grounding, this book provides an integrated journey—from floating-point numbers and algorithms to differential equations, numerical integration, simulations, and data-driven analysis. Each chapter is paired with a **Workbook** and **Codebook** to help you immediately apply the concepts through exercises and real computational workflows.
+This is why the foundations matter.
 
----
+## From Mathematics To Computation
 
-### **How This Book Is Structured**
+In theory, one studies exact objects: real numbers, continuous functions, smooth derivatives, infinite series. In computation, one works with approximations of those objects. A number is stored with limited precision. A derivative is inferred from nearby samples. An integral is estimated by weighted sums. A trajectory is advanced in finite steps.
 
-This book is divided into **six parts**, each representing a core pillar of computational science.
-Below you’ll find an overview of each part, including a descriptive summary and a **compact part-level table** listing chapters and their key ideas.
+These replacements are not defects. They are the basis of numerical method. The central problem is not how to avoid approximation, but how to choose approximations that are stable, accurate, interpretable, and efficient.
 
----
+## The Main Ideas Of The Volume
 
-### **Part I — The Digital Workbench**
+Several ideas organize everything that follows:
 
-#### *How scientists think, compute, document, and structure their numerical work.*
+- representation: how numbers, functions, data, and operators are encoded in a machine
+- error: how truncation, roundoff, and modeling assumptions alter results
+- stability: whether small perturbations remain small or become amplified
+- convergence: whether a method approaches the correct answer as resolution improves
+- conditioning: whether the underlying problem itself is sensitive to perturbation
+- workflow: whether the computation is structured clearly enough to be reproduced and trusted
 
-Part I builds your computational intuition. Before worrying about algorithms, we must understand the *environment* and *numerical reality* in which computation takes place. These chapters introduce floating-point arithmetic, reproducible workflows, error sources, and the conceptual ideas behind numerical methods.
+These are not side topics. They are the criteria by which computational work should be judged.
 
-#### **Summary Table — Part I**
+## Why The Book Starts Where It Does
 
-| **Chapter** | **Title**                              | **Key Ideas**                                                                                 |
-| ----------- | -------------------------------------- | --------------------------------------------------------------------------------------------- |
-| **1**       | The Physicist’s “Digital Lab Notebook” | Reproducible workflows; computational hygiene; documentation; metadata; notebooks vs scripts. |
-| **2**       | The Nature of Computational Numbers    | Floating-point representation; precision; roundoff error; error amplification.                |
-| **3**       | Finding Order in Chaos: Root Finding   | Bracketing & open methods; convergence; sensitivity; numerical stability of solvers.          |
-| **4**       | Interpolation & Fitting                | Polynomial & spline interpolation; curve fitting; modeling structured & noisy data.           |
+This volume opens with workflow and number representation before moving into the more familiar catalog of algorithms. That ordering is deliberate. A scientist who can run a solver without understanding precision, error growth, or reproducibility is likely to obtain answers without knowing whether those answers deserve confidence.
 
----
+The early chapters establish the basic habits and numerical intuition needed for everything later:
 
-### **Part II — The Computational Tools of Calculus**
+- how to structure a computational project
+- how machines represent numbers
+- how equations are solved approximately
+- how interpolation, differentiation, and integration behave numerically
 
-#### *How computers differentiate, integrate, approximate, and accumulate change.*
+Once those ideas are in place, the book extends them into differential equations, linear algebra, spectral methods, data analysis, and randomness.
 
-Part II covers numerical analogs of calculus. You will learn how derivatives are approximated, how integrals are evaluated, and how algorithmic accuracy depends on error scaling and sampling strategies. This part forms the bridge between theory and simulation.
+## What This Volume Is Trying To Teach
 
-#### **Summary Table — Part II**
+This is not only a methods book. It is a book about computational reasoning.
 
-| **Chapter** | **Title**                 | **Key Ideas**                                                                             |
-| ----------- | ------------------------- | ----------------------------------------------------------------------------------------- |
-| **5**       | Numerical Differentiation | Finite differences; truncation error; smooth vs noisy data; high-order stencils.          |
-| **6**       | Numerical Integration     | Newton–Cotes rules; Gaussian quadrature; Monte Carlo methods; integration error analysis. |
+By the end of the volume, the reader should be able to ask and answer questions such as:
 
----
+- What approximation did this method make?
+- What error terms dominate the result?
+- Is the instability coming from the algorithm or from the problem itself?
+- What changes when the grid is refined or the timestep is reduced?
+- Which parts of the workflow make the result reproducible?
 
-### **Part III — Evolving Systems: Ordinary Differential Equations**
+Those questions are what separate routine code execution from computational science.
 
-#### *How we simulate time evolution, motion, decay, oscillation, and dynamical systems.*
+## A Working Definition
 
-Part III introduces numerical ODE solvers—methods that evolve physical systems in time. From simple Euler updates to energy-preserving symplectic integrators, this part teaches you how numerical time evolution works and why stability matters.
+For the purposes of this book, computational science is the study of how mathematical models, data, and algorithms interact inside finite machines to produce usable scientific knowledge.
 
-#### **Summary Table — Part III**
+That definition is broad enough to include numerical analysis, simulation, linear algebra, scientific programming, and modern data methods. It is also practical. The book is built for readers who want to compute, but who also want to understand the structure and limits of what they compute.
 
-| **Chapter** | **Title**                                    | **Key Ideas**                                                                 |
-| ----------- | -------------------------------------------- | ----------------------------------------------------------------------------- |
-| **7**       | Initial Value Problems I: The Basics         | Euler & Runge–Kutta methods; step-size control; modeling dynamic systems.     |
-| **8**       | Initial Value Problems II: Leapfrog & Verlet | Symplectic integrators; long-term stability; molecular dynamics applications. |
-| **9**       | Boundary Value Problems                      | Shooting method; finite-difference BVPs; eigenvalue-type problems.            |
-
----
-
-### **Part IV — Fields & Grids: Partial Differential Equations**
-
-#### *How we discretize space, model fields, and simulate heat, waves, and steady-state systems.*
-
-Part IV explores PDEs—fundamental equations governing fields in physics. You will learn how to discretize space, construct numerical schemes, stabilize solvers, and treat discontinuities such as shocks.
-
-#### **Summary Table — Part IV**
-
-| **Chapter** | **Title**       | **Key Ideas**                                                                        |
-| ----------- | --------------- | ------------------------------------------------------------------------------------ |
-| **10**      | Elliptic PDEs   | Laplace/Poisson equations; grid discretization; relaxation & multigrid acceleration. |
-| **11**      | Parabolic PDEs  | Heat equation; explicit & implicit time-stepping; CFL stability.                     |
-| **12**      | Hyperbolic PDEs | Wave propagation; upwinding; handling discontinuities and shocks.                    |
-
----
-
-### **Part V — The Language of Physics: Linear Algebra**
-
-#### *How matrices, linear systems, and eigenvalues form the backbone of modern computational physics.*
-
-Part V introduces the linear algebraic machinery underlying numerical solvers, PDE methods, optimization, and data analysis. These methods appear throughout computational science.
-
-#### **Summary Table — Part V**
-
-| **Chapter** | **Title**                   | **Key Ideas**                                                                          |
-| ----------- | --------------------------- | -------------------------------------------------------------------------------------- |
-| **13**      | Systems of Linear Equations | Gaussian elimination; LU decomposition; iterative solvers; conditioning.               |
-| **14**      | Eigenvalue Problems         | Spectral theory; power method; QR algorithm; symmetric matrices & physical eigenmodes. |
-
----
-
-### **Part VI — Analyzing Signals & Data**
-
-#### *How we understand time series, frequency content, dimensionality, and randomness.*
-
-Part VI concludes the book with modern computational tools for analyzing data and signals. Fourier methods, PCA, SVD, and stochastic methods—core tools of modern research—are introduced here.
-
-#### **Summary Table — Part VI**
-
-| **Chapter** | **Title**                       | **Key Ideas**                                                              |
-| ----------- | ------------------------------- | -------------------------------------------------------------------------- |
-| **15**      | Fourier Analysis & the FFT      | Fourier series; continuous & discrete transforms; FFT efficiency.          |
-| **16**      | Data-Driven Analysis: SVD & PCA | Singular values; dimensionality reduction; structure discovery in data.    |
-| **17**      | Randomness in Physics           | Probability distributions; Monte Carlo; stochastic differential equations. |
-
----
-
-### **What You Will Gain From This Book**
-
-By the end of *Foundations of Computation*, you will be able to:
-
-* Understand the numerical behaviors and limitations of computers.
-* Implement and analyze classical numerical algorithms.
-* Model and simulate physical systems using ODEs and PDEs.
-* Work effectively with large systems, matrices, eigenvalue problems, and spectral methods.
-* Apply Fourier transforms, PCA/SVD, and random methods in scientific data analysis.
-* Build reproducible, well-structured, professional computational workflows.
-
-This book is designed to be both **a structured course** and **a long-term reference**—a companion to your research, teaching, and computational practice.
-
-
-
-
+The chapters that follow develop that foundation systematically.
