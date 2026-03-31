@@ -61,21 +61,25 @@ $$\mathbf{A}_{\text{approx}} = \mathbf{U}_k \boldsymbol{\Sigma}_k \mathbf{V}^T_k
     **1. The SVD factors a matrix $\mathbf{A}$ into $\mathbf{U}\boldsymbol{\Sigma}\mathbf{V}^T$. What component directly quantifies the "importance" or magnitude of the information along each axis?**
     
     - A. The Left Singular Vectors ($\mathbf{U}$).
-    - B. The Singular Values ($\boldsymbol{\sigma}$), found on the diagonal of $\boldsymbol{\Sigma}$.
+    - B. **The Singular Values ($\boldsymbol{\sigma}$), found on the diagonal of $\boldsymbol{\Sigma}$.**
     - C. The Right Singular Vectors ($\mathbf{V}^T$).
     - D. The determinant of $\mathbf{A}$.
     
+??? info "See Answer"
+        **Correct: B**  
+        The singular values tell you which "directions" in the data carry the most weight.
+
+!!! note "Quiz"
     **2. Truncated SVD is an effective method for data compression and noise filtering because:**
     
     - A. It makes the matrix larger.
     - B. It only works on square matrices.
-    - C. Information is ranked by importance, allowing the low-magnitude components (small $\sigma_k$) to be discarded as noise.
+    - C. **Information is ranked by importance, allowing the low-magnitude components (small $\sigma_k$) to be discarded as noise.**
     - D. It removes all non-zero entries.
     
 ??? info "See Answer"
-        **Correct: 1. B, 2. C**  
-        1. **B.** The singular values tell you which "directions" in the data carry the most weight.
-        2. **C.** Dropping tiny singular values is like removing static from a radio signal.
+        **Correct: C**  
+        Dropping tiny singular values is like removing static from a radio signal.
 
 !!! abstract "Interview-Style Question"
     **Question:** An image is stored as a large $M \times N$ matrix. You calculate its SVD and find that 99% of the variance is captured by the first 50 singular values. What does the SVD tell you about the image that a simple inspection does not?
@@ -122,21 +126,25 @@ $$\mathbf{C} \mathbf{v} = \lambda \mathbf{v}$$
     **1. In Principal Component Analysis (PCA), the Principal Components themselves are given by which component of the covariance matrix solution?**
     
     - A. The eigenvalues ($\lambda$).
-    - B. The eigenvectors ($\mathbf{v}$).
+    - B. **The eigenvectors ($\mathbf{v}$).**
     - C. The trace of the matrix.
     - D. The mean of the data.
     
+??? info "See Answer"
+        **Correct: B**  
+        Eigenvectors define the new orthogonal coordinate systems (the PCs).
+
+!!! note "Quiz"
     **2. The magnitude of the eigenvalues ($\lambda$) resulting from the covariance matrix gives a direct measure of what quantity along the corresponding Principal Component axis?**
     
     - A. The velocity.
-    - B. The Variance (the measure of spread or "energy" in the data).
+    - B. **The Variance (the measure of spread or "energy" in the data).**
     - C. The number of samples.
     - D. The temperature.
     
 ??? info "See Answer"
-        **Correct: 1. B, 2. B**  
-        1. **B.** Eigenvectors define the new orthogonal coordinate systems (the PCs).
-        2. **B.** Large eigenvalues identify the directions where the data varies the most.
+        **Correct: B**  
+        Large eigenvalues identify the directions where the data varies the most.
 
 !!! abstract "Interview-Style Question"
     **Question:** Why is calculating the covariance matrix ($\mathbf{C}$) a necessary step in PCA? What information about the data does this matrix capture before the eigenvalue decomposition?

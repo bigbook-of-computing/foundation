@@ -30,20 +30,24 @@ We extend the **Finite Difference Method (FDM)** from Chapter 9 into two dimensi
     
     - A. Parabolic PDEs
     - B. Hyperbolic PDEs
-    - C. Elliptic PDEs
+    - C. **Elliptic PDEs**
     - D. Chaos PDEs
     
+??? info "See Answer"
+        **Correct: C**  
+        Elliptic PDEs describe "shape" problems without explicit time evolution.
+
+!!! note "Quiz"
     **2. Laplace's Equation, $\nabla^2 \phi = 0$, implies what physical condition at every point in a charge-free region?**
     
     - A. The field is rapidly increasing.
-    - B. The field is at equilibrium, with no net flux (or source) at that point.
+    - B. **The field is at equilibrium, with no net flux (or source) at that point.**
     - C. The field is rotating.
     - D. The temperature is absolute zero.
     
 ??? info "See Answer"
-        **Correct: 1. C, 2. B**  
-        1. **C.** Elliptic PDEs describe "shape" problems without explicit time evolution.
-        2. **B.** No net flux means the potential perfectly averages out between neighbors.
+        **Correct: B**  
+        No net flux means the potential perfectly averages out between neighbors.
 
 !!! abstract "Interview-Style Question"
     **Question:** Give two distinct physical examples of static fields governed by Elliptic PDEs, and explain why the main difference between Elliptic and Parabolic PDEs is the presence of the time derivative.
@@ -87,20 +91,24 @@ This **Five-Point Stencil** is the entire algorithm. It means the potential at a
     
     - A. The sum of its neighbors.
     - B. The product of its neighbors.
-    - C. The average of the potentials of its four nearest neighbors.
+    - C. **The average of the potentials of its four nearest neighbors.**
     - D. Zero.
     
+??? info "See Answer"
+        **Correct: C**  
+        The value is the arithmetic mean $(\phi_{up} + \phi_{down} + \phi_{left} + \phi_{right})/4$.
+
+!!! note "Quiz"
     **2. What is the order of the Truncation Error for the FDM stencil used to solve Laplace's Equation?**
     
     - A. $\mathcal{O}(h)$
-    - B. $\mathcal{O}(h^2)$
+    - B. **$\mathcal{O}(h^2)$**
     - C. $\mathcal{O}(h^4)$
     - D. $\mathcal{O}(1)$
     
 ??? info "See Answer"
-        **Correct: 1. C, 2. B**  
-        1. **C.** The value is the arithmetic mean $(\phi_{up} + \phi_{down} + \phi_{left} + \phi_{right})/4$.
-        2. **B.** Like most central difference schemes, it is second-order accurate.
+        **Correct: B**  
+        Like most central difference schemes, it is second-order accurate.
 
 !!! abstract "Interview-Style Question"
     **Question:** Explain the physical meaning of the Five-Point Stencil rule ($\phi_{i, j} \approx \frac{1}{4} (\text{Average of 4 Neighbors})$). Why does this simple algebraic statement define "equilibrium" in a static field?
@@ -170,29 +178,37 @@ $$\phi[i, j] = \phi_{\text{old}}[i, j] + \mathbf{\omega} \cdot (\phi_{\text{GS}}
     **1. What is the primary characteristic of the Jacobi Method?**
     
     - A. It updates all points in-place using only one array.
-    - B. All new values are calculated based *only* on the potentials from the previous iteration ($\phi_{\text{old}}$), requiring two arrays.
+    - B. **All new values are calculated based *only* on the potentials from the previous iteration ($\phi_{\text{old}}$), requiring two arrays.**
     - C. It is the fastest iterative method.
     - D. It ignores boundary conditions.
     
+??? info "See Answer"
+        **Correct: B**  
+        Jacobi updates are synchronous, which is easier to parallelize but slower to converge.
+
+!!! note "Quiz"
     **2. The Gauss-Seidel Method improves upon the Jacobi Method by making what adjustment?**
     
     - A. It uses more memory.
-    - B. It uses newly calculated potential values immediately within the current sweep (sequential update).
+    - B. **It uses newly calculated potential values immediately within the current sweep (sequential update).**
     - C. It adds random noise to the grid.
     - D. It only updates the boundaries.
     
+??? info "See Answer"
+        **Correct: B**  
+        Using new data immediately speeds up the propagation of boundary information.
+
+!!! note "Quiz"
     **3. What is the purpose of the over-relaxation factor $\omega$ in the SOR Method?**
     
     - A. To slow down the simulation for better accuracy.
     - B. To stabilize the boundaries.
-    - C. To push the updated potential past its equilibrium value to accelerate convergence.
+    - C. **To push the updated potential past its equilibrium value to accelerate convergence.**
     - D. To normalize the grid values to 1.
     
 ??? info "See Answer"
-        **Correct: 1. B, 2. B, 3. C**  
-        1. **B.** Jacobi updates are synchronous, which is easier to parallelize but slower to converge.
-        2. **B.** Using new data immediately speeds up the propagation of boundary information.
-        3. **C.** SOR "overshoots" to dampen the errors faster.
+        **Correct: C**  
+        SOR "overshoots" to dampen the errors faster.
 
 !!! abstract "Interview-Style Question"
     **Question:** Explain why the **Gauss-Seidel Method** is typically more efficient for a single-processor (serial) implementation compared to the **Jacobi Method**.

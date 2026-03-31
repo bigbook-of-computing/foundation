@@ -20,21 +20,25 @@
     **1. Why do we need numerical methods for Initial Value Problems (IVPs)?**
     
     - A. Because all differential equations in physics are solvable by hand.
-    - B. Because differential equations describe continuous change, but computers only work with discrete time steps.
+    - B. **Because differential equations describe continuous change, but computers only work with discrete time steps.**
     - C. Because numerical methods are always more accurate than analytical solutions.
     - D. Because initial conditions are never required for numerical integration.
     
+??? info "See Answer"
+        **Correct: B**  
+        Computers operate on discrete intervals, requiring us to approximate continuous physics.
+
+!!! note "Quiz"
     **2. What is the general mathematical form of an Initial Value Problem (IVP)?**
     
     - A. $x = f(t)$
-    - B. $\dfrac{dx}{dt} = f(x, t)$ with $x(t_0) = x_0$
+    - B. **$\dfrac{dx}{dt} = f(x, t)$ with $x(t_0) = x_0$**
     - C. $\int f(x) dx = C$
     - D. $x^2 + y^2 = r^2$
     
 ??? info "See Answer"
-        **Correct: 1. B, 2. B**  
-        1. **B.** Computers operate on discrete intervals, requiring us to approximate continuous physics.
-        2. **B.** An IVP requires both the "rule of change" (the ODE) and the "initial state" ($x_0$).
+        **Correct: B**  
+        An IVP requires both the "rule of change" (the ODE) and the "initial state" ($x_0$).
 
 !!! abstract "Interview-Style Question"
     **Question:** Why must we convert higher-order ODEs (like Newton’s $\ddot{x} = F/m$) into systems of first-order ODEs before applying numerical solvers like RK4?
@@ -78,21 +82,25 @@ Euler's method should be avoided for most long-term simulations, especially thos
     **1. What is the order of accuracy (global truncation error) of Euler’s Method?**
     
     - A. $\mathcal{O}(1)$
-    - B. $\mathcal{O}(h)$
+    - B. **$\mathcal{O}(h)$**
     - C. $\mathcal{O}(h^2)$
     - D. $\mathcal{O}(h^4)$
     
+??? info "See Answer"
+        **Correct: B**  
+        Euler's method is first-order accurate, meaning global error scales linearly with $h$.
+
+!!! note "Quiz"
     **2. Why is Euler’s method *unstable* for oscillatory systems like springs?**
     
     - A. It adds artificial damping to the system.
     - B. It captures the energy perfectly but has phase errors.
-    - C. It consistently "overshoots" the true curve, adding artificial energy each step.
+    - C. **It consistently "overshoots" the true curve, adding artificial energy each step.**
     - D. It is too slow to compute oscillations.
     
 ??? info "See Answer"
-        **Correct: 1. B, 2. C**  
-        1. **B.** Euler's method is first-order accurate, meaning global error scales linearly with $h$.
-        2. **C.** By using only the slope at the start of the step, Euler's method causes trajectories to "spiral out," injecting energy.
+        **Correct: C**  
+        By using only the slope at the start of the step, Euler's method causes trajectories to "spiral out," injecting energy.
 
 !!! abstract "Interview-Style Question"
     **Question:** Derive Euler’s method starting from the **Taylor series expansion** of $x(t + h)$. Which term do we truncate, and what is the resulting local truncation error?
@@ -134,21 +142,25 @@ $$\boxed{x_{n+1} = x_n + h\, k_2}\qquad\text{with global error } \mathcal O(h^2)
     **1. The Midpoint (RK2) Method improves on Euler’s method by:**
     
     - A. Using the second derivative explicitly.
-    - B. Using the average of the slope at the start and midpoint of the interval.
+    - B. **Using the average of the slope at the start and midpoint of the interval.**
     - C. Reducing the step size to machine epsilon.
     - D. Ignoring the initial conditions.
     
+??? info "See Answer"
+        **Correct: B**  
+        RK2 samples the derivative at the midpoint to find a better representative slope.
+
+!!! note "Quiz"
     **2. What is the order of accuracy (global truncation error) of the RK2 (Midpoint) Method?**
     
     - A. $\mathcal{O}(h)$
-    - B. $\mathcal{O}(h^2)$
+    - B. **$\mathcal{O}(h^2)$**
     - C. $\mathcal{O}(h^3)$
     - D. $\mathcal{O}(h^4)$
     
 ??? info "See Answer"
-        **Correct: 1. B, 2. B**  
-        1. **B.** RK2 samples the derivative at the midpoint to find a better representative slope.
-        2. **B.** RK2 is second-order accurate, significantly better than Euler's method.
+        **Correct: B**  
+        RK2 is second-order accurate, significantly better than Euler's method.
 
 !!! abstract "Interview-Style Question"
     **Question:** In the RK family of methods, why is RK2 conceptually called a "predictor-corrector" scheme?
@@ -196,20 +208,24 @@ RK4 applies seamlessly to coupled systems by integrating the **state vector** $\
     
     - A. 1
     - B. 2
-    - C. 4
+    - C. **4**
     - D. 8
     
+??? info "See Answer"
+        **Correct: C**  
+        RK4 evaluates the slope four times ($k_1, k_2, k_3, k_4$) per step.
+
+!!! note "Quiz"
     **2. What is the truncation error of RK4?**
     
     - A. $\mathcal{O}(h)$
     - B. $\mathcal{O}(h^2)$
-    - C. $\mathcal{O}(h^4)$
+    - C. **$\mathcal{O}(h^4)$**
     - D. $\mathcal{O}(h^5)$
     
 ??? info "See Answer"
-        **Correct: 1. C, 2. C**  
-        1. **C.** RK4 evaluates the slope four times ($k_1, k_2, k_3, k_4$) per step.
-        2. **C.** RK4 is fourth-order accurate, the "gold standard" for general ODEs.
+        **Correct: C**  
+        RK4 is fourth-order accurate, the "gold standard" for general ODEs.
 
 !!! abstract "Interview-Style Question"
     **Question:** The "1–2–2–1" pattern in the final RK4 step corresponds to what concept we studied in the previous chapter on Numerical Integration (Quadrature)?
@@ -255,21 +271,25 @@ Professional solvers like SciPy’s **`solve_ivp`** use **embedded Runge–Kutta
     **1. What is the main purpose of Adaptive Step-Size Control?**
     
     - A. To make the code run faster by using the largest possible $h$.
-    - B. To automatically adjust $h$ to keep error below a specified tolerance.
+    - B. **To automatically adjust $h$ to keep error below a specified tolerance.**
     - C. To eliminate round-off error.
     - D. To force the solver to use fixed intervals.
     
+??? info "See Answer"
+        **Correct: B**  
+        Adaptive control balances accuracy and performance by shrinking $h$ only when necessary.
+
+!!! note "Quiz"
     **2. Which SciPy function implements an adaptive Runge–Kutta method (RK45) for IVPs?**
     
     - A. `scipy.integrate.quad`
-    - B. `scipy.integrate.solve_ivp`
+    - B. **`scipy.integrate.solve_ivp`**
     - C. `scipy.optimize.minimize`
     - D. `scipy.fft.fft`
     
 ??? info "See Answer"
-        **Correct: 1. B, 2. B**  
-        1. **B.** Adaptive control balances accuracy and performance by shrinking $h$ only when necessary.
-        2. **B.** `solve_ivp` is the modern interface for solving IVPs in SciPy.
+        **Correct: B**  
+        `solve_ivp` is the modern interface for solving IVPs in SciPy.
 
 !!! abstract "Interview-Style Question"
     **Question:** What is the difference between **absolute error tolerance** and **relative error tolerance** in adaptive ODE solvers like `scipy.integrate.solve_ivp`?
@@ -314,21 +334,25 @@ $$\frac{d\mathbf{S}}{dt} = f(t, \mathbf{S}) = [v_x, v_y, a_x, a_y]$$
     **1. Why must we convert higher-order ODEs (like $x'' = -x$) into first-order systems before using RK4?**
     
     - A. Because high-order derivatives are too complex for any computer.
-    - B. Because RK4 and similar solvers are mathematically designed for first-order systems $\dot{y} = f(y, t)$.
+    - B. **Because RK4 and similar solvers are mathematically designed for first-order systems $\dot{y} = f(y, t)$.**
     - C. To increase the order of accuracy of the solver.
     - D. To reduce the number of variables in the simulation.
     
+??? info "See Answer"
+        **Correct: B**  
+        Most numerical integrators expect a system of first-order equations.
+
+!!! note "Quiz"
     **2. In the projectile motion with drag example, what causes the ODEs to be nonlinear?**
     
     - A. The gravitational constant $g$.
-    - B. The drag force dependence on $|\mathbf{v}|\mathbf{v}$ (velocity squared).
+    - B. **The drag force dependence on $|\mathbf{v}|\mathbf{v}$ (velocity squared).**
     - C. The use of a fixed time step.
     - D. The integration method chosen.
     
 ??? info "See Answer"
-        **Correct: 1. B, 2. B**  
-        1. **B.** Most numerical integrators expect a system of first-order equations.
-        2. **B.** Drag introduces a $v^2$ term, coupling the equations and making them nonlinear.
+        **Correct: B**  
+        Drag introduces a $v^2$ term, coupling the equations and making them nonlinear.
 
 !!! abstract "Interview-Style Question"
     **Question:** If you are implementing a simulation of the projectile with drag using the RK4 method, what would your function `f(t, S)` need to return if the input state vector is $\mathbf{S} = [x, y, v_x, v_y]^T$?

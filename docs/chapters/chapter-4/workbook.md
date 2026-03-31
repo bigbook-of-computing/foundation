@@ -39,17 +39,21 @@ While mathematically pure, global polynomials are prone to **Runge's Phenomenon*
     - C. The polynomial degree decreases to accommodate the new point.
     - D. The interpolation fails and returns a linear fit.
     
+??? info "See Answer"
+        **Correct: B**  
+        Because a global polynomial must pass through all points using a single equation, a small change anywhere is felt everywhere, often leading to Runge's Phenomenon.
+    
+!!! note "Quiz"
     **2. Why are "Splines" generally preferred over high-degree "Lagrange" polynomials?**
     
     - A. Splines are always lower error than polynomials.
     - B. **Splines offer "Local Control," meaning a change in one area does not cause artificial oscillations to propagate across the entire dataset.**
     - C. Splines are easier to integrate analytically.
     - D. Lagrange polynomials only work for evenly spaced data.
-
+    
 ??? info "See Answer"
-    **Correct: B, B**  
-    1. **B.** Because a global polynomial must pass through all points using a single equation, a small change anywhere is felt everywhere, often leading to Runge's Phenomenon.
-    2. **B.** Cubic splines are piecewise; they only connect adjacent nodes, which isolates local changes and prevents the "Global Ripple" effect.
+        **Correct: B**  
+        Cubic splines are piecewise; they only connect adjacent nodes, which isolates local changes and prevents the "Global Ripple" effect.
 
 ---
 

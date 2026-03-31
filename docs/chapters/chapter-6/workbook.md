@@ -69,7 +69,7 @@ The quality of this approximation depends on:
     **1. What is the fundamental physical concept that integration computes?**
     
     - A. The rate of instantaneous change
-    - B. The total accumulation of a quantity over a domain
+    - B. **The total accumulation of a quantity over a domain**
     - C. The "sweet spot" between competing errors
     - D. The slope of a function on a discrete grid
     
@@ -85,7 +85,7 @@ The quality of this approximation depends on:
     
     - A. Numerical differentiation
     - B. Root finding
-    - C. Numerical quadrature
+    - C. **Numerical quadrature**
     - D. The Monte Carlo method
     
 ??? info "See Answer"
@@ -99,7 +99,7 @@ The quality of this approximation depends on:
     **3. Why can't we always use analytical calculus techniques to evaluate integrals in computational physics?**
     
     - A. Computers cannot handle symbolic mathematics
-    - B. Many functions have no closed-form antiderivative, and experimental data is discrete
+    - B. **Many functions have no closed-form antiderivative, and experimental data is discrete**
     - C. Numerical methods are always more accurate
     - D. Integration is undefined for discrete data
     
@@ -299,7 +299,7 @@ However, this error decreases rapidly as $h \to 0$, making the method both robus
     **1. What is the geometric shape used to approximate each slice of the integral in the Trapezoidal Rule?**
     
     - A. A rectangle
-    - B. A trapezoid formed by linear interpolation
+    - B. **A trapezoid formed by linear interpolation**
     - C. A parabola
     - D. A triangle
     
@@ -314,7 +314,7 @@ However, this error decreases rapidly as $h \to 0$, making the method both robus
     **2. In the Extended Trapezoidal Rule, why do interior points receive a weight of 1 while endpoints receive a weight of 1/2?**
     
     - A. It's an arbitrary convention for symmetry
-    - B. Interior points are counted twice (once by each adjacent trapezoid), while endpoints appear only once
+    - B. **Interior points are counted twice (once by each adjacent trapezoid), while endpoints appear only once**
     - C. The formula requires normalization
     - D. Endpoints are less accurate than interior points
     
@@ -329,7 +329,7 @@ However, this error decreases rapidly as $h \to 0$, making the method both robus
     **3. If you double the number of grid points $N$ (halving $h$) in the Trapezoidal Rule, the truncation error decreases by a factor of:**
     
     - A. 2
-    - B. 4
+    - B. **4**
     - C. 8
     - D. $\sqrt{2}$
     
@@ -558,7 +558,7 @@ The magic comes from Taylor series cancellation. When we fit a parabola through 
     **1. What geometric shape does Simpson's Rule use to approximate each "tile" of the integral?**
     
     - A. A straight line (trapezoid)
-    - B. A parabola (quadratic polynomial)
+    - B. **A parabola (quadratic polynomial)**
     - C. A cubic spline
     - D. A circle segment
     
@@ -574,7 +574,7 @@ The magic comes from Taylor series cancellation. When we fit a parabola through 
     
     - A. $\frac{h}{2} [1, 2, 2, 2, \ldots, 2, 1]$
     - B. $h [1/2, 1, 1, 1, \ldots, 1, 1/2]$
-    - C. $\frac{h}{3} [1, 4, 2, 4, 2, \ldots, 4, 1]$
+    - C. **$\frac{h}{3} [1, 4, 2, 4, 2, \ldots, 4, 1]$**
     - D. $\frac{h}{3} [1, 4, 1, 4, 1, \ldots, 4, 1]$
     
 ??? info "See Answer"
@@ -590,7 +590,7 @@ The magic comes from Taylor series cancellation. When we fit a parabola through 
     - A. 2
     - B. 4
     - C. 8
-    - D. 16
+    - D. **16**
     
 ??? info "See Answer"
         **Correct: D**
@@ -843,7 +843,7 @@ In practice, we access Gaussian quadrature through **`scipy.integrate.quad`**, w
     **1. What is the "Aha! Moment" of Gaussian Quadrature?**
     
     - A. It uses parabolic tiles for $O(h^4)$ accuracy
-    - B. It optimally chooses both sample points $x_i$ and weights $w_i$ to maximize polynomial accuracy
+    - B. **It optimally chooses both sample points $x_i$ and weights $w_i$ to maximize polynomial accuracy**
     - C. It uses random sampling like Monte Carlo methods
     - D. It works only for grid-based data
     
@@ -859,7 +859,7 @@ In practice, we access Gaussian quadrature through **`scipy.integrate.quad`**, w
     
     - A. Degree 2
     - B. Degree 3
-    - C. Degree 5
+    - C. **Degree 5**
     - D. Degree 6
     
 ??? info "See Answer"
@@ -874,7 +874,7 @@ In practice, we access Gaussian quadrature through **`scipy.integrate.quad`**, w
     
     - A. Manual implementation of Simpson's Rule
     - B. `scipy.integrate.trapezoid` on a uniform grid
-    - C. `scipy.integrate.quad` (Gaussian Quadrature)
+    - C. **`scipy.integrate.quad` (Gaussian Quadrature)**
     - D. Monte Carlo integration
     
 ??? info "See Answer"
@@ -1137,7 +1137,7 @@ These functions detect the special cases and automatically apply appropriate tra
     **1. How do we "tame" an integral with an infinite limit, like $\int_0^\infty f(x) dx$?**
     
     - A. Use Monte Carlo, which handles infinity automatically
-    - B. Use a change of variables (e.g., $t = 1/(1+x)$) to map the infinite domain to a finite one
+    - B. **Use a change of variables (e.g., $t = 1/(1+x)$) to map the infinite domain to a finite one**
     - C. Integrate to a "very large number" (e.g., $10^{10}$) and hope it's correct
     - D. Use Simpson's Rule with an infinite number of slices
     
@@ -1152,7 +1152,7 @@ These functions detect the special cases and automatically apply appropriate tra
     **2. How do we "tame" an integral with a singularity, like $\int_0^1 \frac{1}{\sqrt{x}} dx$?**
     
     - A. Start the integral just after the singularity, e.g., $\int_{0.0001}^1$
-    - B. Use a change of variables (e.g., $x = t^2$) chosen to cancel the singularity
+    - B. **Use a change of variables (e.g., $x = t^2$) chosen to cancel the singularity**
     - C. Use the Trapezoidal Rule, which is not affected by singularities
     - D. This integral is unsolvable and must be approximated
     
@@ -1167,7 +1167,7 @@ These functions detect the special cases and automatically apply appropriate tra
     **3. For the integral $\int_0^\infty e^{-x^2} dx$, which transformation maps it to a finite interval?**
     
     - A. $t = x^2$
-    - B. $t = 1/(1+x)$
+    - B. **$t = 1/(1+x)$**
     - C. $t = e^{-x}$
     - D. $t = \ln(x)$
     
@@ -1432,7 +1432,7 @@ For larger amplitudes, the exact period is **longer** than the small-angle predi
     **1. What is the source of the computational problem in the nonlinear pendulum period integral?**
     
     - A. The integral has infinite limits
-    - B. The integrand has a singularity at the upper endpoint $\theta = \theta_0$
+    - B. **The integrand has a singularity at the upper endpoint $\theta = \theta_0$**
     - C. The integral is 10-dimensional
     - D. The function is too "wiggly" for Simpson's Rule
     
@@ -1448,7 +1448,7 @@ For larger amplitudes, the exact period is **longer** than the small-angle predi
     
     - A. Significantly shorter
     - B. Exactly the same
-    - C. Longer, due to the nonlinearity of the equation
+    - C. **Longer, due to the nonlinearity of the equation**
     - D. Shorter, due to energy loss
     
 ??? info "See Answer"
@@ -1463,7 +1463,7 @@ For larger amplitudes, the exact period is **longer** than the small-angle predi
     
     - A. The integral is too long
     - B. The function oscillates too much
-    - C. Evaluating at the endpoint $\theta_0$ causes division by zero
+    - C. **Evaluating at the endpoint $\theta_0$ causes division by zero**
     - D. Grid-based methods don't work for physics problems
     
 ??? info "See Answer"
@@ -1757,7 +1757,7 @@ These techniques (covered in Volume II) can reduce the effective $\sigma$, makin
     **1. What is the "Curse of Dimensionality"?**
     
     - A. Monte Carlo integration is $O(1/\sqrt{N})$
-    - B. Grid-based methods become exponentially slow and less accurate as dimension $D$ increases
+    - B. **Grid-based methods become exponentially slow and less accurate as dimension $D$ increases**
     - C. All numerical methods fail if $D > 3$
     - D. You must use double-wide tiles for Simpson's Rule in high dimensions
     
@@ -1773,7 +1773,7 @@ These techniques (covered in Volume II) can reduce the effective $\sigma$, makin
     
     - A. A 1D integral of a smooth, callable function
     - B. A 2D integral of data on a fixed grid
-    - C. A 1000-dimensional integral for a statistical mechanics problem
+    - C. **A 1000-dimensional integral for a statistical mechanics problem**
     - D. Finding the area under a simple parabola
     
 ??? info "See Answer"
@@ -1787,7 +1787,7 @@ These techniques (covered in Volume II) can reduce the effective $\sigma$, makin
     **3. What is the "magic" property of Monte Carlo error that allows it to beat the Curse of Dimensionality?**
     
     - A. It uses optimal Gaussian quadrature points
-    - B. The error $O(1/\sqrt{N})$ does not depend on dimension $D$
+    - B. **The error $O(1/\sqrt{N})$ does not depend on dimension $D$**
     - C. It's faster than Simpson's Rule in all dimensions
     - D. It requires no function evaluations
     

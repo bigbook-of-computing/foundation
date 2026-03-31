@@ -39,17 +39,21 @@ The IEEE 754 floating-point standard represents numbers as $sign \times mantissa
     - C. The CPU performs addition differently than human logic.
     - D. Standard Python uses 32-bit floats by default, which are too small.
     
+??? info "See Answer"
+        **Correct: B**  
+        Just as $1/3$ is $0.333...$ in decimal, the fraction $1/10$ is a repeating sequence in binary ($0.000110011...$). The computer must truncate this sequence, leading to a tiny representation error.
+    
+!!! note "Quiz"
     **2. If $x = 10^{16}$, what is the smallest number you can add to $x$ such that the computer notices the change?**
     
     - A. $1.0 \times 10^{-16}$
     - B. $1.0$
     - C. **Approximately 2.0, due to the absolute gap defined by Machine Epsilon.**
     - D. $10^{16}$ itself.
-
+    
 ??? info "See Answer"
-    **Correct: B, C**  
-    1. **B.** Just as $1/3$ is $0.333...$ in decimal, the fraction $1/10$ is a repeating sequence in binary ($0.000110011...$). The computer must truncate this sequence, leading to a tiny representation error.
-    2. **C.** At the scale of $10^{16}$, the absolute gap between representable numbers is $\epsilon_m \times 10^{16} \approx 2.22$. Any addition smaller than this will be "rounded away."
+        **Correct: C**  
+        At the scale of $10^{16}$, the absolute gap between representable numbers is $\epsilon_m \times 10^{16} \approx 2.22$. Any addition smaller than this will be "rounded away."
 
 ---
 

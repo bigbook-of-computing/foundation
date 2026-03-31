@@ -47,7 +47,7 @@ We will derive our "derivative-finders" from the **Taylor series**, using it to 
     **1. According to Chapter 5, why do we need numerical differentiation in physics?**
     
     - A. Because all physical laws are simple polynomial functions.
-    - B. Because we often have data on a discrete grid and cannot use standard analytical calculus.
+    - B. **Because we often have data on a discrete grid and cannot use standard analytical calculus.**
     - C. To find the area under the curve for a discrete function.
     - D. To solve root-finding problems for transcendental equations.
     
@@ -64,7 +64,7 @@ We will derive our "derivative-finders" from the **Taylor series**, using it to 
     - A. Potential ($V(t)$)
     - B. Force ($F(t)$)
     - C. Velocity ($v(t)$)
-    - D. Acceleration ($a(t)$)
+    - D. **Acceleration ($a(t)$)**
     
 ??? info "See Answer"
         **Correct: D**
@@ -77,7 +77,7 @@ We will derive our "derivative-finders" from the **Taylor series**, using it to 
     **3. The "great war" in numerical differentiation refers to the conflict between:**
     
     - A. Forward and backward difference formulas.
-    - B. Truncation error and round-off error.
+    - B. **Truncation error and round-off error.**
     - C. First-order and second-order accuracy.
     - D. Taylor series and finite element methods.
     
@@ -269,7 +269,7 @@ This algebraic manipulation transforms infinite series involving derivatives int
     **1. What is the "engine" or "oracle" that the chapter uses to derive *all* the finite difference formulas?**
     
     - A. The Method of Least Squares
-    - B. The Taylor Series expansion
+    - B. **The Taylor Series expansion**
     - C. The Runge-Kutta algorithm
     - D. The "Sweet Spot" V-plot
     
@@ -284,7 +284,7 @@ This algebraic manipulation transforms infinite series involving derivatives int
     **2. The Taylor series allows us to predict $f(x+h)$ based on information at $f(x)$ by using:**
     
     - A. Integration and area under the curve.
-    - B. The function's values and its derivatives ($f'$, $f''$, ...) at $x$.
+    - B. **The function's values and its derivatives ($f'$, $f''$, ...) at $x$.**
     - C. The Mean Value Theorem.
     - D. The sign-change bracket.
     
@@ -299,7 +299,7 @@ This algebraic manipulation transforms infinite series involving derivatives int
     **3. When deriving finite-difference formulas, what happens to the even-derivative terms ($f''(x)$, $f^{(4)}(x)$, etc.) when you subtract the backward Taylor expansion from the forward Taylor expansion?**
     
     - A. They are amplified and become the dominant error.
-    - B. They cancel out completely due to equal coefficients with the same sign.
+    - B. **They cancel out completely due to equal coefficients with the same sign.**
     - C. They become twice as large.
     - D. They are unchanged.
     
@@ -509,7 +509,7 @@ This inefficiency is why the Forward Difference, despite its simplicity, is rare
     **1. What is the Forward Difference formula for the first derivative, $f'(x)$?**
     
     - A. $\frac{f(x+h) - f(x-h)}{2h}$
-    - B. $\frac{f(x+h) - f(x)}{h}$
+    - B. **$\frac{f(x+h) - f(x)}{h}$**
     - C. $\frac{f(x) - f(x-h)}{h}$
     - D. $\frac{f(x+h) - 2f(x) + f(x-h)}{h^2}$
     
@@ -523,7 +523,7 @@ This inefficiency is why the Forward Difference, despite its simplicity, is rare
 !!! note "Quiz"
     **2. What is the order of the truncation error for the Forward Difference formula?**
     
-    - A. $O(h)$ (first-order accurate)
+    - A. **$O(h)$ (first-order accurate)**
     - B. $O(h^2)$ (second-order accurate)
     - C. $O(h^4)$ (fourth-order accurate)
     - D. $O(\epsilon_m/h)$ (round-off error)
@@ -538,7 +538,7 @@ This inefficiency is why the Forward Difference, despite its simplicity, is rare
 !!! note "Quiz"
     **3. If you halve the grid spacing $h$ in the Forward Difference method, by what factor does the truncation error decrease?**
     
-    - A. Factor of 2
+    - A. **Factor of 2**
     - B. Factor of 4
     - C. Factor of 8
     - D. It increases
@@ -774,7 +774,7 @@ Unless you are at a boundary where only forward or backward differences are avai
 !!! note "Quiz"
     **1. What is the Central Difference formula for the first derivative, $f'(x)$?**
     
-    - A. $\frac{f(x+h) - f(x-h)}{2h}$
+    - A. **$\frac{f(x+h) - f(x-h)}{2h}$**
     - B. $\frac{f(x+h) - f(x)}{h}$
     - C. $\frac{f(x) - f(x-h)}{h}$
     - D. $\frac{f(x+h) - 2f(x) + f(x-h)}{h^2}$
@@ -790,7 +790,7 @@ Unless you are at a boundary where only forward or backward differences are avai
     **2. If you halve the step size $h$ when using the Central Difference formula, by what factor does the truncation error decrease?**
     
     - A. Two
-    - B. Four
+    - B. **Four**
     - C. Eight
     - D. It remains the same
     
@@ -805,7 +805,7 @@ Unless you are at a boundary where only forward or backward differences are avai
     **3. Which terms in the Taylor series cancel when you subtract the backward expansion from the forward expansion?**
     
     - A. All odd-derivative terms ($f'$, $f'''$, $f^{(5)}$, ...)
-    - B. All even-derivative terms ($f$, $f''$, $f^{(4)}$, ...)
+    - B. **All even-derivative terms ($f$, $f''$, $f^{(4)}$, ...)**
     - C. Only the constant term $f(x)$
     - D. Only the first-derivative term $f'(x)$
     
@@ -1085,7 +1085,7 @@ The one-dimensional case is simply $\nabla^2 f = \frac{d^2f}{dx^2}$. Our stencil
     **1. What is the Central Difference formula for the second derivative, $f''(x)$?**
     
     - A. $\frac{f(x+h) - f(x-h)}{2h}$
-    - B. $\frac{f(x+h) - 2f(x) + f(x-h)}{h^2}$
+    - B. **$\frac{f(x+h) - 2f(x) + f(x-h)}{h^2}$**
     - C. $\frac{f(x+h) - 2f(x) + f(x-h)}{2h}$
     - D. $\frac{f(x+h) + 2f(x) - f(x-h)}{h^2}$
     
@@ -1101,7 +1101,7 @@ The one-dimensional case is simply $\nabla^2 f = \frac{d^2f}{dx^2}$. Our stencil
     
     - A. The gradient operator $\nabla$
     - B. The divergence operator $\nabla \cdot$
-    - C. The Laplacian operator $\nabla^2$
+    - C. **The Laplacian operator $\nabla^2$**
     - D. The curl operator $\nabla \times$
     
 ??? info "See Answer"
@@ -1115,7 +1115,7 @@ The one-dimensional case is simply $\nabla^2 f = \frac{d^2f}{dx^2}$. Our stencil
     **3. When deriving the second derivative formula, which terms from the Taylor series cancel when you add the forward and backward expansions?**
     
     - A. All even-derivative terms ($f''$, $f^{(4)}$, ...)
-    - B. All odd-derivative terms ($f'$, $f'''$, $f^{(5)}$, ...)
+    - B. **All odd-derivative terms ($f'$, $f'''$, $f^{(5)}$, ...)**
     - C. Only the constant term $f(x)$
     - D. No terms cancel
     
@@ -1391,7 +1391,7 @@ The mantra **"smaller $h$ is always better"** is fundamentally wrong in finite-p
     
     - A. Integer overflow
     - B. Runge's phenomenon
-    - C. Catastrophic cancellation (from subtracting two nearly-equal numbers)
+    - C. **Catastrophic cancellation (from subtracting two nearly-equal numbers)**
     - D. Truncation error
     
 ??? info "See Answer"
@@ -1405,7 +1405,7 @@ The mantra **"smaller $h$ is always better"** is fundamentally wrong in finite-p
     **2. What is the "sweet spot" in numerical differentiation?**
     
     - A. An $h$ value that is as close to $\epsilon_m$ as possible (e.g., $h=10^{-16}$)
-    - B. The optimal $h$ (e.g., $h \sim 10^{-6}$) that balances truncation and round-off error to give minimum total error
+    - B. **The optimal $h$ (e.g., $h \sim 10^{-6}$) that balances truncation and round-off error to give minimum total error**
     - C. The use of the Central Difference formula
     - D. The point where the truncation error is exactly zero
     
@@ -1420,7 +1420,7 @@ The mantra **"smaller $h$ is always better"** is fundamentally wrong in finite-p
     **3. On the V-plot, what is the approximate slope of the error curve in the round-off-dominated region (left side, very small $h$)?**
     
     - A. $+2$ (error increases with $h^2$)
-    - B. $-1$ (error increases as $h^{-1}$)
+    - B. **$-1$ (error increases as $h^{-1}$)**
     - C. $0$ (error is constant)
     - D. $+1$ (error increases with $h$)
     
@@ -1720,7 +1720,7 @@ This problem provides a perfect **"ground truth" test case**:
     
     - A. By finding the root of $V(r)$ using the Bisection method
     - B. By finding the second derivative $F = d^2V/dr^2$
-    - C. By applying the Central Difference formula to compute $F = -dV/dr$
+    - C. **By applying the Central Difference formula to compute $F = -dV/dr$**
     - D. By integrating $V(r)$
     
 ??? info "See Answer"
@@ -1734,7 +1734,7 @@ This problem provides a perfect **"ground truth" test case**:
     **2. What was the purpose of calculating the analytical force $F_{\text{analytic}}(r)$ in this application?**
     
     - A. To provide the final answer that the simulation would use
-    - B. To serve as the "ground truth" against which the accuracy of the numerical method was verified
+    - B. **To serve as the "ground truth" against which the accuracy of the numerical method was verified**
     - C. To help select the optimal step size $h$
     - D. To check for boundary conditions
     
@@ -1749,7 +1749,7 @@ This problem provides a perfect **"ground truth" test case**:
     **3. The Lennard-Jones potential has a repulsive $r^{-12}$ term and an attractive $r^{-6}$ term. At what distance does the force equal zero (equilibrium)?**
     
     - A. $r = \sigma$
-    - B. $r = 2^{1/6}\sigma \approx 1.122\sigma$
+    - B. **$r = 2^{1/6}\sigma \approx 1.122\sigma$**
     - C. $r = 0$
     - D. $r = \infty$
     

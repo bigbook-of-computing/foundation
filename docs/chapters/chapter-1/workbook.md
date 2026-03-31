@@ -40,17 +40,21 @@ In computational physics, the result of a simulation can change subtly if the un
     - C. It means the user has not installed Python correctly.
     - D. It shows that the code is optimized for only one specific CPU architecture.
     
+??? info "See Answer"
+        **Correct: B**  
+        If a result cannot be replicated on a different machine with a standard setup, it is not a scientific result—it is an anecdote.
+    
+!!! note "Quiz"
     **2. Which command ensures your terminal is using the project-specific library versions?**
     
     - A. `pip install [package_name]`
     - B. `conda create -n [env_name]`
     - C. **`conda activate [env_name]`**
     - D. `jupyter notebook [file_name].ipynb`
-
+    
 ??? info "See Answer"
-    **Correct: B, C**  
-    1. **B.** If a result cannot be replicated on a different machine with a standard setup, it is not a scientific result—it is an anecdote.
-    2. **C.** `conda activate` modifies the PATH variable to prioritize the environment's binaries.
+        **Correct: C**  
+        `conda activate` modifies the PATH variable to prioritize the environment's binaries.
 
 !!! abstract "Interview-Style Question"
     
