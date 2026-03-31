@@ -94,7 +94,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#chapter-11-parabolic-partial-differential-equations-eg-the-heatdiffusion-equation-codebook" class="md-skip">
+        <a href="#chapter-11-parabolic-pdes-codebook" class="md-skip">
           Skip to content
         </a>
       
@@ -2481,32 +2481,38 @@
   
 
 
-<h1 id="chapter-11-parabolic-partial-differential-equations-eg-the-heatdiffusion-equation-codebook"><strong>Chapter 11: Parabolic Partial Differential Equations (e.g., The Heat/Diffusion Equation) (Codebook)</strong></h1>
+<h1 id="chapter-11-parabolic-pdes-codebook"><strong>Chapter 11: Parabolic PDEs (Codebook)</strong></h1>
+<hr />
+<p>This Codebook implement the numerical solutions for transient diffusion. We demonstrate the <strong>CFL Stability Crisis</strong> using the explicit <strong>FTCS</strong> method and provide the high-fidelity, unconditionally stable <strong>Crank-Nicolson</strong> (Implicit) solver for long-term heat evolution.</p>
 <hr />
 <h2 id="project-1-cfl-stability-crisis-ftcs-vs-explosion">Project 1: CFL Stability Crisis (FTCS vs. Explosion)</h2>
 <table>
 <thead>
 <tr>
-<th style="text-align: left;">Feature</th>
+<th style="text-align: left;">Component</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left;"><strong>Goal</strong></td>
-<td style="text-align: left;">Simulate the Heat Equation using the <strong>Explicit FTCS (Forward-Time Centered-Space) Method</strong> and demonstrate its <strong>conditional stability</strong> by running one case where the CFL condition is met (<span class="arithmatex">\(\alpha \le 0.5\)</span>) and one case where it is violated (<span class="arithmatex">\(\alpha &gt; 0.5\)</span>).</td>
+<td style="text-align: left;"><strong>Objective</strong></td>
+<td style="text-align: left;">Demonstrate the conditional stability of <strong>FTCS</strong> (<span class="arithmatex">\(\alpha = D\Delta t / \Delta x^2\)</span>).</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>Model</strong></td>
-<td style="text-align: left;"><strong>1D Heat Equation</strong>: <span class="arithmatex">\(\frac{\partial T}{\partial t} = D \frac{\partial^2 T}{\partial x^2}\)</span>.</td>
+<td style="text-align: left;"><strong>Mathematical Concept</strong></td>
+<td style="text-align: left;">Explicit time-marching using the 2<sup>nd</sup>-order spatial Laplacian.</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>Stability Constraint</strong></td>
-<td style="text-align: left;">The <strong>CFL Condition</strong> for FTCS is <span class="arithmatex">\(\mathbf{\alpha = D \frac{h_t}{h_x^2} \le 0.5}\)</span>. Violation leads to numerical explosion.</td>
+<td style="text-align: left;"><strong>Experiment Setup</strong></td>
+<td style="text-align: left;">1D rod with Dirichlet BCs; running <span class="arithmatex">\(\alpha = 0.5\)</span> (stable) vs <span class="arithmatex">\(\alpha = 0.75\)</span> (unstable).</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>Core Concept</strong></td>
-<td style="text-align: left;">FTCS is easy to implement but is <strong>impractically slow</strong> for high spatial resolution due to the <span class="arithmatex">\(h_t \propto h_x^2\)</span> restriction.</td>
+<td style="text-align: left;"><strong>Expected Behavior</strong></td>
+<td style="text-align: left;">Stable cooling for <span class="arithmatex">\(\alpha \le 0.5\)</span>; immediate non-physical oscillations for <span class="arithmatex">\(\alpha &gt; 0.5\)</span>.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Verification Goal</strong></td>
+<td style="text-align: left;">Visually confirm the CFL stability boundary.</td>
 </tr>
 </tbody>
 </table>
@@ -2711,22 +2717,30 @@
 <table>
 <thead>
 <tr>
-<th style="text-align: left;">Feature</th>
+<th style="text-align: left;">Component</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left;"><strong>Goal</strong></td>
-<td style="text-align: left;">Solve the Heat Equation using the <strong>Crank-Nicolson Method</strong> (the "gold standard"). The solver must remain <strong>stable and accurate</strong> even when using a time step that grossly <strong>violates</strong> the explicit FTCS CFL condition.</td>
+<td style="text-align: left;"><strong>Objective</strong></td>
+<td style="text-align: left;">Implement the unconditionally stable <strong>Crank-Nicolson</strong> (Implicit) Method.</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>Method</strong></td>
-<td style="text-align: left;"><strong>Implicit Scheme</strong> solved by the <strong>Thomas Algorithm</strong> (or equivalent, here implemented using <code>np.linalg.solve</code> on the tridiagonal matrix).</td>
+<td style="text-align: left;"><strong>Mathematical Concept</strong></td>
+<td style="text-align: left;">Averaging present (<span class="arithmatex">\(n\)</span>) and future (<span class="arithmatex">\(n+1\)</span>) stencils; solving tridiagonal systems.</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>Core Advantage</strong></td>
-<td style="text-align: left;">Crank-Nicolson is <strong>unconditionally stable</strong> (A-stable) and <strong>second-order accurate in time</strong> (<span class="arithmatex">\(\mathcal{O}(h_t^2)\)</span>). This allows for much larger, efficiency-gaining time steps.</td>
+<td style="text-align: left;"><strong>Experiment Setup</strong></td>
+<td style="text-align: left;">1D rod simulation with <span class="arithmatex">\(\alpha = 13.0\)</span> (grossly violating the FTCS limit).</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Expected Behavior</strong></td>
+<td style="text-align: left;">Perfect stability and higher-order (<span class="arithmatex">\(\mathcal{O}(h_t^2)\)</span>) temporal accuracy.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Verification Goal</strong></td>
+<td style="text-align: left;">Demonstrate stable, large-step integration for diffusion.</td>
 </tr>
 </tbody>
 </table>

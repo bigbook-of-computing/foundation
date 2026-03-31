@@ -94,7 +94,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#chapter-2-the-nature-of-computational-numbers" class="md-skip">
+        <a href="#chapter-2-computational-numbers" class="md-skip">
           Skip to content
         </a>
       
@@ -2324,199 +2324,153 @@
   
 
 
-<h1 id="chapter-2-the-nature-of-computational-numbers"><strong>Chapter 2: The Nature of Computational Numbers</strong></h1>
+<h1 id="chapter-2-computational-numbers"><strong>Chapter 2: Computational Numbers</strong></h1>
 <hr />
 <h1 id="introduction"><strong>Introduction</strong></h1>
-<p>This chapter transitions from the abstract world of theoretical physics to the practical constraints of the "Digital Lab." Before we can simulate any physical system, we must first confront the tool itself: the computer. The central theme of this chapter is that a computer is not a perfect calculator. It does not work with the infinite, continuous Real Numbers (<span class="arithmatex">\(\mathbb{R}\)</span>) of theoretical mathematics, but with finite, discrete approximations.</p>
-<p>This fundamental discrepancy is the source of all computational error. This chapter will deconstruct this "foundational crisis," introducing the standard compromise used to represent numbers (floating-point) and then building a rigorous framework for understanding, classifying, and mitigating the different types of errors that arise. Mastering these concepts is the first and most critical step toward building numerical models that are not just mathematically correct, but computationally stable and reliable.</p>
+<p>In theoretical physics, we operate in the realm of <strong>Real Numbers</strong> (<span class="arithmatex">\(\mathbb{R}\)</span>)—an infinite, continuous continuum where values like <span class="arithmatex">\(\pi\)</span> or <span class="arithmatex">\(\sqrt{2}\)</span> possess arbitrary precision. However, as we step into the "Digital Lab," we must confront a fundamental reality: the computer is a finite machine. It does not possess an infinite ruler; it possesses a digital one with discrete, non-uniform gaps.</p>
+<p>This discrepancy between the continuous nature of physical laws and the discrete nature of digital hardware is the primary source of <strong>numerical error</strong>. This chapter deconstructs the "Digital Ruler," introducing the <strong>IEEE 754 Floating-Point Standard</strong> and building a rigorous framework for understanding, classifying, and mitigating the errors that arise from finite precision. Mastering these concepts is the "safety manual" for computational science; without it, even the most sophisticated simulation is prone to "catastrophic cancellation" and numerical instability.</p>
 <hr />
 <h1 id="chapter-2-outline"><strong>Chapter 2: Outline</strong></h1>
 <table>
 <thead>
 <tr>
-<th><strong>Sec.</strong></th>
-<th><strong>Title</strong></th>
-<th><strong>Core Ideas &amp; Examples</strong></th>
+<th style="text-align: left;"><strong>Sec.</strong></th>
+<th style="text-align: left;"><strong>Title</strong></th>
+<th style="text-align: left;"><strong>Core Ideas &amp; Examples</strong></th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><strong>2.1</strong></td>
-<td><strong>Theory vs. Reality</strong></td>
-<td>Continuous <span class="arithmatex">\(\mathbb{R}\)</span> vs. finite binary registers; irrational numbers stored approximately; binary limits on representing values like <span class="arithmatex">\(0.1\)</span>.</td>
+<td style="text-align: left;"><strong>2.1</strong></td>
+<td style="text-align: left;"><strong>The Digital Ruler (IEEE 754)</strong></td>
+<td style="text-align: left;">Sign, Exponent, and Mantissa; scientific notation in binary; why <span class="arithmatex">\(0.1 + 0.2 \neq 0.3\)</span>.</td>
 </tr>
 <tr>
-<td><strong>2.2</strong></td>
-<td><strong>Floating-Point Standard (IEEE 754)</strong></td>
-<td>Sign–exponent–mantissa structure; spaced representable numbers; ULPs; examples from Binary32/64.</td>
+<td style="text-align: left;"><strong>2.2</strong></td>
+<td style="text-align: left;"><strong>Machine Precision (<span class="arithmatex">\(\epsilon_m\)</span>)</strong></td>
+<td style="text-align: left;">The "Planck length" of computation; the gap between <span class="arithmatex">\(1.0\)</span> and the next representable number; calculating <span class="arithmatex">\(\epsilon_m\)</span>.</td>
 </tr>
 <tr>
-<td><strong>2.3</strong></td>
-<td><strong>Inherent Limits of the Digital System</strong></td>
-<td>Machine epsilon <span class="arithmatex">\(\epsilon_m\)</span>; rounding; overflow and underflow; subnormal numbers; exponent range boundaries.</td>
+<td style="text-align: left;"><strong>2.3</strong></td>
+<td style="text-align: left;"><strong>Round-off vs. Truncation Error</strong></td>
+<td style="text-align: left;">Hardware limits (round-off) vs. algorithmic approximations (truncation); the Taylor series trade-off.</td>
 </tr>
 <tr>
-<td><strong>2.4</strong></td>
-<td><strong>Two Types of Error</strong></td>
-<td>Round-off (hardware precision limits) vs. truncation (algorithmic approximation); Taylor truncation; floating-point noise.</td>
+<td style="text-align: left;"><strong>2.4</strong></td>
+<td style="text-align: left;"><strong>Catastrophic Cancellation</strong></td>
+<td style="text-align: left;">Subtracting nearly equal numbers; loss of significance; the quadratic formula trap.</td>
 </tr>
 <tr>
-<td><strong>2.5</strong></td>
-<td><strong>Error Amplification Mechanisms</strong></td>
-<td>Catastrophic cancellation; conditioning; subtracting close numbers such as <span class="arithmatex">\(10^6 - (10^6 - 10^{-6})\)</span>; sensitivity of ill-conditioned matrices.</td>
-</tr>
-<tr>
-<td><strong>2.6</strong></td>
-<td><strong>Stability of Algorithms</strong></td>
-<td>Error propagation in iterative updates; damping vs. growth; stability of Euler's method; long-step sensitivity in solvers.</td>
+<td style="text-align: left;"><strong>2.5</strong></td>
+<td style="text-align: left;"><strong>Numerical Stability</strong></td>
+<td style="text-align: left;">Error propagation in iterative loops; stable vs. unstable algorithms; the recurrence relation case study.</td>
 </tr>
 </tbody>
 </table>
 <hr />
-<h2 id="21-the-foundational-crisis-of-digital-physics"><strong>2.1 The Foundational Crisis of Digital Physics</strong></h2>
-<h3 id="the-continuum-vs-the-finite-register"><strong>The Continuum vs. The Finite Register</strong></h3>
-<p>Theoretical physics is predicated on the <strong>Real Numbers</strong> (<span class="arithmatex">\(\mathbb{R}\)</span>), an <strong>infinite continuum</strong> where concepts like velocity, field strength, and position are assumed to possess arbitrary precision. In this abstract framework, one can always locate a unique number between any two given real numbers, embodying the perfect granularity of pure mathematics.</p>
+<h2 id="21-the-digital-ruler-ieee-754-standard"><strong>2.1 The Digital Ruler: IEEE 754 Standard</strong></h2>
+<hr />
+<p>To represent a vast range of physical scales—from the radius of a proton (<span class="arithmatex">\(10^{-15}\)</span> m) to the size of the observable universe (<span class="arithmatex">\(10^{26}\)</span> m)—computers use <strong>floating-point arithmetic</strong>. This is essentially binary scientific notation:</p>
+<div class="arithmatex">\[ \text{Value} = (-1)^s \times (1.f) \times 2^{E - \text{bias}} \]</div>
+<p>In the standard 64-bit <strong>double precision</strong> (<code>float64</code>) format, the bits are allocated to balance range and precision:</p>
+<pre class="mermaid"><code>bit-field
+  0-0: "Sign (1 bit)"
+  1-11: "Exponent (11 bits)"
+  12-63: "Mantissa/Fraction (52 bits)"</code></pre>
 <div class="admonition tip">
-<p class="admonition-title">Key Insight</p>
-<p>The <em>first</em> step in computational physics is accepting that numbers are <strong>never exact</strong> — not even the ones that look simple.</p>
-<p>The <strong>digital computer</strong>, by its very nature, operates on a <strong>finite, discrete set</strong> of electrical states — a fixed number of bits. The unavoidable mandate of computational science is to approximate the infinite granularity of <span class="arithmatex">\(\mathbb{R}\)</span> using these finite resources. This fundamental conflict between the infinite perfection of theory and the finite reality of hardware constitutes the <strong>foundational crisis of computational physics</strong>.</p>
-<p>This inherent limitation necessitates the abandonment of the assumption of <strong>exact numbers</strong> in the "Digital Lab." Instead, every calculated quantity is an approximation, and we must embrace the concept of <strong>error</strong> as an intrinsic feature of computation. The magnitude of this unavoidable deviation is measured by the <strong>Relative Error</strong>, which contextualizes the error against the true value:</p>
-<div class="arithmatex">\[\text{Relative Error} = \frac{|x_{\text{true}} - x_{\text{computed}}|}{|x_{\text{true}}|}\]</div>
-</div>
-<div class="admonition example">
-<p class="admonition-title">Representation Error in Practice</p>
-<p>The decimal number <span class="arithmatex">\(0.1\)</span> cannot be represented exactly in binary (just like <span class="arithmatex">\(1/3\)</span> in decimal). When stored as <code>float64</code>, it becomes <code>0.1000000000000000055511151231257827021181583404541015625</code>, introducing error before any computation begins.</p>
+<p class="admonition-title">The 0.1 + 0.2 Trap</p>
+<p>Many decimal numbers, like <span class="arithmatex">\(0.1\)</span>, cannot be represented exactly in binary (much like <span class="arithmatex">\(1/3\)</span> cannot be represented exactly in decimal). In a computer, <span class="arithmatex">\(0.1\)</span> is stored as a slightly larger value. This is why <code>0.1 + 0.2</code> results in <code>0.30000000000000004</code> rather than exactly <code>0.3</code>.</p>
 </div>
 <hr />
-<h2 id="22-the-standard-compromise-floating-point-representation-ieee-754"><strong>2.2 The Standard Compromise: Floating-Point Representation (IEEE 754)</strong></h2>
-<h3 id="the-need-for-range-and-precision"><strong>The Need for Range and Precision</strong></h3>
-<p>To model physical systems, a computer must simultaneously handle extremely large and extremely small numbers — from the size of the observable universe (<span class="arithmatex">\(\sim 10^{+26}\)</span> m) down to the radius of a proton (<span class="arithmatex">\(\sim 10^{-15}\)</span> m). The <strong>floating-point number</strong> is the computer's binary adaptation of <strong>scientific notation</strong>, decomposing a number into a <strong>Significand</strong> (precision) and an <strong>Exponent</strong> (scale).</p>
-<p>The <strong>IEEE 754 standard</strong> is the universal blueprint for floating-point arithmetic. The 64-bit <strong>double precision</strong> float allocates its bits as follows:</p>
+<h2 id="22-machine-precision-epsilon_m"><strong>2.2 Machine Precision (<span class="arithmatex">\(\epsilon_m\)</span>)</strong></h2>
+<hr />
+<p>Because the mantissa has a finite number of bits (52), there is a smallest possible change that a computer can record. This is <strong>Machine Epsilon</strong> (<span class="arithmatex">\(\epsilon_m\)</span>), defined as the smallest positive number that, when added to <span class="arithmatex">\(1.0\)</span>, yields a result distinguishable from <span class="arithmatex">\(1.0\)</span>.</p>
+<div class="arithmatex">\[ \epsilon_m = 2^{-52} \approx 2.22 \times 10^{-16} \]</div>
+<div class="admonition example">
+<p class="admonition-title">Finding <span class="arithmatex">\(\epsilon_m\)</span> via Algorithm</p>
+<p>You can measure the resolution of your own digital ruler using a simple iterative loop:
+<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">eps</span> <span class="o">=</span> <span class="mf">1.0</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">while</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="n">eps</span><span class="o">/</span><span class="mf">2.0</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">1.0</span><span class="p">:</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="n">eps</span> <span class="o">/=</span> <span class="mf">2.0</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Machine Epsilon: </span><span class="si">{</span><span class="n">eps</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span></code></pre></div></p>
+</div>
+<hr />
+<h2 id="23-round-off-and-truncation-errors"><strong>2.3 Round-off and Truncation Errors</strong></h2>
+<hr />
+<p>It is critical to distinguish between errors caused by the hardware and errors caused by our math.</p>
+<ol>
+<li><strong>Round-off Error:</strong> Caused by the finite precision of the <code>float64</code> representation. It occurs every time a number is stored or an arithmetic operation is performed.</li>
+<li><strong>Truncation Error:</strong> Caused by approximating an infinite mathematical process with a finite one. For example, using a few terms of a Taylor series to approximate <span class="arithmatex">\(\sin(x)\)</span> or using discrete steps to approximate a derivative.</li>
+</ol>
+<details class="question">
+<summary>Can we eliminate error by using more bits?</summary>
+<p>While "quadruple precision" (128-bit) reduces round-off error, it does not eliminate it, and it significantly slows down computation. Furthermore, it does nothing to solve <strong>truncation error</strong>, which is a property of the algorithm, not the hardware.</p>
+</details>
+<hr />
+<h2 id="24-catastrophic-cancellation"><strong>2.4 Catastrophic Cancellation</strong></h2>
+<hr />
+<p>The most dangerous error in computational physics is <strong>catastrophic cancellation</strong>. This occurs when two nearly equal numbers are subtracted. The leading identical digits cancel out, leaving only the "garbage" bits in the lower-order mantissa as the result.</p>
+<div class="admonition example">
+<p class="admonition-title">The Quadratic Formula Trap</p>
+<p>Consider <span class="arithmatex">\(x^2 + 10^8x + 1 = 0\)</span>. The standard formula <span class="arithmatex">\(x = \frac{-b + \sqrt{b^2-4ac}}{2a}\)</span> involves subtracting <span class="arithmatex">\(\sqrt{b^2-4ac}\)</span> (which is very close to <span class="arithmatex">\(b\)</span>) from <span class="arithmatex">\(b\)</span>. This leads to a massive loss of precision.</p>
+<p><strong>Numerical Fix:</strong> Compute the "safe" root first: <span class="arithmatex">\(x_1 = \frac{-b - \text{sgn}(b)\sqrt{b^2-4ac}}{2a}\)</span>, then find the second root using the identity <span class="arithmatex">\(x_1 x_2 = c/a\)</span>.</p>
+</div>
+<hr />
+<h2 id="25-numerical-stability"><strong>2.5 Numerical Stability</strong></h2>
+<hr />
+<p>An algorithm is <strong>stable</strong> if small errors (like round-off) are dampened over time. It is <strong>unstable</strong> if those errors are amplified, eventually overwhelming the true physical solution.</p>
+<h3 id="case-study-the-golden-ratio-recurrence"><strong>Case Study: The Golden Ratio Recurrence</strong></h3>
+<p>Consider the sequence <span class="arithmatex">\(x_n = \phi^n\)</span> where <span class="arithmatex">\(\phi = (\sqrt{5}-1)/2\)</span>. Mathematically, this follows <span class="arithmatex">\(x_{n+1} = x_{n-1} - x_n\)</span>.
+- <strong>Theory:</strong> The values should decrease toward zero (<span class="arithmatex">\(0.618 \dots^n\)</span>).
+- <strong>Reality:</strong> Because of initial round-off, an "unphysical" growing component <span class="arithmatex">\((\phi+1)^n\)</span> is seeded. After <span class="arithmatex">\(\sim 40\)</span> iterations, the result explodes to infinity, producing total nonsense.</p>
+<hr />
+<h2 id="summary-computational-vs-mathematical-reality"><strong>Summary: Computational vs. Mathematical Reality</strong></h2>
+<hr />
 <table>
 <thead>
 <tr>
-<th style="text-align: left;">Component</th>
-<th style="text-align: left;">Bits</th>
-<th style="text-align: left;">Role</th>
+<th style="text-align: left;">Feature</th>
+<th style="text-align: left;">Mathematical Reals (<span class="arithmatex">\(\mathbb{R}\)</span>)</th>
+<th style="text-align: left;">Computational Floats (<code>float64</code>)</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left;"><strong>Sign</strong></td>
-<td style="text-align: left;">1</td>
-<td style="text-align: left;">Determines if the number is positive or negative.</td>
+<td style="text-align: left;"><strong>Precision</strong></td>
+<td style="text-align: left;">Infinite</td>
+<td style="text-align: left;">Terminated at 16 decimal digits</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>Exponent</strong></td>
-<td style="text-align: left;">11</td>
-<td style="text-align: left;">Sets the scale factor (the <strong>range</strong>), <span class="arithmatex">\(\approx 10^{\pm 308}\)</span>.</td>
+<td style="text-align: left;"><strong>Continuity</strong></td>
+<td style="text-align: left;">Perfect continuum</td>
+<td style="text-align: left;">Discrete gaps ("Gappy Ruler")</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>Mantissa</strong></td>
-<td style="text-align: left;">52</td>
-<td style="text-align: left;">Stores the significant digits (the <strong>precision</strong>), <span class="arithmatex">\(\approx 15\)</span>–<span class="arithmatex">\(16\)</span> decimal digits.</td>
+<td style="text-align: left;"><strong>Associativity</strong></td>
+<td style="text-align: left;"><span class="arithmatex">\((a+b)+c = a+(b+c)\)</span></td>
+<td style="text-align: left;"><strong>Not guaranteed</strong> due to rounding</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Operations</strong></td>
+<td style="text-align: left;">Exact</td>
+<td style="text-align: left;">Probabilistic noise in the 16<sup>th</sup> digit</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Failure Modes</strong></td>
+<td style="text-align: left;">None</td>
+<td style="text-align: left;">Overflow (<code>inf</code>), Underflow, <code>NaN</code></td>
 </tr>
 </tbody>
 </table>
-<details class="question">
-<summary>Why does the gap between adjacent floating-point numbers increase with magnitude?</summary>
-<p>Because precision (52 bits) is constant while the exponent scales the number. Near zero, numbers are densely packed; at large magnitudes, the absolute spacing grows exponentially, though relative precision remains constant.</p>
-<p>This fixed allocation leads to the <strong>"gappy ruler" consequence</strong>: the <strong>absolute gap</strong> between adjacent representable numbers is not constant. Numbers near the origin are spaced very closely, but numbers far from the origin have exponentially larger gaps between them. This design provides an enormous range at the cost of uniform spacing.</p>
-</details>
-<hr />
-<h2 id="23-machine-epsilon-epsilon_m-and-critical-error-modes"><strong>2.3 Machine Epsilon (<span class="arithmatex">\(\epsilon_m\)</span>) and Critical Error Modes</strong></h2>
-<h3 id="machine-epsilon-the-planck-constant-of-computation"><strong>Machine Epsilon: The Planck Constant of Computation</strong></h3>
-<p>The finite 52-bit mantissa creates an unbridgeable distance between the number <span class="arithmatex">\(1.0\)</span> and the very next representable number. This fundamental unit of relative imprecision is called <strong>Machine Epsilon</strong> (<span class="arithmatex">\(\epsilon_m\)</span>) — the smallest positive number that, when added to <span class="arithmatex">\(1.0\)</span>, yields a result numerically distinguishable from <span class="arithmatex">\(1.0\)</span>.</p>
-<div class="arithmatex">\[\text{Machine Epsilon } \epsilon_m = 2^{-52} \approx 2.22 \times 10^{-16}\]</div>
-<div class="admonition tip">
-<p class="admonition-title">Machine Epsilon as the Computational Planck Constant</p>
-<p>Machine epsilon <span class="arithmatex">\(\epsilon_m\)</span> acts as the fundamental limit of relative precision — the "quantum" of computational accuracy. Any change smaller than this relative to the current value is quantized out of existence.</p>
-<p>The finite space allocated to the Exponent and Mantissa defines the primary failure modes of floating-point arithmetic:</p>
-<ul>
-<li><strong>Overflow:</strong> Number is too large for the exponent field → result is <code>inf</code>.</li>
-<li><strong>Underflow:</strong> Non-zero number is too small → result is flushed to <code>0.0</code>.</li>
-<li><strong>Rounding Error:</strong> Exact result requires more digits than the 52-bit Mantissa → rounded to nearest representable value.</li>
-</ul>
-<p>```python</p>
-</div>
-<h2 id="illustrative-algorithm-to-find-machine-epsilon">Illustrative algorithm to find machine epsilon</h2>
-<p>def find_machine_epsilon():
-    epsilon = 1.0
-    while (1.0 + (epsilon / 2.0)) != 1.0:
-        epsilon = epsilon / 2.0
-    return epsilon
-```</p>
-<hr />
-<h2 id="24-two-types-of-error-round-off-vs-truncation"><strong>2.4 Two Types of Error: Round-off vs. Truncation</strong></h2>
-<p>Three ideas must be separated clearly.</p>
-<ol>
-<li><strong>Round-off error</strong>: Introduced by finite representation and arithmetic rounding. Present in every floating-point operation.</li>
-<li><strong>Truncation error</strong>: Introduced by approximation methods — for example, finite differences or series truncation. A property of the algorithm.</li>
-<li><strong>Conditioning</strong>: A property of the problem itself: how sensitive output is to small input perturbations.</li>
-</ol>
-<p>The <strong>condition number</strong> <span class="arithmatex">\(\kappa\)</span> measures how much a relative change in input is magnified in the output:</p>
-<div class="arithmatex">\[\kappa(f) \approx \left|\frac{x f'(x)}{f(x)}\right|\]</div>
-<p>A stable algorithm can still struggle on an ill-conditioned (<span class="arithmatex">\(\kappa \gg 1\)</span>) problem. Conversely, a well-conditioned problem can be damaged by an unstable implementation.</p>
-<hr />
-<h2 id="25-error-amplification-catastrophic-cancellation"><strong>2.5 Error Amplification: Catastrophic Cancellation</strong></h2>
-<p>When two nearly equal numbers are subtracted, leading digits cancel, and the result keeps mostly low-significance digits contaminated by round-off.</p>
-<p><strong>Classic example:</strong> computing <span class="arithmatex">\(f(x) = 1 - \cos(x)\)</span> for very small <span class="arithmatex">\(x\)</span>.</p>
-<ul>
-<li><span class="arithmatex">\(\cos(x) \approx 1\)</span> for small <span class="arithmatex">\(x\)</span>, so the subtraction cancels almost all significant digits.</li>
-<li><strong>Stable alternative:</strong> <span class="arithmatex">\(f(x) = 2\sin^2(x/2)\)</span>, which avoids the cancellation entirely.</li>
-</ul>
-<div class="admonition example">
-<p class="admonition-title">Quadratic Formula Instability</p>
-<p>When <span class="arithmatex">\(b \gg \sqrt{b^2-4ac}\)</span>, the formula <span class="arithmatex">\(x = \frac{-b + \sqrt{b^2-4ac}}{2a}\)</span> subtracts nearly equal quantities. The stable fix is to compute the well-conditioned root first, then use <span class="arithmatex">\(x_1 x_2 = c/a\)</span> to find the second.</p>
-<p>Professional mitigation strategies:</p>
-<ol>
-<li>Algebraic reformulation to avoid subtracting near-equal terms.</li>
-<li>Scaling and nondimensionalization.</li>
-<li>Using numerically stable identities (e.g., half-angle formulas).</li>
-<li>Performing sensitivity checks with perturbed inputs.</li>
-</ol>
-</div>
-<hr />
-<h2 id="26-stability-of-algorithms"><strong>2.6 Stability of Algorithms</strong></h2>
-<p>Numerical stability is not an afterthought — it is a design criterion.</p>
-<p><strong>Illustrative unstable recurrence:</strong> the formula <span class="arithmatex">\(y_n = \frac{10}{3} y_{n-1} - y_{n-2}\)</span> is mathematically correct for computing <span class="arithmatex">\((1/3)^n\)</span>, but numerically unstable: initial rounding errors in <span class="arithmatex">\(y_0\)</span> and <span class="arithmatex">\(y_1\)</span> seed a growing <span class="arithmatex">\(3^n\)</span> component that overwhelms the true solution after only a few dozen steps.</p>
-<p>Before trusting an algorithm, ask:</p>
-<ol>
-<li>Does the method dampen or amplify small perturbations?</li>
-<li>What operations are numerically risky in this formulation?</li>
-<li>How does error change with step size, iteration count, and magnitude scale?</li>
-<li>Are there stable alternatives for equivalent mathematics?</li>
-</ol>
-<p>A professional workflow includes benchmark problems, convergence checks, and reproducibility logs for numerical settings.</p>
-<hr />
-<h2 id="27-summary-and-bridge"><strong>2.7 Summary and Bridge</strong></h2>
-<p>Chapter 2 establishes the safety manual for computational numbers.</p>
-<ul>
-<li>Numbers are approximations, not exact reals.</li>
-<li>Error is unavoidable but measurable and classifiable.</li>
-<li>Stability depends on both problem structure and algorithm design.</li>
-<li>Catastrophic cancellation and ill-conditioning are diagnosable and often curable by reformulation.</li>
-</ul>
-<p>In Chapter 3, we move from representation limits to controlled numerical approximation, where we intentionally trade computation for accuracy and measure that trade rigorously.</p>
 <hr />
 <h2 id="references"><strong>References</strong></h2>
-<h3 id="scientific-references"><strong>Scientific References</strong></h3>
-<p>[1] Higham, N.J. (2002). <em>Accuracy and Stability of Numerical Algorithms</em>. SIAM.
-[2] IEEE Standard for Floating-Point Arithmetic (IEEE 754).
-[3] Quarteroni, A., Sacco, R., &amp; Saleri, F. (2007). <em>Numerical Mathematics</em>. Springer.
-[4] Heath, M.T. (2002). <em>Scientific Computing: An Introductory Survey</em>. McGraw-Hill.
-[5] Stoer, J., &amp; Bulirsch, R. (2002). <em>Introduction to Numerical Analysis</em>. Springer.
-[6] Dahlquist, G., &amp; Björck, Å. (2008). <em>Numerical Methods in Scientific Computing</em>. SIAM.
-[7] Burden, R.L., &amp; Faires, J.D. (2011). <em>Numerical Analysis</em>. Brooks/Cole.
-[8] Suli, E., &amp; Mayers, D.F. (2003). <em>An Introduction to Numerical Analysis</em>. Cambridge University Press.</p>
-<h3 id="historical-references"><strong>Historical References</strong></h3>
-<p>[1] Patriot Missile Failure: Kopp, C. (1995). "Patriot Missile Failure". <em>IEEE Spectrum</em>.
-[2] Ariane 5 Disaster: Leveson, N.G., &amp; Turner, C.S. (1993). "An Investigation of the Therac-25 Accidents". <em>IEEE Computer</em>.
-[3] Goldberg, D. (1991). "What Every Computer Scientist Should Know About Floating-Point Arithmetic". <em>ACM Computing Surveys</em>.
-[4] Wilkinson, J.H. (1963). <em>Rounding Errors in Algebraic Processes</em>. Prentice-Hall.
-[5] Trefethen, L.N., &amp; Bau, D. (1997). <em>Numerical Linear Algebra</em>. SIAM.
-[6] Press, W.H., Teukolsky, S.A., Vetterling, W.T., &amp; Flannery, B.P. (2007). <em>Numerical Recipes: The Art of Scientific Computing</em>. Cambridge University Press.
-[7] Knuth, D.E. (1997). <em>The Art of Computer Programming, Volume 2: Seminumerical Algorithms</em>. Addison-Wesley.</p>
+<hr />
+<p>[1] Goldberg, D. (1991). What Every Computer Scientist Should Know About Floating-Point Arithmetic. <em>ACM Computing Surveys</em>.</p>
+<p>[2] Higham, N. J. (2002). <em>Accuracy and Stability of Numerical Algorithms</em>. SIAM.</p>
+<p>[3] IEEE Computer Society. (2008). <em>IEEE Standard for Floating-Point Arithmetic (IEEE 754-2008)</em>.</p>
+<p>[4] Trefethen, L. N., &amp; Bau, D. (1997). <em>Numerical Linear Algebra</em>. SIAM.</p>
+<p>[5] Muller, J. M., et al. (2018). <em>Handbook of Floating-Point Arithmetic</em>. Birkhäuser.</p>
 
 
 

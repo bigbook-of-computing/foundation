@@ -94,7 +94,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#introduction" class="md-skip">
+        <a href="#chapter-5-numerical-differentiation" class="md-skip">
           Skip to content
         </a>
       
@@ -2324,10 +2324,11 @@
   
 
 
+<h1 id="chapter-5-numerical-differentiation"><strong>Chapter 5: Numerical Differentiation</strong></h1>
+<hr />
 <h1 id="introduction"><strong>Introduction</strong></h1>
-<p>Derivatives are the central language of change in physics. Force, velocity, acceleration, curvature, flux—each is defined not by a value at a point, but by how a quantity varies <em>between</em> points. Yet the computer cannot access the smooth continuum on which the derivative is defined. It sees only discrete grid values: <span class="arithmatex">\(f(x_0), f(x_1), f(x_2), \dots\)</span>. The challenge, then, is to reconstruct the continuous behavior of <span class="arithmatex">\(f(x)\)</span> well enough to approximate its rate of change.</p>
-<p>This chapter reveals how numerical differentiation transforms the machinery of calculus into finite algebra using the <strong>Taylor series</strong>. It also introduces one of the most important practical lessons of computational physics: differentiation is inherently unstable. Making the grid spacing <span class="arithmatex">\(h\)</span> extremely small—intuitively desirable—invites catastrophic round-off error, while making <span class="arithmatex">\(h\)</span> too large introduces overwhelming truncation error. The key is to navigate the “war” between these competing forces to locate the <strong>optimal</strong> value of <span class="arithmatex">\(h\)</span>.</p>
-<p>By the end of this chapter, the derivative becomes not an abstract limit but a carefully engineered approximation, one that demands attention to both floating-point realities and algorithmic structure. This work becomes essential preparation for the more advanced numerical methods and differential-equation solvers to follow.</p>
+<p>In the "Digital Lab," we rarely possess the luxury of a continuous, analytical formula for every physical process. Instead, we often work with discrete sets of observations—individual data points collected from experiments, sensors, or sparse simulations. To understand the dynamics of these systems, we must compute their rates of change—their derivatives—using only these discrete values.</p>
+<p>This chapter defines the "Standard" for <strong>Numerical Differentiation</strong>. We will transition from the limit definition of calculus to the algebraic reality of <strong>Finite Differences</strong> using the power of the <strong>Taylor Series</strong>. However, we will also discover a fundamental paradox: in numerical calculus, taking a "smaller" step does not always lead to a better answer. We must navigate the "Great War" between <strong>Truncation Error</strong> and <strong>Round-off Error</strong> to find the optimal resolution for our digital calculations.</p>
 <hr />
 <h1 id="chapter-5-outline"><strong>Chapter 5: Outline</strong></h1>
 <table>
@@ -2341,200 +2342,139 @@
 <tbody>
 <tr>
 <td style="text-align: left;"><strong>5.1</strong></td>
-<td style="text-align: left;"><strong>Why Differentiation Matters</strong></td>
-<td style="text-align: left;">Derivatives as the language of change; force as <span class="arithmatex">\(-dV/dx\)</span>; velocity, acceleration, curvature; computing slopes from discrete grid data.</td>
+<td style="text-align: left;"><strong>The Calculus of Grids</strong></td>
+<td style="text-align: left;">Force as <span class="arithmatex">\(-dV/dx\)</span>; velocity and acceleration; discrete slopes; the Taylor Series bridge.</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>5.2</strong></td>
-<td style="text-align: left;"><strong>The Taylor Series Engine</strong></td>
-<td style="text-align: left;">Forward/backward expansions; building finite-difference formulas; Taylor series as the bridge from calculus to algebra.</td>
+<td style="text-align: left;"><strong>First-Order Schemes</strong></td>
+<td style="text-align: left;">Forward and Backward differences; <span class="arithmatex">\(O(h)\)</span> accuracy; the cost of asymmetry.</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>5.3</strong></td>
-<td style="text-align: left;"><strong>Forward Difference (First Attempt)</strong></td>
-<td style="text-align: left;">Derivation from <span class="arithmatex">\(f(x+h)\)</span>; first-order truncation error <span class="arithmatex">\(O(h)\)</span>; slow convergence; intuitive but inefficient.</td>
+<td style="text-align: left;"><strong>Central Difference (The Standard)</strong></td>
+<td style="text-align: left;">Symmetric 3-point stencil; <span class="arithmatex">\(O(h^2)\)</span> accuracy; error cancellation "magic."</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>5.4</strong></td>
-<td style="text-align: left;"><strong>Central Difference (The Workhorse)</strong></td>
-<td style="text-align: left;">Symmetric stencil using <span class="arithmatex">\(x\pm h\)</span>; cancellation of low-order terms; second-order accuracy <span class="arithmatex">\(O(h^2)\)</span>; superior precision.</td>
+<td style="text-align: left;"><strong>Higher-Order Derivatives</strong></td>
+<td style="text-align: left;">The 1D Laplacian (<span class="arithmatex">\(f''\)</span>); acceleration and curvature; three-point stencils.</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>5.5</strong></td>
-<td style="text-align: left;"><strong>Second Derivative and the Laplacian</strong></td>
-<td style="text-align: left;">Three-point stencil for <span class="arithmatex">\(f''(x)\)</span>; second-order accuracy; numerical Laplacian as foundation for PDEs (Heat, Wave, Schrödinger).</td>
+<td style="text-align: left;"><strong>The Error V-Plot (The Great War)</strong></td>
+<td style="text-align: left;">Truncation vs. Round-off; the "Sweet Spot" step size; the <span class="arithmatex">\(\sqrt{\epsilon_m}\)</span> rule.</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>5.6</strong></td>
-<td style="text-align: left;"><strong>The War Between Errors</strong></td>
-<td style="text-align: left;">Truncation vs. round-off; catastrophic cancellation at small <span class="arithmatex">\(h\)</span>; total error model <span class="arithmatex">\(C h^2 + D\epsilon_m/h\)</span>; V-plot and optimal step size.</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>5.7</strong></td>
-<td style="text-align: left;"><strong>Application: Lennard-Jones Force</strong></td>
-<td style="text-align: left;">Numerical vs. analytic force; using optimal <span class="arithmatex">\(h\)</span> to reach machine-precision accuracy; demonstration of <span class="arithmatex">\(10^{-14}\)</span>–<span class="arithmatex">\(10^{-15}\)</span> error limits.</td>
+<td style="text-align: left;"><strong>Differentiating Noisy Data</strong></td>
+<td style="text-align: left;">Noise amplification;为何 differentiation acts as a high-pass filter; the need for smoothing.</td>
 </tr>
 </tbody>
 </table>
 <hr />
-<h2 id="51-why-differentiation-matters"><strong>5.1 Why Differentiation Matters</strong></h2>
-<p>The entirety of physics is built on the concept of <strong>change</strong>, and the derivative, <span class="arithmatex">\(\frac{df}{dx}\)</span>, is the fundamental language used to quantify and describe that change. Dynamic systems, from classical motion to quantum fields, are modeled using this operator:</p>
-<ul>
-<li><strong>Classical Mechanics:</strong> The force <span class="arithmatex">\(F(x)\)</span> is defined as the negative instantaneous <strong>rate of change</strong> of potential energy <span class="arithmatex">\(V\)</span>:</li>
-</ul>
-<p><div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>$$
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>F(x) = -\frac{dV}{dx}
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>$$
-</span></code></pre></div>
-* <strong>Dynamics:</strong> Velocity <span class="arithmatex">\(v(t)\)</span> and acceleration <span class="arithmatex">\(a(t)\)</span> are the first and second derivatives of position <span class="arithmatex">\(x(t)\)</span> with respect to time, respectively:</p>
-<p><div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>$$
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>v(t) = \frac{dx}{dt} \quad \text{and} \quad a(t) = \frac{d^2x}{dt^2}
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>$$
-</span></code></pre></div>
-* <strong>Fundamental Laws:</strong> The cornerstone equations of theoretical physics—such as the Schrödinger Equation [4], the Heat Equation, and the Wave Equation [5]—are all <strong>differential equations</strong>.</p>
-<p>The <strong>computational problem</strong> is that the computer does not operate in the continuous domain of <span class="arithmatex">\(V(x)\)</span>. Instead, it works with <strong>discrete data on a grid</strong>. We may have the potential <span class="arithmatex">\(V(x_i)\)</span> at evenly-spaced points <span class="arithmatex">\(x_0, x_1, x_2, \dots\)</span>. Our core challenge is to compute the derivative (the "slope") accurately and efficiently <strong>from the raw grid data itself</strong>.</p>
-<p>The solution involves using the Taylor series to derive simple <strong>finite difference formulas</strong> [1, 3], transforming continuous calculus into finite algebra. This journey forces us to confront the core "great war" of computational physics: the trade-off between algorithmic error and hardware error.</p>
+<h2 id="51-the-finite-difference-idea-the-taylor-bridge"><strong>5.1 The Finite Difference Idea: The Taylor Bridge</strong></h2>
 <hr />
-<h2 id="52-the-taylor-series-engine"><strong>5.2 The Taylor Series Engine</strong></h2>
-<p>The <strong>Taylor series</strong> is the foundational mathematical tool—the "oracle"—used to derive every finite difference formula [1]. It acts as the bridge between the continuous world of derivatives and the discrete world of grid-point arithmetic.</p>
-<p>The Taylor expansion states that if the function's value <span class="arithmatex">\(f(x)\)</span> and all its derivatives (<span class="arithmatex">\(f'(x), f''(x), \dots\)</span>) are known at a single point <span class="arithmatex">\(x\)</span>, we can predict the function's value at a nearby point <span class="arithmatex">\(x+h\)</span>. The two essential expansions needed for numerical differentiation, written around the point <span class="arithmatex">\(x\)</span>, are:</p>
-<ol>
-<li><strong>Stepping forward</strong> by a distance <span class="arithmatex">\(h\)</span>:
-<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>$$
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>f(x+h) = f(x) + h f&#39;(x) + \frac{h^2}{2!} f&#39;&#39;(x) + \frac{h^3}{3!} f&#39;&#39;&#39;(x) + \dots
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>$$
-</span></code></pre></div></li>
-<li><strong>Stepping backward</strong> by a distance <span class="arithmatex">\(h\)</span>:
-<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>$$
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>f(x-h) = f(x) - h f&#39;(x) + \frac{h^2}{2!} f&#39;&#39;(x) - \frac{h^3}{3!} f&#39;&#39;&#39;(x) + \dots
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>$$
-</span></code></pre></div>
-By <strong>adding, subtracting, and rearranging</strong> these expansions, we can isolate the desired derivatives <span class="arithmatex">\(f'(x)\)</span> and <span class="arithmatex">\(f''(x)\)</span>, expressing them only in terms of the grid values <span class="arithmatex">\(f(x), f(x+h),\)</span> and <span class="arithmatex">\(f(x-h)\)</span>.</li>
-</ol>
+<p>To compute a derivative from grid data, we use the <strong>Taylor Series</strong> expansion. It allows us to relate the value of a function at a nearby point (<span class="arithmatex">\(x+h\)</span>) to its value and derivatives at the current point (<span class="arithmatex">\(x\)</span>):</p>
+<div class="arithmatex">\[ f(x+h) = f(x) + h f'(x) + \frac{h^2}{2} f''(x) + \frac{h^3}{6} f'''(x) + \dots \]</div>
+<p>By rearranging this series, we can isolate <span class="arithmatex">\(f'(x)\)</span> and express it in terms of the values we <em>can</em> measure (<span class="arithmatex">\(f(x)\)</span> and <span class="arithmatex">\(f(x+h)\)</span>).</p>
 <hr />
-<h2 id="53-forward-difference-first-attempt"><strong>5.3 Forward Difference (First Attempt)</strong></h2>
-<p>The <strong>Forward Difference</strong> method is the most intuitive approximation of the derivative, defining the slope at <span class="arithmatex">\(x\)</span> by looking at the change between <span class="arithmatex">\(x\)</span> and the next point <span class="arithmatex">\(x+h\)</span>.</p>
+<h2 id="52-forward-vs-central-differences"><strong>5.2 Forward vs. Central Differences</strong></h2>
 <hr />
-<h3 id="derivation-and-formula"><strong>Derivation and Formula</strong></h3>
-<p>Starting with the forward Taylor expansion and <strong>truncating</strong> all terms of order <span class="arithmatex">\(h^2\)</span> and higher (<span class="arithmatex">\(O(h^2)\)</span>) yields:</p>
-<div class="arithmatex">\[
-f(x+h) \approx f(x) + h f'(x) + O(h^2)
-\]</div>
-<p>Solving for <span class="arithmatex">\(f'(x)\)</span> gives the formula:</p>
-<div class="arithmatex">\[
-f'(x) \approx \frac{f(x+h) - f(x)}{h}
-\]</div>
-<hr />
-<h3 id="truncation-error-oh"><strong>Truncation Error (<span class="arithmatex">\(O(h)\)</span>)</strong></h3>
-<p>The error <strong>truncated</strong> from the Taylor series was <span class="arithmatex">\(O(h^2)\)</span>. However, since the final formula involves <strong>division by <span class="arithmatex">\(h\)</span></strong>, the total <strong>Truncation Error</strong> in the result is reduced to <span class="arithmatex">\(O(h)\)</span>:</p>
-<div class="arithmatex">\[
-\text{Error} = \frac{O(h^2)}{h} = O(h)
-\]</div>
-<p>This makes the Forward Difference a <strong>first-order accurate</strong> algorithm. The error is linearly proportional to the step size <span class="arithmatex">\(h\)</span>; thus, halving the grid spacing <span class="arithmatex">\(h\)</span> only halves the error. This slow rate of convergence is computationally inefficient.</p>
-<hr />
-<h2 id="54-central-difference-the-workhorse"><strong>5.4 Central Difference (The Workhorse)</strong></h2>
-<p>The <strong>Central Difference</strong> method is the computational "workhorse" for the first derivative, achieving a vast increase in accuracy (from <span class="arithmatex">\(O(h)\)</span> to <span class="arithmatex">\(O(h^2)\)</span>) by centering the calculation at <span class="arithmatex">\(x\)</span> using both the preceding point (<span class="arithmatex">\(x-h\)</span>) and the succeeding point (<span class="arithmatex">\(x+h\)</span>).</p>
-<hr />
-<h3 id="derivation-and-formula_1"><strong>Derivation and Formula</strong></h3>
-<p>The key to the Central Difference method is to <strong>subtract</strong> the backward Taylor expansion from the forward expansion:</p>
-<div class="arithmatex">\[
-f(x+h) - f(x-h) = [f(x) - f(x)] + [h f'(x) - (-h f'(x))] + [\frac{h^2}{2} f''(x) - \frac{h^2}{2} f''(x)] + \dots
-\]</div>
-<p>The terms containing <span class="arithmatex">\(f(x)\)</span> and the <strong>second derivative <span class="arithmatex">\(f''(x)\)</span> cancel out perfectly</strong>. After solving for <span class="arithmatex">\(f'(x)\)</span>, the formula is:</p>
-<div class="arithmatex">\[
-f'(x) \approx \frac{f(x+h) - f(x-h)}{2h}
-\]</div>
-<hr />
-<h3 id="truncation-error-oh2"><strong>Truncation Error (<span class="arithmatex">\(O(h^2)\)</span>)</strong></h3>
-<p>Because the largest error term, <span class="arithmatex">\(O(h^2)\)</span>, was cancelled in the subtraction, the first term truncated was <span class="arithmatex">\(O(h^3)\)</span>. Dividing by <span class="arithmatex">\(2h\)</span> means the final <strong>Truncation Error</strong> is <span class="arithmatex">\(O(h^2)\)</span>:</p>
-<div class="arithmatex">\[
-\text{Error} = \frac{O(h^3)}{2h} = O(h^2)
-\]</div>
-<p>This <strong>second-order accuracy</strong> is the method's "magic": cutting the step size <span class="arithmatex">\(h\)</span> in half reduces the truncation error by a factor of <strong>four</strong> (<span class="arithmatex">\(1/2^2\)</span>), making it vastly superior and the generally preferred choice over the Forward Difference method [3].</p>
+<h3 id="forward-difference-first-order"><strong>Forward Difference (First Order)</strong></h3>
+<p>The simplest approximation is the "rise over run" from <span class="arithmatex">\(x\)</span> to <span class="arithmatex">\(x+h\)</span>:
+$$ f'(x) \approx \frac{f(x+h) - f(x)}{h} + \mathcal{O}(h) $$
+It is <strong>First-Order Accurate</strong>—halving the step <span class="arithmatex">\(h\)</span> only halves the error.</p>
+<h3 id="central-difference-second-order"><strong>Central Difference (Second Order)</strong></h3>
+<p>By using two symmetric points (<span class="arithmatex">\(x-h\)</span> and <span class="arithmatex">\(x+h\)</span>), we achieve "magic" cancellation of the <span class="arithmatex">\(h^2\)</span> error term:
+$$ f'(x) \approx \frac{f(x+h) - f(x-h)}{2h} + \mathcal{O}(h^2) $$
+This is <strong>Second-Order Accurate</strong>—halving <span class="arithmatex">\(h\)</span> reduces the error by a factor of <strong>four</strong>. This is the standard "workhorse" for numerical derivatives.</p>
 <div class="admonition tip">
-<p class="admonition-title">The Power of Symmetry</p>
-<p>The Central Difference formula is so accurate because its <strong>symmetric</strong> nature causes the even-powered error terms (<span class="arithmatex">\(h^2, h^4, \dots\)</span>) in the Taylor expansion to cancel out perfectly. This "free lunch" is a core principle in designing good numerical algorithms.</p>
-<p>```python
-def forward_difference(f, x, h=1e-5):
-    return (f(x + h) - f(x)) / h</p>
+<p class="admonition-title">Centered is Standard</p>
+<p>Whenever possible, use symmetric (centered) stencils. They provide higher accuracy for the same computational effort because the anti-symmetric nature of the derivative cancels out even-order error terms automatically.</p>
 </div>
 <hr />
-<h2 id="55-second-derivative-the-laplacian"><strong>5.5 Second Derivative (The "Laplacian")</strong></h2>
-<p>The <strong>second derivative</strong> (<span class="arithmatex">\(f''(x)\)</span>) is essential for modeling acceleration and curvature and is the core component of most fundamental Partial Differential Equations (PDEs) in physics.</p>
+<h2 id="53-higher-order-derivatives-the-laplacian"><strong>5.3 Higher-Order Derivatives: The Laplacian</strong></h2>
 <hr />
-<h3 id="derivation-and-formula_2"><strong>Derivation and Formula</strong></h3>
-<p>To isolate <span class="arithmatex">\(f''(x)\)</span>, we <strong>add</strong> the forward and backward Taylor expansions:</p>
-<div class="arithmatex">\[
-f(x+h) + f(x-h) = [f(x) + f(x)] + [h f'(x) - h f'(x)] + [\frac{h^2}{2} f''(x) + \frac{h^2}{2} f''(x)] + \dots
-\]</div>
-<p>The terms containing the first derivative <span class="arithmatex">\(f'(x)\)</span> and the third derivative <span class="arithmatex">\(f'''(x)\)</span> <strong>cancel out</strong>. Solving for <span class="arithmatex">\(f''(x)\)</span> yields the formula:</p>
-<div class="arithmatex">\[
-f''(x) \approx \frac{f(x+h) - 2f(x) + f(x-h)}{h^2}
-\]</div>
+<p>To find acceleration or curvature, we need the second derivative <span class="arithmatex">\(f''(x)\)</span>. By adding the forward and backward Taylor expansions, we isolate the <span class="arithmatex">\(f''\)</span> term:</p>
+<div class="arithmatex">\[ f''(x) \approx \frac{f(x+h) - 2f(x) + f(x-h)}{h^2} + \mathcal{O}(h^2) \]</div>
+<p>This <strong>Three-Point Stencil</strong> is the fundamental building block for solving physical field equations, such as the Heat Equation or the Schrödinger Equation.</p>
 <hr />
-<h3 id="the-1d-numerical-laplacian"><strong>The 1D Numerical Laplacian</strong></h3>
-<p>The formula is <strong>second-order accurate</strong> with a truncation error of <span class="arithmatex">\(O(h^2)\)</span>. Critically, this algebraic expression, also known as the <strong>three-point stencil</strong>, is the fundamental approximation for the <strong>Laplacian operator</strong> (<span class="arithmatex">\(\nabla^2\)</span>) in one dimension. It forms the core mathematical foundation for numerically solving physical systems governed by the Heat, Wave, and Schrödinger Equations [4, 5].</p>
+<h2 id="54-the-great-war-of-errors-the-v-plot"><strong>5.4 The "Great War" of Errors: The V-Plot</strong></h2>
 <hr />
-<h2 id="56-the-war-between-errors-and-the-sweet-spot"><strong>5.6 The War Between Errors and the "Sweet Spot"</strong></h2>
-<p>The <span class="arithmatex">\(O(h^2)\)</span> truncation rule suggests making the step size <span class="arithmatex">\(h\)</span> <strong>"as small as possible"</strong> to minimize error. However, the constraints of <strong>floating-point arithmetic</strong> (Chapter 2) declare this advice <strong>disastrous</strong> [2].</p>
-<hr />
-<h3 id="the-dilemma-truncation-vs-round-off"><strong>The Dilemma: Truncation vs. Round-off</strong></h3>
-<p>The total error in a numerical derivative is the result of a "war" between two opposing sources:</p>
+<p>In calculus, we take the limit as <span class="arithmatex">\(h \to 0\)</span>. In computers, this is a <strong>recipe for disaster</strong>.</p>
 <ol>
-<li><strong>Truncation Error (<span class="arithmatex">\(E_{\text{trunc}}\)</span>):</strong> The error from the approximate algorithm. It <strong>decreases</strong> as <span class="arithmatex">\(h\)</span> decreases:
-<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>$$
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>E_{\text{trunc}} \propto h^2
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>$$
-</span></code></pre></div></li>
-<li><strong>Round-off Error (<span class="arithmatex">\(E_{\text{round}}\)</span>):</strong> The error from the computer's finite precision (<span class="arithmatex">\(\epsilon_m\)</span>), amplified by the formula. It <strong>explodes</strong> as <span class="arithmatex">\(h\)</span> decreases:
-<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>$$
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>E_{\text{round}} \propto \frac{\epsilon_m}{h}
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>$$
-</span></code></pre></div>
-When <span class="arithmatex">\(h\)</span> becomes tiny (e.g., <span class="arithmatex">\(h \sim 10^{-15}\)</span>), the numerator of the Central Difference formula, <span class="arithmatex">\(f(x+h) - f(x-h)\)</span>, suffers <strong>catastrophic cancellation</strong> (the Chapter 2 bug), where the accurate signal is replaced by amplified round-off noise [2]. This noise is then massively amplified by dividing by the tiny denominator <span class="arithmatex">\(2h\)</span>.</li>
+<li><strong>Truncation Error (<span class="arithmatex">\(E_T \propto h^2\)</span>):</strong> Dominates when <span class="arithmatex">\(h\)</span> is large.</li>
+<li><strong>Round-off Error (<span class="arithmatex">\(E_R \propto \epsilon_m / h\)</span>):</strong> Dominates when <span class="arithmatex">\(h\)</span> is small. As <span class="arithmatex">\(h\)</span> shrinks, the numerator <span class="arithmatex">\(f(x+h) - f(x-h)\)</span> suffers from <strong>catastrophic cancellation</strong>, and we divide the resulting noise by a tiny <span class="arithmatex">\(h\)</span>, magnifying it.</li>
 </ol>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>    <span class="n">flowchart</span> <span class="n">TD</span>
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>    <span class="n">A</span><span class="p">(</span><span class="n">Start</span><span class="p">:</span> <span class="n">Choose</span> <span class="n">step</span> <span class="n">size</span> <span class="n">h</span><span class="p">)</span> <span class="o">--&gt;</span> <span class="n">B</span><span class="p">{</span><span class="n">Is</span> <span class="n">h</span> <span class="n">very</span> <span class="n">small</span><span class="err">?</span><span class="p">}</span>
-</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>    <span class="n">B</span> <span class="o">--</span> <span class="n">Yes</span> <span class="o">--&gt;</span> <span class="n">C</span><span class="p">[</span><span class="n">Round</span><span class="o">-</span><span class="n">off</span> <span class="n">Error</span> <span class="n">Dominates</span> <span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span> <span class="p">(</span><span class="n">Catastrophic</span> <span class="n">Cancellation</span> <span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span> <span class="n">divided</span> <span class="n">by</span> <span class="n">small</span> <span class="n">h</span><span class="p">)]</span>
-</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>    <span class="n">C</span> <span class="o">--&gt;</span> <span class="n">F</span><span class="p">(</span><span class="n">Total</span> <span class="n">Error</span> <span class="ow">is</span> <span class="n">HIGH</span><span class="p">)</span>
-</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>    <span class="n">B</span> <span class="o">--</span> <span class="n">No</span> <span class="o">--&gt;</span> <span class="n">D</span><span class="p">{</span><span class="n">Is</span> <span class="n">h</span> <span class="n">very</span> <span class="n">large</span><span class="err">?</span><span class="p">}</span>
-</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>    <span class="n">D</span> <span class="o">--</span> <span class="n">Yes</span> <span class="o">--&gt;</span> <span class="n">E</span><span class="p">[</span><span class="n">Truncation</span> <span class="n">Error</span> <span class="n">Dominates</span> <span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span> <span class="p">(</span><span class="n">Algorithm</span> <span class="n">approximation</span> <span class="err">$</span><span class="n">O</span><span class="p">(</span><span class="n">h</span><span class="o">^</span><span class="mi">2</span><span class="p">)</span><span class="err">$</span> <span class="ow">is</span> <span class="n">poor</span><span class="p">)]</span>
-</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>    <span class="n">E</span> <span class="o">--&gt;</span> <span class="n">F</span>
-</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>    <span class="n">D</span> <span class="o">--</span> <span class="n">No</span> <span class="o">--&gt;</span> <span class="n">G</span><span class="p">[</span><span class="n">h</span> <span class="ow">is</span> <span class="s2">&quot;Just Right&quot;</span> <span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span> <span class="p">(</span><span class="n">Optimal</span> <span class="n">h</span><span class="p">)]</span>
-</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>    <span class="n">G</span> <span class="o">--&gt;</span> <span class="n">H</span><span class="p">(</span><span class="n">Total</span> <span class="n">Error</span> <span class="ow">is</span> <span class="n">LOW</span> <span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span> <span class="s2">&quot;Sweet Spot&quot;</span><span class="p">)</span>
-</span></code></pre></div>
+<pre class="mermaid"><code>graph TD
+    A[Total Error] --&gt; B[Truncation O(h^2)]
+    A --&gt; C[Round-off eps/h]
+    B -- h decreases --&gt; B_low[Error Goes Down]
+    C -- h decreases --&gt; C_high[Error Explodes!]
+    B_low --&gt; D[Sweet Spot]
+    C_high --&gt; D</code></pre>
+<div class="admonition example">
+<p class="admonition-title">The Sweet Spot Rule</p>
+<p>For a second-order formula, the optimal step size <span class="arithmatex">\(h\)</span> is approximately:
+$$ h_{\text{opt}} \approx \sqrt[3]{\epsilon_m} \approx 10^{-5} \text{ to } 10^{-6} $$
+If you use <span class="arithmatex">\(h = 10^{-15}\)</span>, your "derivative" will be <span class="arithmatex">\(100\%\)</span> noise.</p>
+</div>
 <hr />
-<h3 id="the-sweet-spot-v-plot"><strong>The "Sweet Spot" V-Plot</strong></h3>
-<p>The <strong>Total Error</strong> is the sum of these two opposing components:</p>
-<div class="arithmatex">\[
-E_{\text{Total}} \approx C \cdot h^2 + D \cdot \frac{\epsilon_m}{h}
-\]</div>
-<p>A log-log plot of <span class="arithmatex">\(\text{Error}\)</span> vs. <span class="arithmatex">\(h\)</span> reveals a characteristic <strong>"V" shape</strong>:</p>
-<ul>
-<li>The <strong>right side</strong> (<span class="arithmatex">\(h\)</span> large) has a slope of <span class="arithmatex">\(+2\)</span> and is dominated by <strong>Truncation Error</strong>.</li>
-<li>The <strong>left side</strong> (<span class="arithmatex">\(h\)</span> small) has a slope of <span class="arithmatex">\(-1\)</span> and is dominated by <strong>Round-off Error</strong>.</li>
-</ul>
-<p>The <strong>"sweet spot"</strong> is the minimum point at the bottom of the "V" where the two error sources are perfectly balanced, typically around <span class="arithmatex">\(h \sim 10^{-5}\)</span> to <span class="arithmatex">\(10^{-6}\)</span> for 64-bit precision [1]. The crucial lesson is that the <strong>most accurate answer</strong> is found at this optimal <span class="arithmatex">\(h\)</span>, not at the smallest possible <span class="arithmatex">\(h\)</span>.</p>
+<h2 id="55-differentiating-noisy-data"><strong>5.5 Differentiating Noisy Data</strong></h2>
+<hr />
+<p>Numerical differentiation is an <strong>inherently unstable</strong> operation. Because it involves subtraction of nearby points, it acts as a <strong>high-pass filter</strong>. It amplifies high-frequency noise while preserving (or dampening) the low-frequency signal.</p>
 <details class="question">
-<summary>Where does the optimal h come from?</summary>
-<p>You can find it analytically! By taking the derivative of the total error <span class="arithmatex">\(E_{\text{Total}}(h)\)</span> with respect to <span class="arithmatex">\(h\)</span> and setting it to zero (<span class="arithmatex">\(dE/dh = 0\)</span>), you can solve for the <span class="arithmatex">\(h\)</span> that minimizes the error. This confirms the optimal <span class="arithmatex">\(h\)</span> scales with <span class="arithmatex">\(\epsilon_m^{1/3}\)</span> for this <span class="arithmatex">\(O(h^2)\)</span> formula.</p>
+<summary>How do we differentiate experimental data?</summary>
+<p><strong>Never</strong> differentiate raw, noisy experimental data directly. You must first <strong>smooth</strong> the data using a fit (Chapter 4) or a filter (Chapter 15), and then differentiate the smooth surrogate model.</p>
 </details>
 <hr />
-<h2 id="57-core-application-force-from-a-lennard-jones-potential"><strong>5.7 Core Application: Force from a Lennard-Jones Potential</strong></h2>
-<p>The calculation of force <span class="arithmatex">\(F(r)\)</span> from the interatomic <strong>Lennard-Jones (LJ) potential</strong> <span class="arithmatex">\(V(r)\)</span> via the relationship:</p>
-<div class="arithmatex">\[
-F(r) = -\frac{dV}{dr}
-\]</div>
-<p>serves as a critical test of numerical differentiation.</p>
-<p>The <strong>computational strategy</strong> is to use the analytically known force, <span class="arithmatex">\(F_{\text{analytic}}(r)\)</span>, as the <strong>"ground truth"</strong> to verify the accuracy of the numerical result. The numerical force, <span class="arithmatex">\(F_{\text{numeric}}(r)\)</span>, is found by applying the <span class="arithmatex">\(O(h^2)\)</span> Central Difference formula to the potential <span class="arithmatex">\(V(r)\)</span> using the <strong>optimal step size <span class="arithmatex">\(h\)</span></strong> determined from the V-plot analysis.</p>
-<p>By choosing this optimal <span class="arithmatex">\(h\)</span> (e.g., <span class="arithmatex">\(10^{-6}\)</span>), the method successfully avoids the major error sources. When the absolute error <span class="arithmatex">\(\|F_{\text{numeric}} - F_{\text{analytic}}\|\)</span> is plotted, it reveals values down to <span class="arithmatex">\(10^{-14}\)</span> or <span class="arithmatex">\(10^{-15}\)</span>, confirming that the numerical method is stable and accurate to the <strong>limit of machine precision</strong> for 64-bit floats.</p>
+<h2 id="summary-differentiation-scheme-comparison"><strong>Summary: Differentiation Scheme Comparison</strong></h2>
+<hr />
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Scheme</th>
+<th style="text-align: left;">Stencil</th>
+<th style="text-align: left;">Accuracy</th>
+<th style="text-align: left;">Best For</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Forward</strong></td>
+<td style="text-align: left;"><span class="arithmatex">\([x, x+h]\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(\mathcal{O}(h)\)</span></td>
+<td style="text-align: left;">Real-time causal signals</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Backward</strong></td>
+<td style="text-align: left;"><span class="arithmatex">\([x-h, x]\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(\mathcal{O}(h)\)</span></td>
+<td style="text-align: left;">Implicit solvers</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Central</strong></td>
+<td style="text-align: left;"><span class="arithmatex">\([x-h, x+h]\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(\mathcal{O}(h^2)\)</span></td>
+<td style="text-align: left;"><strong>Most offline physics tasks</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Three-Point</strong></td>
+<td style="text-align: left;"><span class="arithmatex">\([x-h, x, x+h]\)</span></td>
+<td style="text-align: left;"><span class="arithmatex">\(\mathcal{O}(h^2)\)</span></td>
+<td style="text-align: left;">Second derivatives (<span class="arithmatex">\(f''\)</span>)</td>
+</tr>
+</tbody>
+</table>
 <hr />
 <h2 id="references"><strong>References</strong></h2>
-<p>[1] Press, W. H., Teukolsky, S. A., Vetterling, W. T., &amp; Flannery, B. P. (2007). <em>Numerical Recipes: The Art of Scientific Computing</em> (3<sup>rd</sup> ed.). Cambridge University Press.</p>
-<p>[2] Higham, N.J. (2002). <em>Accuracy and Stability of Numerical Algorithms</em>. SIAM.</p>
-<p>[3] Quarteroni, A., Sacco, R., &amp; Saleri, F. (2007). <em>Numerical Mathematics</em>. Springer.</p>
-<p>[4] Hamming, R. W. (1973). <em>Numerical Methods for Scientists and Engineers</em> (2<sup>nd</sup> ed.). McGraw-Hill.</p>
-<p>[5] Süli, E., &amp; Mayers, D. F. (2003). <em>An Introduction to Numerical Analysis</em>. Cambridge University Press.</p>
+<hr />
+<p>[1] Press, W. H., et al. (2007). <em>Numerical Recipes: The Art of Scientific Computing</em>. Cambridge University Press.</p>
+<p>[2] Higham, N. J. (2002). <em>Accuracy and Stability of Numerical Algorithms</em>. SIAM.</p>
+<p>[3] Burden, R. L., &amp; Faires, J. D. (2011). <em>Numerical Analysis</em>. Brooks/Cole.</p>
+<p>[4] Hamming, R. W. (1973). <em>Numerical Methods for Scientists and Engineers</em>. McGraw-Hill.</p>
+<p>[5] Lanczos, C. (1956). <em>Applied Analysis</em>. Prentice-Hall.</p>
 
 
 

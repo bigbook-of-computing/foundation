@@ -94,7 +94,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#chapter-16-data-driven-analysis-svd-pca-codebook" class="md-skip">
+        <a href="#chapter-16-data-driven-analysis-codebook" class="md-skip">
           Skip to content
         </a>
       
@@ -2481,28 +2481,38 @@
   
 
 
-<h1 id="chapter-16-data-driven-analysis-svd-pca-codebook"><strong>Chapter 16: Data-Driven Analysis: SVD &amp; PCA (Codebook)</strong></h1>
+<h1 id="chapter-16-data-driven-analysis-codebook"><strong>Chapter 16: Data-Driven Analysis (Codebook)</strong></h1>
+<hr />
+<p>This Codebook implements advanced data distillation techniques. We perform <strong>Principal Component Analysis (PCA)</strong> to find the "long" axes of variance in correlated data and use <strong>Singular Value Decomposition (SVD)</strong> to demonstrate rank-based data compression and noise filtering.</p>
 <hr />
 <h2 id="project-1-principal-component-analysis-pca-on-data">Project 1: Principal Component Analysis (PCA) on Data</h2>
 <table>
 <thead>
 <tr>
-<th style="text-align: left;">Feature</th>
+<th style="text-align: left;">Component</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left;"><strong>Goal</strong></td>
-<td style="text-align: left;">Apply <strong>Principal Component Analysis (PCA)</strong> to a synthetic, high-dimensional dataset (representing observations of three coupled variables) to find the <strong>principal components</strong> and visualize the data in a reduced 2D space.</td>
+<td style="text-align: left;"><strong>Objective</strong></td>
+<td style="text-align: left;">Extract dominant patterns from a 3D correlated data cloud.</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>Method</strong></td>
-<td style="text-align: left;">1. <strong>Center</strong> the data. 2. Calculate the <strong>Covariance Matrix</strong>. 3. Solve the <strong>Eigenvalue Problem</strong> on the covariance matrix to obtain eigenvalues (variance) and eigenvectors (Principal Components).</td>
+<td style="text-align: left;"><strong>Mathematical Concept</strong></td>
+<td style="text-align: left;">Eigenvalue decomposition of the <span class="arithmatex">\(N \times N\)</span> Covariance Matrix.</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>Core Concept</strong></td>
-<td style="text-align: left;">PCA is a specialized application of the <strong>Eigenvalue Problem (Chapter 14)</strong> to data analysis, finding the new orthogonal axes that capture maximum variance.</td>
+<td style="text-align: left;"><strong>Experiment Setup</strong></td>
+<td style="text-align: left;">500 observations of 3 synthetic variables with built-in correlations.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Expected Behavior</strong></td>
+<td style="text-align: left;">PC1 captures the majority of variance; PCs are orthogonal.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Verification Goal</strong></td>
+<td style="text-align: left;">Successfully reduce 3D data to 2D while retaining &gt;95% info.</td>
 </tr>
 </tbody>
 </table>
@@ -2694,22 +2704,30 @@
 <table>
 <thead>
 <tr>
-<th style="text-align: left;">Feature</th>
+<th style="text-align: left;">Component</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left;"><strong>Goal</strong></td>
-<td style="text-align: left;">Use <strong>Singular Value Decomposition (SVD)</strong>, the master factorization, to perform a controlled <strong>noise filtering and compression</strong> on a simple 2D dataset (an image).</td>
+<td style="text-align: left;"><strong>Objective</strong></td>
+<td style="text-align: left;">Filter noisy matrix data using rank-based truncation.</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>Method</strong></td>
-<td style="text-align: left;">1. Compute <span class="arithmatex">\(\mathbf{U}\mathbf{\Sigma}\mathbf{V}^T\)</span>. 2. <strong>Truncate</strong> the factorization by keeping only the top <span class="arithmatex">\(K\)</span> singular values (<span class="arithmatex">\(\sigma_k\)</span>) and their corresponding vectors. 3. Reconstruct the matrix using the truncated components.</td>
+<td style="text-align: left;"><strong>Mathematical Concept</strong></td>
+<td style="text-align: left;">SVD factorization: <span class="arithmatex">\(\mathbf{A} = \mathbf{U}\boldsymbol{\Sigma}\mathbf{V}^T\)</span>.</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>Core Concept</strong></td>
-<td style="text-align: left;">Singular values (<span class="arithmatex">\(\sigma_k\)</span>) quantify the contribution of each rank-1 component to the total matrix. Filtering involves zeroing out small singular values, which represent noise or minor details.</td>
+<td style="text-align: left;"><strong>Experiment Setup</strong></td>
+<td style="text-align: left;">20x20 noisy pattern matrix; reconstruction with rank <span class="arithmatex">\(K=5\)</span>.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Expected Behavior</strong></td>
+<td style="text-align: left;">Significant noise suppression compared to the raw input.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Verification Goal</strong></td>
+<td style="text-align: left;">Demonstrate that small singular values correspond to noise.</td>
 </tr>
 </tbody>
 </table>

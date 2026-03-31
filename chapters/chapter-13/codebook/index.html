@@ -2211,15 +2211,15 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#project-2-stability-check-avoiding-mathbfa-1" class="md-nav__link">
+  <a href="#project-2-stability-check-avoiding-a1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Project 2: Stability Check (Avoiding \(\mathbf{A}^{-1}\))
+        Project 2: Stability Check (Avoiding A⁻¹)
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Project 2: Stability Check (Avoiding \(\mathbf{A}^{-1}\))">
+    <nav class="md-nav" aria-label="Project 2: Stability Check (Avoiding A⁻¹)">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -2421,15 +2421,15 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#project-2-stability-check-avoiding-mathbfa-1" class="md-nav__link">
+  <a href="#project-2-stability-check-avoiding-a1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Project 2: Stability Check (Avoiding \(\mathbf{A}^{-1}\))
+        Project 2: Stability Check (Avoiding A⁻¹)
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Project 2: Stability Check (Avoiding \(\mathbf{A}^{-1}\))">
+    <nav class="md-nav" aria-label="Project 2: Stability Check (Avoiding A⁻¹)">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -2482,32 +2482,37 @@
 
 
 <h1 id="chapter-13-systems-of-linear-equations-codebook"><strong>Chapter 13: Systems of Linear Equations (Codebook)</strong></h1>
-<p>This Python Code Book for <strong>Chapter 13: Systems of Linear Equations</strong>, focusing on demonstrating the efficient solution of systems, particularly the specialized method for tridiagonal matrices common in FDM.</p>
+<hr />
+<p>This Codebook implements the core algorithms for solving <span class="arithmatex">\(\mathbf{A}\mathbf{x} = \mathbf{b}\)</span>. We demonstrate the efficiency of the specialized <strong>Thomas Algorithm</strong> for tridiagonal systems and perform a <strong>Numerical Stability Check</strong> to empirically prove why explicit matrix inversion is flawed.</p>
 <hr />
 <h2 id="project-1-tridiagonal-system-solver-thomas-algorithm">Project 1: Tridiagonal System Solver (Thomas Algorithm)</h2>
 <table>
 <thead>
 <tr>
-<th style="text-align: left;">Feature</th>
+<th style="text-align: left;">Component</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left;"><strong>Goal</strong></td>
-<td style="text-align: left;">Solve a linear system <span class="arithmatex">\(\mathbf{A}\mathbf{x} = \mathbf{b}\)</span> where the matrix <span class="arithmatex">\(\mathbf{A}\)</span> is <strong>tridiagonal</strong>, representing a steady-state 1D BVP (Chapter 9) or an implicit PDE step (Chapter 11).</td>
+<td style="text-align: left;"><strong>Objective</strong></td>
+<td style="text-align: left;">Solve a large tridiagonal system <span class="arithmatex">\(\mathbf{A}\mathbf{x} = \mathbf{b}\)</span> (<span class="arithmatex">\(N=1000\)</span>).</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>Model</strong></td>
-<td style="text-align: left;">Solve a system where <span class="arithmatex">\(\mathbf{A}\)</span> is a uniform tridiagonal matrix: main diagonal elements are <span class="arithmatex">\(\mathbf{2.0}\)</span> and off-diagonal elements are <span class="arithmatex">\(\mathbf{-1.0}\)</span>. This structure is the result of applying the <span class="arithmatex">\(O(h^2)\)</span> FDM stencil for <span class="arithmatex">\(y''=0\)</span>.</td>
+<td style="text-align: left;"><strong>Mathematical Concept</strong></td>
+<td style="text-align: left;">Thomas Algorithm: A specialized <span class="arithmatex">\(O(N)\)</span> version of LU Decomposition.</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>Method</strong></td>
-<td style="text-align: left;"><strong>Thomas Algorithm</strong> (a simplified, <span class="arithmatex">\(\mathcal{O}(N)\)</span> version of LU Decomposition). We use the highly optimized <code>scipy.linalg.solve_banded</code>.</td>
+<td style="text-align: left;"><strong>Experiment Setup</strong></td>
+<td style="text-align: left;">Comparing <code>solve_banded</code> (Thomas) vs. general <code>lu_solve</code> (<span class="arithmatex">\(O(N^3)\)</span>).</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>Core Concept</strong></td>
-<td style="text-align: left;">Demonstrate the massive efficiency gain of the <span class="arithmatex">\(\mathcal{O}(N)\)</span> Thomas Algorithm over the general <span class="arithmatex">\(\mathcal{O}(N^3)\)</span> Gaussian Elimination for sparse, banded matrices.</td>
+<td style="text-align: left;"><strong>Expected Behavior</strong></td>
+<td style="text-align: left;">Massive speedup (up to 100x+) for the specialized solver on sparse grids.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Verification Goal</strong></td>
+<td style="text-align: left;">Quantify the performance gain of exploiting matrix sparsity.</td>
 </tr>
 </tbody>
 </table>
@@ -2690,26 +2695,34 @@
 </span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>LU Decomposition for tridiagonal systems, confirming the efficiency gain of
 </span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>exploiting the sparse matrix structure (O(N) vs. O(N³)).
 </span></code></pre></div>
-<h2 id="project-2-stability-check-avoiding-mathbfa-1">Project 2: Stability Check (Avoiding <span class="arithmatex">\(\mathbf{A}^{-1}\)</span>)</h2>
+<h2 id="project-2-stability-check-avoiding-a1">Project 2: Stability Check (Avoiding A⁻¹)</h2>
 <table>
 <thead>
 <tr>
-<th style="text-align: left;">Feature</th>
+<th style="text-align: left;">Component</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left;"><strong>Goal</strong></td>
-<td style="text-align: left;">Empirically demonstrate the numerical instability and time cost of calculating the explicit matrix inverse <span class="arithmatex">\(\mathbf{A}^{-1}\)</span> to solve <span class="arithmatex">\(\mathbf{A}\mathbf{x} = \mathbf{b}\)</span>, reinforcing the principle: <strong>never compute <span class="arithmatex">\(\mathbf{A}^{-1}\)</span></strong>.</td>
+<td style="text-align: left;"><strong>Objective</strong></td>
+<td style="text-align: left;">Prove that <span class="arithmatex">\(\mathbf{x} = \mathbf{A}^{-1}\mathbf{b}\)</span> is numerically inferior to <span class="arithmatex">\(\text{solve}(\mathbf{A}, \mathbf{b})\)</span>.</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>Method</strong></td>
-<td style="text-align: left;">Calculate the solution <span class="arithmatex">\(\mathbf{x}\)</span> using three methods: <span class="arithmatex">\(\mathbf{x} = \mathbf{A}^{-1}\mathbf{b}\)</span>, <span class="arithmatex">\(\mathbf{x} = \text{Thomas Algorithm}\)</span>, and <span class="arithmatex">\(\mathbf{x} = \text{scipy.linalg.solve}\)</span> (standard general solver).</td>
+<td style="text-align: left;"><strong>Mathematical Concept</strong></td>
+<td style="text-align: left;">Comparing explicit inversion vs. decomposition-based solvers.</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>Core Concept</strong></td>
-<td style="text-align: left;">The error in the solution derived from the inverse <span class="arithmatex">\(\mathbf{A}^{-1}\)</span> is typically much larger than the error from <span class="arithmatex">\(\mathbf{x} = \text{solve}(\mathbf{A}, \mathbf{b})\)</span>, despite both being <span class="arithmatex">\(\mathcal{O}(N^3)\)</span> in complexity.</td>
+<td style="text-align: left;"><strong>Experiment Setup</strong></td>
+<td style="text-align: left;">Measuring execution time and absolute error against a known solution.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Expected Behavior</strong></td>
+<td style="text-align: left;">Inversion is both slower and leads to higher round-off error accumulation.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Verification Goal</strong></td>
+<td style="text-align: left;">Enforce the best practice of using built-in solvers over inversion.</td>
 </tr>
 </tbody>
 </table>

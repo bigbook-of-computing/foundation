@@ -94,7 +94,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#introduction" class="md-skip">
+        <a href="#chapter-9-boundary-value-problems" class="md-skip">
           Skip to content
         </a>
       
@@ -2324,169 +2324,165 @@
   
 
 
+<h1 id="chapter-9-boundary-value-problems"><strong>Chapter 9: Boundary Value Problems</strong></h1>
+<hr />
 <h1 id="introduction"><strong>Introduction</strong></h1>
-<p>In the previous chapters, we mastered <strong>Initial Value Problems (IVPs)</strong>, which involve predicting a system's evolution forward in time from a single starting point where all conditions (e.g., <span class="arithmatex">\(x(t_0)\)</span>, <span class="arithmatex">\(v(t_0)\)</span>) are known. We now turn to a fundamentally different, yet equally critical, class of problems: <strong>Boundary Value Problems (BVPs)</strong>.</p>
-<p>BVPs are defined not by a complete set of initial conditions, but by constraints at the <strong>physical limits</strong>, or boundaries, of a system. Common examples include finding the static shape of a beam fixed at both ends (<span class="arithmatex">\(y(0)=0\)</span>, <span class="arithmatex">\(y(L)=0\)</span>), the steady-state temperature profile of a rod (<span class="arithmatex">\(T(0)=T_A\)</span>, <span class="arithmatex">\(T(L)=T_B\)</span>), or the stationary wavefunction of a quantum particle (<span class="arithmatex">\(\psi(0)=0\)</span>, <span class="arithmatex">\(\psi(L)=0\)</span>).</p>
-<p>The core challenge is that while a second-order ODE requires two conditions at the start (<span class="arithmatex">\(y(0)\)</span> and <span class="arithmatex">\(y'(0)\)</span>) for an IVP solver, a BVP provides one at the start (<span class="arithmatex">\(y(0)\)</span>) and one at the end (<span class="arithmatex">\(y(L)\)</span>). This chapter explores the two primary computational strategies for overcoming this: the <strong>Shooting Method</strong> and the <strong>Finite Difference Method</strong>.</p>
+<p>In the previous chapters, we mastered <strong>Initial Value Problems (IVPs)</strong>, where we predicted the future of a system from a single starting point. However, much of physics is not about "launching"; it is about <strong>equilibrium</strong>. Whether we are calculating the shape of a bridge cable, the temperature profile of a heat sink, or the wavefunction of a trapped electron, we are solving systems constrained at both ends. These are <strong>Boundary Value Problems (BVPs)</strong>.</p>
+<p>A BVP is fundamentally different from an IVP because we do not have a complete set of "launch" conditions. Instead, we have "target" conditions. This chapter explores the two primary strategies for solving these multi-point constraints: the <strong>Shooting Method</strong>, which turns the BVP into a root-finding game, and the <strong>Finite Difference Method</strong>, which transforms the differential equation into a massive system of linear algebra.</p>
+<hr />
 <h1 id="chapter-9-outline"><strong>Chapter 9: Outline</strong></h1>
 <table>
 <thead>
 <tr>
-<th style="text-align: left;">Sec.</th>
-<th style="text-align: left;">Title</th>
-<th style="text-align: left;">Core Ideas &amp; Examples</th>
+<th style="text-align: left;"><strong>Sec.</strong></th>
+<th style="text-align: left;"><strong>Title</strong></th>
+<th style="text-align: left;"><strong>Core Ideas &amp; Examples</strong></th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td style="text-align: left;"><strong>9.1</strong></td>
-<td style="text-align: left;">The "In-Between" Problem</td>
-<td style="text-align: left;">IVPs vs. BVPs, missing initial slope <span class="arithmatex">\(y'(0)\)</span>.</td>
+<td style="text-align: left;"><strong>The Two-Point Constraint</strong></td>
+<td style="text-align: left;">Start and End boundaries; missing initial slopes; the physics of strings and rods.</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>9.2</strong></td>
-<td style="text-align: left;">The Shooting Method</td>
-<td style="text-align: left;">Converting BVP to a root-finding problem, <span class="arithmatex">\(E(g)=0\)</span>.</td>
+<td style="text-align: left;"><strong>The Shooting Method</strong></td>
+<td style="text-align: left;">Converting BVP to IVP; the "Target Practice" analogy; using root-finders for slopes.</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>9.3</strong></td>
-<td style="text-align: left;">The Finite Difference Method</td>
-<td style="text-align: left;">Discretization, central difference stencil, linear algebra.</td>
+<td style="text-align: left;"><strong>Finite Difference Methods (FDM)</strong></td>
+<td style="text-align: left;">Discretizing the domain; replacing <span class="arithmatex">\(y''\)</span> with stencils; the grid approach.</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>9.4</strong></td>
-<td style="text-align: left;">The <span class="arithmatex">\(\mathbf{A}\mathbf{y} = \mathbf{b}\)</span> System</td>
-<td style="text-align: left;">Tridiagonal matrices, <span class="arithmatex">\(\mathcal{O}(N)\)</span> solvers.</td>
+<td style="text-align: left;"><strong>The Tridiagonal Matrix (<span class="arithmatex">\(Ay = b\)</span>)</strong></td>
+<td style="text-align: left;">Assembling linear systems; boundary condition injection; efficient matrix solving.</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>9.5</strong></td>
-<td style="text-align: left;">The Matrix Eigenvalue Problem</td>
-<td style="text-align: left;">Solving the TISE, <span class="arithmatex">\(\mathbf{H}\mathbf{\psi} = E\mathbf{\psi}\)</span>.</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>9.6</strong></td>
-<td style="text-align: left;">Summary and Bridge</td>
-<td style="text-align: left;">From BVPs to PDEs (Partial Differential Equations).</td>
+<td style="text-align: left;"><strong>Eigenvalue BVPs</strong></td>
+<td style="text-align: left;">The Schrödinger Equation; finding allowed energy states; the <span class="arithmatex">\(\mathbf{H}\psi = E\psi\)</span> matrix.</td>
 </tr>
 </tbody>
 </table>
 <hr />
-<h2 id="91-the-in-between-problem"><strong>9.1 The "In-Between" Problem</strong></h2>
-<p>In Part 3 (Chapters 7 and 8), we mastered <strong>Initial Value Problems (IVPs)</strong>. These problems are analogous to launching a projectile: given a perfect set of initial conditions (<span class="arithmatex">\(x(t_0)\)</span>, <span class="arithmatex">\(v(t_0)\)</span>, etc.), we can predict its entire future trajectory.</p>
-<p>A <strong>Boundary Value Problem (BVP)</strong> is fundamentally different. We are not given the "launch" conditions. Instead, we are given the start and end points of a trajectory and must find the path "in-between."</p>
-<p><strong>Physical Examples of BVPs</strong>:</p>
+<h2 id="91-the-two-point-constraint"><strong>9.1 The Two-Point Constraint</strong></h2>
+<hr />
+<p>A second-order BVP looks like this:
+$$ y'' = f(x, y, y'), \quad y(a) = \alpha, \quad y(b) = \beta $$
+Unlike an IVP, where we know <span class="arithmatex">\(y(a)\)</span> and <span class="arithmatex">\(y'(a)\)</span>, here we only know <span class="arithmatex">\(y\)</span> at two different locations.</p>
 <ul>
-<li><strong>Static Structures</strong>: Determining the <strong>static shape</strong> (<span class="arithmatex">\(y(x)\)</span>) of a bridge cable or beam fixed at both ends (<span class="arithmatex">\(y(0)=0, y(L)=0\)</span>).</li>
-<li><strong>Equilibrium Fields</strong>: Finding the <strong>steady-state temperature profile</strong> (<span class="arithmatex">\(T(x)\)</span>) of a rod where both ends are held at fixed temperatures.</li>
-<li><strong>Quantum Mechanics</strong>: Finding the stationary <strong>wavefunction <span class="arithmatex">\(\psi(x)\)</span></strong> and its corresponding <strong>energy <span class="arithmatex">\(E\)</span></strong> for a bound particle, constrained by <span class="arithmatex">\(\psi(0)=0\)</span> and <span class="arithmatex">\(\psi(L)=0\)</span>.</li>
+<li><strong>Example 1: Heat Conduction.</strong> <span class="arithmatex">\(T(0) = 100^\circ\)</span>C and <span class="arithmatex">\(T(L) = 20^\circ\)</span>C. What is the temperature in the middle?</li>
+<li><strong>Example 2: Quantum Well.</strong> <span class="arithmatex">\(\psi(0) = 0\)</span> and <span class="arithmatex">\(\psi(L) = 0\)</span>. What shape of <span class="arithmatex">\(\psi\)</span> satisfies the wave equation?</li>
 </ul>
-<p>The primary challenge in solving a second-order ODE like <span class="arithmatex">\(y''(x) = f(x)\)</span> that governs these systems is that a standard IVP solver requires <strong>two</strong> initial conditions at <span class="arithmatex">\(x=0\)</span>. In a BVP, we know the initial position <span class="arithmatex">\(y(0)\)</span> but are missing the critical <strong>initial slope <span class="arithmatex">\(y'(0)\)</span></strong>; the second condition is given only at the far boundary <span class="arithmatex">\(y(L)\)</span>.</p>
-<p>To overcome this, we rely on two radically different computational strategies: the <strong>Shooting Method</strong> and the <strong>Finite Difference Method (FDM)</strong>.</p>
 <hr />
-<h2 id="92-method-1-the-shooting-method"><strong>9.2 Method 1: The Shooting Method</strong></h2>
-<p>The <strong>Shooting Method</strong> [1, 2] converts the BVP into an iterative <strong>root-finding problem</strong> by treating the missing initial slope as a variable to be guessed.</p>
+<h2 id="92-the-shooting-method-target-practice"><strong>9.2 The Shooting Method: Target Practice</strong></h2>
 <hr />
-<h3 id="the-conversion-to-root-finding"><strong>The Conversion to Root-Finding</strong></h3>
-<p>The process is analogous to firing a cannon toward a target:</p>
-<ol>
-<li>
-<p><strong>Formulation</strong>: The second-order BVP is converted into a coupled first-order IVP (e.g., using a state vector <span class="arithmatex">\(\mathbf{S} = [y, y']^T\)</span>).</p>
-</li>
-<li>
-<p><strong>The Guess (<span class="arithmatex">\(g\)</span>):</strong> An initial slope guess, <span class="arithmatex">\(g = y'(0)\)</span>, is used to launch the trajectory.</p>
-</li>
-<li>
-<p><strong>The Trajectory</strong>: An <strong>IVP solver</strong> (like RK4 from Chapter 7) is run from <span class="arithmatex">\(x=0\)</span> to the far boundary <span class="arithmatex">\(x=L\)</span>, yielding a final position <span class="arithmatex">\(y_{\text{final}}\)</span>.</p>
-</li>
-<li>
-<p><strong>The Error Function (<span class="arithmatex">\(E(g)\)</span>):</strong> The <strong>Error Function <span class="arithmatex">\(E(g)\)</span></strong> measures the "miss distance" between the trajectory's final position and the target boundary condition <span class="arithmatex">\(B\)</span>:</p>
-</li>
-</ol>
-<p><div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>$$
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>E(g) = y_{\text{final}}(L, g) - B
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>$$
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>The problem is solved when the specific slope $g$ is found that makes the miss distance zero, $E(g) = 0$.
-</span></code></pre></div>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># Algorithm: The Shooting Method</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="c1">## Define: f(S, x)        # The coupled 1st-order ODEs, S = [y, y&#39;]</span>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="c1">## Define: y_initial      # Boundary condition y(0)</span>
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="c1">## Define: y_target       # Boundary condition y(L)</span>
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>
-</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="c1">## Define: x_min = 0, x_max = L</span>
-</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>
-</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="k">def</span><span class="w"> </span><span class="nf">get_error</span><span class="p">(</span><span class="n">guess_slope</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">y_initial</span><span class="p">,</span> <span class="n">y_target</span><span class="p">,</span> <span class="n">x_min</span><span class="p">,</span> <span class="n">x_max</span><span class="p">,</span> <span class="n">solve_ivp</span><span class="p">):</span>
-</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>    <span class="c1"># 1. Set initial state vector</span>
-</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>    <span class="n">S_initial</span> <span class="o">=</span> <span class="p">[</span><span class="n">y_initial</span><span class="p">,</span> <span class="n">guess_slope</span><span class="p">]</span>
-</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>
-</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>    <span class="c1"># 2. Run the IVP solver</span>
-</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>    <span class="n">S_final</span> <span class="o">=</span> <span class="n">solve_ivp</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">S_initial</span><span class="p">,</span> <span class="n">x_min</span><span class="p">,</span> <span class="n">x_max</span><span class="p">)</span>
-</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>
-</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>    <span class="c1"># 3. Calculate the &quot;miss distance&quot;</span>
-</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>    <span class="n">y_final</span> <span class="o">=</span> <span class="n">S_final</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># Get the y-component at x=L</span>
-</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a>    <span class="n">error</span> <span class="o">=</span> <span class="n">y_final</span> <span class="o">-</span> <span class="n">y_target</span>
-</span><span id="__span-1-21"><a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a>    <span class="k">return</span> <span class="n">error</span>
-</span><span id="__span-1-22"><a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a>
-</span><span id="__span-1-23"><a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a><span class="c1">## 4. Use a root-finder (e.g., Secant) on the error function</span>
-</span><span id="__span-1-24"><a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a>
-</span><span id="__span-1-25"><a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a><span class="c1">## find_root will call get_error() repeatedly with new guesses</span>
-</span><span id="__span-1-26"><a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a>
-</span><span id="__span-1-27"><a id="__codelineno-1-27" name="__codelineno-1-27" href="#__codelineno-1-27"></a><span class="c1">## correct_slope = find_root(get_error, initial_guess_1, initial_guess_2)</span>
-</span></code></pre></div>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>    <span class="n">flowchart</span> <span class="n">LR</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    <span class="n">A</span><span class="p">[</span><span class="n">BVP</span><span class="p">:</span> <span class="err">$</span><span class="n">y</span><span class="s1">&#39;&#39;</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="err">$</span><span class="p">]</span> <span class="o">--&gt;</span> <span class="n">B</span><span class="p">(</span><span class="n">Discretize</span> <span class="n">Domain</span><span class="p">)</span>
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>    <span class="n">B</span> <span class="o">--&gt;</span> <span class="n">C</span><span class="p">{</span><span class="n">Replace</span> <span class="err">$</span><span class="n">y</span><span class="s1">&#39;&#39;</span><span class="err">$</span> <span class="k">with</span> <span class="n">FDM</span> <span class="n">Stencil</span><span class="p">}</span>
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>    <span class="n">C</span> <span class="o">--&gt;</span> <span class="n">D</span><span class="p">[</span><span class="n">Generate</span> <span class="p">(</span><span class="n">N</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="n">Linear</span> <span class="n">Equations</span><span class="p">]</span>
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>    <span class="n">D</span> <span class="o">--&gt;</span> <span class="n">E</span><span class="p">[</span><span class="n">Assemble</span> <span class="n">Matrix</span> <span class="n">System</span> <span class="err">$</span>\<span class="n">mathbf</span><span class="p">{</span><span class="n">A</span><span class="p">}</span>\<span class="n">mathbf</span><span class="p">{</span><span class="n">y</span><span class="p">}</span> <span class="o">=</span> \<span class="n">mathbf</span><span class="p">{</span><span class="n">b</span><span class="p">}</span><span class="err">$</span><span class="p">]</span>
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>    <span class="n">E</span> <span class="o">--&gt;</span> <span class="n">F</span><span class="p">[</span><span class="n">Solve</span> <span class="k">with</span> <span class="n">Linear</span> <span class="n">Algebra</span><span class="p">]</span>
-</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>    <span class="n">F</span> <span class="o">--&gt;</span> <span class="n">G</span><span class="p">[</span><span class="n">Solution</span> <span class="err">$</span><span class="n">y_i</span><span class="err">$</span> <span class="n">at</span> <span class="nb">all</span> <span class="n">grid</span> <span class="n">points</span><span class="p">]</span>
-</span></code></pre></div></p>
-<hr />
-<h2 id="94-core-application-1d-time-independent-schrodinger-equation"><strong>9.4 Core Application: 1D Time-Independent Schrödinger Equation</strong></h2>
-<p>The most powerful application of the FDM is its use in solving the <strong>Time-Independent Schrödinger Equation</strong> (TISE): <span class="arithmatex">\(\hat{H}\psi = E\psi\)</span>.</p>
-<hr />
-<h3 id="the-matrix-eigenvalue-problem"><strong>The Matrix Eigenvalue Problem</strong></h3>
-<p>The TISE is a BVP where both the <strong>wavefunction <span class="arithmatex">\(\psi(x)\)</span></strong> and the <strong>energy <span class="arithmatex">\(E\)</span></strong> are unknown. Substituting the FDM stencil for the second derivative <span class="arithmatex">\(\frac{d^2\psi}{dx^2}\)</span> and rearranging yields the algebraic system:</p>
-<div class="arithmatex">\[
-\left( \frac{-\hbar^2}{2mh^2} \right)\psi_{i-1} + \left( \frac{\hbar^2}{mh^2} + V_i \right)\psi_i + \left( \frac{-\hbar^2}{2mh^2} \right)\psi_{i+1} = E\psi_i
-\]</div>
-<p>This is the canonical <strong>Matrix Eigenvalue Problem</strong> [3, 4]:</p>
-<div class="arithmatex">\[
-\mathbf{H} \mathbf{\psi} = E \mathbf{\psi}
-\]</div>
-<ul>
-<li>
-<p><strong>Matrix <span class="arithmatex">\(\mathbf{H}\)</span></strong>: The <strong>Hamiltonian Matrix</strong>. Its main diagonal elements, <span class="arithmatex">\(H_{i,i} = \frac{\hbar^2}{mh^2} + V_i\)</span>, represent the sum of <strong>Kinetic Energy</strong> and <strong>Potential Energy</strong> (<span class="arithmatex">\(V_i\)</span>) at node <span class="arithmatex">\(i\)</span>. The off-diagonal elements, <span class="arithmatex">\(H_{i, i\pm 1}\)</span>, represent the <strong>Kinetic Energy coupling</strong> between neighboring nodes.</p>
-</li>
-<li>
-<p><strong>Eigenvalues <span class="arithmatex">\(E\)</span></strong>: The solution's <strong>eigenvalues <span class="arithmatex">\(E\)</span></strong> give the set of allowed, discrete <strong>Energy Levels</strong>.</p>
-</li>
-<li><strong>Eigenvectors <span class="arithmatex">\(\mathbf{\psi}\)</span></strong>: The corresponding <strong>eigenvectors <span class="arithmatex">\(\mathbf{\psi}\)</span></strong> give the spatial profile of the <strong>wavefunctions</strong>.</li>
-</ul>
-<p>The FDM thus converts the quantum mechanical differential equation into a matrix equation that is efficiently solved using specialized eigensolvers (Chapter 14).</p>
-<div class="admonition example">
-<p class="admonition-title">The Particle in a Box</p>
-<p>The classic "particle in a box" problem is a perfect BVP. The potential <span class="arithmatex">\(V(x)\)</span> is <span class="arithmatex">\(0\)</span> inside the box (from <span class="arithmatex">\(x=0\)</span> to <span class="arithmatex">\(x=L\)</span>) and <span class="arithmatex">\(\infty\)</span> outside. The boundary conditions are <span class="arithmatex">\(\psi(0)=0\)</span> and <span class="arithmatex">\(\psi(L)=0\)</span>.</p>
-<p>Using the FDM, we set <span class="arithmatex">\(V_i = 0\)</span> for all <em>interior</em> grid points. The resulting Hamiltonian matrix <span class="arithmatex">\(\mathbf{H}\)</span> is a simple tridiagonal matrix. Solving <span class="arithmatex">\(\mathbf{H}\mathbf{\psi} = E\mathbf{\psi}\)</span> numerically yields the correct quantized energy levels <span class="arithmatex">\(E_n \propto n^2\)</span> and the sinusoidal wavefunctions <span class="arithmatex">\(\psi_n(x)\)</span>.</p>
+<p>The <strong>Shooting Method</strong> treats the unknown initial slope <span class="arithmatex">\(y'(a)\)</span> as a variable "guess" <span class="arithmatex">\(g\)</span>.
+1.  <strong>Guess</strong> a slope <span class="arithmatex">\(g\)</span>.
+2.  <strong>Shoot:</strong> Run an IVP solver (like RK4) from <span class="arithmatex">\(x=a\)</span> to <span class="arithmatex">\(x=b\)</span>.
+3.  <strong>Check:</strong> See how far you missed the target <span class="arithmatex">\(\beta\)</span>.
+4.  <strong>Correct:</strong> Use a root-finder (Chapter 3) to pick a better <span class="arithmatex">\(g\)</span>.</p>
+<pre class="mermaid"><code>graph LR
+    A[Boundary y_a] --&gt; B[Guess Initial Slope g]
+    B --&gt; C[Run RK4 Step to x=b]
+    C --&gt; D{Hit target y_b?}
+    D -- No --&gt; E[Update g via Secant/Newton]
+    E --&gt; C
+    D -- Yes --&gt; F[BVP Solved]</code></pre>
+<div class="admonition tip">
+<p class="admonition-title">Shooting is BVP + Root Finding</p>
+<p>The Shooting Method is intuitive and works for nonlinear equations, but it can be highly unstable for "stiff" problems where small changes in the initial slope lead to wildly different results at the end.</p>
 </div>
 <hr />
-<h2 id="95-chapter-summary-and-bridge-to-part-4-pdes"><strong>9.5 Chapter Summary and Bridge to Part 4: PDEs</strong></h2>
-<p>We have successfully built a toolkit for <strong>Boundary Value Problems</strong>:</p>
-<ul>
-<li><strong>Shooting Method</strong>: Simple but unstable and inefficient.</li>
-<li><strong>FDM</strong>: The <strong>robust, stable, and preferred professional method</strong>.</li>
-</ul>
-<p>The key realization is the power of <strong>discretization</strong>, which maps complex differential equations (like the TISE) onto efficient <strong>Linear Algebra</strong> problems (<span class="arithmatex">\(\mathbf{A}\mathbf{y}=\mathbf{b}\)</span> or <span class="arithmatex">\(\mathbf{H}\mathbf{\psi}=E\mathbf{\psi}\)</span>).</p>
-<p>The three-point FDM stencil for <span class="arithmatex">\(d^2/dx^2\)</span> is the crucial foundation for solving multi-dimensional field problems. <strong>Chapter 10</strong> will extend this technique to discretize the 2D Laplacian, <span class="arithmatex">\(\nabla^2 = \frac{\partial^2}{\partial x^2} + \frac{\partial^2}{\partial y^2}\)</span>, and solve <strong>Laplace's Equation</strong>—the start of <strong>Part 4: Partial Differential Equations (PDEs)</strong>.</p>
+<h2 id="93-finite-difference-methods-the-grid"><strong>9.3 Finite Difference Methods: The Grid</strong></h2>
+<hr />
+<p>In the <strong>Finite Difference Method (FDM)</strong>, we don't "shoot." Instead, we solve for every point on a grid simultaneously. We replace the derivative <span class="arithmatex">\(y''\)</span> with the central difference stencil from Chapter 5:</p>
+<div class="arithmatex">\[ y''_i \approx \frac{y_{i+1} - 2y_i + y_{i-1}}{h^2} \]</div>
+<p>For every point <span class="arithmatex">\(x_i\)</span> in the interior of the grid, the ODE becomes a simple algebraic equation relating <span class="arithmatex">\(y_{i-1}, y_i,\)</span> and <span class="arithmatex">\(y_{i+1}\)</span>.</p>
+<hr />
+<h2 id="94-the-matrix-approach-ay-b"><strong>9.4 The Matrix Approach (<span class="arithmatex">\(Ay = b\)</span>)</strong></h2>
+<hr />
+<p>For a linear BVP, the <span class="arithmatex">\(N\)</span> algebraic equations can be written as a single matrix equation. Because each point only talks to its immediate neighbors, the matrix <span class="arithmatex">\(A\)</span> is <strong>Tridiagonal</strong> (mostly zeros).</p>
+<div class="arithmatex">\[
+\begin{pmatrix}
+-2 &amp; 1 &amp; 0 \\
+1 &amp; -2 &amp; 1 \\
+0 &amp; 1 &amp; -2
+\end{pmatrix}
+\begin{pmatrix}
+y_1 \\
+y_2 \\
+y_3
+\end{pmatrix}
+=
+\begin{pmatrix}
+b_1 \\
+b_2 \\
+b_3
+\end{pmatrix}
+\]</div>
+<div class="admonition example">
+<p class="admonition-title">The Power of Matrix Solving</p>
+<p>Solving a tridiagonal system is extremely fast—<span class="arithmatex">\(\mathcal{O}(N)\)</span> instead of <span class="arithmatex">\(\mathcal{O}(N^3)\)</span> for a general matrix. This allows us to use thousands of grid points for extreme precision with almost zero computational cost.</p>
+</div>
+<hr />
+<h2 id="95-eigenvalue-bvps-quantum-states"><strong>9.5 Eigenvalue BVPs: Quantum States</strong></h2>
+<hr />
+<p>In quantum mechanics, we solve the Schrödinger Equation:
+$$ \left( -\frac{\hbar^2}{2m} \frac{d<sup>2}{dx</sup>2} + V(x) \right) \psi(x) = E \psi(x) $$
+This is a BVP where the "target" <span class="arithmatex">\(E\)</span> (Energy) is also unknown. Using FDM, we transform this into a <strong>Matrix Eigenvalue Problem</strong>:
+$$ \mathbf{H} \mathbf{\psi} = E \mathbf{\psi} $$
+The eigenvalues of the matrix <span class="arithmatex">\(\mathbf{H}\)</span> are the allowed <strong>Energy Levels</strong>, and the eigenvectors are the <strong>Wavefunctions</strong>.</p>
+<hr />
+<h2 id="summary-bvp-method-comparison"><strong>Summary: BVP Method Comparison</strong></h2>
+<hr />
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Feature</th>
+<th style="text-align: left;">Shooting Method</th>
+<th style="text-align: left;">Finite Difference (FDM)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Logic</strong></td>
+<td style="text-align: left;">Iterative "Guess and Check"</td>
+<td style="text-align: left;">Simultaneous Matrix Solve</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Stability</strong></td>
+<td style="text-align: left;">Fragile for stiff problems</td>
+<td style="text-align: left;"><strong>Extremely Robust</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Nonlinearity</strong></td>
+<td style="text-align: left;">Handles naturally</td>
+<td style="text-align: left;">Requires Newton iteration</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Complexity</strong></td>
+<td style="text-align: left;">Simple to implement</td>
+<td style="text-align: left;">Requires Linear Algebra</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Best For</strong></td>
+<td style="text-align: left;">Nonlinear / Few-point BVPs</td>
+<td style="text-align: left;"><strong>Linear / High-precision / Quantum</strong></td>
+</tr>
+</tbody>
+</table>
 <hr />
 <h2 id="references"><strong>References</strong></h2>
-<p>[1] Press, W. H., Teukolsky, S. A., Vetterling, W. T., &amp; Flannery, B. P. (2007). <em>Numerical Recipes: The Art of Scientific Computing</em> (3<sup>rd</sup> ed.). Cambridge University Press.</p>
-<p>[2] Garcia, A. L. (2000). <em>Numerical Methods for Physics</em> (2<sup>nd</sup> ed.). Prentice Hall.</p>
-<p>[3] Newman, M. (2013). <em>Computational Physics</em>. CreateSpace Independent Publishing Platform.</p>
-<p>[4] Thijssen, J. M. (2007). <em>Computational Physics</em> (2<sup>nd</sup> ed.). Cambridge University Press.</p>
+<hr />
+<p>[1] Press, W. H., et al. (2007). <em>Numerical Recipes: The Art of Scientific Computing</em>. Cambridge University Press.</p>
+<p>[2] Keller, H. B. (1992). <em>Numerical Methods for Two-Point Boundary-Value Problems</em>. Dover.</p>
+<p>[3] Burden, R. L., &amp; Faires, J. D. (2011). <em>Numerical Analysis</em>. Brooks/Cole.</p>
+<p>[4] Ascher, U. M., et al. (1995). <em>Numerical Solution of Boundary Value Problems for Ordinary Differential Equations</em>. SIAM.</p>
+<p>[5] Thijssen, J. M. (2007). <em>Computational Physics</em>. Cambridge University Press.</p>
 
 
 

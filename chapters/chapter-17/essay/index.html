@@ -94,7 +94,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#introduction" class="md-skip">
+        <a href="#chapter-17-monte-carlo-methods" class="md-skip">
           Skip to content
         </a>
       
@@ -2324,184 +2324,132 @@
   
 
 
+<h1 id="chapter-17-monte-carlo-methods"><strong>Chapter 17: Monte Carlo Methods</strong></h1>
+<hr />
 <h1 id="introduction"><strong>Introduction</strong></h1>
-<p>Our computational journey through <strong>Volume I</strong> has been fundamentally rooted in the <strong>deterministic</strong> world. Our core solvers (ODEs, PDEs, and Linear Algebra, Chapters 7–14) are governed by strict mathematical rules where the same input <strong>must</strong> produce the same output.</p>
-<p>However, a huge and fundamental part of the physical universe is <strong>not</strong> deterministic; it is inherently <strong>stochastic</strong> (driven by random chance) and <strong>probabilistic</strong> (described by distributions, not single values).</p>
-<p><strong>Physical Examples of Stochastic Systems:</strong></p>
-<ul>
-<li><strong>Statistical Mechanics:</strong> The individual trajectory of a single gas molecule is chaotic and random; its ensemble properties (like speed and energy) are described by a <strong>distribution</strong> (e.g., the Maxwell–Boltzmann distribution).</li>
-<li><strong>Quantum Mechanics:</strong> The act of measuring a quantum state (e.g., photon emission) is fundamentally <strong>probabilistic</strong>.</li>
-<li><strong>Brownian Motion:</strong> The seemingly chaotic path of a pollen grain is the macroscopic result of countless <strong>random collisions</strong> (a random walk).</li>
-</ul>
-<p>Our deterministic solvers fail entirely in these domains. We cannot model the random path of a molecule using RK4, nor can we calculate a statistical average by simply integrating the average of the distribution. The only way to simulate these systems is to introduce the final, crucial pillar of computation: <strong>Randomness</strong>. We must develop a method to simulate <strong>chance</strong> itself and use it to <strong>sample</strong> from the statistical distributions that govern these stochastic systems [3].</p>
+<p>Throughout this volume, we have lived in a <strong>Deterministic</strong> world. Our ODE and PDE solvers follow strict, repeatable rules where the same input always produces the same output. But the universe is not entirely deterministic. From the subatomic scales of Quantum Mechanics to the macroscopic scale of gas pressure, nature is driven by <strong>Randomness</strong> and <strong>Probability</strong>.</p>
+<p>To model the real world, we must introduce the final pillar of computational physics: <strong>Stochastic Modeling</strong>. This chapter explores the "Digital Die"—the <strong>Pseudo-Random Number Generator (PRNG)</strong>. We will learn how to use random chance to solve "impossible" problems, such as high-dimensional integrals that would take billions of years for a standard grid-based solver. By mastering <strong>Monte Carlo Methods</strong>, we bridge the gap between pure calculus and the statistical reality of complex physical systems.</p>
+<hr />
 <h1 id="chapter-17-outline"><strong>Chapter 17: Outline</strong></h1>
 <table>
 <thead>
 <tr>
-<th style="text-align: left;">Sec.</th>
-<th style="text-align: left;">Title</th>
-<th style="text-align: left;">Core Ideas &amp; Examples</th>
+<th style="text-align: left;"><strong>Sec.</strong></th>
+<th style="text-align: left;"><strong>Title</strong></th>
+<th style="text-align: left;"><strong>Core Ideas &amp; Examples</strong></th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td style="text-align: left;"><strong>17.1</strong></td>
-<td style="text-align: left;">Pseudo-Random Number Generation</td>
-<td style="text-align: left;">PRNGs, “seed”, LCG, Mersenne Twister.</td>
+<td style="text-align: left;"><strong>The Pseudo-Random Die</strong></td>
+<td style="text-align: left;">PRNGs; the "Seed"; Linear Congruential Generators; the illusion of chance.</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>17.2</strong></td>
-<td style="text-align: left;">The Random Walk</td>
-<td style="text-align: left;"><span class="arithmatex">\(\Delta x \propto \sqrt{t}\)</span>, link to diffusion (Heat Equation).</td>
+<td style="text-align: left;"><strong>Sampling Distributions</strong></td>
+<td style="text-align: left;">Transforming random bits into physical noise; Gaussian (Normal) distributions.</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>17.3</strong></td>
-<td style="text-align: left;">Monte Carlo Integration</td>
-<td style="text-align: left;">Curse of Dimensionality, Error <span class="arithmatex">\(\propto 1/\sqrt{N}\)</span>.</td>
+<td style="text-align: left;"><strong>Monte Carlo Integration</strong></td>
+<td style="text-align: left;">Solving the "Curse of Dimensionality"; the <span class="arithmatex">\(1/\sqrt{N}\)</span> error law; estimation via sampling.</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>17.4</strong></td>
-<td style="text-align: left;">Summary &amp; Bridge</td>
-<td style="text-align: left;">The three pillars of computation, bridge to Volume II.</td>
+<td style="text-align: left;"><strong>Random Walks &amp; Diffusion</strong></td>
+<td style="text-align: left;">Brownian Motion; the link between random steps and the Heat Equation.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>17.5</strong></td>
+<td style="text-align: left;"><strong>The Bridge to Volume II</strong></td>
+<td style="text-align: left;">Importance Sampling; the Metropolis Algorithm; modeling collective behavior.</td>
 </tr>
 </tbody>
 </table>
 <hr />
-<h2 id="171-the-digital-die-pseudo-random-number-generation-prng"><strong>17.1 The Digital Die: Pseudo-Random Number Generation (PRNG)</strong></h2>
-<p>The initial challenge is philosophical: a computer, by design, is a deterministic machine. It cannot, by definition, throw a truly random, non-repeatable digital die. The solution is the <strong>Pseudo-Random Number Generator (PRNG)</strong>.</p>
-<p>A PRNG is a <strong>deterministic algorithm</strong> that produces a sequence of numbers that appears random, passes stringent statistical tests for randomness, and yet is fully reproducible given its starting value, or <strong>seed</strong> [1]. This reproducibility is essential for the scientific process, allowing simulations to be verified and debugged.</p>
+<h2 id="171-the-pseudo-random-number-generator-prng"><strong>17.1 The Pseudo-Random Number Generator (PRNG)</strong></h2>
+<hr />
+<p>Computers are deterministic; they cannot be "truly" random. Instead, we use algorithms that produce a sequence of numbers that <em>look</em> random but are actually a complex, repeating cycle.</p>
+<div class="arithmatex">\[ r_{n+1} = (a r_n + c) \bmod m \]</div>
+<div class="admonition tip">
+<p class="admonition-title">The Power of the Seed</p>
+<p>Because PRNGs are deterministic, if you use the same <strong>Seed</strong> (<span class="arithmatex">\(r_0\)</span>), you will get the exact same sequence of "random" numbers. This is a vital feature for scientific reproducibility—it allows you to re-run a "random" simulation to debug a specific event.</p>
+</div>
+<hr />
+<h2 id="172-monte-carlo-integration-hit-and-miss"><strong>17.2 Monte Carlo Integration: Hit-and-Miss</strong></h2>
+<hr />
+<p>Imagine you want to find the area of an irregular shape. Instead of measuring it, you throw a million darts at a square containing the shape and count how many land inside.</p>
+<div class="arithmatex">\[ \text{Area} \approx \text{Total Area} \times \frac{\text{Darts Inside}}{\text{Total Darts}} \]</div>
+<pre class="mermaid"><code>graph TD
+    A[Define Domain &amp; Function f] --&gt; B[Sample Random Point x_i]
+    B --&gt; C[Evaluate f(x_i)]
+    C --&gt; D[Accumulate Sum: S = S + f(x_i)]
+    D --&gt; E{i &lt; N?}
+    E -- Yes --&gt; B
+    E -- No --&gt; F[Average Value = S / N]
+    F --&gt; G[Estimate Integral = V * Average]</code></pre>
+<div class="admonition example">
+<p class="admonition-title">Estimating <span class="arithmatex">\(\pi\)</span></p>
+<p>Throw darts at a <span class="arithmatex">\(1 \times 1\)</span> square. A point <span class="arithmatex">\((x, y)\)</span> is "inside" the circle if <span class="arithmatex">\(x^2 + y^2 \leq 1\)</span>.
+Ratio = <span class="arithmatex">\(\frac{\pi r^2}{4r^2} = \frac{\pi}{4}\)</span>. 
+Therefore, <span class="arithmatex">\(\pi \approx 4 \times \frac{\text{Hits}}{\text{Total}}\)</span>.</p>
+</div>
+<hr />
+<h2 id="173-the-1sqrtn-scaling"><strong>17.3 The <span class="arithmatex">\(1/\sqrt{N}\)</span> Scaling</strong></h2>
+<hr />
+<p>In Chapter 6, we saw that Simpson's Rule error drops as <span class="arithmatex">\(1/N^4\)</span>. In Monte Carlo, the error drops much slower: as <strong><span class="arithmatex">\(1/\sqrt{N}\)</span></strong>. To get 10x more precision, you need 100x more samples.</p>
 <details class="question">
-<summary>Why is a <em>reproducible</em> random number useful?</summary>
-<p>If a complex simulation (like a galaxy merger) fails due to a random fluctuation, a <em>truly</em> random number would make the bug impossible to reproduce. A PRNG’s <strong>seed</strong> acts like a “save state.” By re-using the same seed, we can re-run the <em>exact same</em> sequence of “random” events to find and fix the bug.</p>
+<summary>If it's so slow, why use it?</summary>
+<p>Because in 10 dimensions, Simpson's Rule requires <span class="arithmatex">\(10^{10}\)</span> points just to <em>start</em>. Monte Carlo's <span class="arithmatex">\(1/\sqrt{N}\)</span> error <strong>does not depend on the dimension</strong>. For high-dimensional physics (like protein folding), Monte Carlo is the only method that works.</p>
 </details>
 <hr />
-<h3 id="the-linear-congruential-generator-lcg"><strong>The Linear Congruential Generator (LCG)</strong></h3>
-<p>Historically, the simplest and most famous PRNG is the <strong>Linear Congruential Generator (LCG)</strong> [1]. It generates a new random number <span class="arithmatex">\(r_{n+1}\)</span> from the previous one <span class="arithmatex">\(r_n\)</span> using a modular arithmetic formula:</p>
-<div class="arithmatex">\[
-r_{n+1} = (a r_n + c) \bmod m
-\]</div>
-<p>where <span class="arithmatex">\(a\)</span> (multiplier), <span class="arithmatex">\(c\)</span> (increment), and <span class="arithmatex">\(m\)</span> (modulus) are large, carefully chosen integer constants. The quality of the sequence (its period and statistical properties) depends entirely on the choice of these constants.</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># Algorithm: Linear Congruential Generator (LCG)</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="k">class</span><span class="w"> </span><span class="nc">LCG</span><span class="p">:</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">seed</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="mi">1664525</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="mi">1013904223</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">2</span><span class="o">**</span><span class="mi">32</span><span class="p">):</span>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="sd">        Initialize a Linear Congruential Generator.</span>
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="sd">        Parameters:</span>
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="sd">        seed: initial seed value</span>
-</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="sd">        a: multiplier (default: 1664525)</span>
-</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="sd">        c: increment (default: 1013904223)</span>
-</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="sd">        m: modulus (default: 2^32)</span>
-</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">a</span> <span class="o">=</span> <span class="n">a</span>
-</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">c</span> <span class="o">=</span> <span class="n">c</span>
-</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">m</span> <span class="o">=</span> <span class="n">m</span>
-</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">r_n</span> <span class="o">=</span> <span class="n">seed</span>
-</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>
-</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_next_random_int</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">r_n</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">r_n</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">c</span><span class="p">)</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">m</span>
-</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">r_n</span>
-</span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a>
-</span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_next_random_float</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_next_random_int</span><span class="p">()</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">m</span>
-</span><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a>
-</span><span id="__span-0-26"><a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a><span class="c1">## Example Monte Carlo simulation</span>
-</span><span id="__span-0-27"><a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a>
-</span><span id="__span-0-28"><a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a><span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
-</span><span id="__span-0-29"><a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a>
-</span><span id="__span-0-30"><a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a><span class="k">def</span><span class="w"> </span><span class="nf">monte_carlo_pi</span><span class="p">(</span><span class="n">num_samples</span><span class="p">):</span>
-</span><span id="__span-0-31"><a id="__codelineno-0-31" name="__codelineno-0-31" href="#__codelineno-0-31"></a>    <span class="n">inside_circle</span> <span class="o">=</span> <span class="mi">0</span>
-</span><span id="__span-0-32"><a id="__codelineno-0-32" name="__codelineno-0-32" href="#__codelineno-0-32"></a>    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_samples</span><span class="p">):</span>
-</span><span id="__span-0-33"><a id="__codelineno-0-33" name="__codelineno-0-33" href="#__codelineno-0-33"></a>        <span class="n">x</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span>
-</span><span id="__span-0-34"><a id="__codelineno-0-34" name="__codelineno-0-34" href="#__codelineno-0-34"></a>        <span class="n">y</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span>
-</span><span id="__span-0-35"><a id="__codelineno-0-35" name="__codelineno-0-35" href="#__codelineno-0-35"></a>        <span class="k">if</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">y</span><span class="o">**</span><span class="mi">2</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
-</span><span id="__span-0-36"><a id="__codelineno-0-36" name="__codelineno-0-36" href="#__codelineno-0-36"></a>            <span class="n">inside_circle</span> <span class="o">+=</span> <span class="mi">1</span>
-</span><span id="__span-0-37"><a id="__codelineno-0-37" name="__codelineno-0-37" href="#__codelineno-0-37"></a>
-</span><span id="__span-0-38"><a id="__codelineno-0-38" name="__codelineno-0-38" href="#__codelineno-0-38"></a>    <span class="k">return</span> <span class="p">(</span><span class="n">inside_circle</span> <span class="o">/</span> <span class="n">num_samples</span><span class="p">)</span> <span class="o">*</span> <span class="mi">4</span>
-</span></code></pre></div>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1">## Algorithm: 1D Random Walk</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="k">def</span><span class="w"> </span><span class="nf">random_walk_1d</span><span class="p">(</span><span class="n">N_steps</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="sd">    Simulate a 1D random walk.</span>
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>
-</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="sd">    Parameters:</span>
-</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="sd">    N_steps: number of steps to take</span>
-</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>
-</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="sd">    Returns:</span>
-</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="sd">    path: list of positions at each step</span>
-</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="sd">    &quot;&quot;&quot;</span>
-</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>    <span class="n">x</span> <span class="o">=</span> <span class="mi">0</span>
-</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>    <span class="n">path</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">]</span>
-</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>
-</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N_steps</span><span class="p">):</span>
-</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>        <span class="n">r</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span>
-</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a>
-</span><span id="__span-1-21"><a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a>        <span class="k">if</span> <span class="n">r</span> <span class="o">&lt;</span> <span class="mf">0.5</span><span class="p">:</span>
-</span><span id="__span-1-22"><a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a>            <span class="n">x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span>
-</span><span id="__span-1-23"><a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a>        <span class="k">else</span><span class="p">:</span>
-</span><span id="__span-1-24"><a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a>            <span class="n">x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">-</span> <span class="mi">1</span>
-</span><span id="__span-1-25"><a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a>
-</span><span id="__span-1-26"><a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a>        <span class="c1"># Store x in the array to plot the path</span>
-</span><span id="__span-1-27"><a id="__codelineno-1-27" name="__codelineno-1-27" href="#__codelineno-1-27"></a>        <span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-</span><span id="__span-1-28"><a id="__codelineno-1-28" name="__codelineno-1-28" href="#__codelineno-1-28"></a>
-</span><span id="__span-1-29"><a id="__codelineno-1-29" name="__codelineno-1-29" href="#__codelineno-1-29"></a>    <span class="k">return</span> <span class="n">path</span>
-</span></code></pre></div>
-<div class="admonition example">
-<p class="admonition-title">Brownian Motion</p>
-<p>The “drunken walk” of a pollen grain in water, first observed by Robert Brown, is the quintessential random walk. The grain isn’t moving on its own; it’s being “kicked” by countless, invisible water molecules. Our PRNG rule <code>if r &lt; 0.5</code> simulates a single “kick” from this random thermal environment.</p>
-</div>
+<h2 id="174-summary-grid-methods-vs-monte-carlo"><strong>17.4 Summary: Grid Methods vs. Monte Carlo</strong></h2>
 <hr />
-<h2 id="173-core-application-monte-carlo-integration"><strong>17.3 Core Application: Monte Carlo Integration</strong></h2>
-<p>The true power of pseudo-random numbers is realized in <strong>Monte Carlo Integration</strong>, which is essential for solving high-dimensional problems where grid-based methods (quadrature, Chapter 6) fail [1, 3].</p>
-<p>Monte Carlo integration solves the problem of the <strong>Curse of Dimensionality</strong> by averaging function values sampled randomly over a domain, rather than sampling on a fixed grid.</p>
-<p>The integral <span class="arithmatex">\(I\)</span> is approximated by:</p>
-<div class="arithmatex">\[
-I \approx V \cdot \langle f \rangle
-= V \cdot \frac{1}{N} \sum_{i=1}^N f(\mathbf{x}_i)
-\]</div>
-<p>The statistical error:</p>
-<div class="arithmatex">\[
-\text{Error} \propto \frac{1}{\sqrt{N}}
-\]</div>
-<p>This scaling is <strong>independent of dimension</strong>.</p>
-<div class="admonition tip">
-<p class="admonition-title">Defeating the Curse of Dimensionality</p>
-<p>A 10D grid with only 10 points per axis requires
-<strong><span class="arithmatex">\(10^{10}\)</span> function evaluations</strong> — impossible.</p>
-<p>Monte Carlo with N = 10,000 samples achieves workable accuracy.
-The error depends only on 1/√N, not on dimensionality.</p>
-<p>```mermaid
-flowchart TD
-    A[Start: need I = ∫ f(x) dx] &rarr; B[Initialize sum = 0, N = 10000]
-    B &rarr; C{Loop i = 1 to N}
-    C &rarr; D[Generate random point x_i]
-    D &rarr; E[Compute f(x_i)]
-    E &rarr; F[sum = sum + f(x_i)]
-    F &rarr; C
-    C &rarr;|Done| G[Compute average ⟨f⟩ = sum / N]
-    G &rarr; H[Compute domain volume V]
-    H &rarr; I[Approximation I ≈ V ⟨f⟩]</p>
-</div>
-<hr />
-<h2 id="174-chapter-summary-and-bridge-to-volume-ii"><strong>17.4 Chapter Summary and Bridge to Volume II</strong></h2>
-<p>This final chapter of <strong>Volume I</strong> completes the foundational computational toolkit. The three indispensable pillars of computational physics are now established:</p>
-<ol>
-<li><strong>Deterministic Solvers:</strong> ODEs, PDEs, and Linear Algebra (Chapters 7–14).</li>
-<li><strong>Data-Driven Analysis:</strong> FFT, SVD, and PCA (Chapters 15–16).</li>
-<li><strong>Stochastic Modeling:</strong> Pseudo-Random Numbers and Monte Carlo methods (Chapter 17).</li>
-</ol>
-<p>This final pillar is the explicit <strong>on-ramp to Volume II: Modeling Complex Systems</strong>. The core of statistical mechanics is governed by high-dimensional integrals (e.g., the partition function) and sampling from distributions (like the Boltzmann distribution). The <strong>Metropolis Algorithm</strong>, centerpiece of Volume II, is a sophisticated random walk designed to efficiently sample these distributions—built directly upon the PRNG and stochastic tools introduced in this chapter.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Feature</th>
+<th style="text-align: left;">Grid Methods (Newton-Cotes)</th>
+<th style="text-align: left;">Monte Carlo Methods</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Logic</strong></td>
+<td style="text-align: left;">Fixed Mesh</td>
+<td style="text-align: left;"><strong>Random Sampling</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Error Scaling</strong></td>
+<td style="text-align: left;"><span class="arithmatex">\(1/N^k\)</span> (Fast in 1D)</td>
+<td style="text-align: left;"><strong><span class="arithmatex">\(1/\sqrt{N}\)</span> (Constant with D)</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Flexibility</strong></td>
+<td style="text-align: left;">Rigid boundaries</td>
+<td style="text-align: left;"><strong>Handles complex geometries</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Best For</strong></td>
+<td style="text-align: left;">Lower Dimensions (<span class="arithmatex">\(D &lt; 3\)</span>)</td>
+<td style="text-align: left;"><strong>Higher Dimensions (<span class="arithmatex">\(D &gt; 8\)</span>)</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Note</strong></td>
+<td style="text-align: left;">Deterministic</td>
+<td style="text-align: left;"><strong>Stochastic</strong></td>
+</tr>
+</tbody>
+</table>
 <hr />
 <h2 id="references"><strong>References</strong></h2>
-<p>[1] Press, W. H., Teukolsky, S. A., Vetterling, W. T., &amp; Flannery, B. P. (2007). <em>Numerical Recipes: The Art of Scientific Computing</em> (3<sup>rd</sup> ed.). Cambridge University Press.</p>
-<p>[2] L’Ecuyer, P. (1998). <em>Random Number Generation</em>. Monte Carlo Methods and Applications.</p>
-<p>[3] Landau, D. P., &amp; Binder, K. (2009). <em>A Guide to Monte Carlo Simulations in Statistical Physics</em> (3<sup>rd</sup> ed.). Cambridge University Press.</p>
-<p>[4] Newman, M. (2013). <em>Computational Physics</em>. CreateSpace Independent Publishing Platform.</p>
-<p>[5] Garcia, A. L. (2000). <em>Numerical Methods for Physics</em> (2<sup>nd</sup> ed.). Prentice Hall.</p>
+<hr />
+<p>[1] Metropolis, N., &amp; Ulam, S. (1949). The Monte Carlo Method. <em>J. American Statistical Association</em>.</p>
+<p>[2] Press, W. H., et al. (2007). <em>Numerical Recipes: The Art of Scientific Computing</em>. Cambridge University Press.</p>
+<p>[3] Landau, D. P., &amp; Binder, K. (2021). <em>A Guide to Monte Carlo Simulations in Statistical Physics</em>. Cambridge University Press.</p>
+<p>[4] L’Ecuyer, P. (1994). Uniform random number generation. <em>Annals of Operations Research</em>.</p>
+<p>[5] Hammersley, J. M. (2013). <em>Monte Carlo Methods</em>. Springer.</p>
 
 
 

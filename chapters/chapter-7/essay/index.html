@@ -94,7 +94,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#introduction" class="md-skip">
+        <a href="#chapter-7-initial-value-problems-i" class="md-skip">
           Skip to content
         </a>
       
@@ -2324,10 +2324,11 @@
   
 
 
+<h1 id="chapter-7-initial-value-problems-i"><strong>Chapter 7: Initial Value Problems I</strong></h1>
+<hr />
 <h1 id="introduction"><strong>Introduction</strong></h1>
-<p>Having mastered the static tools of calculus—differentiation and integration—we now confront the central task of computational physics: <strong>simulating change over time</strong>. The fundamental laws of nature, from classical mechanics to quantum evolution, are expressed as <strong>differential equations</strong>. These laws do not tell us where a system <em>is</em>; they tell us the rules for how it <em>moves</em> from one moment to the next.</p>
-<p>This chapter addresses the <strong>Initial Value Problem (IVP)</strong>: given a system's precise state at a starting time <span class="arithmatex">\(t_0\)</span>, how do we compute its entire future trajectory? We will translate the continuous, analytical language of differential equations into discrete, algebraic algorithms.</p>
-<p>Our journey begins with the simplest (and most flawed) approach, <strong>Euler's Method</strong>, to build intuition. We then rapidly advance to the "gold standard" of numerical integration, the <strong>Runge-Kutta</strong> family, which provides the accuracy needed for most scientific problems. Finally, we introduce the concept of <strong>adaptive step-size control</strong>, the "smart" algorithm that allows a solver to adjust its own workload, balancing precision and efficiency.</p>
+<p>Having mastered the static tools of calculus—differentiation and integration—we now confront the central task of computational physics: <strong>simulating change over time</strong>. The fundamental laws of nature, from classical mechanics to quantum evolution, are expressed as <strong>Differential Equations</strong>. These laws do not tell us where a system <em>is</em>; they tell us the rules for how its state <em>moves</em> from one moment to the next.</p>
+<p>This chapter addresses the <strong>Initial Value Problem (IVP)</strong>: given a system's precise state at a starting time <span class="arithmatex">\(t_0\)</span>, how do we compute its entire future trajectory? We will translate the continuous, analytical language of differential equations into discrete, algebraic algorithms known as "Time Steppers." Our journey begins with the intuitive but flawed <strong>Euler's Method</strong> and culminates in the "Scientific Standard" of numerical integration: the <strong>Runge-Kutta</strong> family.</p>
 <hr />
 <h1 id="chapter-7-outline"><strong>Chapter 7: Outline</strong></h1>
 <table>
@@ -2341,144 +2342,134 @@
 <tbody>
 <tr>
 <td style="text-align: left;"><strong>7.1</strong></td>
-<td style="text-align: left;"><strong>The Physics of "What Happens Next?"</strong></td>
-<td style="text-align: left;">Initial Value Problems (IVP); <span class="arithmatex">\(\frac{dx}{dt} = f(x, t)\)</span>; Newton's Law, radioactive decay; "march of time" concept.</td>
+<td style="text-align: left;"><strong>The March of Time (IVP)</strong></td>
+<td style="text-align: left;">State vectors; initial conditions; the "What happens next?" problem; <span class="arithmatex">\(dy/dt = f(t, y)\)</span>.</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>7.2</strong></td>
-<td style="text-align: left;"><strong>Euler’s Method</strong></td>
-<td style="text-align: left;">Forward difference derivation; first-order global error <span class="arithmatex">\(\mathcal{O}(h)\)</span>; unconditional instability for conservative systems; energy drift.</td>
+<td style="text-align: left;"><strong>Euler's Method (The Baseline)</strong></td>
+<td style="text-align: left;">Direct linear extrapolation; <span class="arithmatex">\(\mathcal{O}(h)\)</span> global error; the "Tangent Drift" problem.</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>7.3</strong></td>
-<td style="text-align: left;"><strong>Runge–Kutta Methods</strong></td>
-<td style="text-align: left;">Weighted-average slope sampling; RK2 (Midpoint) as predictor-corrector; RK4 as the <span class="arithmatex">\(\mathcal{O}(h^4)\)</span> "gold standard".</td>
+<td style="text-align: left;"><strong>Stability and Energy Drift</strong></td>
+<td style="text-align: left;">Why simple methods fail over long times; accumulation of local errors; conservative systems.</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>7.4</strong></td>
-<td style="text-align: left;"><strong>Adaptive Step-Size Control</strong></td>
-<td style="text-align: left;">Local error estimation using embedded pairs (e.g., RK45); logic for rejecting/accepting steps; <code>atol</code> vs. <code>rtol</code>.</td>
+<td style="text-align: left;"><strong>Runge-Kutta Methods (RK2/RK4)</strong></td>
+<td style="text-align: left;">The predictor-corrector idea; midpoint sampling; the <span class="arithmatex">\(\mathcal{O}(h^4)\)</span> magic; the "Workhorse" of physics.</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>7.5</strong></td>
-<td style="text-align: left;"><strong>Projectile Motion with Drag</strong></td>
-<td style="text-align: left;">Converting 2<sup>nd</sup>-order ODEs to a system of 1<sup>st</sup>-order ODEs; state vector <span class="arithmatex">\(\mathbf{S} = [x, y, v_x, v_y]\)</span>; terminal velocity.</td>
+<td style="text-align: left;"><strong>Adaptive Stepsizing (The Smart March)</strong></td>
+<td style="text-align: left;">Error estimation (<span class="arithmatex">\(RK45\)</span>); automatically scaling <span class="arithmatex">\(h\)</span> for steep transitions; precision control.</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>7.6</strong></td>
-<td style="text-align: left;"><strong>Summary &amp; Bridge to Chapter 8</strong></td>
-<td style="text-align: left;">RK4's limitations (energy drift); motivation for symplectic integrators (Verlet) for long-term orbital mechanics.</td>
+<td style="text-align: left;"><strong>Systems of ODEs</strong></td>
+<td style="text-align: left;">Converting 2<sup>nd</sup>-order (Newton) to 1<sup>st</sup>-order systems; the state vector <span class="arithmatex">\(\mathbf{y} = [x, v]^T\)</span>.</td>
 </tr>
 </tbody>
 </table>
 <hr />
-<h2 id="71-the-physics-of-what-happens-next"><strong>7.1 The Physics of "What Happens Next?"</strong></h2>
-<p>We now address the core of computational physics: modeling <strong>dynamic systems</strong>. The most fundamental laws of nature are not static equations; they are <strong>differential equations</strong> that describe the <strong>evolution</strong> of a system in time.</p>
-<p>This dynamic perspective is captured by equations that define the <strong>rate of change</strong> of a quantity:
-* <strong>Newton's Second Law:</strong> The acceleration is the second derivative of position, <span class="arithmatex">\(\frac{d^2x}{dt^2} = \frac{F(x, v, t)}{m}\)</span>.
-* <strong>Radioactive Decay:</strong> The rate of change in the number of atoms, <span class="arithmatex">\(\frac{dN}{dt} = -\lambda N\)</span>, is a <strong>first-order</strong> ODE.
-* <strong>Population Dynamics (Lotka-Volterra):</strong> Predator-prey models involve <strong>coupled</strong> first-order ODEs, such as <span class="arithmatex">\(\frac{dx}{dt} = \alpha x - \beta xy\)</span>.</p>
-<p>The core challenge is the <strong>Initial Value Problem (IVP)</strong>: given the <strong>rules of change</strong> (the derivative, <span class="arithmatex">\(\frac{dx}{dt} = f(x, t)\)</span>) and the <strong>initial condition</strong> (the system's state at time <span class="arithmatex">\(t_0\)</span>, <span class="arithmatex">\(x(t_0) = x_0\)</span>), the goal is to predict the entire future <strong>trajectory</strong> <span class="arithmatex">\(x(t)\)</span> for all <span class="arithmatex">\(t &gt; t_0\)</span> [4].</p>
-<p>Since a computer cannot solve the integral <span class="arithmatex">\(\int f(x, t) dt\)</span> analytically, we must convert the continuous ODE into a discrete, step-by-step algorithm: the <strong>"march of time"</strong>:</p>
-<div class="arithmatex">\[
-x_{n+1} \approx x_n + h \cdot f(x_n, t_n)
-\]</div>
-<p>The success of this march depends on developing algorithms that are both <strong>accurate</strong> (low <strong>truncation error</strong>) and <strong>stable</strong> (do not amplify <strong>round-off error</strong>) [2].</p>
+<h2 id="71-the-initial-value-problem-ivp"><strong>7.1 The Initial Value Problem (IVP)</strong></h2>
 <hr />
-<h2 id="72-eulers-method-the-simplest-step-and-its-instability"><strong>7.2 Euler’s Method: The Simplest Step (and its Instability)</strong></h2>
-<p><strong>Euler's method</strong> is the most straightforward numerical algorithm for the IVP, derived by using the <strong>forward difference</strong> (Chapter 5) to approximate the derivative.</p>
+<p>In physics, a first-order ODE takes the form:
+$$ \frac{dy}{dt} = f(t, y), \quad y(t_0) = y_0 $$
+The function <span class="arithmatex">\(f(t, y)\)</span> defines a <strong>slope field</strong> (or velocity field). To solve the IVP, we must "march" through this field, starting at <span class="arithmatex">\(y_0\)</span>, and use the rules of <span class="arithmatex">\(f\)</span> to find the next state.</p>
 <hr />
-<h3 id="derivation-and-accuracy"><strong>Derivation and Accuracy</strong></h3>
-<p>The derivation starts by <strong>truncating</strong> the Taylor series expansion of <span class="arithmatex">\(x(t+h)\)</span> at the <span class="arithmatex">\(\mathcal{O}(h^2)\)</span> term:</p>
-<div class="arithmatex">\[
-\boxed{x_{n+1} = x_n + h\, f(x_n, t_n)} \qquad \text{(Forward/Explicit Euler)}
-\]</div>
-<p>The local truncation error (error per step) is <span class="arithmatex">\(\mathcal{O}(h^2)\)</span>. However, the accumulation of this error over the entire simulation leads to a <strong>global error</strong> of <span class="arithmatex">\(\mathbf{\mathcal{O}(h)}\)</span>. This makes Euler's method a <strong>first-order</strong> method, meaning halving the step size <span class="arithmatex">\(h\)</span> only halves the overall accuracy.</p>
+<h2 id="72-eulers-method-the-simple-step"><strong>7.2 Euler's Method: The Simple Step</strong></h2>
+<hr />
+<p>Euler's method is the most basic time-stepper. It assumes the slope stays constant for the entire duration of the step <span class="arithmatex">\(h\)</span>:
+$$ y_{n+1} = y_n + h \cdot f(t_n, y_n) $$</p>
+<div class="admonition failure">
+<p class="admonition-title">Euler's Tangent Drift</p>
+<p>Because Euler only looks at the slope at the <strong>beginning</strong> of the step, it cannot "see" the curve ahead. For a circular orbit, Euler's method always moves along the tangent, causing the orbiting object to spiral outward and gain energy forever. It is <strong>First-Order Accurate</strong> (<span class="arithmatex">\(\mathcal{O}(h)\)</span>) and generally too unstable for professional science.</p>
+</div>
+<hr />
+<h2 id="73-runge-kutta-4th-order-rk4-the-standard"><strong>7.3 Runge-Kutta 4<sup>th</sup> Order (RK4): The Standard</strong></h2>
+<hr />
+<p>To improve accuracy, we should sample the slope at multiple points within the interval. The <strong>RK4 Method</strong> samples the slope four times—at the start, twice in the middle, and at the end—and takes a weighted average.</p>
+<pre class="mermaid"><code>graph TD
+    A[Start State y_n] --&gt; k1[k1: Slope at Start]
+    k1 --&gt; k2[k2: Midpoint Slope via k1]
+    k2 --&gt; k3[k3: Midpoint Slope via k2]
+    k3 --&gt; k4[k4: End Slope via k3]
+    k1 &amp; k2 &amp; k3 &amp; k4 --&gt; B[Weighted Average Slope]
+    B --&gt; C[Final Step: y_n+1]</code></pre>
+<p><strong>The Step Formula:</strong>
+$$ y_{n+1} = y_n + \frac{h}{6}(k_1 + 2k_2 + 2k_3 + k_4) $$</p>
 <div class="admonition tip">
-<p class="admonition-title">Intuition Boost</p>
-<p>Euler's method is the "straight-line" method. It calculates the slope <em>once</em> at the beginning of the step and assumes the system travels in that straight line for the entire duration <span class="arithmatex">\(h\)</span>. If the path curves, Euler's method flies off the tangent.</p>
-<p>```python</p>
-</div>
-<h1 id="illustrative-pseudo-code-for-eulers-method">Illustrative pseudo-code for Euler's Method</h1>
-<p>function euler_solver(f, x0, t_start, t_end, h):</p>
-<h2 id="f-is-the-derivative-function-fx-t">f is the derivative function f(x, t)</h2>
-<h2 id="x0-is-the-initial-condition">x0 is the initial condition</h2>
-<h2 id="h-is-the-step-size">h is the step size</h2>
-<p>x = x0
-t = t_start</p>
-<p>trajectory = [x0]</p>
-<p>while t &lt; t_end:
-<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a># Calculate the derivative at the current point
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>slope = f(x, t)
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a># Take the &quot;Euler step&quot;
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>x = x + h * slope
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>t = t + h
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>append(trajectory, x)
-</span></code></pre></div>
-return trajectory
-<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>```python
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>```python
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>def euler_method(f, y0, t0, t_end, h):
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    t_values = [t0]
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    y_values = [y0]
-</span></code></pre></div></p>
-<p><div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>t = t0
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>y = y0
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>while t &lt; t_end:
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>    y += h * f(t, y)
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>    t += h
-</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>    t_values.append(t)
-</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>    y_values.append(y)
-</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>
-</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>return t_values, y_values
-</span></code></pre></div>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>```mermaid
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>flowchart TD
-</span></code></pre></div>
-A(Start step with current h) &rarr; B(Compute <span class="arithmatex">\(x_{\text{high}}\)</span> and <span class="arithmatex">\(x_{\text{low}}\)</span>);
-B &rarr; C(Calculate Error <span class="arithmatex">\(E = \|x_{\text{high}} - x_{\text{low}}\|\)</span>);
-C &rarr; D{Is <span class="arithmatex">\(E \le \text{tol}\)</span>?};
-D -- Yes &rarr; E[Accept Step: <span class="arithmatex">\(x_{n+1} = x_{\text{high}}\)</span>];
-E &rarr; F[Increase h for next step];
-F &rarr; G(End Step);
-D -- No &rarr; H[Reject Step];
-H &rarr; I[Decrease h];
-I &rarr; A;
-<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>
-</span></code></pre></div></p>
-<p>Robust adaptive solvers use a combination of <strong>absolute tolerance</strong> (<span class="arithmatex">\(\text{atol}\)</span>) and <strong>relative tolerance</strong> (<span class="arithmatex">\(\text{rtol}\)</span>) to maintain accuracy when the solution <span class="arithmatex">\(x(t)\)</span> is near zero (<span class="arithmatex">\(\text{atol}\)</span>) and when it is very large (<span class="arithmatex">\(\text{rtol}\)</span>).</p>
-<hr />
-<p>```</p>
-<h2 id="75-core-application-projectile-motion-with-air-resistance-drag"><strong>7.5 Core Application: Projectile Motion with Air Resistance (Drag)</strong></h2>
-<p>Projectile motion with air resistance is a classic IVP that demonstrates the necessity of high-order, coupled numerical integration.</p>
-<hr />
-<h3 id="system-conversion"><strong>System Conversion</strong></h3>
-<p>The introduction of the drag force <span class="arithmatex">\(\mathbf{F}_d = -k |\mathbf{v}| \mathbf{v}\)</span> creates <strong>second-order, nonlinear, coupled</strong> differential equations for <span class="arithmatex">\(x\)</span> and <span class="arithmatex">\(y\)</span>. To apply RK4, the system must be converted into a system of <strong>four first-order ODEs</strong> by defining the state vector <span class="arithmatex">\(\mathbf{S} = [x, y, v_x, v_y]^T\)</span>:</p>
-<div class="arithmatex">\[
-\frac{d\mathbf{S}}{dt} = f(t, \mathbf{S}) = [v_x, v_y, a_x, a_y]
-\]</div>
-<p>This derivative function <span class="arithmatex">\(\mathbf{f}\)</span> returns the instantaneous velocities and accelerations, allowing the RK4 method to perform the march of time.</p>
-<div class="admonition example">
-<p class="admonition-title">The State Vector</p>
-<p>The "state vector" <span class="arithmatex">\(\mathbf{S}\)</span> is the complete DNA of the system at time <span class="arithmatex">\(t\)</span>. For this problem, <span class="arithmatex">\(\mathbf{S} = [x, y, v_x, v_y]\)</span>. The derivative function <code>f(S, t)</code> must take this 4-element vector as input and return the 4-element <em>derivative</em> vector: <span class="arithmatex">\(\frac{d\mathbf{S}}{dt} = [v_x, v_y, F_{d,x}/m, -g + F_{d,y}/m]\)</span>.</p>
+<p class="admonition-title">RK4 is the Scientific Standard</p>
+<p>RK4 is <strong>Fourth-Order Accurate</strong> (<span class="arithmatex">\(\mathcal{O}(h^4)\)</span>). If you halve the step size <span class="arithmatex">\(h\)</span>, the error drops by a factor of <strong>16</strong>. It is the default "go-to" algorithm for almost any ODE that isn't extremely "stiff."</p>
 </div>
 <hr />
-<h3 id="analysis"><strong>Analysis</strong></h3>
-<p>The numerical solution reveals the non-analytic physics of the system: the trajectory is <strong>shorter and asymmetric</strong> (unlike the perfect parabola without drag), and the vertical velocity asymptotically approaches the <strong>terminal velocity</strong> <span class="arithmatex">\(v_T = \sqrt{mg/k}\)</span>. The efficiency and accuracy of RK4 make it the ideal tool for solving this coupled, nonlinear system.</p>
+<h2 id="74-adaptive-stepsizing-the-smart-march"><strong>7.4 Adaptive Stepsizing: The Smart March</strong></h2>
 <hr />
-<h2 id="76-chapter-summary-and-bridge-to-chapter-8"><strong>7.6 Chapter Summary and Bridge to Chapter 8</strong></h2>
-<p>We have established the <span class="arithmatex">\(\mathbf{\mathcal{O}(h^4)}\)</span> RK4 method as the standard for solving general Initial Value Problems. This methodology allows us to model any dynamic system governed by ordinary differential equations.</p>
-<p>However, the main limitation of RK4 is that it does <strong>not conserve total energy</strong> perfectly. For long-term simulations of conservative (Hamiltonian) systems—such as planetary orbits or molecular dynamics—this small, slow <strong>energy drift</strong> eventually destroys the physical reality of the simulation. <strong>Chapter 8</strong> will address this by introducing <strong>symplectic integrators</strong> (like Leapfrog and Verlet), which are explicitly designed to maintain <strong>perfect long-term stability</strong> by conserving invariants.</p>
+<p>Not all steps are equal. In a simulation of a comet, the motion is slow and boring far from the sun, but fast and complex during a flyby. A fixed step size <span class="arithmatex">\(h\)</span> is wasteful in the slow regions and inaccurate in the fast ones.</p>
+<p><strong>Adaptive Solvers (like <code>solve_ivp</code> in Python):</strong>
+1.  Take an RK4 step and an RK5 step simultaneously.
+2.  Compare the results. The difference is an estimate of the <strong>local error</strong>.
+3.  If the error is too high, reject the step and shrink <span class="arithmatex">\(h\)</span>.
+4.  If the error is tiny, increase <span class="arithmatex">\(h\)</span> to save time.</p>
+<hr />
+<h2 id="75-converting-higher-order-systems"><strong>7.5 Converting Higher-Order Systems</strong></h2>
+<hr />
+<p>Newton's Law <span class="arithmatex">\(F = m \frac{d^2x}{dt^2}\)</span> is a <strong>second-order</strong> ODE. Standard solvers only accept <strong>first-order</strong> systems. To bridge this gap, we define a <strong>State Vector</strong> <span class="arithmatex">\(\mathbf{y} = [x, v]^T\)</span> and transform the one 2<sup>nd</sup>-order ODE into two 1<sup>st</sup>-order ODEs:</p>
+<div class="arithmatex">\[ \frac{dx}{dt} = v, \quad \frac{dv}{dt} = \frac{1}{m} F(x, v, t) \]</div>
+<hr />
+<h2 id="summary-ode-solver-comparison"><strong>Summary: ODE Solver Comparison</strong></h2>
+<hr />
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Method</th>
+<th style="text-align: left;">Order (Global)</th>
+<th style="text-align: left;">Stability</th>
+<th style="text-align: left;">Best For</th>
+<th style="text-align: left;">Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Forward Euler</strong></td>
+<td style="text-align: left;"><span class="arithmatex">\(\mathcal{O}(h)\)</span></td>
+<td style="text-align: left;">Very Poor</td>
+<td style="text-align: left;">Intuition only</td>
+<td style="text-align: left;">Spins out of orbits instantly</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>RK2 (Midpoint)</strong></td>
+<td style="text-align: left;"><span class="arithmatex">\(\mathcal{O}(h^2)\)</span></td>
+<td style="text-align: left;">Moderate</td>
+<td style="text-align: left;">Simple simulations</td>
+<td style="text-align: left;">Predictor-Corrector logic</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>RK4</strong></td>
+<td style="text-align: left;"><span class="arithmatex">\(\mathcal{O}(h^4)\)</span></td>
+<td style="text-align: left;">High</td>
+<td style="text-align: left;"><strong>General Physics</strong></td>
+<td style="text-align: left;">The "Standard" workhorse</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>RK45 (DOPRI853)</strong></td>
+<td style="text-align: left;">Adaptive</td>
+<td style="text-align: left;">Excellent</td>
+<td style="text-align: left;"><strong>Production Science</strong></td>
+<td style="text-align: left;"><code>scipy.integrate.solve_ivp</code></td>
+</tr>
+</tbody>
+</table>
 <hr />
 <h2 id="references"><strong>References</strong></h2>
-<p>[1] Press, W. H., Teukolsky, S. A., Vetterling, W. T., &amp; Flannery, B. P. (2007). <em>Numerical Recipes: The Art of Scientific Computing</em> (3<sup>rd</sup> ed.). Cambridge University Press.</p>
-<p>[2] Higham, N.J. (2002). <em>Accuracy and Stability of Numerical Algorithms</em>. SIAM.</p>
-<p>[3] Quarteroni, A., Sacco, R., &amp; Saleri, F. (2007). <em>Numerical Mathematics</em>. Springer.</p>
-<p>[4] Burden, R.L., &amp; Faires, J.D. (2011). <em>Numerical Analysis</em>. Brooks/Cole.</p>
-<p>[5] Ascher, U.M., &amp; Petzold, L.R. (1998). <em>Computer Methods for Ordinary Differential Equations and Differential-Algebraic Equations</em>. SIAM.</p>
+<hr />
+<p>[1] Runge, C. (1895). Über die numerische Auflösung von Differentialgleichungen. <em>Mathematische Annalen</em>.</p>
+<p>[2] Press, W. H., et al. (2007). <em>Numerical Recipes: The Art of Scientific Computing</em>. Cambridge University Press.</p>
+<p>[3] Butcher, J. C. (2016). <em>Numerical Methods for Ordinary Differential Equations</em>. Wiley.</p>
+<p>[4] Dormand, J. R., &amp; Prince, P. J. (1980). A family of embedded Runge-Kutta formulae. <em>Journal of Computational and Applied Mathematics</em>.</p>
+<p>[5] Iserles, A. (2008). <em>A First Course in the Numerical Analysis of Differential Equations</em>. Cambridge University Press.</p>
 
 
 

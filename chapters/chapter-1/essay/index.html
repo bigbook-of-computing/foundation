@@ -2325,221 +2325,219 @@
 
 
 <h1 id="chapter-1-the-digital-lab-notebook"><strong>Chapter 1: The Digital Lab Notebook</strong></h1>
-<p>In a traditional physics lab, a researcher wouldn't dream of running an experiment and scribbling the final result on a napkin. The very foundation of experimental science rests on a foundation of rigor. This rigor is embodied in the <strong>lab notebook</strong>.</p>
-<p>A lab notebook is more than just a diary; it's a formal record. It details the hypothesis, the experimental setup (including equipment serial numbers and calibration settings), the step-by-step procedure, the raw data, and the initial analysis. Why all this effort? Because science must be:</p>
-<ul>
-<li><strong>Readable:</strong> Someone else (or you, six months from now) must be able to understand what you did.</li>
-<li><strong>Reproducible:</strong> Another researcher, given your notebook, must be able to follow your steps and get the same result.</li>
-<li><strong>Verifiable:</strong> The link between your raw data and your final conclusion must be clear and unbroken.</li>
-</ul>
-<p>A computational experiment is no different. Your "lab" isn't a room with oscilloscopes and vacuum chambers; it's your computer. Your "lab notebook" isn't paper; it's the dynamic, digital environment you build.</p>
-<p>This brings us to the central crisis of "napkin" computation. How many of us have a folder named <code>final_code_v3_USE_THIS_ONE.py</code>? How often have we faced the "it worked on my machine" problem when trying to share a script with a colleague? This is the digital equivalent of a trashed lab: code that is "write-only"—impossible to understand a month after it was written—and results that are neither reproducible nor verifiable.</p>
-<p>This chapter is not about physics. It's about building the workbench. Before we can simulate a galaxy or find a quantum ground state, we must first build a "digital lab" that is as rigorous as a physical one. We will set up a standardized environment that solves these problems by embracing two key concepts:</p>
-<ol>
-<li><strong>Literate Programming [1]:</strong> A workflow that blends runnable code, mathematical text (<span class="arithmatex">\(E=mc^2\)</span>), and data visualizations all in one place.</li>
-<li><strong>Version Control:</strong> The ultimate safety net and the formal "lab record" that tracks every single change you make.</li>
-</ol>
-<p>By the end of this chapter, you will have a professional-grade setup. We will install the tools, write our first lines of code, plot our first function, and—most importantly—save our work in a way that is robust, shareable, and truly scientific.</p>
+<hr />
+<h1 id="introduction"><strong>Introduction</strong></h1>
+<p>In the physical sciences, the <strong>lab notebook</strong> is more than a simple record; it is a legal and scientific document that ensures the integrity, reproducibility, and verifiability of research. A researcher who scribbles results on a napkin and fails to document the experimental setup, calibration settings, and raw data is not doing science—they are merely observing. The same rigor must be applied to the computational sciences.</p>
+<p>The transition from "napkin" computation—characterized by messy folders like <code>final_code_v3_USE_THIS.py</code> and irreproducible results—to a professional <strong>Digital Lab Notebook</strong> is the first step in the journey of a computational physicist. This chapter establishes the "Digital Workbench," a standardized environment where code, mathematical theory (<span class="arithmatex">\(E=mc^2\)</span>), and data visualization coexist in a single, version-controlled record. By embracing <strong>Literate Programming</strong> and <strong>Version Control</strong>, we ensure that our digital experiments are as rigorous, shareable, and verifiable as any experiment conducted in a physical laboratory.</p>
+<hr />
 <h1 id="chapter-1-outline"><strong>Chapter 1: Outline</strong></h1>
 <table>
 <thead>
 <tr>
-<th style="text-align: left;">Sec.</th>
-<th style="text-align: left;">Title</th>
-<th style="text-align: left;">Core Ideas &amp; Examples</th>
+<th style="text-align: left;"><strong>Sec.</strong></th>
+<th style="text-align: left;"><strong>Title</strong></th>
+<th style="text-align: left;"><strong>Core Ideas &amp; Examples</strong></th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td style="text-align: left;"><strong>1.1</strong></td>
-<td style="text-align: left;">The Workbench: Anaconda</td>
-<td style="text-align: left;">Solving dependency issues, <code>conda</code> environments.</td>
+<td style="text-align: left;"><strong>The Crisis of Reproducibility</strong></td>
+<td style="text-align: left;">The "it worked on my machine" problem; readability, reproducibility, and verifiability; the "write-only" code trap.</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>1.2</strong></td>
-<td style="text-align: left;">The "Notebook": Jupyter</td>
-<td style="text-align: left;">Literate programming, <code>Code</code> vs. <code>Markdown</code> cells.</td>
+<td style="text-align: left;"><strong>Literate Programming &amp; Jupyter</strong></td>
+<td style="text-align: left;">Knuth’s vision; combining $ \LaTeX $, Markdown, and executable Python code; the <code>.ipynb</code> format as a narrative record.</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>1.3</strong></td>
-<td style="text-align: left;">The "Big Three" Toolkit</td>
-<td style="text-align: left;">NumPy (vectorization), Matplotlib (plotting), SciPy (algorithms).</td>
+<td style="text-align: left;"><strong>The Scientific Stack (The Big Three)</strong></td>
+<td style="text-align: left;"><strong>NumPy</strong> (vectorization), <strong>SciPy</strong> (algorithms), and <strong>Matplotlib</strong> (visualization); why standard Python is not enough for physics.</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>1.4</strong></td>
-<td style="text-align: left;">The "Lab Record": Git</td>
-<td style="text-align: left;">Version control, <code>commit</code> history, reproducibility.</td>
+<td style="text-align: left;"><strong>Version Control with Git</strong></td>
+<td style="text-align: left;">Treat code as a history of decisions; the <code>commit</code> as a timestamped lab entry; protection against data loss and regression.</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>1.5</strong></td>
-<td style="text-align: left;">My First "Experiment"</td>
-<td style="text-align: left;">Plotting <span class="arithmatex">\(\sin(x)\)</span> using NumPy and Matplotlib.</td>
+<td style="text-align: left;"><strong>The Workbench: Anaconda &amp; Conda</strong></td>
+<td style="text-align: left;">Dependency management; creating isolated "virtual labs" (environments); why <code>conda</code> is the scientific standard.</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>1.6</strong></td>
-<td style="text-align: left;">Chapter Summary &amp; Bridge</td>
-<td style="text-align: left;">Bridge to Chapter 2 (Floating-Point Arithmetic).</td>
+<td style="text-align: left;"><strong>My First Experiment: Plotting <span class="arithmatex">\(\sin(x)\)</span></strong></td>
+<td style="text-align: left;">A "Hello, World!" for physics; the 1.0 workflow: import, sample, calculate, visualize, and record.</td>
 </tr>
 </tbody>
 </table>
 <hr />
-<h2 id="11-the-workbench-anaconda-the-all-in-one-installer"><strong>1.1 The Workbench: Anaconda, the All-in-One Installer</strong></h2>
+<h2 id="11-the-crisis-of-reproducibility"><strong>1.1 The Crisis of Reproducibility</strong></h2>
 <hr />
-<h3 id="the-problem"><strong>The Problem</strong></h3>
-<p>We've chosen Python as our language, but Python, by itself, is just a general-purpose language. It doesn't inherently know how to handle complex array mathematics, plot data, or run optimized algorithms for root-finding. To do that, we need the scientific "machinery": a vast ecosystem of specialized libraries.</p>
-<p>This presents our first major hurdle: installing these libraries (like NumPy, SciPy, and Matplotlib) and, more importantly, managing their <strong>dependencies</strong>, is a notorious nightmare. Which version of NumPy works with which version of SciPy? What other, hidden libraries do <em>they</em> depend on? Handling this "plumbing" manually is a fast way to break your environment and a slow way to get to the actual physics.</p>
+<h3 id="the-napkin-computation-trap"><strong>The "Napkin" Computation Trap</strong></h3>
+<p>Classic experimental science relies on a clear, unbroken chain between raw observation and final conclusion. In computation, this chain is often broken. Many researchers treat their scripts as "black boxes" that produce a result, but without documenting the <strong>environment</strong>, the <strong>input parameters</strong>, and the <strong>version of the code</strong> used, that result is scientifically meaningless.</p>
+<div class="admonition tip">
+<p class="admonition-title">The Three Pillars of Rigorous Computation</p>
+<p>For a digital experiment to be considered scientific, it must meet three criteria:
+- <strong>Readability:</strong> Can a human (including your future self) understand the logic?
+- <strong>Reproducibility:</strong> Can another researcher run your code on a different machine and get the same result?
+- <strong>Verifiability:</strong> Is the link between the math (theory) and the code (implementation) transparent?</p>
+</div>
+<p>The "it worked on my machine" excuse is a symptom of a failed workflow. Professional computational physics requires an environment that is portable and a record that is complete.</p>
 <hr />
-<h3 id="the-tool-anaconda"><strong>The Tool: Anaconda</strong></h3>
-<p>We will solve this problem by using <strong>Anaconda</strong> [2].</p>
+<h2 id="12-literate-programming-and-jupyter"><strong>1.2 Literate Programming and Jupyter</strong></h2>
+<hr />
+<h3 id="knuths-vision"><strong>Knuth's Vision</strong></h3>
+<p>In 1984, Donald Knuth introduced the concept of <strong>Literate Programming</strong> [1]. He argued that instead of writing code for computers to execute, we should write programs as "works of literature" for humans to read. The code should be an accompaniment to a narrative that explains the "why" behind the implementation.</p>
+<p><strong>Jupyter Notebooks</strong> are the modern realization of this dream. They allow us to blend:
+- <strong>Narrative Text:</strong> Explanations in Markdown (like this essay).
+- <strong>Mathematics:</strong> Formatted equations using $ \LaTeX $ syntax.
+- <strong>Runnable Code:</strong> Live Python blocks that execute in real-time.
+- <strong>Visualizations:</strong> Graphs and plots that update as the code changes.</p>
+<div class="admonition example">
+<p class="admonition-title">Literate Workflow</p>
+<p>Instead of a comment like <code># use RK4 here</code>, a Jupyter notebook allows you to derive the Runge-Kutta equations in a Markdown cell, then provide the Python implementation directly below it, followed by a plot showing the numerical stability. This creates a "self-documenting" experiment.</p>
+</div>
+<hr />
+<h2 id="13-the-scientific-stack-the-big-three"><strong>1.3 The Scientific Stack: The "Big Three"</strong></h2>
+<hr />
+<p>Standard Python is a general-purpose language, not a scientific computer. For physics, we need a specialized toolkit.</p>
 <ul>
-<li><strong>What it is:</strong> Anaconda is a free, all-in-one "distribution" for Python (and R). It's a single download that gives you not only the Python language itself but also <em>all</em> the essential scientific libraries we need, pre-compiled and tested to work together perfectly. This bundle includes NumPy, SciPy, Matplotlib, Jupyter, and hundreds more.</li>
-<li><strong>Why it's our choice:</strong> It completely handles the complex "plumbing" of dependencies for us. It is the <em>de facto</em> standard in the scientific and data science communities for a reason: it just works.</li>
+<li><strong>NumPy (Numerical Python):</strong> The bedrock of scientific Python. It introduces the <strong>n-dimensional array</strong> (<code>ndarray</code>), which allows for <strong>vectorization</strong>. Instead of using slow <code>for</code> loops to process 1,000 numbers, NumPy processes the entire array at once using optimized C and Fortran backends [5].</li>
+<li><strong>SciPy (Scientific Python):</strong> A library of high-level algorithms built on top of NumPy. It provides "pre-baked" solutions for integration, interpolation, optimization, and signal processing [7].</li>
+<li><strong>Matplotlib:</strong> The standard library for creating publication-quality figures. It allows us to turn raw numbers into physical intuition through visualization [6].</li>
 </ul>
+<details class="question">
+<summary>Why not just use Microsoft Excel?</summary>
+<p>Excel is fine for accounting, but it fails the "Three Pillars." Formulas are hidden behind cells (poor readability), it cannot handle complex algorithms like FFTs efficiently (poor scalability), and it is famously prone to hidden errors that are impossible to verify (poor verifiability).</p>
+</details>
 <hr />
-<h3 id="the-how-to-your-10-minute-setup"><strong>The "How-to" (Your 10-Minute Setup)</strong></h3>
-<p>Setting up your entire workbench is a one-time, 10-minute task.</p>
+<h2 id="14-version-control-with-git"><strong>1.4 Version Control with Git</strong></h2>
+<hr />
+<p>A lab notebook is never erased; mistakes are crossed out so they can still be read. <strong>Git</strong> is the digital equivalent. It is a <strong>Version Control System (VCS)</strong> that tracks every single character change in your project.</p>
+<h3 id="the-git-lifecycle"><strong>The Git Lifecycle</strong></h3>
 <ol>
-<li><strong>Go:</strong> Open a web browser and go to the official Anaconda website.</li>
-<li><strong>Download:</strong> Download the "Anaconda Distribution" installer for your operating system (Windows, macOS, or Linux).</li>
-<li><strong>Run:</strong> Run the installer. You can safely accept all the default options.</li>
-<li><strong>Verify:</strong> Once installed, open your terminal (on macOS/Linux) or the "Anaconda Prompt" (on Windows). Type the following command and press Enter:
-    <div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>conda<span class="w"> </span>list
-</span></code></pre></div></li>
+<li><strong>Work:</strong> Modify your code or notebook.</li>
+<li><strong>Stage (<code>git add</code>):</strong> Select the changes that are "ready" to be recorded.</li>
+<li><strong>Commit (<code>git commit</code>):</strong> Save a permanent "snapshot" of the project with a descriptive message.</li>
 </ol>
-<p>This should display a long list of installed packages. If you see it, you're ready to code.</p>
-<p><strong>A Quick Note on Function Definitions:</strong> Here's an example of how we'll define reusable functions in Python:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="k">def</span><span class="w"> </span><span class="nf">plot_function</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">x_min</span><span class="p">,</span> <span class="n">x_max</span><span class="p">):</span>
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">x_min</span><span class="p">,</span> <span class="n">x_max</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>    <span class="n">y</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>    <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
-</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</span></code></pre></div>
-<h3 id="the-git-workflow"><strong>The Git Workflow</strong></h3>
 <pre class="mermaid"><code>flowchart LR
-    A[Code &amp; Test in Notebook] --&gt; B{It works?}
-    B -- No --&gt; A
-    B -- Yes --&gt; C[git add .]
-    C --&gt; D[git commit -m "..."]
-    D --&gt; E((Start Next Task))
-    E --&gt; A
-    D --&gt; F(git push)
-    F((Remote Backup))</code></pre>
+    A[Modify Code] --&gt; B[Stage Changes]
+    B --&gt; C[Commit Snapshot]
+    C --&gt; D[Permanent History]
+    D --&gt; E[Revert/Branch]</code></pre>
+<div class="admonition tip">
+<p class="admonition-title">Commit Early, Commit Often</p>
+<p>Treat every <code>commit</code> as a successful "run" of an experiment. If you break your code later, Git allows you to "time travel" back to any previous state, ensuring you never lose a working solution.</p>
+</div>
 <hr />
-<h2 id="15-my-first-experiment-plotting-sinx"><strong>1.5 My First "Experiment": Plotting <span class="arithmatex">\(\sin(x)\)</span></strong></h2>
-<p>This is our "Hello, World!" moment. This simple experiment will use every tool we have just assembled: our <strong>Jupyter Notebook</strong> (1.2), our core libraries of <strong>NumPy</strong> and <strong>Matplotlib</strong> (1.3), and our <strong>Git</strong> lab record (1.4).</p>
-<p><strong>Goal:</strong> To create a well-labeled, scientific plot of the function <span class="arithmatex">\(f(x) = \sin(x)\)</span> from <span class="arithmatex">\(x=0\)</span> to <span class="arithmatex">\(x=2\pi\)</span>.</p>
-<p><strong>File:</strong> Create a new Jupyter Notebook and name it <code>my_first_plot.ipynb</code>.</p>
-<p>Let's begin.</p>
+<h2 id="15-the-workbench-anaconda-conda"><strong>1.5 The Workbench: Anaconda &amp; Conda</strong></h2>
 <hr />
-<h3 id="code-cell-1-the-imports-loading-the-tools"><strong>Code Cell 1: The Imports (Loading the Tools)</strong></h3>
-<p>In the first cell, we import our libraries. We use the standard community-accepted abbreviations: <code>np</code> for NumPy and <code>plt</code> for Matplotlib's <code>pyplot</code> module.</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># Load the &quot;vector&quot; library as &#39;np&#39;</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="c1">## Load the &quot;plotting&quot; library as &#39;plt&#39;</span>
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>
-</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<p>The "Big Three" libraries (NumPy, SciPy, Matplotlib) have hundreds of dependencies. Managing these manually is a notorious hurdle known as "dependency hell."</p>
+<p><strong>Anaconda</strong> is a distribution that bundles Python with the most popular scientific libraries. <strong>Conda</strong> is the package manager that accompanies it. It allows you to create <strong>environments</strong>—isolated logical workspaces.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Feature</th>
+<th style="text-align: left;"><code>pip</code> (Standard)</th>
+<th style="text-align: left;"><code>conda</code> (Scientific)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Focus</strong></td>
+<td style="text-align: left;">Python packages only</td>
+<td style="text-align: left;">Python + Non-Python (C/C++ libs)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Isolation</strong></td>
+<td style="text-align: left;">Basic</td>
+<td style="text-align: left;">Strong (Environment-level)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Science Support</strong></td>
+<td style="text-align: left;">Excellent</td>
+<td style="text-align: left;">Preferred (pre-compiled binaries)</td>
+</tr>
+</tbody>
+</table>
+<p>By using Conda, you can ensure that the version of NumPy you use today is the same one someone else uses five years from now, satisfying the <strong>Reproducibility</strong> requirement.</p>
+<hr />
+<h2 id="16-my-first-experiment-plotting-sinx"><strong>1.6 My First Experiment: Plotting <span class="arithmatex">\(\sin(x)\)</span></strong></h2>
+<hr />
+<p>The "Hello, World!" of computational physics is the generation and visualization of a function. This simple task utilizes the entire stack:
+1.  <strong>Environment:</strong> Anaconda provides the Python interpreter.
+2.  <strong>Logic:</strong> NumPy generates 100 discrete samples of <span class="arithmatex">\(x\)</span> from 0 to <span class="arithmatex">\(2\pi\)</span>.
+3.  <strong>Calculation:</strong> NumPy applies the <code>sin</code> function <strong>vectorially</strong> to all 100 points simultaneously.
+4.  <strong>Visualization:</strong> Matplotlib renders the points as a smooth curve (a "connect-the-dots" illusion).
+5.  <strong>Record:</strong> Git records the successful creation of the plot.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="c1"># 1. Sample the domain</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="c1"># 2. Calculate the physics</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="c1"># 3. Visualize the result</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;sin(x)&quot;</span><span class="p">)</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Radians&quot;</span><span class="p">)</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Amplitude&quot;</span><span class="p">)</span>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;My First Scientific Record&quot;</span><span class="p">)</span>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </span></code></pre></div>
-<p><em>Run this cell by pressing Shift+Enter.</em></p>
 <hr />
-<h3 id="code-cell-2-the-data-using-numpy"><strong>Code Cell 2: The Data (Using NumPy)</strong></h3>
-<p>We need to create our x-axis. We can't plot a continuous function; we must "sample" it. We'll use NumPy's <code>linspace</code> function to generate an array of 100 evenly-spaced points between 0 and <span class="arithmatex">\(2\pi\)</span>.</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1">## Create an array &#39;x&#39; with 100 points</span>
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="c1">## from 0 to 2*pi</span>
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>
-</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="c1">## &#39;x&#39; is now a NumPy array</span>
-</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>
-</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
-</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-</span></code></pre></div>
-<p><em>Run this cell. The output should be:</em></p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="err">&#39;</span><span class="nc">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="s1">&#39;&gt;</span>
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="p">(</span><span class="mi">100</span><span class="p">,)</span>
-</span></code></pre></div>
+<h2 id="summary-comparison-of-computational-workflows"><strong>Summary: Comparison of Computational Workflows</strong></h2>
 <hr />
-<h3 id="code-cell-3-the-calculation-vectorization"><strong>Code Cell 3: The Calculation (Vectorization)</strong></h3>
-<p>Now we calculate the y-values. This is where we see the power of <strong>vectorization</strong> (1.3). We don't need a <code>for</code> loop. We apply the <code>np.sin</code> function <em>directly to the entire array</em> <code>x</code>, and it calculates the sine of all 100 points at once.</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1">## We apply the sin function to the *entire* array at once.</span>
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="c1">## No &#39;for&#39; loop needed!</span>
-</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>
-</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-</span></code></pre></div>
-<p><em>Run this cell. It will execute almost instantly.</em></p>
-<hr />
-<h3 id="code-cell-4-the-visualization-using-matplotlib"><strong>Code Cell 4: The Visualization (Using Matplotlib)</strong></h3>
-<p>This is the most important part. We will use the object-oriented method (1.3) to create a plot. A "plot" is not just the line; it's the entire scientific record. It <em>must</em> have a title and labels for the axes.</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1">## Create a figure and a set of axes</span>
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>
-</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
-</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>
-</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="c1">## Plot the (x, y) data on the axes</span>
-</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>
-</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;f(x) = sin(x)&#39;</span><span class="p">)</span>
-</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>
-</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="c1">## ALWAYS label your plots! This is non-negotiable.</span>
-</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>
-</span><span id="__span-6-11"><a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;My First Physics Plot&quot;</span><span class="p">)</span>
-</span><span id="__span-6-12"><a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a><span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;x (radians)&quot;</span><span class="p">)</span>
-</span><span id="__span-6-13"><a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a><span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;f(x)&quot;</span><span class="p">)</span>
-</span><span id="__span-6-14"><a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a><span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
-</span><span id="__span-6-15"><a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a><span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span> <span class="c1"># Add a grid for readability</span>
-</span><span id="__span-6-16"><a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a>
-</span><span id="__span-6-17"><a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a><span class="c1">## Show the plot</span>
-</span><span id="__span-6-18"><a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a>
-</span><span id="__span-6-19"><a id="__codelineno-6-19" name="__codelineno-6-19" href="#__codelineno-6-19"></a><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</span></code></pre></div>
-<p><em>Run this cell. You should see a beautiful, fully-labeled sine wave appear directly below the cell in your notebook.</em></p>
-<hr />
-<h3 id="markdown-cell-5-the-conclusion-our-notebook-entry"><strong>Markdown Cell 5: The Conclusion (Our "Notebook" Entry)</strong></h3>
-<p>Now, we switch from a "Code" cell to a "Markdown" cell in Jupyter. This is where we write our conclusion, fulfilling the "literate programming" goal.</p>
-<blockquote>
-<p><strong>In this experiment, we successfully generated a 1D array of 100 points using <code>np.linspace</code> and visualized the <span class="arithmatex">\(\sin(x)\)</span> function. The plot clearly shows the expected periodic behavior, with roots at <span class="arithmatex">\(x=0, \pi, 2\pi\)</span> and a peak at <span class="arithmatex">\(x=\pi/2\)</span>.</strong></p>
-</blockquote>
-<p><em>Run this cell. It will render as clean, formatted text.</em></p>
-<hr />
-<h3 id="step-6-the-record-using-git"><strong>Step 6: The Record (Using Git)</strong></h3>
-<p>We have a working, saved notebook. Our experiment is a success. It's time to save this "snapshot" to our lab record.</p>
-<p>Open your <strong>terminal</strong> (not in the notebook) and, in your project folder, type:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1">## 1. &quot;Stage&quot; your new notebook file</span>
-</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>
-</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="n">git</span> <span class="n">add</span> <span class="n">my_first_plot</span><span class="o">.</span><span class="n">ipynb</span>
-</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>
-</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="c1">## 2. &quot;Commit&quot; the snapshot with a clear message</span>
-</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>
-</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="n">git</span> <span class="n">commit</span> <span class="o">-</span><span class="n">m</span> <span class="s2">&quot;Chapter 1: Initial experiment plotting sin(x)&quot;</span>
-</span></code></pre></div>
-<p>You have now completed your first full scientific workflow.</p>
-<hr />
-<h2 id="16-chapter-summary-next-steps"><strong>1.6 Chapter Summary &amp; Next Steps</strong></h2>
-<p><strong>What We Built:</strong> In this chapter, we've successfully built our professional "digital lab." We haven't solved any complex physics yet, but we have laid the entire foundation for everything that follows. Our workbench is now complete:</p>
-<ul>
-<li><strong>The Workbench:</strong> Anaconda (<code>conda</code>) gives us an isolated, stable environment with all our tools.</li>
-<li><strong>The Notebook:</strong> Jupyter (<code>.ipynb</code>) provides a rich, interactive medium for "literate programming"—blending our code, math, and analysis.</li>
-<li><strong>The Core Tools:</strong> We've imported our "Big Three": <strong>NumPy</strong> for vectorized math, <strong>Matplotlib</strong> for visualization, and <strong>SciPy</strong> (which we know is waiting for us) for algorithms.</li>
-<li><strong>The Lab Record:</strong> <strong>Git</strong> gives us a robust version control system to track our work and protect us from errors.</li>
-</ul>
-<p><strong>The Big Picture:</strong> We've successfully plotted a <em>smooth</em> curve. Or did we? In reality, our beautiful <span class="arithmatex">\(\sin(x)\)</span> plot is an illusion. It's not a continuous curve; it's a "connect-the-dots" drawing between 100 discrete points.</p>
-<p>And this raises a much deeper, more subtle question. We assume those 100 points are <em>really</em> at <span class="arithmatex">\(y = \sin(x)\)</span>. But are they?</p>
-<p><strong>Bridge to Chapter 2:</strong> Our computational "ruler" is not perfect. The numbers our computer stores are not the "real" numbers (<span class="arithmatex">\(\mathbb{R}\)</span>) of mathematics. They are finite, gappy approximations. Before we can build complex simulations that run for millions of steps, we <em>must</em> understand the errors and limitations of our most basic "measurement": the <strong>floating-point number</strong>.</p>
-<p>In the next chapter, we will put our "digital ruler" under the microscope and learn about the "safety manual" for all the tools we will build.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Feature</th>
+<th style="text-align: left;">The "Napkin" Way</th>
+<th style="text-align: left;">The "Professional" Way (Standard)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Code Structure</strong></td>
+<td style="text-align: left;">One giant script (<code>test.py</code>)</td>
+<td style="text-align: left;">Modular libraries and Literate Notebooks</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Documentation</strong></td>
+<td style="text-align: left;">Comments like <code># fix this later</code></td>
+<td style="text-align: left;">Markdown + $ \LaTeX $ theory + derivation</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Tracking</strong></td>
+<td style="text-align: left;">Manual backups (<code>v1</code>, <code>v2</code>, <code>v3</code>)</td>
+<td style="text-align: left;"><strong>Git</strong> version control with full history</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Dependencies</strong></td>
+<td style="text-align: left;">"Install and pray"</td>
+<td style="text-align: left;"><strong>Conda</strong> isolated environments</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Visualization</strong></td>
+<td style="text-align: left;">Screenshots of random plots</td>
+<td style="text-align: left;">Reproducible scripts that generate figures</td>
+</tr>
+</tbody>
+</table>
 <hr />
 <h2 id="references"><strong>References</strong></h2>
+<hr />
 <p>[1] Knuth, D. E. (1984). Literate Programming. <em>The Computer Journal</em>, 27(2), 97–111.</p>
-<p>[2] Anaconda, Inc. (2020). <em>Anaconda Software Distribution</em>. Retrieved from <a href="https://www.google.com/search?q=httpss://www.anaconda.com">https://www.anaconda.com</a></p>
+<p>[2] Anaconda, Inc. (2020). <em>Anaconda Software Distribution</em>. <a href="https://www.anaconda.com">https://www.anaconda.com</a></p>
 <p>[3] Pérez, F., &amp; Granger, B. E. (2007). IPython: A System for Interactive Scientific Computing. <em>Computing in Science &amp; Engineering</em>, 9(3), 21–29.</p>
-<p>[4] Kluyver, T., et al. (2016). Jupyter Notebooks – a publishing format for reproducible computational workflows. In <em>Positioning and Power in Academic Publishing: Players, Agents and Agendas</em>.</p>
-<p>[5] Harris, C. R., Millman, K. J., van der Walt, S. J., et al. (2020). Array programming with NumPy. <em>Nature</em>, 585, 357–362.</p>
+<p>[4] Kluyver, T., et al. (2016). Jupyter Notebooks – a publishing format for reproducible computational workflows. <em>Positioning and Power in Academic Publishing</em>.</p>
+<p>[5] Harris, C. R., et al. (2020). Array programming with NumPy. <em>Nature</em>, 585, 357–362.</p>
 <p>[6] Hunter, J. D. (2007). Matplotlib: A 2D graphics environment. <em>Computing in Science &amp; Engineering</em>, 9(3), 90–95.</p>
-<p>[7] Virtanen, P., Gommers, R., Oliphant, T. E., et al. (2020). SciPy 1.0: Fundamental algorithms for scientific computing in Python. <em>Nature Methods</em>, 17, 261–272.</p>
+<p>[7] Virtanen, P., et al. (2020). SciPy 1.0: Fundamental algorithms for scientific computing in Python. <em>Nature Methods</em>, 17, 261–272.</p>
 <p>[8] Chacon, S., &amp; Straub, B. (2014). <em>Pro Git</em>. (2<sup>nd</sup> ed.). Apress.</p>
 
 

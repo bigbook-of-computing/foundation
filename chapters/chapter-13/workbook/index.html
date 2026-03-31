@@ -1612,10 +1612,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#131-chapter-opener-the-engine-weve-been-waiting-for" class="md-nav__link">
+  <a href="#131-the-engine-weve-been-waiting-for" class="md-nav__link">
     <span class="md-ellipsis">
       
-        13.1 Chapter Opener: The "Engine" We've Been Waiting For
+        13.1 The "Engine" We've Been Waiting For
       
     </span>
   </a>
@@ -1623,10 +1623,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#132-method-1-gaussian-elimination-the-forward-substitution-method" class="md-nav__link">
+  <a href="#132-method-1-gaussian-elimination" class="md-nav__link">
     <span class="md-ellipsis">
       
-        13.2 Method 1: Gaussian Elimination (The Forward-Substitution Method)
+        13.2 Method 1: Gaussian Elimination
       
     </span>
   </a>
@@ -1634,10 +1634,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#133-method-2-lu-decomposition-the-smarter-method" class="md-nav__link">
+  <a href="#133-method-2-lu-decomposition" class="md-nav__link">
     <span class="md-ellipsis">
       
-        13.3 Method 2: LU Decomposition (The "Smarter" Method)
+        13.3 Method 2: LU Decomposition
       
     </span>
   </a>
@@ -1682,6 +1682,45 @@
     <span class="md-ellipsis">
       
         13.7 Chapter Summary &amp; Next Steps
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#139-comprehensive-review" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.9 Comprehensive Review
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="13.9 Comprehensive Review">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#section-quiz" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Section Quiz
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#138-hands-on-projects" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.8 Hands-On Projects
       
     </span>
   </a>
@@ -2414,10 +2453,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#131-chapter-opener-the-engine-weve-been-waiting-for" class="md-nav__link">
+  <a href="#131-the-engine-weve-been-waiting-for" class="md-nav__link">
     <span class="md-ellipsis">
       
-        13.1 Chapter Opener: The "Engine" We've Been Waiting For
+        13.1 The "Engine" We've Been Waiting For
       
     </span>
   </a>
@@ -2425,10 +2464,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#132-method-1-gaussian-elimination-the-forward-substitution-method" class="md-nav__link">
+  <a href="#132-method-1-gaussian-elimination" class="md-nav__link">
     <span class="md-ellipsis">
       
-        13.2 Method 1: Gaussian Elimination (The Forward-Substitution Method)
+        13.2 Method 1: Gaussian Elimination
       
     </span>
   </a>
@@ -2436,10 +2475,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#133-method-2-lu-decomposition-the-smarter-method" class="md-nav__link">
+  <a href="#133-method-2-lu-decomposition" class="md-nav__link">
     <span class="md-ellipsis">
       
-        13.3 Method 2: LU Decomposition (The "Smarter" Method)
+        13.3 Method 2: LU Decomposition
       
     </span>
   </a>
@@ -2490,6 +2529,45 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#139-comprehensive-review" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.9 Comprehensive Review
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="13.9 Comprehensive Review">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#section-quiz" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Section Quiz
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#138-hands-on-projects" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.8 Hands-On Projects
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2524,11 +2602,17 @@
 
 
 <h1 id="chapter-13-systems-of-linear-equations-workbook"><strong>Chapter 13: Systems of Linear Equations (Workbook)</strong></h1>
-<h3 id="131-chapter-opener-the-engine-weve-been-waiting-for">13.1 Chapter Opener: The "Engine" We've Been Waiting For</h3>
+<hr />
 <blockquote>
-<p>Summary: Nearly all advanced numerical methods (BVPs, Implicit PDEs) transform calculus problems into the core algebraic system <span class="arithmatex">\(\mathbf{A}\mathbf{x} = \mathbf{b}\)</span>. This chapter introduces the efficient algorithms to solve this system, which acts as the engine for the entire computational toolkit.</p>
+<p><strong>Summary:</strong> This workbook introduces the "Engine Room" of numerical physics: solving <span class="arithmatex">\(\mathbf{A}\mathbf{x} = \mathbf{b}\)</span>. We transition from <span class="arithmatex">\(O(N^3)\)</span> direct solvers (LU Decomposition) to <span class="arithmatex">\(O(N)\)</span> iterative solvers for sparse matrices. You will learn why matrix inversion is a cardinal sin of numerical computing and how to choose the right solver for resistors, trusses, and PDEs.</p>
 </blockquote>
-<p>Our journey through computational physics has continuously led us back to a single, universal algebraic structure: the <strong>System of Linear Equations</strong>:</p>
+<hr />
+<h2 class="heading-with-pill" id="131-the-engine-weve-been-waiting-for"><strong>13.1 The "Engine" We've Been Waiting For</strong></h2>
+<blockquote>
+<p><strong>Difficulty:</strong> ★★☆☆☆</p>
+<p><strong>Concept:</strong> Matrix Equations (<span class="arithmatex">\(\mathbf{A}\mathbf{x} = \mathbf{b}\)</span>)</p>
+<p><strong>Summary:</strong> Most complex physical simulations—from steady-state heat to circuit analysis—eventually condense into a system of linear equations. This section defines the universal structure of these problems and previews the direct and iterative strategies for solving them.</p>
+</blockquote>
 <div class="arithmatex">\[\mathbf{A}\mathbf{x} = \mathbf{b}\]</div>
 <p>We discovered that most "advanced" physical problems transform into this linear system, a critical "magic trick" of numerical methods:</p>
 <ul>
@@ -2539,7 +2623,7 @@
 <p><strong>The "Problem":</strong> We have been hand-waving <em>how</em> to solve this. If <span class="arithmatex">\(\mathbf{A}\)</span> is a <span class="arithmatex">\(10,000 \times 10,000\)</span> matrix, how do we <em>actually</em> find the solution vector <span class="arithmatex">\(\mathbf{x}\)</span>?</p>
 <p><strong>The "Solution":</strong> This chapter is the "engine room." We will build the robust algorithms to solve <span class="arithmatex">\(\mathbf{A}\mathbf{x} = \mathbf{b}\)</span> efficiently. We will categorize solvers into two groups: <strong>Direct Methods</strong> (which find the solution in a fixed number of steps) and <strong>Iterative Methods</strong> (which "relax" to the solution over time).</p>
 <hr />
-<h3 id="132-method-1-gaussian-elimination-the-forward-substitution-method">13.2 Method 1: Gaussian Elimination (The Forward-Substitution Method)</h3>
+<h2 class="heading-with-pill" id="132-method-1-gaussian-elimination"><strong>13.2 Method 1: Gaussian Elimination</strong></h2>
 <blockquote>
 <p>Summary: Gaussian Elimination is the classical direct method for solving <span class="arithmatex">\(\mathbf{A}\mathbf{x} = \mathbf{b}\)</span>. It transforms the full matrix <span class="arithmatex">\(\mathbf{A}\)</span> into an <strong>upper-triangular matrix <span class="arithmatex">\(\mathbf{U}\)</span></strong> using forward elimination, followed by trivial <strong>back substitution</strong> to find the solution vector <span class="arithmatex">\(\mathbf{x}\)</span>.</p>
 </blockquote>
@@ -2554,7 +2638,7 @@
 * <strong>Cost:</strong> Gaussian Elimination is an <strong><span class="arithmatex">\(\mathcal{O}(N^3)\)</span></strong> algorithm. While conceptually simple, its cost quickly becomes prohibitive for matrices larger than a few thousand rows (<span class="arithmatex">\(N&gt;1000\)</span>).
 * <strong>Instability:</strong> It requires <strong>pivoting</strong> (swapping rows) to avoid division by zero or division by very small numbers, which can amplify <strong>round-off error</strong> (Chapter 2).</p>
 <hr />
-<h3 id="133-method-2-lu-decomposition-the-smarter-method">13.3 Method 2: LU Decomposition (The "Smarter" Method)</h3>
+<h2 class="heading-with-pill" id="133-method-2-lu-decomposition"><strong>13.3 Method 2: LU Decomposition</strong></h2>
 <blockquote>
 <p>Summary: <strong>LU Decomposition</strong> is the direct method used by professional libraries. It factors the matrix <span class="arithmatex">\(\mathbf{A}\)</span> into lower (<span class="arithmatex">\(\mathbf{L}\)</span>) and upper (<span class="arithmatex">\(\mathbf{U}\)</span>) triangular matrices once (<span class="arithmatex">\(\mathcal{O}(N^3)\)</span>), allowing the system to be solved for any subsequent right-hand side vector <span class="arithmatex">\(\mathbf{b}\)</span> very quickly (<span class="arithmatex">\(\mathcal{O}(N^2)\)</span>).</p>
 </blockquote>
@@ -2573,7 +2657,7 @@
 * <strong>Cost to Solve <span class="arithmatex">\(\mathbf{A}\mathbf{x} = \mathbf{b}\)</span>:</strong> <span class="arithmatex">\(\mathcal{O}(N^2)\)</span> (forward/back substitution).</p>
 <p>This makes it vastly superior to Gaussian elimination when multiple solutions are required. <strong>Professional functions like <code>np.linalg.solve()</code> and <code>scipy.linalg.solve()</code> use optimized LU decomposition.</strong></p>
 <hr />
-<h3 id="134-the-do-not-do-this-method-matrix-inversion">13.4 The "Do Not Do This" Method: Matrix Inversion</h3>
+<h2 class="heading-with-pill" id="134-the-do-not-do-this-method-matrix-inversion"><strong>13.4 The "Do Not Do This" Method: Matrix Inversion</strong></h2>
 <blockquote>
 <p>Summary: <strong>Matrix Inversion</strong> (<span class="arithmatex">\(\mathbf{x} = \mathbf{A}^{-1}\mathbf{b}\)</span>) is computationally inefficient (<span class="arithmatex">\(\mathcal{O}(N^3)\)</span> with a large pre-factor) and numerically unstable. <strong>Never</strong> compute the inverse to solve <span class="arithmatex">\(\mathbf{A}\mathbf{x} = \mathbf{b}\)</span>.</p>
 </blockquote>
@@ -2584,7 +2668,7 @@
 3.  <strong>It's Unnecessary:</strong> You do not need the entire <span class="arithmatex">\(N \times N\)</span> inverse matrix; you only need the single <span class="arithmatex">\(N \times 1\)</span> solution vector <span class="arithmatex">\(\mathbf{x}\)</span>.</p>
 <p><strong>Mantra:</strong> Always use a direct solver that performs the efficient LU decomposition (<code>np.linalg.solve(A, b)</code>), which bypasses the unstable step of explicit matrix inversion.</p>
 <hr />
-<h3 id="135-iterative-solvers-gauss-seidel-cg">13.5 Iterative Solvers (Gauss-Seidel, CG)</h3>
+<h2 class="heading-with-pill" id="135-iterative-solvers-gauss-seidel-cg"><strong>13.5 Iterative Solvers (Gauss-Seidel, CG)</strong></h2>
 <blockquote>
 <p>Summary: <strong>Iterative Solvers</strong> are essential for huge, sparse systems (<span class="arithmatex">\(\mathbf{A}\)</span> is mostly zeros), avoiding the <span class="arithmatex">\(\mathcal{O}(N^3)\)</span> cost and memory limitations of direct methods by "relaxing" to the solution using only the non-zero elements.</p>
 </blockquote>
@@ -2598,7 +2682,7 @@ The matrices resulting from FDM (Chapters 9-12) are <strong>sparse</strong>—th
 * <strong>Jacobi &amp; Gauss-Seidel:</strong> (Revisited from Chapter 10) These are simple, general iterative solvers that "relax" to the solution. Their cost is only <span class="arithmatex">\(\mathcal{O}(N)\)</span> per iteration for sparse matrices.
 * <strong>Conjugate Gradient (CG) Method:</strong> The standard professional iterative solver for <strong>symmetric</strong> matrices. It mathematically guarantees convergence in at most <span class="arithmatex">\(N\)</span> steps and is highly efficient for the enormous sparse matrices of modern physics.</p>
 <hr />
-<h3 id="136-core-application-a-resistor-network">13.6 Core Application: A Resistor Network</h3>
+<h2 class="heading-with-pill" id="136-core-application-a-resistor-network"><strong>13.6 Core Application: A Resistor Network</strong></h2>
 <blockquote>
 <p>Summary: Applying <strong>Kirchhoff's Current Law</strong> and <strong>Ohm's Law</strong> to a resistor network yields a system <span class="arithmatex">\(\mathbf{A}\mathbf{V} = \mathbf{I}\)</span>, where <span class="arithmatex">\(\mathbf{V}\)</span> is the unknown voltage vector and <span class="arithmatex">\(\mathbf{A}\)</span> is the matrix of conductances (<span class="arithmatex">\(\mathbf{G}\)</span>). This is a classic <span class="arithmatex">\(\mathbf{A}\mathbf{x} = \mathbf{b}\)</span> problem solved via a direct method.</p>
 </blockquote>
@@ -2613,7 +2697,7 @@ Applying KCL to a node <span class="arithmatex">\(i\)</span> involves summing th
 <p><strong>The Computational Strategy:</strong>
 Since the system is typically linear and small/medium-sized (<span class="arithmatex">\(N\)</span> nodes), the fastest and most stable method is the <strong>direct solution</strong> using LU decomposition.</p>
 <hr />
-<h3 id="137-chapter-summary-next-steps">13.7 Chapter Summary &amp; Next Steps</h3>
+<h2 class="heading-with-pill" id="137-chapter-summary-next-steps"><strong>13.7 Chapter Summary &amp; Next Steps</strong></h2>
 <p><strong>What We Built: The Linear Algebra Engine</strong>
 We have mastered the solutions for the core computational problem: <span class="arithmatex">\(\mathbf{A}\mathbf{x} = \mathbf{b}\)</span>.</p>
 <ul>
@@ -2627,50 +2711,41 @@ We have mastered the solutions for the core computational problem: <span class="
 <div class="arithmatex">\[\mathbf{A}\mathbf{x} = \lambda \mathbf{x}\]</div>
 <p>This is the <em>exact</em> mathematical form of the <strong>Schrödinger Equation</strong> (Chapter 9) and the <strong>Normal Modes of Oscillation</strong>. We must now build the dedicated algorithms to find these "natural states"—the eigenvalues <span class="arithmatex">\(\lambda\)</span> and the eigenvectors <span class="arithmatex">\(\mathbf{x}\)</span>—which is the focus of <strong>Chapter 14</strong>.</p>
 <hr />
-<h1 id="chapter-13-and-project-questions-workbook"><strong>Chapter 13: and Project Questions () () (Workbook)</strong></h1>
-<h4 id="quiz-questions">Quiz Questions</h4>
-<p><strong>1. What is the fundamental algebraic structure that most complex FDM/Implicit PDE problems simplify to?</strong></p>
-<ul>
-<li>a) A root-finding problem <span class="arithmatex">\(f(x)=0\)</span>.</li>
-<li>b) A matrix eigenvalue problem <span class="arithmatex">\(\mathbf{A}\mathbf{v} = \lambda\mathbf{v}\)</span>.</li>
-<li>c) A <strong>system of linear equations <span class="arithmatex">\(\mathbf{A}\mathbf{x} = \mathbf{b}\)</span></strong>. (<strong>Correct</strong>)</li>
-<li>d) A partial differential equation.</li>
-</ul>
-<p><strong>2. Which direct solution method is the foundation for all professional linear algebra solvers and is broken down into two matrices <span class="arithmatex">\(\mathbf{L}\)</span> and <span class="arithmatex">\(\mathbf{U}\)</span>?</strong></p>
-<ul>
-<li>a) Gaussian Elimination.</li>
-<li>b) <strong>LU Decomposition</strong>. (<strong>Correct</strong>)</li>
-<li>c) Conjugate Gradient (CG).</li>
-<li>d) Matrix Inversion.</li>
-</ul>
-<p><strong>3. Why is it considered poor numerical practice to solve a system by computing the matrix inverse, <span class="arithmatex">\(\mathbf{x} = \mathbf{A}^{-1}\mathbf{b}\)</span>?</strong></p>
-<ul>
-<li>a) Because the solution vector <span class="arithmatex">\(\mathbf{x}\)</span> must be determined iteratively.</li>
-<li>b) Because the solution requires back substitution.</li>
-<li>c) <strong>Because matrix inversion is slow, unnecessary, and numerically unstable (prone to round-off error)</strong>. (<strong>Correct</strong>)</li>
-<li>d) Because <span class="arithmatex">\(\mathbf{A}^{-1}\)</span> is always a sparse matrix.</li>
-</ul>
-<p><strong>4. For a large, sparse matrix resulting from an FDM problem, what is the primary advantage of using an **iterative solver</strong> (like Gauss-Seidel or Conjugate Gradient) over a <strong>direct solver</strong> (like LU Decomposition)?**</p>
-<ul>
-<li>a) The direct solver only works for small matrices.</li>
-<li>b) <strong>Iterative solvers exploit sparsity, avoiding the <span class="arithmatex">\(O(N^3)\)</span> storage and time cost of dense matrices</strong>. (<strong>Correct</strong>)</li>
-<li>c) Iterative solvers provide an exact answer faster than direct solvers.</li>
-<li>d) Iterative solvers bypass the need for boundary conditions.</li>
-</ul>
-<p><strong>5. What is the computational complexity of the **forward/back substitution</strong> steps required to solve <span class="arithmatex">\(\mathbf{L}\mathbf{U}\mathbf{x} = \mathbf{b}\)</span>?**</p>
-<ul>
-<li>a) <span class="arithmatex">\(O(N^3)\)</span>.</li>
-<li>b) <span class="arithmatex">\(O(N \log N)\)</span>.</li>
-<li>c) <strong><span class="arithmatex">\(O(N^2)\)</span></strong>. (<strong>Correct</strong>)</li>
-<li>d) <span class="arithmatex">\(O(N)\)</span>.</li>
-</ul>
-<h4 id="interview-style-question">Interview-Style Question</h4>
+<hr />
+<h2 class="heading-with-pill" id="139-comprehensive-review"><strong>13.9 Comprehensive Review</strong></h2>
+<h3 id="section-quiz"><strong>Section Quiz</strong></h3>
+<div class="admonition note">
+<p class="admonition-title">Quiz</p>
+<ol>
+<li>What is the fundamental algebraic structure that most complex FDM/Implicit PDE problems simplify to?</li>
+<li>Which direct solution method is the foundation for all professional linear algebra solvers and is broken down into two matrices <span class="arithmatex">\(\mathbf{L}\)</span> and <span class="arithmatex">\(\mathbf{U}\)</span>?</li>
+<li>Why is it considered poor numerical practice to solve a system by computing the matrix inverse, <span class="arithmatex">\(\mathbf{x} = \mathbf{A}^{-1}\mathbf{b}\)</span>?</li>
+<li>For a large, sparse matrix resulting from an FDM problem, what is the primary advantage of using an <strong>iterative solver</strong> (like Gauss-Seidel or Conjugate Gradient) over a <strong>direct solver</strong> (like LU Decomposition)?</li>
+<li>What is the computational complexity of the <strong>forward/back substitution</strong> steps required to solve <span class="arithmatex">\(\mathbf{L}\mathbf{U}\mathbf{x} = \mathbf{b}\)</span>?</li>
+</ol>
+</div>
+<details class="info">
+<summary>See Answer</summary>
+<ol>
+<li><strong>A system of linear equations <span class="arithmatex">\(\mathbf{A}\mathbf{x} = \mathbf{b}\)</span></strong>.</li>
+<li><strong>LU Decomposition</strong>.</li>
+<li><strong>Because matrix inversion is slow, unnecessary, and numerically unstable (prone to round-off error)</strong>.</li>
+<li><strong>Iterative solvers exploit sparsity, avoiding the <span class="arithmatex">\(O(N^3)\)</span> storage and time cost of dense matrices</strong>.</li>
+<li><strong><span class="arithmatex">\(O(N^2)\)</span></strong>.</li>
+</ol>
+</details>
+<div class="admonition abstract">
+<p class="admonition-title">Interview-Style Question</p>
 <p><strong>Question:</strong> You need to solve <span class="arithmatex">\(\mathbf{A}\mathbf{x} = \mathbf{b}\)</span> one thousand times, where the matrix <span class="arithmatex">\(\mathbf{A}\)</span> is constant, but the vector <span class="arithmatex">\(\mathbf{b}\)</span> changes in every step. Explain the steps and the corresponding computational cost of the most efficient approach using a direct solver.</p>
-<p><strong>Answer Strategy:</strong> The most efficient approach is <strong>LU Decomposition</strong>.
+<details class="info" open="open">
+<summary>Answer Strategy</summary>
+<p>The most efficient approach is <strong>LU Decomposition</strong>.
 1.  <strong>Factorization (Pre-processing):</strong> Factor the constant matrix <span class="arithmatex">\(\mathbf{A}\)</span> into <span class="arithmatex">\(\mathbf{L}\mathbf{U}\)</span> once. The cost of this step is <span class="arithmatex">\(\mathcal{O}(N^3)\)</span>.
 2.  <strong>Solving:</strong> For each of the 1000 steps, solve the two triangular systems (<span class="arithmatex">\(\mathbf{L}\mathbf{y} = \mathbf{b}\)</span> and <span class="arithmatex">\(\mathbf{U}\mathbf{x} = \mathbf{y}\)</span>) using forward and back substitution. The cost for <em>each</em> solve is only <span class="arithmatex">\(\mathcal{O}(N^2)\)</span>.
 This approach avoids re-doing the <span class="arithmatex">\(O(N^3)\)</span> elimination 1000 times.</p>
-<h1 id="chapter-13-on-projects-linear-systems-and-circuits-workbook"><strong>Chapter 13: On Projects: Linear Systems and Circuits () () (Workbook)</strong></h1>
+</details>
+</div>
+<h2 class="heading-with-pill" id="138-hands-on-projects"><strong>13.8 Hands-On Projects</strong></h2>
 <p><strong>1. Project: Simulating a Resistor Network (Core Application)</strong></p>
 <ul>
 <li><strong>Problem:</strong> Find the unknown voltages (<span class="arithmatex">\(V_1\)</span> and <span class="arithmatex">\(V_2\)</span>) in a simple three-node resistor network where two nodes are unknown and one is a fixed battery voltage.</li>

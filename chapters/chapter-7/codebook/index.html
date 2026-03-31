@@ -94,7 +94,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#chapter-7-initial-value-problems-i-the-basics-codebook" class="md-skip">
+        <a href="#chapter-7-initial-value-problems-i-codebook" class="md-skip">
           Skip to content
         </a>
       
@@ -2481,28 +2481,38 @@
   
 
 
-<h1 id="chapter-7-initial-value-problems-i-the-basics-codebook"><strong>Chapter 7: Initial Value Problems I: The Basics (Codebook)</strong></h1>
+<h1 id="chapter-7-initial-value-problems-i-codebook"><strong>Chapter 7: Initial Value Problems I (Codebook)</strong></h1>
+<hr />
+<p>This Codebook provides the baseline implementations for solving <strong>Initial Value Problems (IVPs)</strong>. We Implement <strong>Euler's Method</strong> and <strong>RK4</strong>, focusing on their performance for the Simple Harmonic Oscillator and nonlinear projectile motion with air resistance.</p>
 <hr />
 <h2 id="project-1-accuracy-and-stability-showdown-euler-vs-rk4">Project 1: Accuracy and Stability Showdown (Euler vs. RK4)</h2>
 <table>
 <thead>
 <tr>
-<th style="text-align: left;">Feature</th>
+<th style="text-align: left;">Component</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left;"><strong>Goal</strong></td>
-<td style="text-align: left;">Simulate the <strong>Simple Harmonic Oscillator (SHO)</strong> using <strong>Euler's Method</strong> (<span class="arithmatex">\(\mathcal{O}(h)\)</span>) and <strong>RK4</strong> (<span class="arithmatex">\(\mathcal{O}(h^4)\)</span>) to demonstrate the critical difference between a low-order and a high-order integrator, particularly RK4's local accuracy and Euler's exponential instability.</td>
+<td style="text-align: left;"><strong>Objective</strong></td>
+<td style="text-align: left;">Compare the stability of <strong>Euler's Method</strong> (<span class="arithmatex">\(O(h)\)</span>) vs. <strong>RK4</strong> (<span class="arithmatex">\(O(h^4)\)</span>) using the Simple Harmonic Oscillator (SHO).</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>Model</strong></td>
-<td style="text-align: left;"><strong>Simple Harmonic Oscillator (SHO)</strong>: <span class="arithmatex">\(x''(t) = -x\)</span>. This second-order ODE is converted into a <strong>coupled first-order system</strong>: <span class="arithmatex">\(\mathbf{S}' = [v, -x]\)</span>, where <span class="arithmatex">\(\mathbf{S}=[x, v]\)</span>.</td>
+<td style="text-align: left;"><strong>Mathematical Concept</strong></td>
+<td style="text-align: left;">Solving <span class="arithmatex">\(\mathbf{S}' = [v, -x]\)</span>; energy <span class="arithmatex">\(E = \frac{1}{2}(v^2 + x^2)\)</span> should be constant in the exact solution.</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>Core Concept</strong></td>
-<td style="text-align: left;"><strong>Euler's Method</strong> assumes a constant slope over <span class="arithmatex">\(\Delta t\)</span>, causing systematic <strong>energy injection</strong>. <strong>RK4</strong> uses a weighted average of four slopes, maintaining local stability but still suffering from long-term energy drift (a problem solved in Chapter 8).</td>
+<td style="text-align: left;"><strong>Experiment Setup</strong></td>
+<td style="text-align: left;">Python, NumPy for step-by-step vector iteration; simulation time <span class="arithmatex">\(t \in [0, 50]\)</span>.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Expected Behavior</strong></td>
+<td style="text-align: left;">Euler's method should spirally diverge (energy injection), while RK4 remains stable on this timescale.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Verification Goal</strong></td>
+<td style="text-align: left;">Demonstrate why high-order methods are essential for orbital/oscillatory stability.</td>
 </tr>
 </tbody>
 </table>
@@ -2697,26 +2707,30 @@
 <table>
 <thead>
 <tr>
-<th style="text-align: left;">Feature</th>
+<th style="text-align: left;">Component</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left;"><strong>Goal</strong></td>
-<td style="text-align: left;">Simulate <strong>Projectile Motion with Quadratic Air Resistance (Drag)</strong>, demonstrating how to convert a second-order vector problem into a coupled system of first-order ODEs and solve it using the stable <strong>RK4</strong> method.</td>
+<td style="text-align: left;"><strong>Objective</strong></td>
+<td style="text-align: left;">Simulate <strong>Projectile Motion with Quadratic Air Resistance (Drag)</strong>.</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>Model</strong></td>
-<td style="text-align: left;"><strong>Vectorial Second-Order ODE</strong>: <span class="arithmatex">\(\mathbf{r}''(t) = \mathbf{a}\)</span>. Force is gravity plus quadratic drag: $\mathbf{F} = m\mathbf{g} - k</td>
+<td style="text-align: left;"><strong>Mathematical Concept</strong></td>
+<td style="text-align: left;">Force model: $\mathbf{r}''(t) = \mathbf{g} - (k/m)</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>System Conversion</strong></td>
-<td style="text-align: left;">The 2D (x, y) second-order system is converted into a <strong>4D coupled first-order system</strong>: <span class="arithmatex">\(\mathbf{S}' = [v_x, v_y, a_x, a_y]\)</span>, where the state vector is <span class="arithmatex">\(\mathbf{S} = [x, y, v_x, v_y]\)</span>.</td>
+<td style="text-align: left;"><strong>Experiment Setup</strong></td>
+<td style="text-align: left;">RK4 integrator with a ground-strike stopping condition (<span class="arithmatex">\(y &lt; 0\)</span>).</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>Core Concept</strong></td>
-<td style="text-align: left;">This system is <strong>non-conservative</strong> and <strong>dissipative</strong> (energy is lost due to drag), making the high-order RK4 method the ideal and most stable choice for a general prediction of the trajectory.</td>
+<td style="text-align: left;"><strong>Expected Behavior</strong></td>
+<td style="text-align: left;">Asymmetric trajectory; shorter range and lower height compared to the vacuum (parabolic) case.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Verification Goal</strong></td>
+<td style="text-align: left;">Successfully model a nonlinear, non-conservative physical system.</td>
 </tr>
 </tbody>
 </table>

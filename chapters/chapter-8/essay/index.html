@@ -94,7 +94,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#introduction" class="md-skip">
+        <a href="#chapter-8-initial-value-problems-ii-symplectic" class="md-skip">
           Skip to content
         </a>
       
@@ -2324,207 +2324,144 @@
   
 
 
+<h1 id="chapter-8-initial-value-problems-ii-symplectic"><strong>Chapter 8: Initial Value Problems II (Symplectic)</strong></h1>
+<hr />
 <h1 id="introduction"><strong>Introduction</strong></h1>
-<p>In Chapter 7, the <strong>Runge–Kutta 4<sup>th</sup> Order (RK4)</strong> integrator was established as the highly accurate "gold standard" for simulating <strong>dissipative systems</strong>—those that lose energy, like damped oscillators or projectiles with drag. However, for <strong>conservative systems</strong>, where total energy must remain constant over time (e.g., planetary orbits, molecular dynamics), RK4 exhibits a fundamental, long-term flaw.</p>
-<p>Conservative systems are <strong>time-reversible</strong> and defined by the <strong>conservation of total energy</strong> (<span class="arithmatex">\(E\)</span>). Despite its high local accuracy (<span class="arithmatex">\(\mathcal{O}(h^5)\)</span> local error), RK4 does <strong>not</strong> preserve the underlying geometric symmetries of <strong>Hamiltonian physics</strong>. Every step introduces a tiny numerical imbalance, and over millions of steps, these errors <strong>accumulate</strong>, causing the total energy <span class="arithmatex">\(E(t)\)</span> to <strong>drift</strong> monotonically. The consequence is catastrophic for long-term simulations: a stable orbit spirals away, or a molecular box "heats up" for no physical reason.</p>
-<p>This chapter introduces <strong>symplectic integrators</strong> (e.g., Verlet, Leapfrog), a class of algorithms that solve this problem. They sacrifice short-term precision for <strong>long-term fidelity</strong>, ensuring that the simulated system's energy oscillates around the true value but <strong>never drifts away</strong>, guaranteeing stability over cosmic timescales.</p>
+<p>In Chapter 7, we established <strong>Runge-Kutta 4<sup>th</sup> Order (RK4)</strong> as the "Standard" for general simulation. However, for a specific and vital class of physics—<strong>Hamiltonian Systems</strong> (like planetary orbits or molecular vibrations)—RK4 has a fatal flaw. While it is extremely accurate in the short term, it does not respect the underlying conservation laws of the universe. Over long periods, RK4 "drifts," causing simulated planets to spiral into the sun or molecules to spontaneously heat up.</p>
+<p>This chapter introduces <strong>Symplectic Integrators</strong>. These are "structure-preserving" algorithms designed specifically to conserve energy and phase-space volume over infinite time. By moving from the general-purpose RK4 to the specialized <strong>Verlet</strong> and <strong>Leapfrog</strong> algorithms, we shift our focus from local precision to <strong>global faithfulness</strong>, ensuring our digital solar systems remain stable for billions of steps.</p>
+<hr />
 <h1 id="chapter-8-outline"><strong>Chapter 8: Outline</strong></h1>
 <table>
 <thead>
 <tr>
-<th style="text-align: left;">Sec.</th>
-<th style="text-align: left;">Title</th>
-<th style="text-align: left;">Core Ideas &amp; Examples</th>
+<th style="text-align: left;"><strong>Sec.</strong></th>
+<th style="text-align: left;"><strong>Title</strong></th>
+<th style="text-align: left;"><strong>Core Ideas &amp; Examples</strong></th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td style="text-align: left;"><strong>8.1</strong></td>
-<td style="text-align: left;">The RK4 Energy Drift Problem</td>
-<td style="text-align: left;">Monotonic error accumulation, numerical "heat death."</td>
+<td style="text-align: left;"><strong>The Problem of Energy Drift</strong></td>
+<td style="text-align: left;">Why RK4 fails for long-term orbits; monotonic error accumulation; conservative vs. dissipative systems.</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>8.2</strong></td>
-<td style="text-align: left;">The Symplectic Solution</td>
-<td style="text-align: left;">Shadow Hamiltonians, bounded energy error, long-term stability.</td>
+<td style="text-align: left;"><strong>Symplectic Geometry</strong></td>
+<td style="text-align: left;">Phase space conservation; Liouville’s Theorem; the "Shadow Hamiltonian."</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>8.3</strong></td>
-<td style="text-align: left;">The Geometry of Phase Space</td>
-<td style="text-align: left;">Hamiltonian mechanics, Liouville's Theorem, preserving phase-space area.</td>
+<td style="text-align: left;"><strong>The Verlet Algorithm</strong></td>
+<td style="text-align: left;">Position-only updates; <span class="arithmatex">\(\mathcal{O}(h^2)\)</span> accuracy; time-reversibility; molecular dynamics baseline.</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>8.4</strong></td>
-<td style="text-align: left;">The Störmer–Verlet Algorithm</td>
-<td style="text-align: left;">Taylor expansion derivation, position-only update, <span class="arithmatex">\(\mathcal{O}(h^2)\)</span> accuracy.</td>
+<td style="text-align: left;"><strong>Velocity Verlet (The Workhorse)</strong></td>
+<td style="text-align: left;">The "Kick-Drift-Kick" sequence; synchronous <span class="arithmatex">\(x\)</span> and <span class="arithmatex">\(v\)</span>; the MD standard.</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>8.5</strong></td>
-<td style="text-align: left;">The Velocity–Verlet Algorithm</td>
-<td style="text-align: left;">"Kick–Drift–Kick" sequence, synchronous <span class="arithmatex">\(x\)</span> and <span class="arithmatex">\(v\)</span> calculation.</td>
+<td style="text-align: left;"><strong>The Leapfrog Algorithm</strong></td>
+<td style="text-align: left;">Staggered time grids; celestial mechanics; <span class="arithmatex">\(v\)</span> at <span class="arithmatex">\(t+h/2\)</span>; stability in N-body systems.</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>8.6</strong></td>
-<td style="text-align: left;">The Leapfrog Algorithm</td>
-<td style="text-align: left;">Staggered time grid (<span class="arithmatex">\(x\)</span> at <span class="arithmatex">\(t_n\)</span>, <span class="arithmatex">\(v\)</span> at <span class="arithmatex">\(t_{n+1/2}\)</span>), celestial mechanics.</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>8.7</strong></td>
-<td style="text-align: left;">Application: N-Body Simulation</td>
-<td style="text-align: left;"><span class="arithmatex">\(\mathcal{O}(N^2)\)</span> problem, conserving <span class="arithmatex">\(E\)</span> and <span class="arithmatex">\(\mathbf{P}\)</span> over cosmic time.</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>8.8</strong></td>
-<td style="text-align: left;">Summary and Bridge</td>
-<td style="text-align: left;">IVPs vs. BVPs (Boundary Value Problems).</td>
+<td style="text-align: left;"><strong>Global Stability over Precision</strong></td>
+<td style="text-align: left;">Error bounds; why low-order symplectic beats high-order non-symplectic for orbits.</td>
 </tr>
 </tbody>
 </table>
 <hr />
-<h2 id="81-the-rk4-energy-drift-problem"><strong>8.1 The RK4 Energy Drift Problem</strong></h2>
-<p>The flaw of non-symplectic integrators like RK4 is not their local <em>accuracy</em> at a single step, but the <em>geometry</em> of the accumulated trajectory over many steps.</p>
-<p>In conservative systems, the integrator's job is to follow a "contour line" of constant energy in a high-dimensional phase space. RK4 is so locally accurate that it gets very close to the correct path, but it introduces a bias that pushes it <em>ever-so-slightly</em> to a new contour (e.g., <span class="arithmatex">\(E + \epsilon\)</span>). At the next step, it does so again (to <span class="arithmatex">\(E + 2\epsilon\)</span>), and so on.</p>
-<p>This accumulation, known as <strong>secular drift</strong>, causes the total energy <span class="arithmatex">\(E(t)\)</span> to slowly creep upward (or downward) monotonically. The consequence is catastrophic for long-term simulations:</p>
-<ul>
-<li>A simulated planet in a stable orbit will slowly spiral away from its star.</li>
-<li>A simulation of a stable molecule (molecular dynamics) will "heat up," with atoms vibrating faster and faster until the simulation "explodes."</li>
-</ul>
-<p>This is a numerical <strong>"heat death"</strong>—a complete failure to conserve the system's most fundamental quantity.</p>
+<h2 id="81-the-problem-of-energy-drift"><strong>8.1 The Problem of Energy Drift</strong></h2>
 <hr />
-<h2 id="82-the-symplectic-solution"><strong>8.2 The Symplectic Solution</strong></h2>
-<p>The solution requires a change in philosophical approach: <strong>sacrifice short-term precision for long-term fidelity</strong>.</p>
-<p><strong>Symplectic integrators</strong> are structure-preserving algorithms designed to conserve the <strong>geometry of phase space</strong> (the invariant area/volume of all possible states) dictated by Hamilton’s equations.</p>
-<p>A symplectic algorithm does <em>not</em> perfectly conserve the true energy (<span class="arithmatex">\(E\)</span>). Instead, it ensures that the simulated system evolves on a <strong>shadow Hamiltonian</strong> (<span class="arithmatex">\(\tilde{H}\)</span>)—a <em>different</em> modified energy surface that remains <em>perfectly constant</em> for all time.</p>
-<p>As a result, the energy of the symplectic simulation does not drift. It will gently <strong>oscillate</strong> about the true value but will <strong>never drift away</strong>. This structural preservation guarantees <strong>long-term stability</strong> and <strong>time-reversibility</strong>, making these methods essential for orbital mechanics and molecular dynamics [2, 3].</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>    <span class="n">flowchart</span> <span class="n">LR</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">A</span><span class="p">[</span><span class="n">Conservative</span> <span class="n">System</span><span class="p">]</span> <span class="o">--&gt;</span> <span class="n">B</span><span class="p">{</span><span class="n">Integrator</span> <span class="n">Choice</span><span class="p">}</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="n">B</span> <span class="o">--&gt;|</span><span class="n">RK4</span> <span class="p">(</span><span class="n">Non</span><span class="o">-</span><span class="n">Symplectic</span><span class="p">)</span><span class="o">|</span> <span class="n">C</span><span class="p">[</span><span class="n">High</span> <span class="n">Local</span> <span class="n">Accuracy</span><span class="p">]</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="n">C</span> <span class="o">--&gt;</span> <span class="n">D</span><span class="p">[</span><span class="n">Energy</span> <span class="n">Drift</span> <span class="n">Accumulates</span><span class="p">]</span>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    <span class="n">D</span> <span class="o">--&gt;</span> <span class="n">E</span><span class="p">[</span><span class="n">Simulation</span> <span class="n">Fails</span> <span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">g</span><span class="o">.</span><span class="p">,</span> <span class="n">Orbit</span> <span class="n">Escapes</span><span class="p">)]</span>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    <span class="n">B</span> <span class="o">--&gt;|</span><span class="n">Verlet</span> <span class="p">(</span><span class="n">Symplectic</span><span class="p">)</span><span class="o">|</span> <span class="n">F</span><span class="p">[</span><span class="n">Preserves</span> <span class="n">Phase</span> <span class="n">Space</span><span class="p">]</span>
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>    <span class="n">F</span> <span class="o">--&gt;</span> <span class="n">G</span><span class="p">[</span><span class="n">Energy</span> <span class="n">Oscillates</span> <span class="p">(</span><span class="n">Bounded</span><span class="p">)]</span>
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>    <span class="n">G</span> <span class="o">--&gt;</span> <span class="n">H</span><span class="p">[</span><span class="n">Long</span><span class="o">-</span><span class="n">Term</span> <span class="n">Stability</span><span class="p">]</span>
-</span></code></pre></div>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">runge_kutta_4</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">t0</span><span class="p">,</span> <span class="n">t_end</span><span class="p">,</span> <span class="n">h</span><span class="p">):</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    <span class="n">t_values</span> <span class="o">=</span> <span class="p">[</span><span class="n">t0</span><span class="p">]</span>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>    <span class="n">y_values</span> <span class="o">=</span> <span class="p">[</span><span class="n">y0</span><span class="p">]</span>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    <span class="n">t</span> <span class="o">=</span> <span class="n">t0</span>
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>    <span class="n">y</span> <span class="o">=</span> <span class="n">y0</span>
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>    <span class="k">while</span> <span class="n">t</span> <span class="o">&lt;</span> <span class="n">t_end</span><span class="p">:</span>
-</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>        <span class="n">k1</span> <span class="o">=</span> <span class="n">h</span> <span class="o">*</span> <span class="n">f</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>        <span class="n">k2</span> <span class="o">=</span> <span class="n">h</span> <span class="o">*</span> <span class="n">f</span><span class="p">(</span><span class="n">t</span> <span class="o">+</span> <span class="mf">0.5</span><span class="o">*</span><span class="n">h</span><span class="p">,</span> <span class="n">y</span> <span class="o">+</span> <span class="mf">0.5</span><span class="o">*</span><span class="n">k1</span><span class="p">)</span>
-</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>        <span class="n">k3</span> <span class="o">=</span> <span class="n">h</span> <span class="o">*</span> <span class="n">f</span><span class="p">(</span><span class="n">t</span> <span class="o">+</span> <span class="mf">0.5</span><span class="o">*</span><span class="n">h</span><span class="p">,</span> <span class="n">y</span> <span class="o">+</span> <span class="mf">0.5</span><span class="o">*</span><span class="n">k2</span><span class="p">)</span>
-</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>        <span class="n">k4</span> <span class="o">=</span> <span class="n">h</span> <span class="o">*</span> <span class="n">f</span><span class="p">(</span><span class="n">t</span> <span class="o">+</span> <span class="n">h</span><span class="p">,</span> <span class="n">y</span> <span class="o">+</span> <span class="n">k3</span><span class="p">)</span>
-</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>
-</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>        <span class="n">y</span> <span class="o">+=</span> <span class="p">(</span><span class="n">k1</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">k2</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">k3</span> <span class="o">+</span> <span class="n">k4</span><span class="p">)</span> <span class="o">/</span> <span class="mf">6.0</span>
-</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>        <span class="n">t</span> <span class="o">+=</span> <span class="n">h</span>
-</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>        <span class="n">t_values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
-</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>        <span class="n">y_values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
-</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>
-</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>    <span class="k">return</span> <span class="n">t_values</span><span class="p">,</span> <span class="n">y_values</span>
-</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a>
-</span><span id="__span-1-21"><a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a><span class="c1"># Algorithm: Basic Störmer-Verlet</span>
-</span><span id="__span-1-22"><a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a>
-</span><span id="__span-1-23"><a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a><span class="c1">## Initialize: x[0], x[1] (requires a special startup step, e.g., Euler)</span>
-</span><span id="__span-1-24"><a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a>
-</span><span id="__span-1-25"><a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a><span class="c1">## Initialize: h (timestep)</span>
-</span><span id="__span-1-26"><a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a>
-</span><span id="__span-1-27"><a id="__codelineno-1-27" name="__codelineno-1-27" href="#__codelineno-1-27"></a><span class="k">def</span><span class="w"> </span><span class="nf">stormer_verlet</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">F</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">N_steps</span><span class="p">):</span>
-</span><span id="__span-1-28"><a id="__codelineno-1-28" name="__codelineno-1-28" href="#__codelineno-1-28"></a>    <span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="n">x0</span><span class="p">,</span> <span class="n">x1</span><span class="p">]</span>
-</span><span id="__span-1-29"><a id="__codelineno-1-29" name="__codelineno-1-29" href="#__codelineno-1-29"></a>    <span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="n">F</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="n">m</span><span class="p">,</span> <span class="n">F</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="n">m</span><span class="p">]</span>
-</span><span id="__span-1-30"><a id="__codelineno-1-30" name="__codelineno-1-30" href="#__codelineno-1-30"></a>
-</span><span id="__span-1-31"><a id="__codelineno-1-31" name="__codelineno-1-31" href="#__codelineno-1-31"></a>    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N_steps</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
-</span><span id="__span-1-32"><a id="__codelineno-1-32" name="__codelineno-1-32" href="#__codelineno-1-32"></a>        <span class="c1"># Verlet position update</span>
-</span><span id="__span-1-33"><a id="__codelineno-1-33" name="__codelineno-1-33" href="#__codelineno-1-33"></a>        <span class="n">x_next</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">x</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">h</span> <span class="o">*</span> <span class="n">h</span> <span class="o">*</span> <span class="n">a</span><span class="p">[</span><span class="n">n</span><span class="p">]</span>
-</span><span id="__span-1-34"><a id="__codelineno-1-34" name="__codelineno-1-34" href="#__codelineno-1-34"></a>        <span class="n">x</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x_next</span><span class="p">)</span>
-</span><span id="__span-1-35"><a id="__codelineno-1-35" name="__codelineno-1-35" href="#__codelineno-1-35"></a>
-</span><span id="__span-1-36"><a id="__codelineno-1-36" name="__codelineno-1-36" href="#__codelineno-1-36"></a>        <span class="c1"># Update acceleration for next step</span>
-</span><span id="__span-1-37"><a id="__codelineno-1-37" name="__codelineno-1-37" href="#__codelineno-1-37"></a>        <span class="n">a_next</span> <span class="o">=</span> <span class="n">F</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="n">m</span>
-</span><span id="__span-1-38"><a id="__codelineno-1-38" name="__codelineno-1-38" href="#__codelineno-1-38"></a>        <span class="n">a</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">a_next</span><span class="p">)</span>
-</span><span id="__span-1-39"><a id="__codelineno-1-39" name="__codelineno-1-39" href="#__codelineno-1-39"></a>
-</span><span id="__span-1-40"><a id="__codelineno-1-40" name="__codelineno-1-40" href="#__codelineno-1-40"></a>    <span class="k">return</span> <span class="n">x</span>
-</span></code></pre></div>
-<details class="question">
-<summary>A Startup Problem</summary>
-<p>The formula for <span class="arithmatex">\(x_{n+1}\)</span> requires <em>two</em> previous positions, <span class="arithmatex">\(x_n\)</span> and <span class="arithmatex">\(x_{n-1}\)</span>. How do you think we can calculate <span class="arithmatex">\(x_1\)</span> when we only know <span class="arithmatex">\(x_0\)</span> at the beginning of the simulation?</p>
-<p><strong>Hint:</strong> We must use a different, non-Verlet method (like Euler's method) for the <em>very first</em> step, <span class="arithmatex">\(x_1 = x_0 + v_0 h\)</span>, just to "seed" the Verlet algorithm.</p>
-</details>
-<hr />
-<h2 id="85-the-velocityverlet-algorithm"><strong>8.5 The Velocity–Verlet Algorithm</strong></h2>
-<p><strong>Velocity–Verlet</strong> is the modern standard for molecular dynamics [4, 5] because it fixes the original Verlet's limitation by explicitly and <strong>synchronously</strong> calculating both position and velocity at every step.</p>
-<hr />
-<h3 id="the-kickdriftkick-sequence"><strong>The Kick–Drift–Kick Sequence</strong></h3>
-<p>The method is derived from the same symplectic foundation but is expressed as a four-step sequence of <strong>half-step “kicks”</strong> (velocity updates) and a <strong>full-step “drift”</strong> (position update).</p>
-<div class="arithmatex">\[
-\begin{align}
-v_{n+\frac{1}{2}} &amp;= v_n + \frac{h}{2} a_n \quad \text{(Half-Kick)} \\
-x_{n+1} &amp;= x_n + h \cdot v_{n+\frac{1}{2}} \quad \text{(Full-Drift)} \\
-a_{n+1} &amp;= F(x_{n+1}) / m \quad \text{(Update Force)} \\
-v_{n+1} &amp;= v_{n+\frac{1}{2}} + \frac{h}{2} a_{n+1} \quad \text{(Half-Kick)}
-\end{align}
-\]</div>
-<p>Velocity–Verlet is the <strong>workhorse of Hamiltonian dynamics</strong> because it retains the <span class="arithmatex">\(\mathcal{O}(h^2)\)</span> accuracy, time-reversibility, and symplectic structure of Verlet while providing perfectly synchronized state vectors (<span class="arithmatex">\(x_n\)</span>, <span class="arithmatex">\(v_n\)</span>) at each step.</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1">## Algorithm: Velocity-Verlet (Kick-Drift-Kick)</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="k">def</span><span class="w"> </span><span class="nf">velocity_verlet</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">v0</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">F</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">N_steps</span><span class="p">):</span>
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>    <span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="n">x0</span><span class="p">]</span>
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>    <span class="n">v</span> <span class="o">=</span> <span class="p">[</span><span class="n">v0</span><span class="p">]</span>
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>    <span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="n">F</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="n">m</span><span class="p">]</span>
-</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>
-</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N_steps</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
-</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>        <span class="c1"># 1. Half-Kick</span>
-</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>        <span class="n">v_half</span> <span class="o">=</span> <span class="n">v</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">h</span> <span class="o">*</span> <span class="n">a</span><span class="p">[</span><span class="n">n</span><span class="p">]</span>
-</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>
-</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>        <span class="c1"># 2. Full-Drift</span>
-</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>        <span class="n">x_next</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">+</span> <span class="n">h</span> <span class="o">*</span> <span class="n">v_half</span>
-</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>        <span class="n">x</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x_next</span><span class="p">)</span>
-</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a>
-</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a>        <span class="c1"># 3. New Acceleration</span>
-</span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a>        <span class="n">a_next</span> <span class="o">=</span> <span class="n">F</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="n">m</span>
-</span><span id="__span-2-18"><a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a>        <span class="n">a</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">a_next</span><span class="p">)</span>
-</span><span id="__span-2-19"><a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a>
-</span><span id="__span-2-20"><a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a>        <span class="c1"># 4. Half-Kick</span>
-</span><span id="__span-2-21"><a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a>        <span class="n">v_next</span> <span class="o">=</span> <span class="n">v_half</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">h</span> <span class="o">*</span> <span class="n">a</span><span class="p">[</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
-</span><span id="__span-2-22"><a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a>        <span class="n">v</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">v_next</span><span class="p">)</span>
-</span><span id="__span-2-23"><a id="__codelineno-2-23" name="__codelineno-2-23" href="#__codelineno-2-23"></a>
-</span><span id="__span-2-24"><a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a>    <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">v</span>
-</span></code></pre></div>
-<hr />
-<h2 id="86-the-leapfrog-algorithm"><strong>8.6 The Leapfrog Algorithm</strong></h2>
-<p>The <strong>Leapfrog algorithm</strong> is a mathematically equivalent twin of Velocity–Verlet, often favored in celestial mechanics and plasma physics. It maintains stability by intentionally <strong>staggering</strong> the position and velocity updates.</p>
-<hr />
-<h3 id="the-staggered-time-grid"><strong>The Staggered Time Grid</strong></h3>
-<p>The method defines positions <span class="arithmatex">\(x\)</span> at <strong>integer times</strong> (<span class="arithmatex">\(t_n\)</span>) and velocities <span class="arithmatex">\(v\)</span> at <strong>half-integer times</strong> (<span class="arithmatex">\(t_{n+1/2}\)</span>). They "leapfrog" over each other, creating a pure and stable expression of the Hamiltonian flow:</p>
-<div class="arithmatex">\[
-\begin{align}
-v_{n+\frac{1}{2}} &amp;= v_{n-\frac{1}{2}} + h \cdot a_n \quad \text{(Kick)} \\
-x_{n+1} &amp;= x_n + h \cdot v_{n+\frac{1}{2}} \quad \text{(Drift)}
-\end{align}
-\]</div>
-<p>Leapfrog is <span class="arithmatex">\(\mathcal{O}(h^2)\)</span> accurate and <strong>symplectic</strong>, making it perfectly stable for long-term orbital simulations.</p>
-<div class="admonition example">
-<p class="admonition-title">Application: Celestial Mechanics</p>
-<p>Leapfrog is highly favored for orbital mechanics. Why? Its staggered nature perfectly captures the "fall-and-miss" physics of an orbit: the velocity (at <span class="arithmatex">\(t + h/2\)</span>) dictates the <em>next</em> position (at <span class="arithmatex">\(t+h\)</span>), which is then used to calculate the <em>next</em> acceleration (<span class="arithmatex">\(a(t+h)\)</span>) that will update the velocity. This continuous "leaping" is exceptionally stable for N-body problems.</p>
+<p>A system is <strong>Conservative</strong> if its total energy <span class="arithmatex">\(E = T + V\)</span> remains constant.
+- <strong>RK4 (Non-Symplectic):</strong> Each step introduces a tiny, biased error. Over time, these errors add up in one direction (monotonically), causing the energy to "drift" away from the true value.
+- <strong>Symplectic Solvers:</strong> These algorithms are designed to stay on a "Shadow" energy surface. The energy will <strong>oscillate</strong> around the true value but will <strong>never drift away</strong>.</p>
+<div class="admonition tip">
+<p class="admonition-title">Symplectic = Conservative</p>
+<p>If you are simulating a system without friction (like a pendulum in a vacuum or a planet in space) for a long time, <strong>do not use RK4</strong>. Use a symplectic integrator like Velocity Verlet to ensure the physics remains valid.</p>
 </div>
 <hr />
-<h2 id="87-application-n-body-simulation"><strong>8.7 Application: N-Body Simulation</strong></h2>
-<p>The <strong>N-Body problem</strong> (simulating the mutual gravitational interaction of <span class="arithmatex">\(N\)</span> masses) is a <strong>fully coupled, nonlinear</strong> system that is solved with <span class="arithmatex">\(\mathcal{O}(N^2)\)</span> computational cost per time step [6].</p>
-<p>The <strong>Velocity–Verlet</strong> algorithm is the ideal choice for this system. Its symplectic nature ensures that the total <strong>energy</strong> (<span class="arithmatex">\(E\)</span>) and <strong>momentum</strong> (<span class="arithmatex">\(\mathbf{P}\)</span>) are conserved over cosmic timescales, allowing the complex, nested elliptical orbits to remain <strong>stable, reversible, and bounded</strong> without the energy drift that would destroy an RK4 simulation.</p>
+<h2 id="82-velocity-verlet-kick-drift-kick"><strong>8.2 Velocity Verlet: Kick-Drift-Kick</strong></h2>
 <hr />
-<h2 id="88-summary-and-bridge"><strong>8.8 Summary and Bridge</strong></h2>
-<p>This chapter completed the study of <strong>Initial Value Problems (IVPs)</strong> by mastering the symplectic family of integrators.</p>
-<p>The key distinction is that symplectic methods (Verlet, Velocity–Verlet, Leapfrog) sacrifice some <strong>local precision</strong> to achieve <strong>global faithfulness</strong> to the conservation laws, guaranteeing that energy and momentum errors remain bounded over infinite time.</p>
-<p>The final challenge in Volume I is to move from <strong>Initial Value Problems</strong> (predicting the future from the "start") to <strong>Boundary Value Problems (BVPs)</strong> (solving a system constrained at both the "start" and "end" of a domain). This is the focus of the next chapter.</p>
+<p>The <strong>Velocity Verlet</strong> algorithm is the most popular symplectic integrator, especially in Molecular Dynamics. It updates positions and velocities in a symmetric, synchronized way:</p>
+<pre class="mermaid"><code>graph TD
+    A[State at t] --&gt; B[Half-Kick: Update v by h/2]
+    B --&gt; C[Full-Drift: Update x by h]
+    C --&gt; D[Calculate New Forces at x_new]
+    D --&gt; E[Half-Kick: Update v by another h/2]
+    E --&gt; F[State at t+h]</code></pre>
+<p><strong>The Step Formula:</strong>
+1.  <strong>Kick:</strong> <span class="arithmatex">\(v_{n+1/2} = v_n + \frac{h}{2} a_n\)</span>
+2.  <strong>Drift:</strong> <span class="arithmatex">\(x_{n+1} = x_n + h v_{n+1/2}\)</span>
+3.  <strong>Update:</strong> <span class="arithmatex">\(a_{n+1} = F(x_{n+1})/m\)</span>
+4.  <strong>Kick:</strong> <span class="arithmatex">\(v_{n+1} = v_{n+1/2} + \frac{h}{2} a_{n+1}\)</span></p>
+<hr />
+<h2 id="83-the-leapfrog-algorithm"><strong>8.3 The Leapfrog Algorithm</strong></h2>
+<hr />
+<p>Common in celestial mechanics, the <strong>Leapfrog</strong> algorithm is mathematically equivalent to Verlet but uses a "staggered" grid. Velocities are calculated exactly halfway between positions:</p>
+<div class="arithmatex">\[ v_{n+1/2} = v_{n-1/2} + h \cdot a_n $$
+$$ x_{n+1} = x_n + h \cdot v_{n+1/2} \]</div>
+<div class="admonition example">
+<p class="admonition-title">The 'Leap' of Faith</p>
+<p>In Leapfrog, the velocity "leaps" over the position, and the position then "leaps" over the velocity. This staggered nature is what provides its famous stability—if you reverse the time step (<span class="arithmatex">\(h \to -h\)</span>), you perfectly backtrack the trajectory, proving the method is <strong>time-reversible</strong>.</p>
+</div>
+<hr />
+<h2 id="84-global-stability-vs-local-precision"><strong>8.4 Global Stability vs. Local Precision</strong></h2>
+<hr />
+<p>It is a common mistake to assume that a 4<sup>th</sup>-order method (RK4) is always better than a 2<sup>nd</sup>-order method (Verlet).</p>
+<details class="question">
+<summary>Why use a 2<sup>nd</sup>-order method if a 4<sup>th</sup>-order exists?</summary>
+<p>Precision is a measure of how close you are to the truth <em>now</em>. Stability is a measure of how well you respect the laws of physics <em>forever</em>. For a 10,000-year orbit simulation, a 2<sup>nd</sup>-order symplectic method is far superior because its error is <strong>bounded</strong>, whereas RK4's error will eventually exceed the size of the orbit itself.</p>
+</details>
+<hr />
+<h2 id="summary-general-purpose-vs-symplectic"><strong>Summary: General Purpose vs. Symplectic</strong></h2>
+<hr />
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Feature</th>
+<th style="text-align: left;">RK4 (General)</th>
+<th style="text-align: left;">Velocity Verlet (Symplectic)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Order</strong></td>
+<td style="text-align: left;"><span class="arithmatex">\(\mathcal{O}(h^4)\)</span> (Higher)</td>
+<td style="text-align: left;"><span class="arithmatex">\(\mathcal{O}(h^2)\)</span> (Lower)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Energy</strong></td>
+<td style="text-align: left;"><strong>Drifts</strong> (accumulates)</td>
+<td style="text-align: left;"><strong>Oscillates</strong> (bounded)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Time-Reversible?</strong></td>
+<td style="text-align: left;"><strong>No</strong></td>
+<td style="text-align: left;"><strong>Yes</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Phase Space</strong></td>
+<td style="text-align: left;">Shrinks or expands</td>
+<td style="text-align: left;"><strong>Conserved</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Best For</strong></td>
+<td style="text-align: left;">Damped systems, Drag, Circuits</td>
+<td style="text-align: left;"><strong>Orbits, Vibrations, MD</strong></td>
+</tr>
+</tbody>
+</table>
 <hr />
 <h2 id="references"><strong>References</strong></h2>
-<p>[1] Verlet, L. (1967). Computer "experiments" on classical fluids. I. Thermodynamical properties of Lennard-Jones molecules. <em>Physical Review</em>, 159(1), 98–103.</p>
-<p>[2] Hairer, E., Lubich, C., &amp; Wanner, G. (2006). <em>Geometric Numerical Integration: Structure-Preserving Algorithms for Ordinary Differential Equations</em>. Springer Berlin, Heidelberg.</p>
+<hr />
+<p>[1] Verlet, L. (1967). Computer "experiments" on classical fluids. <em>Physical Review</em>.</p>
+<p>[2] Hairer, E., et al. (2006). <em>Geometric Numerical Integration</em>. Springer.</p>
 <p>[3] Leimkuhler, B., &amp; Reich, S. (2004). <em>Simulating Hamiltonian Dynamics</em>. Cambridge University Press.</p>
-<p>[4] Frenkel, D., &amp; Smit, B. (2001). <em>Understanding Molecular Simulation: From Algorithms to Applications</em>. Academic Press.</p>
-<p>[5] Newman, M. (2013). <em>Computational Physics</em>. CreateSpace Independent Publishing Platform.</p>
-<p>[6] Press, W. H., Teukolsky, S. A., Vetterling, W. T., &amp; Flannery, B. P. (2007). <em>Numerical Recipes: The Art of Scientific Computing</em> (3<sup>rd</sup> ed.). Cambridge University Press.</p>
+<p>[4] Frenkel, D., &amp; Smit, B. (2001). <em>Understanding Molecular Simulation</em>. Academic Press.</p>
+<p>[5] Tuckerman, M. E., et al. (1992). Reversible multiple time scale molecular dynamics. <em>Journal of Chemical Physics</em>.</p>
 
 
 

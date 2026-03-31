@@ -94,7 +94,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#chapter-4-interpolation-fitting-and-the-discipline-of-modeling-data" class="md-skip">
+        <a href="#chapter-4-interpolation-and-fitting" class="md-skip">
           Skip to content
         </a>
       
@@ -2324,214 +2324,165 @@
   
 
 
-<h1 id="chapter-4-interpolation-fitting-and-the-discipline-of-modeling-data"><strong>Chapter 4: Interpolation, Fitting, and the Discipline of Modeling Data</strong></h1>
+<h1 id="chapter-4-interpolation-and-fitting"><strong>Chapter 4: Interpolation and Fitting</strong></h1>
 <hr />
 <h1 id="introduction"><strong>Introduction</strong></h1>
-<p>Chapter 3 taught us how to solve equations reliably when the residual is known. Chapter 4 shifts perspective: in many real settings, we do not start from a full equation. We start from data.</p>
-<p>That data may be:</p>
-<ol>
-<li>Sparse (few measured points).</li>
-<li>Noisy (measurement uncertainty).</li>
-<li>Nonuniform (uneven sampling in time or space).</li>
-<li>Partially observed (missing segments or constrained ranges).</li>
-</ol>
-<p>Computational modeling in this regime requires two distinct tools that are often confused:</p>
-<ol>
-<li>Interpolation: construct a function that passes through known samples.</li>
-<li>Fitting (regression): construct a function that captures trend while tolerating noise.</li>
-</ol>
-<p>This chapter provides a professional framework for deciding which tool is appropriate, quantifying model quality, and avoiding common pathologies such as overfitting, extrapolation error, and unstable polynomial behavior.</p>
-<hr />
-<h2 id="learning-outcomes">Learning Outcomes</h2>
-<p>By the end of this chapter, you should be able to:</p>
-<ol>
-<li>Explain the difference between interpolation and fitting in terms of assumptions and goals.</li>
-<li>Identify when global high-degree polynomial interpolation is unsafe.</li>
-<li>Apply cubic spline interpolation for stable local approximation.</li>
-<li>Perform least-squares fitting and interpret parameter uncertainty.</li>
-<li>Use residual diagnostics to evaluate model adequacy rather than relying on visual fit alone.</li>
-</ol>
+<p>In the "Digital Lab," we rarely possess a continuous, analytical formula for every physical process. Instead, we often work with discrete sets of "observations"—individual data points <span class="arithmatex">\((\mathbf{x}_i, \mathbf{y}_i)\)</span> collected from experiments, sensors, or sparse simulations. To make predictions or understand the underlying physics, we must bridge the gaps between these points.</p>
+<p>This chapter defines the two fundamental strategies for modeling discrete data: <strong>Interpolation</strong> and <strong>Fitting</strong>. While they share similar mathematical machinery, they represent two distinct scientific goals. Interpolation seeks an exact path through every trusted data point, while Fitting seeks the most likely "trend" through noisy observations. Understanding the trade-offs between global and local models—and the dangers of <strong>Runge's Phenomenon</strong>—is essential for building data-driven models that are physically plausible and numerically stable.</p>
 <hr />
 <h1 id="chapter-4-outline"><strong>Chapter 4: Outline</strong></h1>
 <table>
 <thead>
 <tr>
-<th style="text-align: left;">Sec.</th>
-<th style="text-align: left;">Title</th>
-<th style="text-align: left;">Core Focus</th>
+<th style="text-align: left;"><strong>Sec.</strong></th>
+<th style="text-align: left;"><strong>Title</strong></th>
+<th style="text-align: left;"><strong>Core Ideas &amp; Examples</strong></th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left;">4.1</td>
-<td style="text-align: left;">Data Regimes and Modeling Intent</td>
-<td style="text-align: left;">Sparse vs noisy data, task framing</td>
+<td style="text-align: left;"><strong>4.1</strong></td>
+<td style="text-align: left;"><strong>Modeling Strategy: Exact vs. Trend</strong></td>
+<td style="text-align: left;">Interpolation (matching points) vs. Fitting (minimizing error); the role of noise; decision criteria.</td>
 </tr>
 <tr>
-<td style="text-align: left;">4.2</td>
-<td style="text-align: left;">Interpolation Fundamentals</td>
-<td style="text-align: left;">Exact sample matching and local structure</td>
+<td style="text-align: left;"><strong>4.2</strong></td>
+<td style="text-align: left;"><strong>Polynomial Interpolation</strong></td>
+<td style="text-align: left;">Lagrange and Newton forms; uniqueness of polynomials; the <span class="arithmatex">\(N+1\)</span> points for <span class="arithmatex">\(N\)</span>-degree rule.</td>
 </tr>
 <tr>
-<td style="text-align: left;">4.3</td>
-<td style="text-align: left;">Runge Phenomenon and Node Strategy</td>
-<td style="text-align: left;">Why more degree can reduce accuracy</td>
+<td style="text-align: left;"><strong>4.3</strong></td>
+<td style="text-align: left;"><strong>Runge's Phenomenon</strong></td>
+<td style="text-align: left;">The hidden danger of high-degree polynomials; edge oscillations; the need for local models.</td>
 </tr>
 <tr>
-<td style="text-align: left;">4.4</td>
-<td style="text-align: left;">Cubic Splines as Practical Interpolators</td>
-<td style="text-align: left;">Local smoothness without global oscillation</td>
+<td style="text-align: left;"><strong>4.4</strong></td>
+<td style="text-align: left;"><strong>Cubic Splines (Local Wisdom)</strong></td>
+<td style="text-align: left;">Piecewise polynomials; ensuring continuity of <span class="arithmatex">\(f(x)\)</span>, <span class="arithmatex">\(f'(x)\)</span>, and <span class="arithmatex">\(f''(x)\)</span>; natural vs. clamped boundaries.</td>
 </tr>
 <tr>
-<td style="text-align: left;">4.5</td>
-<td style="text-align: left;">Least-Squares Fitting</td>
-<td style="text-align: left;">Trend estimation under noise</td>
+<td style="text-align: left;"><strong>4.5</strong></td>
+<td style="text-align: left;"><strong>Least-Squares Fitting</strong></td>
+<td style="text-align: left;">Minimizing the sum of squared residuals (<span class="arithmatex">\(L_2\)</span> norm); linear regression; the normal equations.</td>
 </tr>
 <tr>
-<td style="text-align: left;">4.6</td>
-<td style="text-align: left;">Residual Diagnostics and Model Trust</td>
-<td style="text-align: left;">Validation, bias, variance, and failure modes</td>
-</tr>
-<tr>
-<td style="text-align: left;">4.7</td>
-<td style="text-align: left;">Summary and Bridge</td>
-<td style="text-align: left;">Transition to differentiation/integration from data</td>
+<td style="text-align: left;"><strong>4.6</strong></td>
+<td style="text-align: left;"><strong>Standard Practice: Goodness of Fit</strong></td>
+<td style="text-align: left;">Residual analysis; Coefficient of Determination (<span class="arithmatex">\(R^2\)</span>); avoiding the "Overfitting" trap.</td>
 </tr>
 </tbody>
 </table>
 <hr />
-<h2 id="41-data-regimes-and-modeling-intent">4.1 Data Regimes and Modeling Intent</h2>
-<p>Before choosing algorithms, define the modeling intent.</p>
-<p>Intent A: Reconstruct missing values between trusted samples.</p>
+<h2 id="41-modeling-strategy-exact-vs-trend"><strong>4.1 Modeling Strategy: Exact vs. Trend</strong></h2>
+<hr />
+<p>Before selecting an algorithm, you must identify the nature of your data:</p>
+<ol>
+<li><strong>Interpolation:</strong> Used when your data points are <strong>exact</strong> (e.g., values from a known lookup table). The goal is to find a function <span class="arithmatex">\(P(x)\)</span> such that <span class="arithmatex">\(P(x_i) = y_i\)</span> for every point.</li>
+<li><strong>Fitting (Regession):</strong> Used when your data contains <strong>noise</strong> or uncertainty (e.g., sensor readings). The goal is to find a function that passes <em>near</em> the points to capture the overall trend, without being distracted by random fluctuations.</li>
+</ol>
+<pre class="mermaid"><code>graph TD
+    A[Discrete Data Points] --&gt; B{Is Data Trusted?}
+    B -- Yes (Exact) --&gt; C[Interpolation]
+    B -- No (Noisy) --&gt; D[Fitting/Regression]
+    C --&gt; E[Global Polynomial]
+    C --&gt; F[Cubic Splines]
+    D --&gt; G[Linear Least-Squares]
+    D --&gt; H[Nonlinear Fitting]</code></pre>
+<div class="admonition tip">
+<p class="admonition-title">Interpolation vs. Fitting</p>
+<p>If you interpolate noisy data, you are accurately modeling the noise, not the physics. If you fit exact data, you are intentionally throwing away precision. Always match the tool to the data's integrity.</p>
+</div>
+<hr />
+<h2 id="42-polynomial-interpolation-runges-phenomenon"><strong>4.2 Polynomial Interpolation &amp; Runge's Phenomenon</strong></h2>
+<hr />
+<p>Mathematically, for any <span class="arithmatex">\(N+1\)</span> points with distinct <span class="arithmatex">\(x\)</span>-coordinates, there exists a <strong>unique</strong> polynomial of degree <span class="arithmatex">\(N\)</span> that passes through all of them.</p>
+<p>While Lagrange polynomials provide a beautiful theoretical form, they suffer from a practical catastrophe known as <strong>Runge's Phenomenon</strong>: as the degree of the polynomial increases, the function begins to oscillate wildly near the edges of the interval.</p>
+<div class="admonition example">
+<p class="admonition-title">Runge's Phenomenon</p>
+<p>Consider the function <span class="arithmatex">\(f(x) = \frac{1}{1 + 25x^2}\)</span> (the Runge function). If you try to interpolate this with a 10<sup>th</sup>-degree polynomial on evenly spaced points, the error at the boundaries grows to over 100%, even though it matches the central points perfectly. <strong>High-degree polynomials are numerically unstable for global interpolation.</strong></p>
+</div>
+<hr />
+<h2 id="43-cubic-splines-local-wisdom"><strong>4.3 Cubic Splines: Local Wisdom</strong></h2>
+<hr />
+<p>To avoid the oscillations of high-degree polynomials, we use <strong>Cubic Splines</strong>. Instead of one giant polynomial for the whole domain, we use a different cubic polynomial for every interval <span class="arithmatex">\([x_i, x_{i+1}]\)</span>.</p>
+<p>To make the transition between intervals looks "natural," we enforce three physical constraints at every internal point (knot):
+1.  <strong>Continuity of Value:</strong> The two polynomials must meet at the point.
+2.  <strong>Continuity of Slope:</strong> The first derivatives must match (<span class="arithmatex">\(C^1\)</span> continuity).
+3.  <strong>Continuity of Curvature:</strong> The second derivatives must match (<span class="arithmatex">\(C^2\)</span> continuity).</p>
+<div class="admonition tip">
+<p class="admonition-title">The Spline Advantage</p>
+<p>Splines are the "Standard" for smooth data reconstruction. Because they are local, a "spike" in one data point only affects the nearby segments, preventing the global instability found in Lagrange polynomials.</p>
+</div>
+<hr />
+<h2 id="44-least-squares-fitting"><strong>4.4 Least-Squares Fitting</strong></h2>
+<hr />
+<p>When fitting noisy data, we seek a "Best Fit" <span class="arithmatex">\(f(x; \beta)\)</span> that minimizes the total distance from the data points. The most common metric is the <strong>Least-Squares</strong> objective:</p>
+<div class="arithmatex">\[ \text{Minimize } S = \sum_{i=1}^{N} [y_i - f(x_i; \beta)]^2 \]</div>
+<p>For a linear model <span class="arithmatex">\(y = mx + b\)</span>, this leads to a set of <strong>Normal Equations</strong> that can be solved exactly using linear algebra.</p>
+<details class="question">
+<summary>Why minimize the square of the error?</summary>
+<p>Minimizing the square (rather than the absolute value) penalizes large "outliers" more heavily and provides a smooth objective function that is easy to differentiate and optimize using calculus.</p>
+</details>
+<hr />
+<h2 id="45-standard-practice-goodness-of-fit"><strong>4.5 Standard Practice: Goodness of Fit</strong></h2>
+<hr />
+<p>How do you know if your model is good? A professional "Standard" requires checking the <strong>Residuals</strong>:</p>
+<div class="arithmatex">\[ \text{Residual}_i = y_i (\text{observed}) - y_i (\text{predicted}) \]</div>
 <ul>
-<li>Usually interpolation.</li>
-<li>Assumes measured points are authoritative values.</li>
-<li>Typical in calibration tables or deterministic simulation outputs.</li>
+<li><strong>Good Fit:</strong> Residuals should look like "white noise"—random, centered around zero, and with no visible patterns.</li>
+<li><strong>Bad Fit:</strong> If the residuals show a curve (e.g., a "U-shape"), your model is missing a physical effect (e.g., you used a line to fit a parabola).</li>
 </ul>
-<p>Intent B: Estimate latent relationship from noisy measurements.</p>
-<ul>
-<li>Usually fitting.</li>
-<li>Assumes each observation contains signal + noise.</li>
-<li>Typical in experiments and sensor pipelines.</li>
-</ul>
-<p>Mistaking one intent for the other creates systematic error:</p>
-<ol>
-<li>Interpolating noisy data can overreact to measurement fluctuations.</li>
-<li>Fitting when exact constraints are required can violate known conditions.</li>
-</ol>
-<p>Professional practice starts with a data taxonomy:</p>
-<ol>
-<li>Deterministic or stochastic source?</li>
-<li>Noise model available or unknown?</li>
-<li>Required output: exact reconstruction, trend estimate, or prediction?</li>
-<li>Domain limits: where interpolation is safe and extrapolation is risky?</li>
-</ol>
+<div class="admonition example">
+<p class="admonition-title">The Overfitting Trap</p>
+<p>If you use a 10<sup>th</sup>-degree polynomial to fit 11 noisy points, your error will be zero at those points (<span class="arithmatex">\(r^2 = 1.0\)</span>), but the model will be useless for prediction. This is <strong>Overfitting</strong>: you have "memorized" the noise rather than learning the trend.</p>
+</div>
 <hr />
-<h2 id="42-interpolation-fundamentals">4.2 Interpolation Fundamentals</h2>
-<p>Given points <span class="arithmatex">\((x_i, y_i)\)</span> with distinct <span class="arithmatex">\(x_i\)</span>, interpolation constructs a function <span class="arithmatex">\(p(x)\)</span> such that:</p>
-<div class="arithmatex">\[
-p(x_i) = y_i \quad \forall i
-\]</div>
-<p>For polynomial interpolation with <span class="arithmatex">\(n+1\)</span> points, there is a unique polynomial of degree at most <span class="arithmatex">\(n\)</span>.</p>
-<p>Theoretical interpolation error for smooth functions has form:</p>
-<div class="arithmatex">\[
-f(x)-p_n(x)=\frac{f^{(n+1)}(\xi)}{(n+1)!}\prod_{i=0}^{n}(x-x_i)
-\]</div>
-<p>This expression explains two practical truths:</p>
-<ol>
-<li>Error depends on higher derivatives of the true function.</li>
-<li>Error is highly sensitive to node placement.</li>
-</ol>
-<p>Hence interpolation quality is about geometry as much as algebra.</p>
+<h2 id="summary-interpolation-vs-fitting-comparison"><strong>Summary: Interpolation vs. Fitting Comparison</strong></h2>
 <hr />
-<h2 id="43-runge-phenomenon-and-node-strategy">4.3 Runge Phenomenon and Node Strategy</h2>
-<p>A classic warning in numerical analysis: global high-degree interpolation on equally spaced nodes can oscillate near interval boundaries.</p>
-<p>Runge-style behavior reveals a deep lesson:</p>
-<ul>
-<li>Higher polynomial degree is not automatically better.</li>
-<li>Approximation quality is governed by function smoothness, node distribution, and basis stability.</li>
-</ul>
-<p>Node strategy matters.</p>
-<p>Chebyshev-like nodes reduce boundary oscillation because they cluster near endpoints, controlling the growth of interpolation basis factors.</p>
-<p>Practical implications:</p>
-<ol>
-<li>For many points, avoid one giant global polynomial on uniform nodes.</li>
-<li>Prefer piecewise local methods (splines) unless global polynomial structure is explicitly required.</li>
-</ol>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Feature</th>
+<th style="text-align: left;">Interpolation</th>
+<th style="text-align: left;">Fitting (Least-Squares)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Goal</strong></td>
+<td style="text-align: left;">Exact Point Matching</td>
+<td style="text-align: left;">Error Minimization (Trend)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Passes Through Points?</strong></td>
+<td style="text-align: left;"><strong>Always</strong></td>
+<td style="text-align: left;"><strong>Rarely</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Ideal Data</strong></td>
+<td style="text-align: left;">High-precision / Deterministic</td>
+<td style="text-align: left;">Low-precision / Noisy</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Failure Mode</strong></td>
+<td style="text-align: left;">Oscillations (Runge's)</td>
+<td style="text-align: left;">Overfitting (Too many params)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Best Method</strong></td>
+<td style="text-align: left;"><strong>Cubic Splines</strong></td>
+<td style="text-align: left;"><strong>Low-degree Polynomials</strong></td>
+</tr>
+</tbody>
+</table>
 <hr />
-<h2 id="44-cubic-splines-as-practical-interpolators">4.4 Cubic Splines as Practical Interpolators</h2>
-<p>Cubic splines build piecewise third-degree polynomials with continuity constraints on value, first derivative, and second derivative.</p>
-<p>Advantages:</p>
-<ol>
-<li>Local control: changing one data point affects nearby segments more than distant ones.</li>
-<li>Smoothness: preserves physically plausible continuity in many trajectories.</li>
-<li>Stability: avoids many high-degree global oscillation pathologies.</li>
-</ol>
-<p>Boundary conditions matter:</p>
-<ol>
-<li>Natural spline: second derivative set to zero at endpoints.</li>
-<li>Clamped spline: endpoint slopes specified from physics or measurement.</li>
-</ol>
-<p>Professional choice of boundary condition should be justified by domain knowledge, not default convenience.</p>
+<h2 id="references"><strong>References</strong></h2>
 <hr />
-<h2 id="45-least-squares-fitting">4.5 Least-Squares Fitting</h2>
-<p>When data are noisy, exact point matching is usually inappropriate. Least-squares fitting solves:</p>
-<div class="arithmatex">\[
-\min_{\theta} \sum_{i=1}^{m} r_i(\theta)^2, \qquad r_i = y_i - \hat{y}(x_i;\theta)
-\]</div>
-<p>Linear models permit closed-form normal-equation solutions (with conditioning caveats). Nonlinear models require iterative optimization.</p>
-<p>Parameter interpretation should include uncertainty, not just point estimates:</p>
-<ol>
-<li>Covariance matrix approximates parameter variance.</li>
-<li>Confidence intervals communicate reliability.</li>
-<li>Correlated parameters can reduce interpretability.</li>
-</ol>
-<p>A good fit is not simply a curve that looks plausible; it is a model with defensible residual structure and physically meaningful parameters.</p>
-<hr />
-<h2 id="46-residual-diagnostics-and-model-trust">4.6 Residual Diagnostics and Model Trust</h2>
-<p>Residual analysis is the quality-control stage.</p>
-<p>A trustworthy model often exhibits residuals that are:</p>
-<ol>
-<li>Centered near zero.</li>
-<li>Pattern-free across input domain.</li>
-<li>Approximately homoscedastic (variance not exploding with x).</li>
-<li>Not strongly autocorrelated (for ordered data).</li>
-</ol>
-<p>Warning signs:</p>
-<ol>
-<li>Structured residual oscillations -&gt; model misspecification.</li>
-<li>Fan-shaped residual spread -&gt; heteroscedasticity.</li>
-<li>Very low training error but poor out-of-sample behavior -&gt; overfitting.</li>
-<li>Reasonable interpolation but absurd extrapolation -&gt; unsupported domain use.</li>
-</ol>
-<p>Use quantitative diagnostics alongside plots:</p>
-<ol>
-<li>RMSE or MAE for absolute scale.</li>
-<li>Adjusted criteria for model complexity when comparing candidate models.</li>
-<li>Train/validation splits when prediction is the objective.</li>
-</ol>
-<p>Professional modeling is iterative:</p>
-<p>fit -&gt; diagnose -&gt; revise model class -&gt; re-evaluate.</p>
-<hr />
-<h2 id="47-summary-and-bridge">4.7 Summary and Bridge</h2>
-<p>Chapter 4 establishes that working with data is a methodological discipline, not a plotting exercise.</p>
-<p>Key takeaways:</p>
-<ol>
-<li>Interpolation and fitting solve different scientific problems.</li>
-<li>Node choice and basis choice can dominate interpolation behavior.</li>
-<li>Splines provide robust local smoothness for many practical tasks.</li>
-<li>Residual diagnostics are essential for model credibility.</li>
-</ol>
-<p>Chapter 5 will leverage these approximations to compute derivatives and integrals from discrete data, where approximation error and noise sensitivity become even more tightly coupled.</p>
-<hr />
-<h2 id="references">References</h2>
-<ol>
-<li>Burden, R. L., and Faires, J. D. Numerical Analysis. Brooks/Cole.</li>
-<li>Quarteroni, A., Sacco, R., and Saleri, F. Numerical Mathematics. Springer.</li>
-<li>Trefethen, L. N. Approximation Theory and Approximation Practice. SIAM.</li>
-<li>Hastie, T., Tibshirani, R., and Friedman, J. The Elements of Statistical Learning. Springer.</li>
-<li>Press, W. H., et al. Numerical Recipes. Cambridge University Press.</li>
-</ol>
+<p>[1] Trefethen, L. N. (2013). <em>Approximation Theory and Approximation Practice</em>. SIAM.</p>
+<p>[2] de Boor, C. (1978). <em>A Practical Guide to Splines</em>. Springer-Verlag.</p>
+<p>[3] Burden, R. L., &amp; Faires, J. D. (2011). <em>Numerical Analysis</em>. Brooks/Cole.</p>
+<p>[4] Hastie, T., Tibshirani, R., &amp; Friedman, J. (2009). <em>The Elements of Statistical Learning</em>. Springer.</p>
+<p>[5] Björck, Å. (1996). <em>Numerical Methods for Least Squares Problems</em>. SIAM.</p>
 
 
 

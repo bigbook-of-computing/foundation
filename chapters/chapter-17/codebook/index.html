@@ -2481,30 +2481,36 @@
 
 <h1 id="chapter-17-randomness-in-physics-codebook"><strong>Chapter 17: Randomness in Physics (Codebook)</strong></h1>
 <hr />
+<p>This Codebook implements the final pillar of the computational toolkit: <strong>Stochastic Methods</strong>. We demonstrate the <strong>Random Walk</strong> as a microscopic model for diffusion and use <strong>Monte Carlo Integration</strong> to solve integrals with characteristic <span class="arithmatex">\(1/\sqrt{N}\)</span> convergence.</p>
+<hr />
 <h2 id="project-1-the-random-walk-microscopic-diffusion">Project 1: The Random Walk (Microscopic Diffusion)</h2>
 <table>
 <thead>
 <tr>
-<th style="text-align: left;">Feature</th>
+<th style="text-align: left;">Component</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left;"><strong>Goal</strong></td>
-<td style="text-align: left;">Simulate a <strong>1D Random Walk</strong> (modeling a particle's random motion due to collisions) to verify the microscopic law of diffusion: the <strong>Root Mean Square (RMS) displacement</strong> scales with the <strong>square root of time</strong> (<span class="arithmatex">\(\Delta x_{\text{RMS}} \propto \sqrt{t}\)</span>).</td>
+<td style="text-align: left;"><strong>Objective</strong></td>
+<td style="text-align: left;">Simulate 5000 random walkers to verify <span class="arithmatex">\(\Delta x_{\text{RMS}} \propto \sqrt{t}\)</span>.</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>Model</strong></td>
-<td style="text-align: left;">At each time step, the walker moves <span class="arithmatex">\(\mathbf{+1}\)</span> or <span class="arithmatex">\(\mathbf{-1}\)</span> unit with equal probability.</td>
+<td style="text-align: left;"><strong>Mathematical Concept</strong></td>
+<td style="text-align: left;">Microscopic stochastic process; ensemble averaging.</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>Method</strong></td>
-<td style="text-align: left;"><strong>Stochastic Simulation</strong> using a <strong>Pseudo-Random Number Generator (PRNG)</strong> to decide the direction of each step. The result is averaged over many walkers to find the statistical RMS displacement.</td>
+<td style="text-align: left;"><strong>Experiment Setup</strong></td>
+<td style="text-align: left;">1000 step walks; <span class="arithmatex">\(\pm 1\)</span> step size; seed-locked PRNG.</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>Physical Result</strong></td>
-<td style="text-align: left;">The final plot must confirm the <span class="arithmatex">\(\mathbf{\Delta x \propto \sqrt{t}}\)</span> relationship, linking the random walk to the macroscopic <strong>Heat Equation</strong> (Chapter 11).</td>
+<td style="text-align: left;"><strong>Expected Behavior</strong></td>
+<td style="text-align: left;">RMS displacement grows linearly with the square root of time.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Verification Goal</strong></td>
+<td style="text-align: left;">Match the simulated growth rate to the theoretical <span class="arithmatex">\(\sqrt{t}\)</span> curve.</td>
 </tr>
 </tbody>
 </table>
@@ -2656,26 +2662,30 @@
 <table>
 <thead>
 <tr>
-<th style="text-align: left;">Feature</th>
+<th style="text-align: left;">Component</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left;"><strong>Goal</strong></td>
-<td style="text-align: left;">Calculate the area of a simple 2D region (an integral) using <strong>Monte Carlo Integration</strong> (the "dart-throwing" method) to demonstrate the method's feasibility and convergence rate (<span class="arithmatex">\(\propto 1/\sqrt{N}\)</span>).</td>
+<td style="text-align: left;"><strong>Objective</strong></td>
+<td style="text-align: left;">Calculate <span class="arithmatex">\(\int_0^1 x^2 dx\)</span> using stochastic sampling.</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>Model</strong></td>
-<td style="text-align: left;">Integrate the function <span class="arithmatex">\(f(x) = x^2\)</span> over the domain <span class="arithmatex">\([0, 1]\)</span>. The analytic integral is <span class="arithmatex">\(\int_0^1 x^2 dx = \frac{1}{3} \approx 0.3333\)</span>.</td>
+<td style="text-align: left;"><strong>Mathematical Concept</strong></td>
+<td style="text-align: left;">Mean Value Theorem: <span class="arithmatex">\(I \approx (b-a) \cdot \frac{1}{N} \sum f(x_i)\)</span>.</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>Method</strong></td>
-<td style="text-align: left;">The integral is approximated as the average function value <span class="arithmatex">\(\langle f \rangle\)</span> times the domain volume <span class="arithmatex">\(V\)</span>: <span class="arithmatex">\(I \approx V \cdot \langle f \rangle = (1-0) \cdot \frac{1}{N} \sum_{i=1}^N f(x_i)\)</span>, where <span class="arithmatex">\(x_i\)</span> are uniform random samples.</td>
+<td style="text-align: left;"><strong>Experiment Setup</strong></td>
+<td style="text-align: left;">Increasing <span class="arithmatex">\(N\)</span> from <span class="arithmatex">\(10^1\)</span> to <span class="arithmatex">\(10^6\)</span> to track convergence.</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>Core Concept</strong></td>
-<td style="text-align: left;">The error is statistical, controlled only by the number of samples (<span class="arithmatex">\(N\)</span>), not the complexity of the function or the dimensionality of the problem.</td>
+<td style="text-align: left;"><strong>Expected Behavior</strong></td>
+<td style="text-align: left;">Error decreases as <span class="arithmatex">\(1/\sqrt{N}\)</span> (power law with slope -0.5).</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Verification Goal</strong></td>
+<td style="text-align: left;">Demonstrate statistical convergence regardless of <span class="arithmatex">\(N\)</span> magnitude.</td>
 </tr>
 </tbody>
 </table>

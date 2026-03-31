@@ -1730,21 +1730,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#quiz-questions" class="md-nav__link">
+  <a href="#comprehension-check" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Quiz Questions
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#interview-style-question" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Interview-Style Question
+        Comprehension Check
       
     </span>
   </a>
@@ -1780,21 +1769,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#quiz-questions_1" class="md-nav__link">
+  <a href="#comprehension-check_1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Quiz Questions
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#interview-style-question_1" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Interview-Style Question
+        Comprehension Check
       
     </span>
   </a>
@@ -1811,6 +1789,28 @@
     <span class="md-ellipsis">
       
         16.6 Core Application: Collective Motion in Molecular Dynamics
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#168-hands-on-projects" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16.8 Hands-On Projects
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#167-chapter-summary-next-steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16.7 Chapter Summary &amp; Next Steps
       
     </span>
   </a>
@@ -2493,21 +2493,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#quiz-questions" class="md-nav__link">
+  <a href="#comprehension-check" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Quiz Questions
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#interview-style-question" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Interview-Style Question
+        Comprehension Check
       
     </span>
   </a>
@@ -2543,21 +2532,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#quiz-questions_1" class="md-nav__link">
+  <a href="#comprehension-check_1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Quiz Questions
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#interview-style-question_1" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Interview-Style Question
+        Comprehension Check
       
     </span>
   </a>
@@ -2574,6 +2552,28 @@
     <span class="md-ellipsis">
       
         16.6 Core Application: Collective Motion in Molecular Dynamics
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#168-hands-on-projects" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16.8 Hands-On Projects
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#167-chapter-summary-next-steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16.7 Chapter Summary &amp; Next Steps
       
     </span>
   </a>
@@ -2614,7 +2614,7 @@
 
 
 <h1 id="chapter-16-data-driven-analysis-svd-pca-workbook"><strong>Chapter 16: Data-Driven Analysis: SVD &amp; PCA (Workbook)</strong></h1>
-<h3 id="161-chapter-opener-the-data-deluge-problem">16.1 Chapter Opener: The "Data Deluge" Problem</h3>
+<h2 class="heading-with-pill" id="161-chapter-opener-the-data-deluge-problem"><strong>16.1 Chapter Opener: The "Data Deluge" Problem</strong></h2>
 <blockquote>
 <p>Summary: The success of numerical solvers creates a <strong>Data Deluge</strong> of high-dimensional data matrices (<span class="arithmatex">\(\mathbf{X}\)</span>). The challenge is to find the dominant, underlying patterns within these data clouds, which requires techniques like SVD and PCA for dimensionality reduction.</p>
 </blockquote>
@@ -2629,7 +2629,7 @@
 <p><strong>The "Solution": A Change of Basis</strong></p>
 <p>Just as the <strong>FFT</strong> (Chapter 15) provided a "change of basis" for signals, <strong>Singular Value Decomposition (SVD)</strong> and <strong>Principal Component Analysis (PCA)</strong> provide a new set of orthogonal axes (a new basis) for the data cloud. These new axes are aligned with the system's <strong>most important behaviors</strong>.</p>
 <hr />
-<h3 id="162-the-master-tool-singular-value-decomposition-svd">16.2 The "Master" Tool: Singular Value Decomposition (SVD)</h3>
+<h2 class="heading-with-pill" id="162-the-master-tool-singular-value-decomposition-svd"><strong>16.2 The "Master" Tool: Singular Value Decomposition (SVD)</strong></h2>
 <blockquote>
 <p>Summary: <strong>SVD</strong> is the master matrix factorization tool, breaking any matrix <span class="arithmatex">\(\mathbf{A}\)</span> into three components (<span class="arithmatex">\(\mathbf{U}\boldsymbol{\Sigma}\mathbf{V}^T\)</span>), where the <strong>Singular Values (<span class="arithmatex">\(\boldsymbol{\sigma}\)</span>)</strong> quantify the "importance" of each axis for data transformation.</p>
 </blockquote>
@@ -2645,7 +2645,7 @@
 <p><strong>The Importance of Singular Values (<span class="arithmatex">\(\boldsymbol{\sigma}\)</span>):</strong>
 The singular values (<span class="arithmatex">\(\sigma_1 \ge \sigma_2 \ge \dots \ge 0\)</span>) are always positive and are sorted by size. They represent the <strong>magnitude</strong> or <strong>importance</strong> of the information carried by each corresponding axis (<span class="arithmatex">\(\mathbf{u}_i\)</span> and <span class="arithmatex">\(\mathbf{v}_i\)</span>).</p>
 <hr />
-<h3 id="163-application-1-data-compression-noise-filtering">16.3 Application 1: Data Compression &amp; Noise Filtering</h3>
+<h2 class="heading-with-pill" id="163-application-1-data-compression-noise-filtering"><strong>16.3 Application 1: Data Compression &amp; Noise Filtering</strong></h2>
 <blockquote>
 <p>Summary: SVD enables <strong>dimensionality reduction</strong> by allowing <strong>truncation</strong>—discarding the components associated with the smallest singular values (<span class="arithmatex">\(\sigma_k\)</span>), which often correspond to negligible noise.</p>
 </blockquote>
@@ -2657,25 +2657,30 @@ The singular values (<span class="arithmatex">\(\sigma_1 \ge \sigma_2 \ge \dots 
 <li><strong>Compression:</strong> If a matrix is <span class="arithmatex">\(500 \times 500\)</span>, reconstructing it with only <span class="arithmatex">\(k=20\)</span> singular values (<span class="arithmatex">\(96\%\)</span> compression) often yields an image visually identical to the original.</li>
 <li><strong>Noise Filtering:</strong> The smallest singular values (<span class="arithmatex">\(\sigma_{\text{tiny}}\)</span>) often correspond to random, high-frequency noise. By discarding them, <span class="arithmatex">\(\mathbf{A}_{\text{approx}}\)</span> acts as a "de-noised" version of the original data.</li>
 </ul>
-<h4 id="quiz-questions">Quiz Questions</h4>
-<p><strong>1. The SVD factors a matrix <span class="arithmatex">\(\mathbf{A}\)</span> into <span class="arithmatex">\(\mathbf{U}\boldsymbol{\Sigma}\mathbf{V}^T\)</span>. What component directly quantifies the "importance" or magnitude of the information along each axis?</strong></p>
-<ul>
-<li>a) The Left Singular Vectors (<span class="arithmatex">\(\mathbf{U}\)</span>).</li>
-<li>b) The Right Singular Vectors (<span class="arithmatex">\(\mathbf{V}^T\)</span>).</li>
-<li>c) The <strong>Singular Values (<span class="arithmatex">\(\boldsymbol{\sigma}\)</span>)</strong>. (<strong>Correct</strong>)</li>
-<li>d) The Covariance Matrix.</li>
-</ul>
-<p><strong>2. Truncated SVD is an effective method for data compression and noise filtering because:</strong></p>
-<ul>
-<li>a) It is <span class="arithmatex">\(O(N^3)\)</span> and is always accurate.</li>
-<li>b) <strong>Information is ranked, allowing the low-magnitude, high-frequency noise components (small <span class="arithmatex">\(\sigma_k\)</span>) to be discarded</strong>. (<strong>Correct</strong>)</li>
-<li>c) It transforms the data into the frequency domain.</li>
-<li>d) It only works on symmetric matrices.</li>
-</ul>
-<h4 id="interview-style-question">Interview-Style Question</h4>
+<h3 id="comprehension-check"><strong>Comprehension Check</strong></h3>
+<div class="admonition note">
+<p class="admonition-title">Quiz</p>
+<ol>
+<li>The SVD factors a matrix <span class="arithmatex">\(\mathbf{A}\)</span> into <span class="arithmatex">\(\mathbf{U}\boldsymbol{\Sigma}\mathbf{V}^T\)</span>. What component directly quantifies the "importance" or magnitude of the information along each axis?</li>
+<li>Truncated SVD is an effective method for data compression and noise filtering because:</li>
+</ol>
+</div>
+<details class="info">
+<summary>See Answer</summary>
+<ol>
+<li><strong>The Singular Values (<span class="arithmatex">\(\boldsymbol{\sigma}\)</span>).</strong></li>
+<li><strong>Information is ranked, allowing the low-magnitude, high-frequency noise components (small <span class="arithmatex">\(\sigma_k\)</span>) to be discarded.</strong></li>
+</ol>
+</details>
+<div class="admonition abstract">
+<p class="admonition-title">Interview-Style Question</p>
 <p><strong>Question:</strong> An image is stored as a large <span class="arithmatex">\(M \times N\)</span> matrix. You calculate its SVD and find that 99% of the variance is captured by the first 50 singular values. What does the SVD tell you about the image that a simple inspection does not?</p>
-<p><strong>Answer Strategy:</strong> The SVD reveals that the image is <strong>low-rank</strong> and has <strong>significant redundancy</strong>. The image, despite its <span class="arithmatex">\(M \times N\)</span> complexity, is fundamentally built from only 50 <strong>dominant patterns</strong> (the first 50 eigenvectors/singular vectors). The remaining singular values describe negligible detail or random noise, allowing the image to be compressed by a large factor without noticeable degradation.</p>
-<h3 id="164-the-physics-tool-principal-component-analysis-pca">16.4 The "Physics" Tool: Principal Component Analysis (PCA)</h3>
+<details class="info" open="open">
+<summary>Answer Strategy</summary>
+<p>The SVD reveals that the image is <strong>low-rank</strong> and has <strong>significant redundancy</strong>. The image, despite its <span class="arithmatex">\(M \times N\)</span> complexity, is fundamentally built from only 50 <strong>dominant patterns</strong> (the first 50 eigenvectors/singular vectors). The remaining singular values describe negligible detail or random noise, allowing the image to be compressed by a large factor without noticeable degradation.</p>
+</details>
+</div>
+<h2 class="heading-with-pill" id="164-the-physics-tool-principal-component-analysis-pca"><strong>16.4 The "Physics" Tool: Principal Component Analysis (PCA)</strong></h2>
 <blockquote>
 <p>Summary: <strong>Principal Component Analysis (PCA)</strong> is the physical application of SVD/Eigendecomposition. It transforms the data into a new, orthogonal basis where the axes (the <strong>Principal Components</strong>) are aligned with the system's directions of <strong>greatest variance</strong>.</p>
 </blockquote>
@@ -2684,7 +2689,7 @@ The singular values (<span class="arithmatex">\(\sigma_1 \ge \sigma_2 \ge \dots 
 * <strong>PC1:</strong> The axis of <strong>greatest variance</strong> (the "long" axis of the data cloud).
 * <strong>PC2:</strong> The axis of <strong>second-greatest variance</strong> (orthogonal to PC1).</p>
 <p><strong>The Insight:</strong> The "physics" of the system is often simpler when expressed in this new coordinate system defined by the PCs than in the original <span class="arithmatex">\(x, y, z\)</span> coordinates.</p>
-<h3 id="165-the-chapter-14-connection-pca-is-an-eigenvalue-problem">16.5 The "Chapter 14 Connection": PCA is an Eigenvalue Problem</h3>
+<h2 class="heading-with-pill" id="165-the-chapter-14-connection-pca-is-an-eigenvalue-problem"><strong>16.5 The "Chapter 14 Connection": PCA is an Eigenvalue Problem</strong></h2>
 <blockquote>
 <p>Summary: PCA is mathematically achieved by solving the <strong>eigenvalue problem</strong> for the <strong>Covariance Matrix (<span class="arithmatex">\(\mathbf{C}\)</span>)</strong> of the data. The eigenvectors are the PCs, and the eigenvalues are the variance along those PCs.</p>
 </blockquote>
@@ -2699,25 +2704,30 @@ The singular values (<span class="arithmatex">\(\sigma_1 \ge \sigma_2 \ge \dots 
 * <strong>Eigenvectors (<span class="arithmatex">\(\mathbf{v}_k\)</span>):</strong> The <strong>Principal Components (PCs)</strong> (the new axes).
 * <strong>Eigenvalues (<span class="arithmatex">\(\lambda_k\)</span>):</strong> The <strong>Variance</strong> (or energy) along the PCs.</p>
 <p><strong>The Tool:</strong> Since <span class="arithmatex">\(\mathbf{C}\)</span> is always <strong>symmetric</strong>, the correct, fast solver to use is <strong><span class="arithmatex">\(\text{np.linalg.eigh()}\)</span></strong> (Chapter 14).</p>
-<h4 id="quiz-questions_1">Quiz Questions</h4>
-<p><strong>1. In Principal Component Analysis (PCA), the Principal Components themselves are given by which component of the covariance matrix solution?</strong></p>
-<ul>
-<li>a) The eigenvalues (<span class="arithmatex">\(\lambda\)</span>).</li>
-<li>b) The total variance.</li>
-<li>c) The <strong>eigenvectors (<span class="arithmatex">\(\mathbf{v}\)</span>)</strong>. (<strong>Correct</strong>)</li>
-<li>d) The singular values (<span class="arithmatex">\(\sigma\)</span>).</li>
-</ul>
-<p><strong>2. The magnitude of the **eigenvalues (<span class="arithmatex">\(\lambda\)</span>)</strong> resulting from the covariance matrix gives a direct measure of what physical quantity along the corresponding Principal Component axis?**</p>
-<ul>
-<li>a) The mean.</li>
-<li>b) The standard deviation.</li>
-<li>c) The <strong>Variance</strong> (the measure of spread/energy). (<strong>Correct</strong>)</li>
-<li>d) The frequency.</li>
-</ul>
-<h4 id="interview-style-question_1">Interview-Style Question</h4>
+<h3 id="comprehension-check_1"><strong>Comprehension Check</strong></h3>
+<div class="admonition note">
+<p class="admonition-title">Quiz</p>
+<ol>
+<li>In Principal Component Analysis (PCA), the Principal Components themselves are given by which component of the covariance matrix solution?</li>
+<li>The magnitude of the <strong>eigenvalues (<span class="arithmatex">\(\lambda\)</span>)</strong> resulting from the covariance matrix gives a direct measure of what physical quantity along the corresponding Principal Component axis?</li>
+</ol>
+</div>
+<details class="info">
+<summary>See Answer</summary>
+<ol>
+<li><strong>The eigenvectors (<span class="arithmatex">\(\mathbf{v}\)</span>).</strong></li>
+<li><strong>The Variance (the measure of spread/energy).</strong></li>
+</ol>
+</details>
+<div class="admonition abstract">
+<p class="admonition-title">Interview-Style Question</p>
 <p><strong>Question:</strong> Why is calculating the covariance matrix (<span class="arithmatex">\(\mathbf{C}\)</span>) a necessary step in PCA? What information about the data does this matrix capture before the eigenvalue decomposition?</p>
-<p><strong>Answer Strategy:</strong> The covariance matrix is necessary because the eigenvalue decomposition (<span class="arithmatex">\(\mathbf{C}\mathbf{v} = \lambda\mathbf{v}\)</span>) only finds the axes of the largest variance if the matrix is symmetric, which <span class="arithmatex">\(\mathbf{C}\)</span> always is. More importantly, <span class="arithmatex">\(\mathbf{C}\)</span> captures the <strong>correlations</strong> between all pairs of variables. PCA is looking for the transformation that decorrelates the data; the eigenvectors of the covariance matrix are precisely those orthogonal axes that eliminate all pairwise correlations.</p>
-<h3 id="166-core-application-collective-motion-in-molecular-dynamics">16.6 Core Application: Collective Motion in Molecular Dynamics</h3>
+<details class="info" open="open">
+<summary>Answer Strategy</summary>
+<p>The covariance matrix is necessary because the eigenvalue decomposition (<span class="arithmatex">\(\mathbf{C}\mathbf{v} = \lambda\mathbf{v}\)</span>) only finds the axes of the largest variance if the matrix is symmetric, which <span class="arithmatex">\(\mathbf{C}\)</span> always is. More importantly, <span class="arithmatex">\(\mathbf{C}\)</span> captures the <strong>correlations</strong> between all pairs of variables. PCA is looking for the transformation that decorrelates the data; the eigenvectors of the covariance matrix are precisely those orthogonal axes that eliminate all pairwise correlations.</p>
+</details>
+</div>
+<h2 class="heading-with-pill" id="166-core-application-collective-motion-in-molecular-dynamics"><strong>16.6 Core Application: Collective Motion in Molecular Dynamics</strong></h2>
 <blockquote>
 <p>Summary: PCA is used to analyze chaotic N-body trajectories, effectively <strong>separating coherent physical motion</strong> (translation, rotation, vibration) from <strong>random thermal noise</strong> by isolating the components associated with the largest eigenvalues.</p>
 </blockquote>
@@ -2730,7 +2740,7 @@ The singular values (<span class="arithmatex">\(\sigma_1 \ge \sigma_2 \ge \dots 
     * The <strong>tiny eigenvalues</strong> represent <strong>uncorrelated thermal noise</strong> (random jiggling).
 4.  <strong>Eigenvector Analysis:</strong> Animating the first few eigenvectors (<span class="arithmatex">\(\mathbf{v}_1, \mathbf{v}_2, \dots\)</span>) shows the <strong>dominant modes of behavior</strong> (e.g., <span class="arithmatex">\(\mathbf{v}_1\)</span> might be a rotation, <span class="arithmatex">\(\mathbf{v}_2\)</span> might be a vibration).</p>
 <p><strong>The Result:</strong> PCA successfully <strong>separates coherent physics from random heat</strong>, achieving a massive <strong>dimensionality reduction</strong> that allows the researcher to understand the system's essential dynamics.</p>
-<h1 id="chapter-16-on-projects-svd-and-pca-workbook"><strong>Chapter 16: On Projects: SVD and PCA () () (Workbook)</strong></h1>
+<h2 class="heading-with-pill" id="168-hands-on-projects"><strong>16.8 Hands-On Projects</strong></h2>
 <p><strong>1. Project: N-Body PCA for Collective Motion (Core Application)</strong></p>
 <ul>
 <li><strong>Problem:</strong> Analyze a chaotic trajectory (e.g., the 3-Body problem) to identify and rank the dominant motions.</li>
@@ -2765,7 +2775,7 @@ The singular values (<span class="arithmatex">\(\sigma_1 \ge \sigma_2 \ge \dots 
 </ol>
 </li>
 </ul>
-<h2 id="167-chapter-summary-next-steps">16.7 Chapter Summary &amp; Next Steps</h2>
+<h2 class="heading-with-pill" id="167-chapter-summary-next-steps"><strong>16.7 Chapter Summary &amp; Next Steps</strong></h2>
 <blockquote>
 <p>Summary: PCA and SVD provide the essential <strong>change of basis</strong> for high-dimensional data, transforming chaos into structure. This tool completes the deterministic half of the Volume I toolkit, preparing for the final challenge of modeling chance.</p>
 </blockquote>

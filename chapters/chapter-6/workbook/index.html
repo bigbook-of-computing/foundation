@@ -94,7 +94,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#chapter-6-numerical-integration-quadrature-workbook" class="md-skip">
+        <a href="#chapter-6-numerical-integration-workbook" class="md-skip">
           Skip to content
         </a>
       
@@ -4535,14 +4535,18 @@
   
 
 
-<h1 id="chapter-6-numerical-integration-quadrature-workbook"><strong>Chapter 6: Numerical Integration (Quadrature) (Workbook)</strong></h1>
+<h1 id="chapter-6-numerical-integration-workbook"><strong>Chapter 6: Numerical Integration (Workbook)</strong></h1>
 <hr />
-<h2 class="heading-with-pill" id="61-the-physics-of-accumulation">6.1 The Physics of "Accumulation"</h2>
 <blockquote>
-<p><strong>Concept:</strong> Integration as Total Accumulation • <strong>Difficulty:</strong> ★★☆☆☆</p>
-<p><strong>Summary:</strong> The integral, <span class="arithmatex">\(I = \int f(x) dx\)</span>, is the language of <strong>total accumulation</strong> in physics. While differentiation reveals instantaneous change, integration computes global properties—work, probability, energy—by summing continuous distributions over a domain.</p>
+<p><strong>Summary:</strong> This workbook explores the physics of "accumulation." While differentiation reveals instantaneous change, integration computes global properties—work, probability, and energy—by summing continuous distributions over a domain. We will master <strong>Numerical Quadrature</strong>, comparing the robust <strong>Trapezoidal Rule</strong> (<span class="arithmatex">\(O(h^2)\)</span>) with the high-precision <strong>Simpson's Rule</strong> (<span class="arithmatex">\(O(h^4)\)</span>) and the optimal <strong>Gaussian Quadrature</strong>.</p>
 </blockquote>
 <hr />
+<h2 class="heading-with-pill" id="61-the-physics-of-accumulation"><strong>6.1 The Physics of "Accumulation"</strong></h2>
+<blockquote>
+<p><strong>Difficulty:</strong> ★★☆☆☆</p>
+<p><strong>Concept:</strong> Integration as Total Accumulation</p>
+<p><strong>Summary:</strong> The integral is the mathematical tool for summing infinitesimal contributions into a macroscopic whole. This section establishes the physical motivation for numerical quadrature and the computational barriers we must overcome.</p>
+</blockquote>
 <h3 id="theoretical-background">Theoretical Background</h3>
 <p>In Chapter 5, we mastered the derivative (<span class="arithmatex">\(\frac{d}{dx}\)</span>), the language of <strong>instantaneous change</strong>. Now, we tackle its inverse operation: the <strong>integral</strong> (<span class="arithmatex">\(I = \int f(x) dx\)</span>), the language of <strong>total accumulation</strong>. This is how we "sum up" a quantity that is continuously changing across space or time.</p>
 <h4 id="the-physical-significance-of-integration">The Physical Significance of Integration</h4>
@@ -4680,7 +4684,7 @@ Two fundamental barriers exist: (1) Many physically important functions (like th
 </details>
 </div>
 <hr />
-<h3 id="hands-on-project"><i class="fa-solid fa-flask"></i> Hands-On Project</h3>
+<h3 id="hands-on-project"><strong>Hands-On Project</strong></h3>
 <h4 id="project-center-of-mass-of-a-non-uniform-rod"><strong>Project:</strong> Center of Mass of a Non-Uniform Rod</h4>
 <hr />
 <h4 id="project-blueprint"><strong>Project Blueprint</strong></h4>
@@ -4942,7 +4946,7 @@ The Trapezoidal Rule has **second-order accuracy** ($O(h^2)$). Halving $h$ means
 </details>
 </div>
 <hr />
-<h3 id="hands-on-project_1"><i class="fa-solid fa-flask"></i> Hands-On Project</h3>
+<h3 id="hands-on-project_1"><strong>Hands-On Project</strong></h3>
 <h4 id="project-verifying-second-order-convergence"><strong>Project:</strong> Verifying Second-Order Convergence</h4>
 <hr />
 <h4 id="project-blueprint_1"><strong>Project Blueprint</strong></h4>
@@ -5248,7 +5252,7 @@ Simpson&#39;s Rule has **fourth-order accuracy** ($O(h^4)$). Halving $h$ means t
 </details>
 </div>
 <hr />
-<h3 id="hands-on-project_2"><i class="fa-solid fa-flask"></i> Hands-On Project</h3>
+<h3 id="hands-on-project_2"><strong>Hands-On Project</strong></h3>
 <h4 id="project-oh2-vs-oh4-convergence-showdown"><strong>Project:</strong> <span class="arithmatex">\(O(h^2)\)</span> vs. <span class="arithmatex">\(O(h^4)\)</span> Convergence Showdown</h4>
 <hr />
 <h4 id="project-blueprint_2"><strong>Project Blueprint</strong></h4>
@@ -5560,7 +5564,7 @@ The general rule is that $N$-point Gaussian quadrature is exact for polynomials 
 </details>
 </div>
 <hr />
-<h3 id="hands-on-project_3"><i class="fa-solid fa-flask"></i> Hands-On Project</h3>
+<h3 id="hands-on-project_3"><strong>Hands-On Project</strong></h3>
 <h4 id="project-quantum-mechanicsnormalizing-a-wavefunction"><strong>Project:</strong> Quantum Mechanics—Normalizing a Wavefunction</h4>
 <hr />
 <h4 id="project-blueprint_3"><strong>Project Blueprint</strong></h4>
@@ -5906,7 +5910,7 @@ The substitution $t = 1/(1+x)$ maps $x \in [0, \infty)$ to $t \in (0, 1]$. From 
 </details>
 </div>
 <hr />
-<h3 id="hands-on-project_4"><i class="fa-solid fa-flask"></i> Hands-On Project</h3>
+<h3 id="hands-on-project_4"><strong>Hands-On Project</strong></h3>
 <h4 id="project-taming-the-gaussian-integral"><strong>Project:</strong> Taming the Gaussian Integral</h4>
 <hr />
 <h4 id="project-blueprint_4"><strong>Project Blueprint</strong></h4>
@@ -6227,7 +6231,7 @@ Grid-based methods require evaluating the function at regular intervals, includi
 </details>
 </div>
 <hr />
-<h3 id="hands-on-project_5"><i class="fa-solid fa-flask"></i> Hands-On Project</h3>
+<h3 id="hands-on-project_5"><strong>Hands-On Project</strong></h3>
 <h4 id="project-exact-vs-approximate-pendulum-period"><strong>Project:</strong> Exact vs. Approximate Pendulum Period</h4>
 <hr />
 <h4 id="project-blueprint_5"><strong>Project Blueprint</strong></h4>
@@ -6662,7 +6666,7 @@ The critical property is **dimension independence**. The error term $\sigma/\sqr
 </details>
 </div>
 <hr />
-<h3 id="hands-on-project_6"><i class="fa-solid fa-flask"></i> Hands-On Project</h3>
+<h3 id="hands-on-project_6"><strong>Hands-On Project</strong></h3>
 <h4 id="project-1d-monte-carlo-vs-simpsons-convergence-battle"><strong>Project:</strong> 1D Monte Carlo vs. Simpson's Convergence Battle</h4>
 <hr />
 <h4 id="project-blueprint_6"><strong>Project Blueprint</strong></h4>

@@ -2483,30 +2483,36 @@
 
 <h1 id="chapter-9-boundary-value-problems-codebook"><strong>Chapter 9: Boundary Value Problems (Codebook)</strong></h1>
 <hr />
+<p>This Codebook provides the numerical tools for solving problems with two-point constraints. We implement the <strong>Shooting Method</strong> (root-finding on initial slopes) and the <strong>Finite Difference Method (FDM)</strong>, focusing on the Time-Independent Schrödinger Equation (TISE) as a matrix eigenvalue problem.</p>
+<hr />
 <h2 id="project-1-the-shooting-method-instability-demonstration">Project 1: The Shooting Method — Instability Demonstration</h2>
 <table>
 <thead>
 <tr>
-<th style="text-align: left;">Feature</th>
+<th style="text-align: left;">Component</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left;"><strong>Goal</strong></td>
-<td style="text-align: left;">Solve a simple linear <strong>Boundary Value Problem (BVP)</strong> using the <strong>Shooting Method</strong> and demonstrate its inherent instability and inefficiency.</td>
+<td style="text-align: left;"><strong>Objective</strong></td>
+<td style="text-align: left;">Solve a linear BVP (<span class="arithmatex">\(y'' = \frac{1}{4}y\)</span>) using the <strong>Shooting Method</strong>.</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>BVP Model</strong></td>
-<td style="text-align: left;">A second-order linear ODE: <span class="arithmatex">\(y''(x) = \frac{1}{4}y(x)\)</span>.</td>
+<td style="text-align: left;"><strong>Mathematical Concept</strong></td>
+<td style="text-align: left;">Converting BVP to IVP by searching for the root of the error function <span class="arithmatex">\(E(g) = y(L;g) - B\)</span>.</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>Boundary Conditions (BCs)</strong></td>
-<td style="text-align: left;"><span class="arithmatex">\(y(0)=1\)</span> and <span class="arithmatex">\(y(2)=0.5\)</span>.</td>
+<td style="text-align: left;"><strong>Experiment Setup</strong></td>
+<td style="text-align: left;">Python <code>solve_ivp</code> for the integration engine and <code>root_scalar</code> for the shooting intelligence.</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>Method</strong></td>
-<td style="text-align: left;"><strong>Converts the BVP to an IVP</strong>. A root-finding algorithm (here, <code>scipy.optimize.root_scalar</code> with Brent's method) iteratively searches for the correct initial slope, <span class="arithmatex">\(g=y'(0)\)</span>.</td>
+<td style="text-align: left;"><strong>Expected Behavior</strong></td>
+<td style="text-align: left;">Iterative convergence to the correct initial slope <span class="arithmatex">\(y'(0) \approx -0.443\)</span>.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Verification Goal</strong></td>
+<td style="text-align: left;">Demonstrate the hybrid nature of the shooting algorithm.</td>
 </tr>
 </tbody>
 </table>
@@ -2660,26 +2666,30 @@
 <table>
 <thead>
 <tr>
-<th style="text-align: left;">Feature</th>
+<th style="text-align: left;">Component</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left;"><strong>Goal</strong></td>
-<td style="text-align: left;">Solve the <strong>Time-Independent Schrödinger Equation (TISE)</strong> for a 1D system (the particle in a box) using the <strong>Finite Difference Method (FDM)</strong>.</td>
+<td style="text-align: left;"><strong>Objective</strong></td>
+<td style="text-align: left;">Solve the <strong>TISE</strong> for a Particle in a Box using the <strong>Finite Difference Method</strong>.</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>Model</strong></td>
-<td style="text-align: left;"><strong>Particle in a Box (<span class="arithmatex">\(V(x)=0\)</span>)</strong>. Boundary conditions: <span class="arithmatex">\(\psi(0)=0\)</span> and <span class="arithmatex">\(\psi(L)=0\)</span>.</td>
+<td style="text-align: left;"><strong>Mathematical Concept</strong></td>
+<td style="text-align: left;">Mapping <span class="arithmatex">\(\hat{H}\psi = E\psi\)</span> onto the matrix system <span class="arithmatex">\(\mathbf{H}\boldsymbol{\psi} = E\boldsymbol{\psi}\)</span>.</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>Mathematical Detail</strong></td>
-<td style="text-align: left;">The FDM converts the TISE into the <strong>Matrix Eigenvalue Problem</strong> <span class="arithmatex">\(\mathbf{H}\boldsymbol{\psi} = E\boldsymbol{\psi}\)</span>. The solution involves finding the eigenvalues (energy levels <span class="arithmatex">\(E\)</span>) and eigenvectors (wavefunctions <span class="arithmatex">\(\boldsymbol{\psi}\)</span>) of the Hamiltonian matrix <span class="arithmatex">\(\mathbf{H}\)</span>.</td>
+<td style="text-align: left;"><strong>Experiment Setup</strong></td>
+<td style="text-align: left;">Tridiagonal Hamiltonian construction; <code>scipy.linalg.eigh_tridiagonal</code> eigensolver.</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>Core Advantage</strong></td>
-<td style="text-align: left;">FDM provides a <strong>stable and highly efficient</strong> solution method by converting the differential equation into a simple <strong>tridiagonal</strong> matrix structure.</td>
+<td style="text-align: left;"><strong>Expected Behavior</strong></td>
+<td style="text-align: left;">Quantized energy levels <span class="arithmatex">\(E_n \propto n^2\)</span>; sinusoidal wavefunctions mirroring analytic results.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Verification Goal</strong></td>
+<td style="text-align: left;">High-precision eigenvalues (<span class="arithmatex">\(&lt; 10^{-5}\)</span> relative error).</td>
 </tr>
 </tbody>
 </table>

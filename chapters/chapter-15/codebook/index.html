@@ -2482,32 +2482,37 @@
 
 
 <h1 id="chapter-15-fourier-analysis-the-fft-codebook"><strong>Chapter 15: Fourier Analysis &amp; The FFT (Codebook)</strong></h1>
-<p>This Python Code Book is for <strong>Chapter 15: Fourier Analysis &amp; The FFT</strong>, focusing on implementing the Fast Fourier Transform to analyze the frequency content of a signal and perform noise reduction.</p>
+<hr />
+<p>This Codebook implement the Fast Fourier Transform (FFT) for signal processing. We demonstrate the <strong>Spectral Decomposition</strong> of composite signals and implement a <strong>Low-Pass Filter</strong> to recover clean signals from noisy time-domain data.</p>
 <hr />
 <h2 id="project-1-spectral-analysis-frequency-decomposition">Project 1: Spectral Analysis (Frequency Decomposition)</h2>
 <table>
 <thead>
 <tr>
-<th style="text-align: left;">Feature</th>
+<th style="text-align: left;">Component</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left;"><strong>Goal</strong></td>
-<td style="text-align: left;">Use the <strong>Fast Fourier Transform (FFT)</strong> to decompose a complex, composite signal (made up of two distinct sine waves) into its fundamental frequency components.</td>
+<td style="text-align: left;"><strong>Objective</strong></td>
+<td style="text-align: left;">Decompose a multi-frequency signal into its constituent parts.</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>Model</strong></td>
-<td style="text-align: left;"><strong>Composite Signal</strong>: <span class="arithmatex">\(y(t) = A_1 \sin(2\pi f_1 t) + A_2 \sin(2\pi f_2 t) + \text{Noise}\)</span>.</td>
+<td style="text-align: left;"><strong>Mathematical Concept</strong></td>
+<td style="text-align: left;">FFT <span class="arithmatex">\(O(N \log N)\)</span> transformation to the frequency domain (<span class="arithmatex">\(Y_k = \text{FFT}(y_n)\)</span>).</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>Method</strong></td>
-<td style="text-align: left;">1. Compute the <strong>FFT</strong> of the signal. 2. Calculate the <strong>Power Spectrum</strong> $\mathbf{P}_k =</td>
+<td style="text-align: left;"><strong>Experiment Setup</strong></td>
+<td style="text-align: left;">Signal <span class="arithmatex">\(y(t)\)</span> with <span class="arithmatex">\(5.0\)</span> Hz and <span class="arithmatex">\(30.0\)</span> Hz components plus additive noise.</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>Core Concept</strong></td>
-<td style="text-align: left;">The FFT performs a <strong>change of basis</strong> from the time domain to the frequency domain, where the original frequencies appear as sharp peaks in the power spectrum.</td>
+<td style="text-align: left;"><strong>Expected Behavior</strong></td>
+<td style="text-align: left;">Two sharp peaks in the power spectrum corresponding to input frequencies.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Verification Goal</strong></td>
+<td style="text-align: left;">Accurately identify peak frequencies using <code>fftfreq</code>.</td>
 </tr>
 </tbody>
 </table>
@@ -2664,22 +2669,30 @@
 <table>
 <thead>
 <tr>
-<th style="text-align: left;">Feature</th>
+<th style="text-align: left;">Component</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left;"><strong>Goal</strong></td>
-<td style="text-align: left;">Use the FFT to perform a <strong>Low-Pass Filter</strong> on the noisy signal from Project 1. The goal is to remove the high-frequency random noise while preserving the low-frequency signal content.</td>
+<td style="text-align: left;"><strong>Objective</strong></td>
+<td style="text-align: left;">Implement a frequency-domain Low-Pass Filter.</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>Method</strong></td>
-<td style="text-align: left;">1. Calculate <span class="arithmatex">\(Y_k\)</span>. 2. Define a <strong>cutoff frequency (<span class="arithmatex">\(f_{cutoff}\)</span>)</strong>. 3. Zero out all coefficients <span class="arithmatex">\(Y_k\)</span> where $</td>
+<td style="text-align: left;"><strong>Mathematical Concept</strong></td>
+<td style="text-align: left;">Zeroing high-frequency spectral coefficients <span class="arithmatex">\(Y_k\)</span> before inversion via IFFT.</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>Core Concept</strong></td>
-<td style="text-align: left;">Noise is typically spread across all frequencies, while signals are concentrated at specific peaks. Filtering removes the high-frequency components that primarily constitute the random noise.</td>
+<td style="text-align: left;"><strong>Experiment Setup</strong></td>
+<td style="text-align: left;">Noisy signal from Project 1 with a 50 Hz cutoff filter.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Expected Behavior</strong></td>
+<td style="text-align: left;">Smooth time-domain reconstruction; reduction in signal RMS error.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Verification Goal</strong></td>
+<td style="text-align: left;">Visually and mathematically confirm noise suppression.</td>
 </tr>
 </tbody>
 </table>

@@ -94,7 +94,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#chapter-12-hyperbolic-pdes-eg-the-wave-equation-workbook" class="md-skip">
+        <a href="#chapter-12-hyperbolic-pdes-workbook" class="md-skip">
           Skip to content
         </a>
       
@@ -1584,10 +1584,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#121-chapter-opener-the-physics-of-propagation" class="md-nav__link">
+  <a href="#121-the-physics-of-propagation" class="md-nav__link">
     <span class="md-ellipsis">
       
-        12.1 Chapter Opener: The Physics of "Propagation"
+        12.1 The Physics of "Propagation"
       
     </span>
   </a>
@@ -1632,6 +1632,56 @@
     <span class="md-ellipsis">
       
         12.5 Core Application: The "Plucked" Guitar String
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#127-comprehensive-review" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.7 Comprehensive Review
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="12.7 Comprehensive Review">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#section-quiz" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Section Quiz
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#128-hands-on-projects" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.8 Hands-On Projects
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#126-chapter-summary-next-steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.6 Chapter Summary &amp; Next Steps
       
     </span>
   </a>
@@ -2392,10 +2442,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#121-chapter-opener-the-physics-of-propagation" class="md-nav__link">
+  <a href="#121-the-physics-of-propagation" class="md-nav__link">
     <span class="md-ellipsis">
       
-        12.1 Chapter Opener: The Physics of "Propagation"
+        12.1 The Physics of "Propagation"
       
     </span>
   </a>
@@ -2446,6 +2496,56 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#127-comprehensive-review" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.7 Comprehensive Review
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="12.7 Comprehensive Review">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#section-quiz" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Section Quiz
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#128-hands-on-projects" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.8 Hands-On Projects
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#126-chapter-summary-next-steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.6 Chapter Summary &amp; Next Steps
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2479,12 +2579,18 @@
   
 
 
-<h1 id="chapter-12-hyperbolic-pdes-eg-the-wave-equation-workbook"><strong>Chapter 12: Hyperbolic PDEs (e.g., The Wave Equation) (Workbook)</strong></h1>
-<h3 id="121-chapter-opener-the-physics-of-propagation">12.1 Chapter Opener: The Physics of "Propagation"</h3>
+<h1 id="chapter-12-hyperbolic-pdes-workbook"><strong>Chapter 12: Hyperbolic PDEs (Workbook)</strong></h1>
+<hr />
 <blockquote>
-<p>Summary: Wave phenomena are governed by <strong>Hyperbolic PDEs</strong> which feature a <strong>second-order time derivative</strong> (<span class="arithmatex">\(\frac{\partial^2 y}{\partial t^2}\)</span>), enabling <strong>propagation</strong> without the dissipation that defines the diffusion processes of Chapter 11.</p>
+<p><strong>Summary:</strong> This workbook explores the physics of <strong>Propagation</strong>. Unlike diffusion, which smooths out irregularities, <strong>Hyperbolic PDEs</strong> (the Wave Equation) allow disturbances to travel through space while ideally retaining their shape. We implement the explicit <strong>Verlet-like</strong> wave scheme, solve the "First Step" initial velocity problem, and analyze the <strong>CFL "Speed Limit"</strong> for stable wave propagation.</p>
 </blockquote>
-<p>Our previous work categorized dynamic phenomena into two types: <strong>Elliptic PDEs</strong> (Chapter 10) gave us static equilibrium, and <strong>Parabolic PDEs</strong> (Chapter 11) modeled <strong>diffusion</strong>—systems that smooth out irregularities over time.</p>
+<hr />
+<h2 class="heading-with-pill" id="121-the-physics-of-propagation"><strong>12.1 The Physics of "Propagation"</strong></h2>
+<blockquote>
+<p><strong>Difficulty:</strong> ★★★☆☆</p>
+<p><strong>Concept:</strong> Wave Motion and Hyperbolic PDEs</p>
+<p><strong>Summary:</strong> We define the 1D Wave Equation (<span class="arithmatex">\(\partial_t^2 y = v^2 \partial_x^2 y\)</span>) as the governing law of sound, light, and mechanical vibrations. This section introduces the requirement for two initial conditions (position and velocity) and the fundamental difference between spreading and traveling.</p>
+</blockquote>
 <p>This chapter introduces the physics of <strong>waves</strong>, which are distinct because they <strong>propagate</strong> energy through space while, ideally, <strong>retaining</strong> their original shape without dissipation.</p>
 <p><strong>Physical Examples of Wave Propagation:</strong>
 * <strong>Mechanical Vibrations:</strong> The motion of a guitar string or a drum head.
@@ -2497,7 +2603,7 @@
 1.  The initial <strong>position</strong> or shape: <span class="arithmatex">\(y(x, 0)\)</span>.
 2.  The initial <strong>velocity</strong>: <span class="arithmatex">\(\frac{\partial y}{\partial t} (x, 0)\)</span>.</p>
 <hr />
-<h3 id="122-method-1-the-verlet-of-pdes-the-ftcs-algorithm">12.2 Method 1: The "Verlet" of PDEs: The FTCS Algorithm</h3>
+<h2 class="heading-with-pill" id="122-method-1-the-verlet-of-pdes-the-ftcs-algorithm"><strong>12.2 Method 1: The "Verlet" of PDEs: The FTCS Algorithm</strong></h2>
 <blockquote>
 <p>Summary: The Wave Equation is discretized using the <strong>Central Difference stencil</strong> for <em>both</em> time and space, resulting in an explicit recurrence relation structurally identical to the <strong>Verlet algorithm</strong> (Chapter 8).</p>
 </blockquote>
@@ -2511,7 +2617,7 @@ Substituting these into the Wave Equation and solving for the future state, <spa
 <p><strong>Connection to Verlet:</strong>
 This equation is structurally identical to the <strong>Verlet algorithm</strong> (Chapter 8): <span class="arithmatex">\(x_{n+1} = 2x_n - x_{n-1} + h^2 a_n\)</span>. Here, the term <span class="arithmatex">\(\left[ y_{i+1, n} - 2y_{i, n} + y_{i-1, n} \right]\)</span> represents the <strong>curvature</strong> (the Laplacian, Chapter 5), which is the source of the acceleration of the string.</p>
 <hr />
-<h3 id="123-the-speed-limit-the-cfl-condition">12.3 The "Speed Limit": The CFL Condition</h3>
+<h2 class="heading-with-pill" id="123-the-speed-limit-the-cfl-condition"><strong>12.3 The "Speed Limit": The CFL Condition</strong></h2>
 <blockquote>
 <p>Summary: The explicit FDM scheme for the Wave Equation is <strong>conditionally stable</strong>, requiring the <strong>Courant Number (<span class="arithmatex">\(C = \frac{v h_t}{h_x}\)</span>)</strong> to be less than or equal to one. Violating this <strong>CFL condition</strong> causes the numerical solution to explode.</p>
 </blockquote>
@@ -2525,7 +2631,7 @@ $<span class="arithmatex">\(\mathbf{C} = \frac{v h_t}{h_x} \le 1\)</span>$</p>
 <p><strong>Physical Meaning:</strong>
 This <strong>Courant–Friedrichs–Lewy (CFL) condition</strong> states that <strong>information cannot be allowed to travel more than one spatial grid box per time step</strong>. If <span class="arithmatex">\(C&gt;1\)</span>, the physical wave "jumps over" points in the numerical grid, leading to catastrophic numerical instability and an explosion of the solution.</p>
 <hr />
-<h3 id="124-the-first-step-problem">12.4 The "First Step" Problem</h3>
+<h2 class="heading-with-pill" id="124-the-first-step-problem"><strong>12.4 The "First Step" Problem</strong></h2>
 <blockquote>
 <p>Summary: The two-step recurrence relation requires <span class="arithmatex">\(y_{i, n-1}\)</span> to begin. The missing initial profile is found by using a Central Difference approximation for the <strong>initial velocity</strong> condition (<span class="arithmatex">\(\frac{\partial y}{\partial t} (x, 0)\)</span>).</p>
 </blockquote>
@@ -2537,7 +2643,7 @@ This <strong>Courant–Friedrichs–Lewy (CFL) condition</strong> states that <s
 <div class="arithmatex">\[y_{i, 1} = y_{i, 0} + h_t v_{i, 0} + \frac{C^2}{2} (y_{i+1, 0} - 2y_{i, 0} + y_{i-1, 0})\]</div>
 <p>After this first step, the simulation uses <span class="arithmatex">\(y_{i, 0}\)</span> and <span class="arithmatex">\(y_{i, 1}\)</span> to drive the general recurrence relation for all subsequent steps (<span class="arithmatex">\(n \ge 1\)</span>).</p>
 <hr />
-<h3 id="125-core-application-the-plucked-guitar-string">12.5 Core Application: The "Plucked" Guitar String</h3>
+<h2 class="heading-with-pill" id="125-core-application-the-plucked-guitar-string"><strong>12.5 Core Application: The "Plucked" Guitar String</strong></h2>
 <blockquote>
 <p>Summary: The <strong>"Plucked String"</strong> models a string fixed at both ends (Dirichlet BCs) and released from an initial shape (IVP). The simulation yields harmonics (standing waves) and demonstrates the conservation of energy inherent in the scheme.</p>
 </blockquote>
@@ -2550,40 +2656,36 @@ This <strong>Courant–Friedrichs–Lewy (CFL) condition</strong> states that <s
 2.  <strong>Time March:</strong> The main FTCS recurrence relation is used for all subsequent steps.
 3.  <strong>Analysis:</strong> The simulation demonstrates the principle of wave superposition. The initial displacement breaks into two waves that propagate away from the pluck point, reflect off the fixed boundaries, and interfere to create the <strong>standing wave patterns</strong> (the harmonics) that define the sound of the string.</p>
 <hr />
-<h1 id="chapter-12-and-project-questions-workbook"><strong>Chapter 12: and Project Questions () () (Workbook)</strong></h1>
-<h4 id="quiz-questions">Quiz Questions</h4>
-<p><strong>1. What is the fundamental difference between the Heat Equation (Chapter 11) and the Wave Equation?</strong></p>
-<ul>
-<li>a) The Heat Equation is solved with FDM; the Wave Equation is solved with RK4.</li>
-<li>b) The Heat Equation models <strong>diffusion</strong> (<span class="arithmatex">\(\frac{\partial T}{\partial t}\)</span>); the Wave Equation models <strong>propagation</strong> (<span class="arithmatex">\(\frac{\partial^2 y}{\partial t^2}\)</span>). (<strong>Correct</strong>)</li>
-<li>c) The Wave Equation is unconditionally stable.</li>
-<li>d) The Heat Equation only requires one initial condition.</li>
-</ul>
-<p><strong>2. The FDM recurrence relation for the Wave Equation is structurally identical to which other integrator from this volume?</strong></p>
-<ul>
-<li>a) Euler's Method.</li>
-<li>b) The RK4 Method.</li>
-<li>c) The <strong>Verlet Algorithm</strong>. (<strong>Correct</strong>)</li>
-<li>d) The Secant Method.</li>
-</ul>
-<p><strong>3. The CFL stability condition for the Wave Equation, <span class="arithmatex">\(C \le 1\)</span>, states that in one time step (<span class="arithmatex">\(\Delta t\)</span>):</strong></p>
-<ul>
-<li>a) The Courant Number must be zero.</li>
-<li>b) The wave speed must be less than <span class="arithmatex">\(v^2\)</span>.</li>
-<li>c) The numerical wave cannot travel more than <strong>one spatial grid box (<span class="arithmatex">\(\Delta x\)</span>)</strong>. (<strong>Correct</strong>)</li>
-<li>d) The error must be less than <span class="arithmatex">\(\mathcal{O}(h^4)\)</span>.</li>
-</ul>
-<p><strong>4. The Wave Equation recurrence relation is a two-step algorithm. The missing initial profile (<span class="arithmatex">\(y_{i, -1}\)</span>) is found by combining the initial position <span class="arithmatex">\(y_{i, 0}\)</span> with what other initial condition?</strong></p>
-<ul>
-<li>a) The final position <span class="arithmatex">\(y_{i, L}\)</span>.</li>
-<li>b) The initial <strong>velocity</strong> (<span class="arithmatex">\(v_{i, 0}\)</span>). (<strong>Correct</strong>)</li>
-<li>c) The acceleration <span class="arithmatex">\(a_{i, 0}\)</span>.</li>
-<li>d) The Courant number <span class="arithmatex">\(C\)</span>.</li>
-</ul>
-<h4 id="interview-style-question">Interview-Style Question</h4>
+<hr />
+<h2 class="heading-with-pill" id="127-comprehensive-review"><strong>12.7 Comprehensive Review</strong></h2>
+<h3 id="section-quiz"><strong>Section Quiz</strong></h3>
+<div class="admonition note">
+<p class="admonition-title">Quiz</p>
+<ol>
+<li>What is the fundamental difference between the Heat Equation (Chapter 11) and the Wave Equation?</li>
+<li>The FDM recurrence relation for the Wave Equation is structurally identical to which other integrator from this volume?</li>
+<li>The CFL stability condition for the Wave Equation, <span class="arithmatex">\(C \le 1\)</span>, states that in one time step (<span class="arithmatex">\(\Delta t\)</span>):</li>
+<li>The Wave Equation recurrence relation is a two-step algorithm. The missing initial profile (<span class="arithmatex">\(y_{i, -1}\)</span>) is found by combining the initial position <span class="arithmatex">\(y_{i, 0}\)</span> with what other initial condition?</li>
+</ol>
+</div>
+<details class="info">
+<summary>See Answer</summary>
+<ol>
+<li><strong>The Heat Equation models diffusion (<span class="arithmatex">\(\frac{\partial T}{\partial t}\)</span>); the Wave Equation models propagation (<span class="arithmatex">\(\frac{\partial^2 y}{\partial t^2}\)</span>).</strong></li>
+<li><strong>The Verlet Algorithm.</strong></li>
+<li><strong>The numerical wave cannot travel more than one spatial grid box (<span class="arithmatex">\(\Delta x\)</span>).</strong></li>
+<li><strong>The initial velocity (<span class="arithmatex">\(v_{i, 0}\)</span>).</strong></li>
+</ol>
+</details>
+<div class="admonition abstract">
+<p class="admonition-title">Interview-Style Question</p>
 <p><strong>Question:</strong> The FDM scheme for the Wave Equation is explicit and only <span class="arithmatex">\(\mathcal{O}(h^2)\)</span> accurate, yet it is often preferred over a high-order implicit scheme like Crank-Nicolson for wave simulation. Why might a lower-order, explicit method be a better choice for a wave problem?</p>
-<p><strong>Answer Strategy:</strong> The explicit FDM scheme for the wave equation is <span class="arithmatex">\(\mathcal{O}(h^2)\)</span> accurate and, crucially, is <strong>non-dissipative</strong> (it mimics the energy-conserving structure of the <strong>Verlet algorithm</strong>). Waves must conserve energy and retain their shape. Implicit methods (like Crank-Nicolson, Chapter 11) introduce numerical damping (dissipation), which would artificially <strong>smooth out and dampen</strong> the wave over time. Explicit methods, when stable, preserve the wave's amplitude and shape more faithfully over long distances.</p>
-<h1 id="chapter-12-on-projects-wave-propagation-dynamics-workbook"><strong>Chapter 12: On Projects: Wave Propagation Dynamics () () (Workbook)</strong></h1>
+<details class="info" open="open">
+<summary>Answer Strategy</summary>
+<p>The explicit FDM scheme for the wave equation is <span class="arithmatex">\(\mathcal{O}(h^2)\)</span> accurate and, crucially, is <strong>non-dissipative</strong> (it mimics the energy-conserving structure of the <strong>Verlet algorithm</strong>). Waves must conserve energy and retain their shape. Implicit methods (like Crank-Nicolson, Chapter 11) introduce numerical damping (dissipation), which would artificially <strong>smooth out and dampen</strong> the wave over time. Explicit methods, when stable, preserve the wave's amplitude and shape more faithfully over long distances.</p>
+</details>
+</div>
+<h2 class="heading-with-pill" id="128-hands-on-projects"><strong>12.8 Hands-On Projects</strong></h2>
 <p><strong>1. Project: The CFL Stability Catastrophe for Waves</strong>
 * <strong>Problem:</strong> Demonstrate the instability of the explicit wave scheme when the Courant number <span class="arithmatex">\(C\)</span> is violated.
 * <strong>Formulation:</strong> Simulate a 1D string using the FTCS recurrence relation.
@@ -2615,7 +2717,8 @@ This <strong>Courant–Friedrichs–Lewy (CFL) condition</strong> states that <s
     1.  Modify the FTCS loop to include a special update rule for the rightmost boundary node that uses the imaginary point condition.
     2.  <strong>Visualization:</strong> Simulate a wave moving toward the free boundary and show that it <strong>reflects without inverting</strong> its sign (unlike the fixed end, which inverts the wave).</p>
 <hr />
-<h3 id="126-chapter-summary-next-steps">12.6 Chapter Summary &amp; Next Steps</h3>
+<hr />
+<h2 class="heading-with-pill" id="126-chapter-summary-next-steps"><strong>12.6 Chapter Summary &amp; Next Steps</strong></h2>
 <blockquote>
 <p>Summary: We've established the FDM-based recurrence relation for the <strong>Hyperbolic PDE</strong> (Wave Equation), noting its connection to the <strong>Verlet algorithm</strong>. We learned the explicit scheme is critically restricted by the <strong>CFL stability condition</strong> (<span class="arithmatex">\(C \le 1\)</span>) and requires a special formula to handle the initial velocity condition.</p>
 </blockquote>

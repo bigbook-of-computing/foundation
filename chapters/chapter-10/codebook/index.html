@@ -94,7 +94,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#chapter-10-elliptic-partial-differential-equations-codebook" class="md-skip">
+        <a href="#chapter-10-elliptic-pdes-codebook" class="md-skip">
           Skip to content
         </a>
       
@@ -2559,33 +2559,38 @@
   
 
 
-<h1 id="chapter-10-elliptic-partial-differential-equations-codebook"><strong>Chapter 10: Elliptic Partial Differential Equations (Codebook)</strong></h1>
-<p>This Python Code Book is for <strong>Chapter 10: Elliptic Partial Differential Equations (e.g., Laplace's Equation)</strong>, focusing on implementing and comparing the iterative relaxation techniques used to solve static field problems.</p>
+<h1 id="chapter-10-elliptic-pdes-codebook"><strong>Chapter 10: Elliptic PDEs (Codebook)</strong></h1>
+<hr />
+<p>This Codebook implements the <strong>Finite Difference Method (FDM)</strong> in 2D to solve <strong>Laplace's Equation</strong> (<span class="arithmatex">\(\nabla^2 \phi = 0\)</span>). We demonstrate the classic Electrostatic Box problem using the family of <strong>Relaxation Methods</strong> (Jacobi, Gauss-Seidel, and SOR), comparing their convergence rates and efficiency.</p>
 <hr />
 <h2 id="project-1-electrostatic-potential-gauss-seidel-relaxation">Project 1: Electrostatic Potential (Gauss-Seidel Relaxation)</h2>
 <table>
 <thead>
 <tr>
-<th style="text-align: left;">Feature</th>
+<th style="text-align: left;">Component</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left;"><strong>Goal</strong></td>
-<td style="text-align: left;">Simulate the <strong>steady-state electrostatic potential</strong> (<span class="arithmatex">\(\phi\)</span>) inside a 2D box (<span class="arithmatex">\(\nabla^2 \phi = 0\)</span>) using the <strong>Gauss-Seidel Method</strong>.</td>
+<td style="text-align: left;"><strong>Objective</strong></td>
+<td style="text-align: left;">Solve the 2D Electrostatic Box problem using <strong>Gauss-Seidel</strong>.</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>Model</strong></td>
-<td style="text-align: left;"><strong>Laplace's Equation</strong> (<span class="arithmatex">\(\nabla^2 \phi = 0\)</span>).</td>
+<td style="text-align: left;"><strong>Mathematical Concept</strong></td>
+<td style="text-align: left;">Iteratively satisfying <span class="arithmatex">\(\phi_{i,j} = \frac{1}{4}(\phi_{i+1,j} + \phi_{i-1,j} + \phi_{i,j+1} + \phi_{i,j-1})\)</span>.</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>Boundary Conditions (BCs)</strong></td>
-<td style="text-align: left;"><strong>Dirichlet Conditions</strong> (fixed voltage) applied to the boundaries: one side fixed at <span class="arithmatex">\(100\)</span> V and the other three sides fixed at <span class="arithmatex">\(0\)</span> V.</td>
+<td style="text-align: left;"><strong>Experiment Setup</strong></td>
+<td style="text-align: left;">Python, NumPy array for the 2D potential field <span class="arithmatex">\(\phi(x, y)\)</span>; Dirichlet boundaries.</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>Method</strong></td>
-<td style="text-align: left;"><strong>Finite Difference Method (FDM)</strong> iteration using the <strong>Five-Point Stencil</strong>: the potential at a point is the average of its four neighbors. Gauss-Seidel updates points sequentially, using refreshed values immediately.</td>
+<td style="text-align: left;"><strong>Expected Behavior</strong></td>
+<td style="text-align: left;">Exponential decrease in residual until numerical equilibrium is reached.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Verification Goal</strong></td>
+<td style="text-align: left;">Converge to a stable potential distribution within the box.</td>
 </tr>
 </tbody>
 </table>
@@ -2758,22 +2763,30 @@
 <table>
 <thead>
 <tr>
-<th style="text-align: left;">Feature</th>
+<th style="text-align: left;">Component</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left;"><strong>Goal</strong></td>
-<td style="text-align: left;">Compare the <strong>convergence speed</strong> of the <strong>Jacobi Method</strong> (synchronous update) and the <strong>Gauss-Seidel Method</strong> (sequential update) for a fixed FDM problem.</td>
+<td style="text-align: left;"><strong>Objective</strong></td>
+<td style="text-align: left;">Quantify the performance gap between Jacobi and Gauss-Seidel updates.</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>Model</strong></td>
-<td style="text-align: left;">Laplace's Equation (<span class="arithmatex">\(\nabla^2 \phi = 0\)</span>) on a 2D domain.</td>
+<td style="text-align: left;"><strong>Mathematical Concept</strong></td>
+<td style="text-align: left;">Synchronous (Jacobi) vs. In-Place/Sequential (Gauss-Seidel) updates.</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>Core Concept</strong></td>
-<td style="text-align: left;"><strong>Gauss-Seidel</strong> is expected to converge nearly <strong>twice as fast</strong> as Jacobi because it immediately uses the refreshed, better information from neighboring points in the current iteration, leading to faster information propagation.</td>
+<td style="text-align: left;"><strong>Experiment Setup</strong></td>
+<td style="text-align: left;">Running both solvers on the same <span class="arithmatex">\(50 \times 50\)</span> grid until tolerance <span class="arithmatex">\(\epsilon = 10^{-4}\)</span>.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Expected Behavior</strong></td>
+<td style="text-align: left;">Gauss-Seidel should require <span class="arithmatex">\(\approx 50\%\)</span> fewer iterations than Jacobi.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Verification Goal</strong></td>
+<td style="text-align: left;">Demonstrate speedup factor <span class="arithmatex">\(\approx 1.8x - 2.0x\)</span>.</td>
 </tr>
 </tbody>
 </table>
@@ -3055,7 +3068,7 @@
 <li><strong>Gauss-Seidel</strong> uses updated values immediately. In a standard left-to-right, bottom-to-top sweep, the newly calculated value at <span class="arithmatex">\((i-1, j)\)</span> and <span class="arithmatex">\((i, j-1)\)</span> is used to calculate <span class="arithmatex">\(\phi_{i, j}\)</span> in the <em>same</em> sweep. This accelerated propagation of information throughout the grid leads to a convergence rate that is theoretically <strong>twice as fast</strong>.</li>
 </ul>
 <p>The provided codebook comparison confirms this: Gauss-Seidel converged in <strong>1922 iterations</strong> and <strong>7.8819 s</strong>, while Jacobi required <strong>3501 iterations</strong> and <strong>16.2338 s</strong> to reach the same tolerance, resulting in a time speedup of <strong>2.06x</strong>.</p>
-<h1 id="chapter-10-elliptic-partial-differential-equations-codebook_1"><strong>Chapter 10: Elliptic Partial Differential Equations () () (Codebook)</strong></h1>
+<h1 id="chapter-10-elliptic-partial-differential-equations-codebook"><strong>Chapter 10: Elliptic Partial Differential Equations () () (Codebook)</strong></h1>
 <h2 id="project-1-electrostatic-potential-gauss-seidel-relaxation_1">Project 1: Electrostatic Potential (Gauss-Seidel Relaxation)</h2>
 <hr />
 <h3 id="definition-electrostatic-potential-gauss-seidel">Definition: Electrostatic Potential (Gauss-Seidel)</h3>

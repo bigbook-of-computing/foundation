@@ -1987,27 +1987,16 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#project-1-quadrature-showdown-trapezoidal-vs-simpsons-rule" class="md-nav__link">
+  <a href="#project-1-quadrature-showdown-trapezoidal-vs-simpsons" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Project 1: Quadrature Showdown (Trapezoidal vs. Simpson's Rule)
+        Project 1: Quadrature Showdown (Trapezoidal vs. Simpson's)
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Project 1: Quadrature Showdown (Trapezoidal vs. Simpson&#39;s Rule)">
+    <nav class="md-nav" aria-label="Project 1: Quadrature Showdown (Trapezoidal vs. Simpson&#39;s)">
       <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#project-detail" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Project Detail
-      
-    </span>
-  </a>
-  
-</li>
         
           <li class="md-nav__item">
   <a href="#complete-python-code" class="md-nav__link">
@@ -2036,17 +2025,6 @@
   
     <nav class="md-nav" aria-label="Project 2: Taming a Singular Integral (Nonlinear Pendulum)">
       <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#project-detail_1" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Project Detail
-      
-    </span>
-  </a>
-  
-</li>
         
           <li class="md-nav__item">
   <a href="#complete-python-code_1" class="md-nav__link">
@@ -2415,27 +2393,16 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#project-1-quadrature-showdown-trapezoidal-vs-simpsons-rule" class="md-nav__link">
+  <a href="#project-1-quadrature-showdown-trapezoidal-vs-simpsons" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Project 1: Quadrature Showdown (Trapezoidal vs. Simpson's Rule)
+        Project 1: Quadrature Showdown (Trapezoidal vs. Simpson's)
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Project 1: Quadrature Showdown (Trapezoidal vs. Simpson&#39;s Rule)">
+    <nav class="md-nav" aria-label="Project 1: Quadrature Showdown (Trapezoidal vs. Simpson&#39;s)">
       <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#project-detail" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Project Detail
-      
-    </span>
-  </a>
-  
-</li>
         
           <li class="md-nav__item">
   <a href="#complete-python-code" class="md-nav__link">
@@ -2464,17 +2431,6 @@
   
     <nav class="md-nav" aria-label="Project 2: Taming a Singular Integral (Nonlinear Pendulum)">
       <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#project-detail_1" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Project Detail
-      
-    </span>
-  </a>
-  
-</li>
         
           <li class="md-nav__item">
   <a href="#complete-python-code_1" class="md-nav__link">
@@ -2527,31 +2483,36 @@
 
 <h1 id="chapter-6-numerical-integration-codebook"><strong>Chapter 6: Numerical Integration (Codebook)</strong></h1>
 <hr />
-<h2 id="project-1-quadrature-showdown-trapezoidal-vs-simpsons-rule">Project 1: Quadrature Showdown (Trapezoidal vs. Simpson's Rule)</h2>
-<h3 id="project-detail">Project Detail</h3>
+<p>This Codebook provides the exact, reproducible Python implementation for numerical quadrature. We compare the <strong>Trapezoidal Rule</strong> (<span class="arithmatex">\(O(h^2)\)</span>) and <strong>Simpson's Rule</strong> (<span class="arithmatex">\(O(h^4)\)</span>) convergence rates and explore adaptive integration for singular problems like the <strong>Nonlinear Pendulum</strong>.</p>
+<hr />
+<h2 id="project-1-quadrature-showdown-trapezoidal-vs-simpsons">Project 1: Quadrature Showdown (Trapezoidal vs. Simpson's)</h2>
 <table>
 <thead>
 <tr>
-<th style="text-align: left;">Feature</th>
+<th style="text-align: left;">Component</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left;"><strong>Goal</strong></td>
-<td style="text-align: left;">Compare the convergence rate and accuracy of the <span class="arithmatex">\(\mathcal{O}(h^2)\)</span> <strong>Trapezoidal Rule</strong> against the <span class="arithmatex">\(\mathcal{O}(h^4)\)</span> <strong>Simpson's Rule</strong> by integrating a known function and measuring the absolute error as the grid size <span class="arithmatex">\(N\)</span> increases.</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>Method</strong></td>
-<td style="text-align: left;"><strong>Extended Quadrature Formulas</strong>. The total integral is the sum of the areas of simple geometric tiles (trapezoids or parabolas).</td>
+<td style="text-align: left;"><strong>Objective</strong></td>
+<td style="text-align: left;">Compare the convergence rate of the <span class="arithmatex">\(O(h^2)\)</span> <strong>Trapezoidal Rule</strong> vs. the <span class="arithmatex">\(O(h^4)\)</span> <strong>Simpson's Rule</strong>.</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>Mathematical Concept</strong></td>
-<td style="text-align: left;">The error in the Trapezoidal Rule is <span class="arithmatex">\(\propto \mathcal{O}(h^2)\)</span>; the error in Simpson's Rule is <span class="arithmatex">\(\propto \mathcal{O}(h^4)\)</span>. This project verifies the predicted scaling.</td>
+<td style="text-align: left;">Integrating <span class="arithmatex">\(f(x) = \sin(x)\)</span> over <span class="arithmatex">\([0, \pi]\)</span>; analytical solution <span class="arithmatex">\(I = 2.0\)</span>.</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>Test Integral</strong></td>
-<td style="text-align: left;">$<span class="arithmatex">\(I = \int_{0}^{\pi} \sin(x) dx = 2.0\)</span>$</td>
+<td style="text-align: left;"><strong>Experiment Setup</strong></td>
+<td style="text-align: left;">Python, NumPy for vectorized summation; log-log visualization of error vs. <span class="arithmatex">\(N\)</span>.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Expected Behavior</strong></td>
+<td style="text-align: left;">Simpson's Rule should show a much steeper error decline (slope <span class="arithmatex">\(\approx -4\)</span>) than Trapezoidal (slope <span class="arithmatex">\(\approx -2\)</span>).</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Verification Goal</strong></td>
+<td style="text-align: left;">Verify the "Order of Accuracy" through empirical slope measurement.</td>
 </tr>
 </tbody>
 </table>
@@ -2708,30 +2669,33 @@
 </span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>method error decreases quartically (slope ~4), making Simpson&#39;s method vastly more efficient.
 </span></code></pre></div>
 <h2 id="project-2-taming-a-singular-integral-nonlinear-pendulum">Project 2: Taming a Singular Integral (Nonlinear Pendulum)</h2>
-<h3 id="project-detail_1">Project Detail</h3>
 <table>
 <thead>
 <tr>
-<th style="text-align: left;">Feature</th>
+<th style="text-align: left;">Component</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left;"><strong>Goal</strong></td>
-<td style="text-align: left;">Accurately calculate the exact period (<span class="arithmatex">\(T\)</span>) of a nonlinear pendulum released from a large initial angle (<span class="arithmatex">\(\theta_0 = 170^\circ\)</span>).</td>
+<td style="text-align: left;"><strong>Objective</strong></td>
+<td style="text-align: left;">Accurately calculate the exact period (<span class="arithmatex">\(T\)</span>) of a nonlinear pendulum released from <span class="arithmatex">\(\theta_0 = 170^\circ\)</span>.</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>Core Challenge</strong></td>
-<td style="text-align: left;">The integral contains a <strong>singularity</strong> at the upper limit (<span class="arithmatex">\(\theta = \theta_0\)</span>), as the denominator approaches zero. Standard grid-based methods (Trapezoidal/Simpson's) would fail catastrophically.</td>
+<td style="text-align: left;">The integral contains a <strong>singularity</strong> as <span class="arithmatex">\(\theta \to \theta_0\)</span>.</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>Method</strong></td>
-<td style="text-align: left;"><strong>Adaptive Gaussian Quadrature</strong> using <code>scipy.integrate.quad</code>. This method is chosen because it uses a sophisticated, internal strategy to detect and handle the singularity, providing a high-accuracy result and a reliable error estimate.</td>
+<td style="text-align: left;"><strong>Adaptive Gaussian Quadrature</strong> using <code>scipy.integrate.quad</code>.</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>Test Integral</strong></td>
-<td style="text-align: left;">$<span class="arithmatex">\(T = \sqrt{\frac{8L}{g}} \int_{0}^{\theta_0} \frac{d\theta}{\sqrt{\cos\theta - \cos\theta_0}}\)</span>$</td>
+<td style="text-align: left;"><strong>Expected Behavior</strong></td>
+<td style="text-align: left;">The period should grow dramatically as <span class="arithmatex">\(\theta_0 \to 180^\circ\)</span> (the vertical unstable equilibrium).</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Verification Goal</strong></td>
+<td style="text-align: left;">Successfully integrate a singular function using adaptive subdivision.</td>
 </tr>
 </tbody>
 </table>
@@ -2811,10 +2775,10 @@
 </span><span id="__span-2-72"><a id="__codelineno-2-72" name="__codelineno-2-72" href="#__codelineno-2-72"></a>
 </span><span id="__span-2-73"><a id="__codelineno-2-73" name="__codelineno-2-73" href="#__codelineno-2-73"></a><span class="n">result</span> <span class="o">=</span> <span class="n">quad</span><span class="p">(</span>
 </span><span id="__span-2-74"><a id="__codelineno-2-74" name="__codelineno-2-74" href="#__codelineno-2-74"></a>    <span class="n">integrand_T</span><span class="p">,</span>
-</span><span id="__span-2-75"><a id="__codelineno-2-75" name="__codelineno-2-75" href="#__codelineno-2-75"></a>    <span class="n">A</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
-</span><span id="__span-2-76"><a id="__codelineno-2-76" name="__codelineno-2-76" href="#__codelineno-2-76"></a>    <span class="n">B</span><span class="o">=</span><span class="n">THETA_0</span><span class="p">,</span>
-</span><span id="__span-2-77"><a id="__codelineno-2-77" name="__codelineno-2-77" href="#__codelineno-2-77"></a>    <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">THETA_0</span><span class="p">,),</span> <span class="c1"># Pass theta_0 as a fixed parameter to the integrand</span>
-</span><span id="__span-2-78"><a id="__codelineno-2-78" name="__codelineno-2-78" href="#__codelineno-2-78"></a>    <span class="n">limit</span><span class="o">=</span><span class="mi">1000</span>       <span class="c1"># Increase the limit for recursive subdivisions near the singularity</span>
+</span><span id="__span-2-75"><a id="__codelineno-2-75" name="__codelineno-2-75" href="#__codelineno-2-75"></a>    <span class="mf">0.0</span><span class="p">,</span>
+</span><span id="__span-2-76"><a id="__codelineno-2-76" name="__codelineno-2-76" href="#__codelineno-2-76"></a>    <span class="n">THETA_0</span><span class="p">,</span>
+</span><span id="__span-2-77"><a id="__codelineno-2-77" name="__codelineno-2-77" href="#__codelineno-2-77"></a>    <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">THETA_0</span><span class="p">,),</span> 
+</span><span id="__span-2-78"><a id="__codelineno-2-78" name="__codelineno-2-78" href="#__codelineno-2-78"></a>    <span class="n">limit</span><span class="o">=</span><span class="mi">1000</span>       
 </span><span id="__span-2-79"><a id="__codelineno-2-79" name="__codelineno-2-79" href="#__codelineno-2-79"></a><span class="p">)</span>
 </span><span id="__span-2-80"><a id="__codelineno-2-80" name="__codelineno-2-80" href="#__codelineno-2-80"></a>
 </span><span id="__span-2-81"><a id="__codelineno-2-81" name="__codelineno-2-81" href="#__codelineno-2-81"></a><span class="n">I_numerical</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>

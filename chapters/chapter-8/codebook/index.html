@@ -94,7 +94,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#chapter-8-initial-value-problems-ii-the-leapfrog-verlet-codebook" class="md-skip">
+        <a href="#chapter-8-initial-value-problems-ii-codebook" class="md-skip">
           Skip to content
         </a>
       
@@ -2481,28 +2481,38 @@
   
 
 
-<h1 id="chapter-8-initial-value-problems-ii-the-leapfrog-verlet-codebook"><strong>Chapter 8: Initial Value Problems II — The Leapfrog &amp; Verlet (Codebook)</strong></h1>
+<h1 id="chapter-8-initial-value-problems-ii-codebook"><strong>Chapter 8: Initial Value Problems II (Codebook)</strong></h1>
+<hr />
+<p>This Codebook implement the <strong>Verlet</strong> and <strong>Leapfrog</strong> integration schemes. We demonstrate their superior long-term energy conservation in purely conservative (Hamiltonian) systems, specifically the Simple Harmonic Oscillator and stable N-body planetary orbits.</p>
 <hr />
 <h2 id="project-1-energy-conservation-showdown-rk4-vs-velocity-verlet">Project 1: Energy Conservation Showdown (RK4 vs. Velocity-Verlet)</h2>
 <table>
 <thead>
 <tr>
-<th style="text-align: left;">Feature</th>
+<th style="text-align: left;">Component</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left;"><strong>Goal</strong></td>
-<td style="text-align: left;">Simulate a <strong>Simple Harmonic Oscillator (SHO)</strong>, a purely conservative system, using both the non-symplectic <strong>RK4</strong> (Chapter 7) and the symplectic <strong>Velocity-Verlet</strong> algorithm to demonstrate the long-term energy drift inherent in RK4.</td>
+<td style="text-align: left;"><strong>Objective</strong></td>
+<td style="text-align: left;">Compare long-term energy stability of <strong>RK4</strong> vs. <strong>Velocity-Verlet</strong> (Symplectic).</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>Model</strong></td>
-<td style="text-align: left;"><strong>Simple Harmonic Oscillator (SHO)</strong>: <span class="arithmatex">\(x''(t) = -x\)</span>. The system's total energy, <span class="arithmatex">\(E = \frac{1}{2}(v^2 + x^2)\)</span>, must remain constant.</td>
+<td style="text-align: left;"><strong>Mathematical Concept</strong></td>
+<td style="text-align: left;">Solving <span class="arithmatex">\(\mathbf{S}'' = -k\mathbf{x}/m\)</span>; monitoring the drift in <span class="arithmatex">\(E = K + U\)</span>.</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>Core Concept</strong></td>
-<td style="text-align: left;"><strong>Velocity-Verlet</strong> is a <strong>symplectic integrator</strong>; it preserves the geometry of phase space, causing energy error to <strong>oscillate and remain bounded</strong>, preventing the secular drift seen in RK4.</td>
+<td style="text-align: left;"><strong>Experiment Setup</strong></td>
+<td style="text-align: left;">Python, NumPy; <span class="arithmatex">\(t \in [0, 500]\)</span> with 50,000 steps (<span class="arithmatex">\(h = 0.01\)</span>).</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Expected Behavior</strong></td>
+<td style="text-align: left;">RK4 energy will drift monotonically (log-linear); Verlet energy will stay bounded.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Verification Goal</strong></td>
+<td style="text-align: left;">Prove that symplecticity is more important than order for long-term physics.</td>
 </tr>
 </tbody>
 </table>
@@ -2707,26 +2717,30 @@
 <table>
 <thead>
 <tr>
-<th style="text-align: left;">Feature</th>
+<th style="text-align: left;">Component</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left;"><strong>Goal</strong></td>
-<td style="text-align: left;">Simulate a circular <strong>Two-Body Gravitational Orbit</strong> using the <strong>Velocity-Verlet</strong> algorithm over many periods to demonstrate its long-term stability, focusing on the lack of secular drift that plagues RK4.</td>
+<td style="text-align: left;"><strong>Objective</strong></td>
+<td style="text-align: left;">Simulate a stable circular <strong>Two-Body Orbit</strong> over 100 periods.</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>Model</strong></td>
-<td style="text-align: left;"><strong>Inverse-Square Law:</strong> <span class="arithmatex">\(\mathbf{a} = -\frac{GM}{r^2} \hat{\mathbf{r}}\)</span>. This is a purely <strong>conservative</strong> system.</td>
+<td style="text-align: left;"><strong>Mathematical Concept</strong></td>
+<td style="text-align: left;">Newton's Law of Gravitation: <span class="arithmatex">\(\mathbf{a} = -(GM/r^3)\mathbf{r}\)</span>.</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>System Conversion</strong></td>
-<td style="text-align: left;">The 2D (x, y) motion is treated as a <strong>4D coupled system</strong>: <span class="arithmatex">\(\mathbf{S} = [x, y, v_x, v_y]\)</span>. Velocity-Verlet is applied to this system.</td>
+<td style="text-align: left;"><strong>Experiment Setup</strong></td>
+<td style="text-align: left;">Velocity-Verlet integrator; tracking <span class="arithmatex">\(x\)</span> vs. <span class="arithmatex">\(y\)</span> and <span class="arithmatex">\(\Delta E\)</span> vs. time.</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>Core Concept</strong></td>
-<td style="text-align: left;">A stable, structure-preserving integrator is necessary for orbit mechanics. Velocity-Verlet guarantees that the orbit remains <strong>bounded</strong> and stable over thousands of periods.</td>
+<td style="text-align: left;"><strong>Expected Behavior</strong></td>
+<td style="text-align: left;">Orbit should remain circular and perfectly closed due to energy conservation.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Verification Goal</strong></td>
+<td style="text-align: left;">Demonstrate stable orbital dynamics for astrophysical simulations.</td>
 </tr>
 </tbody>
 </table>

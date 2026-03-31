@@ -94,7 +94,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#introduction" class="md-skip">
+        <a href="#chapter-6-numerical-integration" class="md-skip">
           Skip to content
         </a>
       
@@ -2324,10 +2324,11 @@
   
 
 
+<h1 id="chapter-6-numerical-integration"><strong>Chapter 6: Numerical Integration</strong></h1>
+<hr />
 <h1 id="introduction"><strong>Introduction</strong></h1>
-<p>In the previous chapter, we explored numerical differentiation, the language of instantaneous change. We now turn to its inverse operation, the <strong>integral</strong> (<span class="arithmatex">\(I = \int f(x) dx\)</span>), which is the language of <strong>total accumulation</strong>.</p>
-<p>In physics, integration is essential for calculating global properties from quantities that change continuously. This includes finding the total work done by a variable force (<span class="arithmatex">\(W = \int \mathbf{F} \cdot d\mathbf{x}\)</span>), normalizing a quantum wavefunction (<span class="arithmatex">\(\int |\psi(x)|^2 dx = 1\)</span>), or computing the partition function in statistical mechanics (<span class="arithmatex">\(Z = \int e^{-\beta E} dE\)</span>).</p>
-<p>However, we rarely have a clean, analytical function to integrate. Instead, we often possess a set of discrete data points <span class="arithmatex">\((x_i, y_i)\)</span> from an experiment or a prior simulation. This chapter develops the methods of <strong>numerical quadrature</strong>: the process of approximating the "area under the curve" by summing the areas of simple geometric shapes, transforming the integral from an abstract concept into a finite, computable sum.</p>
+<p>In the previous chapter, we mastered the derivative—the language of instantaneous change. We now turn to its inverse: the <strong>integral</strong> (<span class="arithmatex">\(\int f(x) dx\)</span>), the language of <strong>total accumulation</strong>. Integration is how we sum up a quantity that is continuously changing over a given domain. Whether we are calculating the total work done by a variable force, the probability of finding a quantum particle, or the energy flux through a surface, we are performing an act of accumulation.</p>
+<p>In the "Digital Lab," we rarely have the luxury of an analytical antiderivative. Instead, we must perform <strong>Numerical Quadrature</strong>: approximating the "area under the curve" by tiling it with simple geometric shapes. This chapter defines the "Standard" for numerical integration, moving from the intuitive <strong>Trapezoidal Rule</strong> to high-order <strong>Gaussian Quadrature</strong>, and finally to <strong>Monte Carlo</strong> methods that bypass the "Curse of Dimensionality."</p>
 <hr />
 <h1 id="chapter-6-outline"><strong>Chapter 6: Outline</strong></h1>
 <table>
@@ -2341,141 +2342,134 @@
 <tbody>
 <tr>
 <td style="text-align: left;"><strong>6.1</strong></td>
-<td style="text-align: left;"><strong>The Physics of "Accumulation"</strong></td>
-<td style="text-align: left;">The integral as a sum; Work (<span class="arithmatex">\(W = \int \mathbf{F} \cdot d\mathbf{x}\)</span>), Probability ($\int</td>
+<td style="text-align: left;"><strong>The Physics of Accumulation</strong></td>
+<td style="text-align: left;">Work, flux, and probability; the "Staircase" problem; area as a finite sum.</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>6.2</strong></td>
-<td style="text-align: left;"><strong>The Trapezoidal Rule</strong></td>
-<td style="text-align: left;">Linear approximation; extended formula with &frac12; weights at ends; second-order accuracy (<span class="arithmatex">\(O(h^2)\)</span>).</td>
+<td style="text-align: left;"><strong>Newton-Cotes Formulas</strong></td>
+<td style="text-align: left;">Extended Trapezoidal Rule (<span class="arithmatex">\(O(h^2)\)</span>); Simpson's Rule (<span class="arithmatex">\(O(h^4)\)</span>); weighting schemes.</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>6.3</strong></td>
-<td style="text-align: left;"><strong>Simpson's Rule</strong></td>
-<td style="text-align: left;">Parabolic approximation (3-point tile); 1-4-2-4-1 weighting; fourth-order accuracy (<span class="arithmatex">\(O(h^4)\)</span>); requires even <span class="arithmatex">\(N\)</span>.</td>
+<td style="text-align: left;"><strong>Gaussian Quadrature</strong></td>
+<td style="text-align: left;">Optimal node placement; orthogonal polynomials; the <code>scipy.integrate.quad</code> standard.</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>6.4</strong></td>
-<td style="text-align: left;"><strong>Gaussian Quadrature</strong></td>
-<td style="text-align: left;">Optimal sampling for callable functions; <span class="arithmatex">\(N\)</span> points perfectly integrate polynomial of degree <span class="arithmatex">\(2N-1\)</span>; <code>scipy.integrate.quad</code>.</td>
+<td style="text-align: left;"><strong>Taming Singularities</strong></td>
+<td style="text-align: left;">Change of variables; handling <span class="arithmatex">\(1/\sqrt{x}\)</span> and infinite limits; adaptive subdivision.</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>6.5</strong></td>
-<td style="text-align: left;"><strong>Handling "Tricky" Integrals</strong></td>
-<td style="text-align: left;">Taming infinite limits and singularities; change of variables (e.g., <span class="arithmatex">\(t = 1/(1+x)\)</span> or <span class="arithmatex">\(x = t^2\)</span>).</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>6.6</strong></td>
-<td style="text-align: left;"><strong>Nonlinear Pendulum</strong></td>
-<td style="text-align: left;">Core application with an endpoint singularity; failure of grid methods vs. robustness of <code>quad</code>.</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>6.7</strong></td>
 <td style="text-align: left;"><strong>Monte Carlo Integration</strong></td>
-<td style="text-align: left;">Teaser for Volume II; Curse of Dimensionality (<span class="arithmatex">\(D \ge 8\)</span>); error scales as <span class="arithmatex">\(O(1/\sqrt{N})\)</span> independent of <span class="arithmatex">\(D\)</span>.</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>6.8</strong></td>
-<td style="text-align: left;"><strong>Summary &amp; Bridge to Chapter 7</strong></td>
-<td style="text-align: left;">Quadrature toolkit summary; moving from calculus (Chapters 5 &amp; 6) to differential equations (Chapter 7).</td>
+<td style="text-align: left;">The Curse of Dimensionality; stochastic sampling; <span class="arithmatex">\(1/\sqrt{N}\)</span> error scaling.</td>
 </tr>
 </tbody>
 </table>
 <hr />
-<h2 id="61-the-physics-of-accumulation"><strong>6.1 The Physics of "Accumulation"</strong></h2>
-<p>In Chapter 5, we mastered the derivative (<span class="arithmatex">\(\frac{df}{dx}\)</span>), the fundamental language of <strong>instantaneous change</strong>. We now turn to its inverse operation, the <strong>integral</strong> (<span class="arithmatex">\(I = \int f(x) dx\)</span>), the fundamental language of <strong>total accumulation</strong>. Integration is how we sum up a quantity that is continuously changing over a given domain.</p>
-<p>This operation is central to calculating the <strong>global properties</strong> of physical systems:
-* <strong>Work:</strong> The total <strong>Work</strong> (<span class="arithmatex">\(W\)</span>) done by a force <span class="arithmatex">\(\mathbf{F}\)</span> is the accumulation of force over a path: <span class="arithmatex">\(W = \int \mathbf{F} \cdot d\mathbf{x}\)</span>.
-* <strong>Probability:</strong> The total probability of finding a quantum particle must be accumulated over all space and equals 1: <span class="arithmatex">\(\int |\psi(x)|^2 dx = 1\)</span>.
-* <strong>Statistical Mechanics:</strong> The partition function (<span class="arithmatex">\(Z\)</span>) involves summing up all possible states in a system: <span class="arithmatex">\(Z = \int e^{-\beta E} dE\)</span>.</p>
+<h2 id="61-newton-cotes-formulas-tiling-the-area"><strong>6.1 Newton-Cotes Formulas: Tiling the Area</strong></h2>
+<hr />
+<p>The most common way to integrate discrete data is to divide the domain <span class="arithmatex">\([a, b]\)</span> into <span class="arithmatex">\(N\)</span> equal "panels" of width <span class="arithmatex">\(h\)</span> and approximate the function within each panel.</p>
+<h3 id="the-trapezoidal-rule-oh2"><strong>The Trapezoidal Rule (<span class="arithmatex">\(O(h^2)\)</span>)</strong></h3>
+<p>Approximates each panel with a straight line.
+$$ I \approx \frac{h}{2} [f(a) + 2\sum f(x_i) + f(b)] $$
+It is robust but relatively slow to converge.</p>
+<h3 id="simpsons-rule-oh4"><strong>Simpson's Rule (<span class="arithmatex">\(O(h^4)\)</span>)</strong></h3>
+<p>Approximates each pair of panels with a <strong>parabola</strong>. This produces a significant jump in accuracy for the same number of function evaluations.
+$$ I \approx \frac{h}{3} [f(x_0) + 4f(x_1) + 2f(x_2) + 4f(x_3) \dots + f(x_N)] $$</p>
 <div class="admonition tip">
-<p class="admonition-title">Integration: The 'Accumulator' of Physics</p>
-<p>Think of the derivative as a "rate meter" (speed). The integral is the "total-so-far meter" (odometer). It <em>accumulates</em> all the tiny changes to give a global, total value.</p>
-<p>The <strong>computational problem</strong> is that the function <span class="arithmatex">\(f(x)\)</span> we need to integrate rarely exists as an analytical formula. Instead, we possess a set of <strong>discrete data points <span class="arithmatex">\((x_i, y_i)\)</span></strong> on a grid, typically obtained from an experiment or a prior simulation. Our task is to find the total <strong>"area under the curve"</strong> for this discrete, stair-stepped data.</p>
-<p>The solution is <strong>numerical quadrature</strong>—the process of approximating the integral by <strong>tiling</strong> the area with simple geometric shapes (trapezoids, parabolas) whose areas are easily calculated from their side lengths. The total integral is then the <strong>accumulation</strong> (sum) of the areas of all these tiles.</p>
+<p class="admonition-title">The Magic of Simpson</p>
+<p>Simpson's Rule is technically derived from a 2<sup>nd</sup>-degree polynomial (parabola), yet it is <strong>4<sup>th</sup>-order accurate</strong> for many functions. This "extra" order of accuracy occurs because the error terms associated with cubic polynomials cancel out perfectly due to symmetry.</p>
 </div>
 <hr />
-<h2 id="62-the-simple-tile-the-trapezoidal-rule"><strong>6.2 The "Simple" Tile: The Trapezoidal Rule</strong></h2>
-<p>The <strong>Trapezoidal Rule</strong> is the most intuitive quadrature strategy, offering a baseline for accuracy against which all other methods are compared.</p>
+<h2 id="62-gaussian-quadrature-optimal-sampling"><strong>6.2 Gaussian Quadrature: Optimal Sampling</strong></h2>
 <hr />
-<h3 id="derivation-and-extended-formula"><strong>Derivation and Extended Formula</strong></h3>
-<p>The rule approximates the curve in each slice (from <span class="arithmatex">\(x_i\)</span> to <span class="arithmatex">\(x_{i+1}\)</span>) with a <strong>straight line</strong>, forming a trapezoid. For an evenly spaced grid with width <span class="arithmatex">\(h = x_{i+1} - x_i\)</span>, the area of a single trapezoidal slice is:</p>
-<div class="arithmatex">\[
-A_i = h \cdot \frac{y_i + y_{i+1}}{2}
-\]</div>
-<p>The <strong>Extended Trapezoidal Rule</strong> sums the area of all slices. When expanded, the interior points (<span class="arithmatex">\(y_1\)</span> to <span class="arithmatex">\(y_{N-1}\)</span>) are counted twice (once by the slice to their left and once by the slice to their right), giving them a weight of 1. Only the two endpoints (<span class="arithmatex">\(y_0\)</span> and <span class="arithmatex">\(y_N\)</span>) are counted once, giving them a weight of <span class="arithmatex">\(\frac{1}{2}\)</span>. The formula is [3, 4]:</p>
-<div class="arithmatex">\[
-I \approx h \left[ \frac{1}{2}y_0 + y_1 + y_2 + \dots + y_{N-1} + \frac{1}{2}y_N \right]
-\]</div>
-<p><div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># Illustrative pseudo-code for Extended Trapezoidal Rule</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">function</span> <span class="n">trapezoidal_rule</span><span class="p">(</span><span class="n">y_values</span><span class="p">,</span> <span class="n">h</span><span class="p">):</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="n">N</span> <span class="o">=</span> <span class="n">length</span><span class="p">(</span><span class="n">y_values</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="c1">## Start with the endpoint contributions</span>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="n">integral</span> <span class="o">=</span> <span class="p">(</span><span class="n">y_values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">y_values</span><span class="p">[</span><span class="n">N</span><span class="p">])</span> <span class="o">/</span> <span class="mf">2.0</span>
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="c1">## Add all the interior points</span>
-</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>
-</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="k">for</span> <span class="n">i</span> <span class="kn">from</span><span class="w"> </span><span class="mi">1</span> <span class="n">to</span> <span class="n">N</span><span class="o">-</span><span class="mi">1</span><span class="p">:</span>
-</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>    <span class="n">integral</span> <span class="o">=</span> <span class="n">integral</span> <span class="o">+</span> <span class="n">y_values</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>
-</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="c1">## Multiply by the slice width</span>
-</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>
-</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="n">integral</span> <span class="o">=</span> <span class="n">integral</span> <span class="o">*</span> <span class="n">h</span>
-</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>
-</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="k">return</span> <span class="n">integral</span>
-</span></code></pre></div>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">trapezoidal_rule</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    <span class="n">h</span> <span class="o">=</span> <span class="p">(</span><span class="n">b</span> <span class="o">-</span> <span class="n">a</span><span class="p">)</span> <span class="o">/</span> <span class="n">n</span>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>    <span class="n">result</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">+</span> <span class="n">f</span><span class="p">(</span><span class="n">b</span><span class="p">))</span>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>        <span class="n">result</span> <span class="o">+=</span> <span class="n">f</span><span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="n">i</span> <span class="o">*</span> <span class="n">h</span><span class="p">)</span>
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>    <span class="k">return</span> <span class="n">result</span> <span class="o">*</span> <span class="n">h</span>
-</span></code></pre></div>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>    <span class="n">flowchart</span> <span class="n">LR</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    <span class="n">A</span><span class="p">[</span><span class="n">Need</span> <span class="n">to</span> <span class="n">integrate</span> <span class="err">$</span><span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="err">$</span><span class="p">]</span> <span class="o">--&gt;</span> <span class="n">B</span><span class="p">{</span><span class="n">Fixed</span> <span class="n">grid</span> <span class="err">$</span><span class="p">(</span><span class="n">x_i</span><span class="p">,</span> <span class="n">y_i</span><span class="p">)</span><span class="err">$?</span><span class="p">}</span>
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>    <span class="n">B</span> <span class="o">--&gt;|</span><span class="n">Yes</span><span class="o">|</span> <span class="n">C</span><span class="p">{</span><span class="n">High</span> <span class="n">curvature</span><span class="err">?</span><span class="p">}</span>
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>    <span class="n">C</span> <span class="o">--&gt;|</span><span class="n">Yes</span><span class="o">|</span> <span class="n">D</span><span class="p">[</span><span class="n">Simpson</span><span class="s1">&#39;s Rule]</span>
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>    <span class="n">C</span> <span class="o">--&gt;|</span><span class="n">No</span><span class="o">|</span> <span class="n">E</span><span class="p">[</span><span class="n">Trapezoidal</span> <span class="n">Rule</span><span class="p">]</span>
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>    <span class="n">B</span> <span class="o">--&gt;|</span><span class="n">No</span><span class="o">|</span> <span class="n">F</span><span class="p">{</span><span class="n">Callable</span> <span class="err">$</span><span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="err">$?</span><span class="p">}</span>
-</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>    <span class="n">F</span> <span class="o">--&gt;|</span><span class="n">Yes</span><span class="o">|</span> <span class="n">G</span><span class="p">{</span><span class="n">Singularities</span> <span class="ow">or</span> <span class="err">$</span>\<span class="n">infty</span><span class="err">$</span> <span class="n">limits</span><span class="err">?</span><span class="p">}</span>
-</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>    <span class="n">G</span> <span class="o">--&gt;|</span><span class="n">Yes</span><span class="o">|</span> <span class="n">H</span><span class="p">[</span><span class="n">quad</span> <span class="p">(</span><span class="n">handles</span> <span class="n">them</span><span class="p">)]</span>
-</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>    <span class="n">G</span> <span class="o">--&gt;|</span><span class="n">No</span><span class="o">|</span> <span class="n">H</span>
-</span></code></pre></div></p>
-<p>The "pro" way to handle such problems in code is typically to use <strong><code>scipy.integrate.quad</code></strong>, which is engineered to automatically detect and safely handle endpoint singularities, avoiding the need for manual change of variables.</p>
-<hr />
-<h2 id="66-core-application-period-of-a-nonlinear-pendulum"><strong>6.6 Core Application: Period of a Nonlinear Pendulum</strong></h2>
-<p>The integral for the exact period <span class="arithmatex">\(T\)</span> of a simple pendulum released from a large angle <span class="arithmatex">\(\theta_0\)</span> presents a classic numerical challenge:</p>
-<div class="arithmatex">\[
-T = \sqrt{\frac{8L}{g}} \int_0^{\theta_0} \frac{d\theta}{\sqrt{\cos\theta - \cos\theta_0}}
-\]</div>
-<p>This integral has a <strong>singularity</strong> at the upper limit, <span class="arithmatex">\(\theta = \theta_0\)</span>, because the denominator approaches zero. A naive grid-based solver (like Simpson's Rule) would crash. The professional solution is to use <strong><code>scipy.integrate.quad</code></strong>, which automatically handles the singularity and provides the highly accurate period <span class="arithmatex">\(T_{\text{exact}}\)</span>, which is correctly shown to be <strong>longer</strong> than the small-angle approximation.</p>
+<p>Newton-Cotes formulas use <strong>equidistant</strong> points. <strong>Gaussian Quadrature</strong> asks: "Where should we place the points to get the most accurate answer?"</p>
+<p>By using specifically calculated points (the roots of Legendre polynomials) and weights, Gaussian Quadrature can integrate a polynomial of degree <span class="arithmatex">\(2N-1\)</span> <strong>exactly</strong> using only <span class="arithmatex">\(N\)</span> points.</p>
 <div class="admonition example">
-<p class="admonition-title">Small vs. Large Angle Pendulum</p>
-<p>The "small angle" approximation <span class="arithmatex">\(T \approx 2\pi\sqrt{L/g}\)</span> assumes <span class="arithmatex">\(\sin\theta \approx \theta\)</span>. This integral proves that as <span class="arithmatex">\(\theta_0\)</span> increases, the true period <em>always</em> gets longer, as the restoring force weakens at large angles.</p>
+<p class="admonition-title">The 'Quad' Standard</p>
+<p>In professional Python code, <code>scipy.integrate.quad</code> uses a sophisticated version of Gaussian Quadrature (Clenshaw-Curtis or Gauss-Kronrod). It is <strong>adaptive</strong>, meaning it automatically adds more points in regions where the function is changing rapidly.</p>
 </div>
 <hr />
-<h2 id="67-teaser-for-volume-ii-monte-carlo-integration"><strong>6.7 Teaser for Volume II: Monte Carlo Integration</strong></h2>
-<p>While grid-based methods (quadrature) are highly accurate in 1D (<span class="arithmatex">\(O(h^4)\)</span>), they fail <strong>catastrophically</strong> in high dimensions (<span class="arithmatex">\(D \ge 8\)</span>), a problem known as the <strong>Curse of Dimensionality</strong>. The total number of points required scales exponentially with the dimension <span class="arithmatex">\(D\)</span>, making the computation impossible [1].</p>
-<p>The <strong>only feasible solution</strong> for high-dimensional integrals (e.g., in statistical mechanics or financial modeling) is <strong>Monte Carlo Integration</strong>. This <strong>stochastic method</strong> samples the function's value using random points (like "throwing darts").</p>
-<p>The "magic" is that the error of any Monte Carlo estimate, determined by the Central Limit Theorem, <strong>always scales as <span class="arithmatex">\(O(1/\sqrt{N})\)</span></strong>, where <span class="arithmatex">\(N\)</span> is the number of random samples. Crucially, this error <strong>does not depend on the dimension <span class="arithmatex">\(D\)</span></strong> [2]. This means that while Simpson's Rule's accuracy plummets in high dimensions, the accuracy of Monte Carlo remains constant, making it the essential foundation for high-dimensional computation.</p>
+<h2 id="63-taming-singularities-and-infinity"><strong>6.3 Taming Singularities and Infinity</strong></h2>
 <hr />
-<h2 id="68-chapter-summary-and-bridge-to-chapter-7"><strong>6.8 Chapter Summary and Bridge to Chapter 7</strong></h2>
-<p>This chapter completed the mastery of the integral (<span class="arithmatex">\(\int dx\)</span>).</p>
-<ul>
-<li><strong>Fixed Grid Data:</strong> The <strong>Simpson's Rule (<span class="arithmatex">\(O(h^4)\)</span>)</strong> is the superior method for calculating the area of pre-existing data.</li>
-<li><strong>Callable Functions:</strong> <strong>Gaussian Quadrature (<code>quad</code>)</strong> is the optimal method.</li>
-<li><strong>Hard Problems:</strong> We learned to <strong>tame</strong> singularities and infinite limits with <strong>change of variables</strong>.</li>
-</ul>
-<p>With both the derivative (Chapter 5) and the integral (Chapter 6) mastered, we possess the two great pillars of calculus. We are now ready to combine these tools to solve the <strong>Initial Value Problem (IVP)</strong>—the fundamental dynamic question of predicting a system's future state given its current state. This is the topic of <strong>Differential Equations</strong> in Chapter 7.</p>
+<p>Many physical integrals are "improper"—they have infinite limits or blow up at a boundary (e.g., <span class="arithmatex">\(1/\sqrt{x}\)</span> at <span class="arithmatex">\(x=0\)</span>).</p>
+<p><strong>Strategies:</strong>
+1.  <strong>Change of Variables:</strong> Map <span class="arithmatex">\([0, \infty)\)</span> to <span class="arithmatex">\([0, 1]\)</span> using a transformation like <span class="arithmatex">\(u = 1/(1+x)\)</span>.
+2.  <strong>Adaptive Subdivision:</strong> Place an infinite density of points near the singularity (what <code>quad</code> does internally).</p>
+<details class="question">
+<summary>Can we integrate a singularity?</summary>
+<p>Yes, as long as the integral is <strong>convergent</strong>. For example, <span class="arithmatex">\(\int_0^1 x^{-1/2} dx = 2\)</span>, even though the function value is infinite at <span class="arithmatex">\(x=0\)</span>. Numerical methods like <code>quad</code> can handle this by avoiding the exact point <span class="arithmatex">\(x=0\)</span>.</p>
+</details>
+<hr />
+<h2 id="64-monte-carlo-beating-the-curse"><strong>6.4 Monte Carlo: Beating the Curse</strong></h2>
+<hr />
+<p>For 1D integrals, Simpson's Rule is king. But for a 10-dimensional integral (common in statistical mechanics), a grid of only 10 points per dimension requires <span class="arithmatex">\(10^{10}\)</span> evaluations—an impossible task. This is the <strong>Curse of Dimensionality</strong>.</p>
+<p><strong>Monte Carlo Integration</strong> solves this by sampling points <strong>randomly</strong>:
+1.  Pick <span class="arithmatex">\(N\)</span> random points in the volume.
+2.  Average the function values at these points.
+3.  Multiply by the total volume.</p>
+<pre class="mermaid"><code>graph LR
+    A[Grid Methods] --&gt; B[Error O(h^k)]
+    A --&gt; C[Exponential Cost in D]
+    D[Monte Carlo] --&gt; E[Error O(1/sqrt N)]
+    D --&gt; F[Independent of Dimension D]
+    C --&gt; G{D &gt; 8?}
+    F --&gt; G
+    G -- Yes --&gt; D
+    G -- No --&gt; A</code></pre>
+<div class="admonition tip">
+<p class="admonition-title">The <span class="arithmatex">\(1/\sqrt{N}\)</span> Law</p>
+<p>The error in Monte Carlo always scales as <span class="arithmatex">\(1/\sqrt{N}\)</span>, regardless of whether you are integrating in 1D or 1000D. This makes it the only viable tool for high-dimensional physics.</p>
+</div>
+<hr />
+<h2 id="summary-integration-method-comparison"><strong>Summary: Integration Method Comparison</strong></h2>
+<hr />
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Method</th>
+<th style="text-align: left;">Order</th>
+<th style="text-align: left;">Optimal For</th>
+<th style="text-align: left;">Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Trapezoidal</strong></td>
+<td style="text-align: left;"><span class="arithmatex">\(\mathcal{O}(h^2)\)</span></td>
+<td style="text-align: left;">Real-time / Rough data</td>
+<td style="text-align: left;">Simple and robust</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Simpson's</strong></td>
+<td style="text-align: left;"><span class="arithmatex">\(\mathcal{O}(h^4)\)</span></td>
+<td style="text-align: left;">Smooth fixed-grid data</td>
+<td style="text-align: left;">The "Go-to" for 1D</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Gaussian</strong></td>
+<td style="text-align: left;">Highly Variable</td>
+<td style="text-align: left;"><strong>Callable Functions</strong></td>
+<td style="text-align: left;"><strong>Industry Standard (<code>quad</code>)</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Monte Carlo</strong></td>
+<td style="text-align: left;"><span class="arithmatex">\(\mathcal{O}(1/\sqrt{N})\)</span></td>
+<td style="text-align: left;"><strong>High-Dimensional (<span class="arithmatex">\(D &gt; 8\)</span>)</strong></td>
+<td style="text-align: left;">Stochastic and Dimension-blind</td>
+</tr>
+</tbody>
+</table>
 <hr />
 <h2 id="references"><strong>References</strong></h2>
-<p>[1] Press, W. H., Teukolsky, S. A., Vetterling, W. T., &amp; Flannery, B. P. (2007). <em>Numerical Recipes: The Art of Scientific Computing</em> (3<sup>rd</sup> ed.). Cambridge University Press.</p>
-<p>[2] Higham, N.J. (2002). <em>Accuracy and Stability of Numerical Algorithms</em>. SIAM.</p>
-<p>[3] Quarteroni, A., Sacco, R., &amp; Saleri, F. (2207). <em>Numerical Mathematics</em>. Springer.</p>
-<p>[4] Burden, R.L., &amp; Faires, J.D. (2011). <em>Numerical Analysis</em>. Brooks/Cole.</p>
-<p>[5] Stoer, J., &amp; Bulirsch, R. (2002). <em>Introduction to Numerical Analysis</em>. Springer.</p>
+<hr />
+<p>[1] Press, W. H., et al. (2007). <em>Numerical Recipes: The Art of Scientific Computing</em>. Cambridge University Press.</p>
+<p>[2] Krommer, A. R., &amp; Ueberhuber, C. W. (1998). <em>Computational Integration</em>. SIAM.</p>
+<p>[3] Burden, R. L., &amp; Faires, J. D. (2011). <em>Numerical Analysis</em>. Brooks/Cole.</p>
+<p>[4] Metropolis, N., &amp; Ulam, S. (1949). The Monte Carlo Method. <em>Journal of the American Statistical Association</em>.</p>
+<p>[5] Piessens, R., et al. (1983). <em>QUADPACK: A Subroutine Package for Automatic Integration</em>. Springer-Verlag.</p>
 
 
 

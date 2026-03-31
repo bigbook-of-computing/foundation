@@ -2482,28 +2482,37 @@
 
 
 <h1 id="chapter-5-numerical-differentiation-codebook"><strong>Chapter 5: Numerical Differentiation (Codebook)</strong></h1>
-<p>This Code Book is for <strong>Chapter 5: Numerical Differentiation</strong>, focusing on implementing the core concepts of finite difference stencils and analyzing the critical trade-off between truncation error and round-off error.</p>
+<hr />
+<p>This Codebook implement the core stencils for finite difference approximations. We analyze the <strong>Forward</strong>, <strong>Backward</strong>, and <strong>Central Difference</strong> methods and identify the "Sweet Spot" step size (<span class="arithmatex">\(h\)</span>) where truncation error and round-off error are balanced.</p>
 <hr />
 <h2 id="project-1-the-great-error-showdown-v-plot-analysis">Project 1: The Great Error Showdown (V-Plot Analysis)</h2>
 <table>
 <thead>
 <tr>
-<th style="text-align: left;">Project Title</th>
-<th style="text-align: left;">Relevant Theoretical Background</th>
+<th style="text-align: left;">Component</th>
+<th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left;"><strong>The Great Error Showdown (V-Plot Analysis)</strong></td>
-<td style="text-align: left;">The total error in a numerical derivative is the sum of two competing terms: <strong>Truncation Error</strong> (<span class="arithmatex">\(E_{\text{trunc}} \propto \mathcal{O}(h^2)\)</span>), which decreases as the step size (<span class="arithmatex">\(h\)</span>) decreases, and <strong>Round-off Error</strong> (<span class="arithmatex">\(E_{\text{round}} \propto \frac{\epsilon_m}{h}\)</span>), which increases as <span class="arithmatex">\(h\)</span> decreases due to catastrophic cancellation.</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>Core Concept</strong></td>
-<td style="text-align: left;">The <strong>V-Plot</strong> (log-log plot of Error vs. <span class="arithmatex">\(h\)</span>) shows these two error sources, revealing the <strong>"sweet spot"</strong>—the optimal <span class="arithmatex">\(h\)</span> where the total error is minimized.</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>Mathematical Goal</strong></td>
+<td style="text-align: left;"><strong>Objective</strong></td>
 <td style="text-align: left;">Determine the optimal step size <span class="arithmatex">\(h_{\text{opt}}\)</span> for the Central Difference stencil applied to <span class="arithmatex">\(f(x) = \sin(x)\)</span> at <span class="arithmatex">\(x=1\)</span>.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Mathematical Concept</strong></td>
+<td style="text-align: left;">The V-Plot (log-log plot of Error vs. <span class="arithmatex">\(h\)</span>) shows the interplay of Truncation (<span class="arithmatex">\(O(h^2)\)</span>) and Round-off (<span class="arithmatex">\(O(\epsilon_m/h)\)</span>) errors.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Experiment Setup</strong></td>
+<td style="text-align: left;">Python, NumPy <code>logspace</code> for <span class="arithmatex">\(h \in [10^{-1}, 10^{-16}]\)</span>.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Expected Behavior</strong></td>
+<td style="text-align: left;">Error should decrease linearly with <span class="arithmatex">\(h^2\)</span>, reach a minimum at <span class="arithmatex">\(\sim 10^{-6}\)</span>, and then increase due to round-off.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Verification Goal</strong></td>
+<td style="text-align: left;">Identify the numerical "Sweet Spot" for double-precision differentiation.</td>
 </tr>
 </tbody>
 </table>

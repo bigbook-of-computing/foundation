@@ -94,7 +94,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#introduction" class="md-skip">
+        <a href="#chapter-12-partial-differential-equations-iii-hyperbolic" class="md-skip">
           Skip to content
         </a>
       
@@ -2324,194 +2324,138 @@
   
 
 
+<h1 id="chapter-12-partial-differential-equations-iii-hyperbolic"><strong>Chapter 12: Partial Differential Equations III (Hyperbolic)</strong></h1>
+<hr />
 <h1 id="introduction"><strong>Introduction</strong></h1>
-<p>In the progression of Part 4, <strong>Elliptic PDEs</strong> (Chapter 10) gave us static equilibrium, and <strong>Parabolic PDEs</strong> (Chapter 11) modeled <strong>diffusion</strong>—systems that dissipate energy and smooth out irregularities over time. This chapter introduces <strong>Hyperbolic PDEs</strong>, which govern <strong>wave phenomena</strong>, a distinct class of motion characterized by the propagation and <strong>retention</strong> of energy and shape through space [4, 5].</p>
-<p><strong>Physical Examples of Wave Propagation:</strong></p>
-<ul>
-<li><strong>Mechanical Vibrations</strong> (e.g., a guitar string or drum head).</li>
-<li><strong>Electromagnetism</strong> (e.g., light propagation).</li>
-<li><strong>Fluid Dynamics</strong> (e.g., surface ripples).</li>
-</ul>
-<p>The classic example is the <strong>1D Wave Equation</strong> for displacement <span class="arithmatex">\(y(x, t)\)</span>:</p>
-<div class="arithmatex">\[
-\frac{\partial^2 y}{\partial t^2} = v^2 \frac{\partial^2 y}{\partial x^2}
-\]</div>
-<p>The crucial difference from the Parabolic PDE is the <strong>second-order time derivative</strong> (<span class="arithmatex">\(\frac{\partial^2 y}{\partial t^2}\)</span>). This drives <strong>oscillatory</strong> and <strong>non-dissipative</strong> motion, contrasting with the diffusive nature of the Heat Equation (<span class="arithmatex">\(\frac{\partial T}{\partial t}\)</span>).</p>
-<p>Since the equation is second-order in time (structurally similar to Newton's Second Law), <strong>two initial conditions</strong> are required to fully specify the system's starting state:</p>
-<ol>
-<li><strong>Initial Position (Displacement):</strong> The shape of the string at <span class="arithmatex">\(t=0\)</span>, <span class="arithmatex">\(y(x, 0)\)</span>.</li>
-<li><strong>Initial Velocity (Speed):</strong> The instantaneous velocity profile at <span class="arithmatex">\(t=0\)</span>, <span class="arithmatex">\(\frac{\partial y}{\partial t} (x, 0)\)</span>.</li>
-</ol>
+<p>In the previous chapters, we modeled systems in equilibrium (Chapter 10) and systems that diffuse their energy (Chapter 11). This chapter introduces the final "Great Family" of PDEs: the <strong>Hyperbolic PDE</strong>. These equations govern <strong>Wave Propagation</strong>—the movement of energy and information through space without loss of shape. Whether it is a vibrating guitar string, a ripple on a pond, or a pulse of light, the physics is defined by the <strong>Wave Equation</strong>.</p>
+<p>Unlike diffusion, waves are <strong>Second-Order in Time</strong>. This small mathematical change transforms the behavior of the system from "smoothing out" to "oscillating." However, waves also bring a strict numerical "speed limit." If our digital signal tries to move faster than one grid cell per time step, the simulation will explode. This chapter defines the <strong>Courant-Friedrichs-Lewy (CFL)</strong> condition for waves and introduces the <strong>Leapfrog</strong> and <strong>Lax-Friedrichs</strong> schemes for stable propagation.</p>
+<hr />
 <h1 id="chapter-12-outline"><strong>Chapter 12: Outline</strong></h1>
 <table>
 <thead>
 <tr>
-<th style="text-align: left;">Sec.</th>
-<th style="text-align: left;">Title</th>
-<th style="text-align: left;">Core Ideas &amp; Examples</th>
+<th style="text-align: left;"><strong>Sec.</strong></th>
+<th style="text-align: left;"><strong>Title</strong></th>
+<th style="text-align: left;"><strong>Core Ideas &amp; Examples</strong></th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td style="text-align: left;"><strong>12.1</strong></td>
-<td style="text-align: left;">The FTCS "Verlet" Scheme</td>
-<td style="text-align: left;">Discretizing <span class="arithmatex">\(\frac{\partial^2 y}{\partial t^2}\)</span> and <span class="arithmatex">\(\frac{\partial^2 y}{\partial x^2}\)</span>, recurrence relation.</td>
+<td style="text-align: left;"><strong>The Physics of Propagation</strong></td>
+<td style="text-align: left;">Flux and conservation; the Wave Equation; waves vs. diffusion; the parameter <span class="arithmatex">\(c\)</span>.</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>12.2</strong></td>
-<td style="text-align: left;">The CFL Stability Condition</td>
-<td style="text-align: left;">Courant Number <span class="arithmatex">\(C = v h_t / h_x\)</span>, <span class="arithmatex">\(C \le 1\)</span> constraint.</td>
+<td style="text-align: left;"><strong>Explicit Wave Stepping</strong></td>
+<td style="text-align: left;">The 3-level recurrence relation; <span class="arithmatex">\(2^{\text{nd}}\)</span>-order time discretization.</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>12.3</strong></td>
-<td style="text-align: left;">The "First Step" Problem</td>
-<td style="text-align: left;">Handling the <span class="arithmatex">\(y_{i, -1}\)</span> term, using initial velocity.</td>
+<td style="text-align: left;"><strong>The Courant Condition (CFL)</strong></td>
+<td style="text-align: left;">The numerical speed limit; <span class="arithmatex">\(C = c\Delta t / \Delta x \leq 1\)</span>; signal causality.</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>12.4</strong></td>
-<td style="text-align: left;">Application: Plucked String</td>
-<td style="text-align: left;">Dirichlet BCs, standing waves, harmonics.</td>
+<td style="text-align: left;"><strong>Stability &amp; Dissipation</strong></td>
+<td style="text-align: left;">Numerical dispersion; the Lax-Friedrichs fix; staggered Leapfrog grids.</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>12.5</strong></td>
-<td style="text-align: left;">Summary &amp; Bridge</td>
-<td style="text-align: left;">Parabolic vs. Hyperbolic, bridge to Linear Algebra.</td>
+<td style="text-align: left;"><strong>The "Plucked String" Case Study</strong></td>
+<td style="text-align: left;">Standing waves; boundary reflections; Fourier decomposition on a grid.</td>
 </tr>
 </tbody>
 </table>
 <hr />
-<h2 id="121-method-1-the-verlet-of-pdes-the-ftcs-algorithm"><strong>12.1 Method 1: The "Verlet" of PDEs (The FTCS Algorithm)</strong></h2>
-<p>The solution involves applying the <strong>Finite Difference Method (FDM)</strong> to discretize both the second-order time and spatial derivatives. This results in the <strong>Forward-Time Centered-Space (FTCS) scheme</strong>, which is the preferred explicit marching method.</p>
+<h2 id="121-the-wave-equation-partial2-y-partial-t2"><strong>12.1 The Wave Equation: <span class="arithmatex">\(\partial^2 y / \partial t^2\)</span></strong></h2>
 <hr />
-<h3 id="the-recurrence-relation"><strong>The Recurrence Relation</strong></h3>
-<p>Applying the <span class="arithmatex">\(\mathcal{O}(h^2)\)</span> <strong>Central Difference stencil</strong> (Chapter 5) to both the time and spatial derivatives, and then rearranging the resulting expression to solve for the future displacement <span class="arithmatex">\(y_{i, n+1}\)</span>, yields the explicit recurrence relation [1]:</p>
-<div class="arithmatex">\[
-y_{i, n+1} = 2y_{i, n} - y_{i, n-1} + C^2 \left[ y_{i+1, n} - 2y_{i, n} + y_{i-1, n} \right]
-\]</div>
-<p>where <span class="arithmatex">\(C\)</span> is the <strong>Courant Number</strong>, <span class="arithmatex">\(C = \frac{v h_t}{h_x}\)</span>.</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># Algorithm: FTCS for 1D Wave Equation (Main Loop)</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="k">def</span><span class="w"> </span><span class="nf">wave_equation_ftcs</span><span class="p">(</span><span class="n">y_present</span><span class="p">,</span> <span class="n">y_past</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">h_t</span><span class="p">,</span> <span class="n">h_x</span><span class="p">,</span> <span class="n">N_steps</span><span class="p">):</span>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    <span class="c1"># (Assumes y_present (n) and y_past (n-1) are known)</span>
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>    <span class="n">N</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">y_present</span><span class="p">)</span>
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>    <span class="n">C</span> <span class="o">=</span> <span class="n">v</span> <span class="o">*</span> <span class="n">h_t</span> <span class="o">/</span> <span class="n">h_x</span>
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>    <span class="n">C_squared</span> <span class="o">=</span> <span class="n">C</span> <span class="o">*</span> <span class="n">C</span>
-</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>
-</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>    <span class="n">y_future</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">y_present</span><span class="p">)</span>
-</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>
-</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>    <span class="k">for</span> <span class="n">step</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N_steps</span><span class="p">):</span>
-</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>  <span class="c1"># (Iterate over interior points)</span>
-</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>            <span class="c1"># Calculate spatial curvature (Laplacian)</span>
-</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>            <span class="n">laplacian_y</span> <span class="o">=</span> <span class="n">y_present</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span><span class="o">*</span><span class="n">y_present</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">y_present</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>
-</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>            <span class="c1"># Apply the &quot;Verlet&quot; recurrence relation</span>
-</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>            <span class="n">y_future</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">y_present</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">y_past</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">C_squared</span> <span class="o">*</span> <span class="n">laplacian_y</span>
-</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a>
-</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>        <span class="c1"># (Boundaries y_future[0] and y_future[N-1] are set by BCs)</span>
-</span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a>
-</span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a>        <span class="c1"># Update for next iteration</span>
-</span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a>        <span class="n">y_past</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">y_present</span><span class="p">)</span>
-</span><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a>        <span class="n">y_present</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">y_future</span><span class="p">)</span>
-</span><span id="__span-0-26"><a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a>
-</span><span id="__span-0-27"><a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a>    <span class="k">return</span> <span class="n">y_present</span>
-</span><span id="__span-0-28"><a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a>    <span class="n">u</span> <span class="o">=</span> <span class="n">u0</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-</span><span id="__span-0-29"><a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a>    <span class="n">u_old</span> <span class="o">=</span> <span class="n">u_prev</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-</span><span id="__span-0-30"><a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a>
-</span><span id="__span-0-31"><a id="__codelineno-0-31" name="__codelineno-0-31" href="#__codelineno-0-31"></a>    <span class="n">r</span> <span class="o">=</span> <span class="p">(</span><span class="n">c</span> <span class="o">*</span> <span class="n">dt</span> <span class="o">/</span> <span class="n">dx</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
-</span><span id="__span-0-32"><a id="__codelineno-0-32" name="__codelineno-0-32" href="#__codelineno-0-32"></a>
-</span><span id="__span-0-33"><a id="__codelineno-0-33" name="__codelineno-0-33" href="#__codelineno-0-33"></a>    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nt</span><span class="p">):</span>
-</span><span id="__span-0-34"><a id="__codelineno-0-34" name="__codelineno-0-34" href="#__codelineno-0-34"></a>        <span class="n">u_new</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
-</span><span id="__span-0-35"><a id="__codelineno-0-35" name="__codelineno-0-35" href="#__codelineno-0-35"></a>        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">nx</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
-</span><span id="__span-0-36"><a id="__codelineno-0-36" name="__codelineno-0-36" href="#__codelineno-0-36"></a>            <span class="n">u_new</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">u</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">u_old</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">r</span> <span class="o">*</span> <span class="p">(</span><span class="n">u</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span><span class="o">*</span><span class="n">u</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">u</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
-</span><span id="__span-0-37"><a id="__codelineno-0-37" name="__codelineno-0-37" href="#__codelineno-0-37"></a>        <span class="n">u_old</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-</span><span id="__span-0-38"><a id="__codelineno-0-38" name="__codelineno-0-38" href="#__codelineno-0-38"></a>        <span class="n">u</span> <span class="o">=</span> <span class="n">u_new</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-</span><span id="__span-0-39"><a id="__codelineno-0-39" name="__codelineno-0-39" href="#__codelineno-0-39"></a>
-</span><span id="__span-0-40"><a id="__codelineno-0-40" name="__codelineno-0-40" href="#__codelineno-0-40"></a>    <span class="k">return</span> <span class="n">u</span>
-</span></code></pre></div>
-<pre class="mermaid"><code>flowchart LR
-A[Start Simulation] --&gt; B{Check CFL}
-B --&gt;|C &lt;= 1| C[Stable Solution]
-B --&gt;|C &gt; 1| D[Error Amplifies]
-D --&gt; E[Non-Physical Oscillations]
-E --&gt; F[Numerical Explosion]</code></pre>
-<p>The constraint leads to a linear cost restriction: <span class="arithmatex">\(h_t \le \frac{h_x}{v}\)</span>. This is less severe than the quadratic restriction found in the Parabolic PDE's FTCS scheme, but it still forces the time step to be linearly reduced with any increase in spatial resolution.</p>
+<p>The 1D Wave Equation is given by:
+$$ \frac{\partial^2 y}{\partial t^2} = c^2 \frac{\partial^2 y}{\partial x^2} $$
+where <span class="arithmatex">\(c\)</span> is the wave speed. </p>
+<p><strong>Key Differences from Diffusion:</strong>
+1.  <strong>Retention:</strong> Waves keep their shape; they don't "blur" away like heat.
+2.  <strong>Inertia:</strong> The second-order time derivative acts like Newton's <span class="arithmatex">\(F=ma\)</span>, providing "momentum" to the field.
+3.  <strong>Boundary Interaction:</strong> Waves reflect and interfere, creating standing patterns.</p>
 <hr />
-<h2 id="123-the-first-step-problem"><strong>12.3 The "First Step" Problem</strong></h2>
-<p>The FTCS recurrence relation is a <strong>three-level scheme</strong>, requiring displacement values at three time levels (<span class="arithmatex">\(n-1, n, n+1\)</span>). Since we only have the state at <span class="arithmatex">\(t=0\)</span> (<span class="arithmatex">\(n=0\)</span>), the past state <span class="arithmatex">\(y_{i, -1}\)</span> is missing, preventing the direct execution of the main loop.</p>
+<h2 id="122-explicit-time-stepping-the-3-level-scheme"><strong>12.2 Explicit Time Stepping: The 3-Level Scheme</strong></h2>
 <hr />
-<h3 id="the-solution"><strong>The Solution</strong></h3>
-<p>A special one-time formula must be derived to generate <span class="arithmatex">\(y_{i, 1}\)</span> from the known initial conditions <span class="arithmatex">\(y_{i, 0}\)</span> and the initial velocity <span class="arithmatex">\(v_{i, 0}\)</span> [5]:</p>
-<ol>
-<li>
-<p>The <strong>initial velocity</strong> <span class="arithmatex">\(v_{i, 0}\)</span> is approximated using a <strong>Central Difference</strong> in time: <span class="arithmatex">\(v_{i, 0} \approx \frac{y_{i, 1} - y_{i, -1}}{2 h_t}\)</span>.</p>
-</li>
-<li>
-<p>The resulting expression for <span class="arithmatex">\(y_{i, -1}\)</span> is substituted into the general FTCS recurrence relation at <span class="arithmatex">\(n=0\)</span>.</p>
-</li>
-<li>
-<p>Solving for <span class="arithmatex">\(y_{i, 1}\)</span> yields the special formula for the first time step:</p>
-</li>
-</ol>
-<div class="arithmatex">\[
-\boxed{y_{i, 1} = y_{i, 0} + h_t v_{i, 0} + \frac{C^2}{2} \left( y_{i+1, 0} - 2y_{i, 0} + y_{i-1, 0} \right)}
-\]</div>
-<p>The simulation proceeds by executing this special initialization step, then transitioning to the general FTCS formula for all steps where <span class="arithmatex">\(n \ge 1\)</span>.</p>
+<p>Because the equation is 2<sup>nd</sup>-order in time, we need three time levels to calculate the future: <strong>Past</strong>, <strong>Present</strong>, and <strong>Future</strong>.</p>
+<div class="arithmatex">\[ \frac{y_i^{n+1} - 2y_i^n + y_i^{n-1}}{\Delta t^2} = c^2 \frac{y_{i+1}^n - 2y_i^n + y_{i-1}^n}{\Delta x^2} \]</div>
+<p>Rearranging for the future <span class="arithmatex">\(y_i^{n+1}\)</span>:
+$$ y_i^{n+1} = 2y_i^n - y_i^{n-1} + C^2 (y_{i+1}^n - 2y_i^n + y_{i-1}^n) $$
+where <span class="arithmatex">\(C = c\Delta t / \Delta x\)</span> is the <strong>Courant Number</strong>.</p>
 <hr />
-<h2 id="124-core-application-the-plucked-guitar-string"><strong>12.4 Core Application: The "Plucked" Guitar String</strong></h2>
-<p>The <strong>Plucked Guitar String</strong> is the classic application, modeling a string fixed at both ends (Dirichlet BCs, <span class="arithmatex">\(y(0, t) = y(L, t) = 0\)</span>) and released from rest (<span class="arithmatex">\(v(x, 0) = 0\)</span>) with an initial displacement (a triangular shape) [4].</p>
+<h2 id="123-the-courant-condition-the-speed-limit"><strong>12.3 The Courant Condition: The Speed Limit</strong></h2>
 <hr />
-<h3 id="the-strategy"><strong>The Strategy</strong></h3>
-<p>The simulation executes the two-stage time march with a stable Courant Number (<span class="arithmatex">\(C \le 1.0\)</span>). Since the initial velocity is zero, the "First Step" formula simplifies: <span class="arithmatex">\(y_{i, 1} = y_{i, 0} + \frac{C^2}{2} (\text{Laplacian})\)</span>. The resulting motion demonstrates <strong>wave superposition</strong> and the formation of <strong>standing wave patterns</strong> (harmonics) as the initial displacement propagates and reflects off the fixed boundaries.</p>
-<div class="admonition example">
-<p class="admonition-title">Visualizing Wave Harmonics</p>
-<p>When the simulation runs, the initial triangular pulse (a superposition of many frequencies) splits into two pulses traveling in opposite directions. As they reflect off the fixed boundaries, they interfere. Over time, the simulation shows a stable superposition of the fundamental mode and its <strong>standing wave harmonics</strong>, just as a real guitar string does.</p>
+<p>For the wave simulation to be stable, the physical wave must not travel further than one grid cell (<span class="arithmatex">\(\Delta x\)</span>) in one time step (<span class="arithmatex">\(\Delta t\)</span>).</p>
+<div class="arithmatex">\[ C = \frac{c \Delta t}{\Delta x} \leq 1 \]</div>
+<pre class="mermaid"><code>graph TD
+    A[Physical Wave Speed c] --&gt; B{c*dt &lt;= dx?}
+    B -- Yes (C &lt;= 1) --&gt; C[Stable Propagation]
+    B -- No (C &gt; 1) --&gt; D[Numerical Explosion!]
+    D --&gt; E[Physics violates Causality]</code></pre>
+<div class="admonition tip">
+<p class="admonition-title">C=1 is the 'Sweet Spot'</p>
+<p>In 1D, setting <span class="arithmatex">\(C=1\)</span> (where the wave moves exactly one cell per step) is often the most accurate setting, as it minimizes <strong>Numerical Dispersion</strong> (the "blurring" of the wave shape).</p>
 </div>
 <hr />
-<h2 id="125-chapter-summary-and-bridge-to-part-5-linear-algebra"><strong>12.5 Chapter Summary and Bridge to Part 5: Linear Algebra</strong></h2>
-<p>This chapter established the full solver for the <strong>Hyperbolic PDE</strong> (Wave Equation).</p>
+<h2 id="124-the-plucked-string-boundary-reflection"><strong>12.4 The Plucked String: Boundary Reflection</strong></h2>
+<hr />
+<p>When a wave hits a fixed boundary (<span class="arithmatex">\(y=0\)</span>), it reflects upside-down. This is handled naturally by our grid boundaries.</p>
+<div class="admonition example">
+<p class="admonition-title">Vibrating String</p>
+<p>To simulate a plucked guitar string:
+1.  <strong>Initialize:</strong> Set <span class="arithmatex">\(y(x, 0)\)</span> to a triangular shape.
+2.  <strong>Start:</strong> Use a special first step (since <span class="arithmatex">\(y^{n-1}\)</span> is unknown at <span class="arithmatex">\(t=0\)</span>).
+3.  <strong>March:</strong> Run the 3-level scheme.
+You will see the triangle split into two waves that travel, reflect, and eventually form the fundamental harmonic of the string.</p>
+</div>
+<hr />
+<h2 id="summary-the-big-three-pdes"><strong>Summary: The "Big Three" PDEs</strong></h2>
+<hr />
 <table>
 <thead>
 <tr>
-<th style="text-align: left;">PDE Type</th>
-<th style="text-align: left;">Time Derivative Order</th>
-<th style="text-align: left;">FDM Scheme</th>
-<th style="text-align: left;">Stability</th>
-<th style="text-align: left;">Final Constraint</th>
+<th style="text-align: left;">PDE Family</th>
+<th style="text-align: left;">Example</th>
+<th style="text-align: left;">Physical State</th>
+<th style="text-align: left;">Time Order</th>
+<th style="text-align: left;">Numerical Standard</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left;"><strong>Parabolic (Diffusion)</strong> (Ch 11)</td>
-<td style="text-align: left;">First (<span class="arithmatex">\(\frac{\partial T}{\partial t}\)</span>)</td>
-<td style="text-align: left;">Crank-Nicolson</td>
-<td style="text-align: left;">Unconditional</td>
-<td style="text-align: left;">Matrix Solve <span class="arithmatex">\(\mathbf{A} \mathbf{T}_{n+1} = \mathbf{b}\)</span></td>
+<td style="text-align: left;"><strong>Elliptic</strong></td>
+<td style="text-align: left;">Laplace</td>
+<td style="text-align: left;"><strong>Equilibrium</strong></td>
+<td style="text-align: left;">None</td>
+<td style="text-align: left;">Relaxation (SOR)</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>Hyperbolic (Wave)</strong> (Ch 12)</td>
-<td style="text-align: left;">Second (<span class="arithmatex">\(\frac{\partial^2 y}{\partial t^2}\)</span>)</td>
-<td style="text-align: left;">Explicit FTCS (Verlet)</td>
-<td style="text-align: left;">Conditional</td>
-<td style="text-align: left;"><span class="arithmatex">\(\mathbf{C} \le 1\)</span></td>
+<td style="text-align: left;"><strong>Parabolic</strong></td>
+<td style="text-align: left;">Heat</td>
+<td style="text-align: left;"><strong>Diffusion</strong></td>
+<td style="text-align: left;">1<sup>st</sup> Order</td>
+<td style="text-align: left;">Crank-Nicolson</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Hyperbolic</strong></td>
+<td style="text-align: left;">Wave</td>
+<td style="text-align: left;"><strong>Propagation</strong></td>
+<td style="text-align: left;">2<sup>nd</sup> Order</td>
+<td style="text-align: left;">Explicit FTCS (<span class="arithmatex">\(C \leq 1\)</span>)</td>
 </tr>
 </tbody>
 </table>
-<p>The FDM, through Part 4, has consistently led to the core requirement: <strong>solving systems of linear equations</strong> [1, 4].</p>
-<ul>
-<li><strong>Implicit PDEs (Ch 11):</strong> Required solving a tridiagonal system at every time step.</li>
-<li><strong>BVPs (Ch 9):</strong> Required solving <span class="arithmatex">\(\mathbf{A} \mathbf{y} = \mathbf{b}\)</span>.</li>
-</ul>
-<p>We now shift focus from <strong>discretization</strong> to <strong>solution</strong>. <strong>Part 5: Linear Algebra</strong> will build the core algorithms (like the Thomas Algorithm, or LU Decomposition from Chapter 13) required to efficiently solve the massive, sparse matrix systems generated by the FDM.</p>
 <hr />
 <h2 id="references"><strong>References</strong></h2>
-<p>[1] Press, W. H., Teukolsky, S. A., Vetterling, W. T., &amp; Flannery, B. P. (2007). <em>Numerical Recipes: The Art of Scientific Computing</em> (3<sup>rd</sup> ed.). Cambridge University Press.</p>
-<p>[2] Higham, N.J. (2002). <em>Accuracy and Stability of Numerical Algorithms</em>. SIAM.</p>
-<p>[3] Quarteroni, A., Sacco, R., &amp; Saleri, F. (2007). <em>Numerical Mathematics</em>. Springer.</p>
-<p>[4] Newman, M. (2013). <em>Computational Physics</em>. CreateSpace Independent Publishing Platform.</p>
-<p>[5] Garcia, A. L. (2000). <em>Numerical Methods for Physics</em> (2<sup>nd</sup> ed.). Prentice Hall.</p>
-<p>[6] Thijssen, J. M. (2007). <em>Computational Physics</em> (2<sup>nd</sup> ed.). Cambridge University Press.</p>
+<hr />
+<p>[1] Press, W. H., et al. (2007). <em>Numerical Recipes: The Art of Scientific Computing</em>. Cambridge University Press.</p>
+<p>[2] Courant, R., Friedrichs, K., &amp; Lewy, H. (1928). Über die partiellen Differenzengleichungen der mathematischen Physik. <em>Mathematische Annalen</em>.</p>
+<p>[3] Morton, K. W., &amp; Mayers, D. F. (2005). <em>Numerical Solution of Partial Differential Equations</em>. Cambridge University Press.</p>
+<p>[4] Strikwerda, J. C. (2004). <em>Finite Difference Schemes and Partial Differential Equations</em>. SIAM.</p>
+<p>[5] Trefethen, L. N. (1982). Group velocity in finite difference schemes. <em>SIAM Review</em>.</p>
 
 
 

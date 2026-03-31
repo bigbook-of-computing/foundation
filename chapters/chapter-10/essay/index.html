@@ -94,7 +94,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#introduction" class="md-skip">
+        <a href="#chapter-10-partial-differential-equations-i-elliptic" class="md-skip">
           Skip to content
         </a>
       
@@ -2324,239 +2324,151 @@
   
 
 
+<h1 id="chapter-10-partial-differential-equations-i-elliptic"><strong>Chapter 10: Partial Differential Equations I (Elliptic)</strong></h1>
+<hr />
 <h1 id="introduction"><strong>Introduction</strong></h1>
-<p>In <strong>Part 3</strong> (Chapters 7-9), our focus was on single-dimension physics, primarily solving problems that evolved over time (<span class="arithmatex">\(t\)</span>). We now shift to a new class of multi-dimensional problems that govern <strong>fields</strong> in two or three spatial dimensions. This chapter addresses the physics of <strong>static</strong> or <strong>steady-state</strong> systems—those that have reached <strong>equilibrium</strong>, meaning their properties are no longer changing with respect to time (<span class="arithmatex">\(\frac{\partial}{\partial t} = 0\)</span>).</p>
-<p>These equilibrium problems are described by <strong>Elliptic Partial Differential Equations (PDEs)</strong>, which are pure <strong>Boundary Value Problems (BVPs)</strong>. The solution is a single, stable <strong>shape</strong> or field profile determined entirely by the fixed conditions on the boundaries of the domain.</p>
-<p>The generalized form of these equations utilizes the <strong>Laplacian operator</strong> (<span class="arithmatex">\(\nabla^2\)</span>):</p>
-<div class="arithmatex">\[
-\nabla^2 \phi = \frac{\partial^2 \phi}{\partial x^2} + \frac{\partial^2 \phi}{\partial y^2} + \frac{\partial^2 \phi}{\partial z^2} = f(x, y, z)
-\]</div>
-<ul>
-<li><strong>Laplace's Equation (<span class="arithmatex">\(\nabla^2 \phi = 0\)</span>):</strong> Governs the potential (<span class="arithmatex">\(\phi\)</span>) in charge-free regions (electrostatics) or the temperature (<span class="arithmatex">\(T\)</span>) in stable, source-free heat flow. The condition <span class="arithmatex">\(\nabla^2 \phi = 0\)</span> implies that at every interior point, the potential is at <strong>equilibrium</strong>, with no net flux or source.</li>
-<li><strong>Poisson's Equation (<span class="arithmatex">\(\nabla^2 \phi = \rho\)</span>):</strong> Governs fields in regions that contain a fixed source (<span class="arithmatex">\(\rho\)</span>), such as charge density in electrostatics.</li>
-</ul>
-<p>To solve these problems, we extend the <strong>Finite Difference Method (FDM)</strong> from Chapter 9 into two dimensions. This discretizes the Laplacian, transforming the calculus problem into a large <strong>system of linear equations</strong> that is solved iteratively via <strong>relaxation</strong>.</p>
+<p>Up to this point, we have simulated systems that change over a single dimension—usually time (<span class="arithmatex">\(t\)</span>) or space (<span class="arithmatex">\(x\)</span>). However, the physical world is multi-dimensional. Gravity, electricity, and heat flow exist as <strong>fields</strong> that fill up space. To model these, we must move from Ordinary Differential Equations (ODEs) to <strong>Partial Differential Equations (PDEs)</strong>.</p>
+<p>This chapter introduces the first of the three "Great Families" of PDEs: the <strong>Elliptic PDE</strong>. These equations describe systems in a state of <strong>Equilibrium</strong>—where the "push" and "pull" of the surroundings have settled into a stable, time-independent shape. Whether you are calculating the voltage between two electrodes or the steady-state temperature of a metal plate, you are solving <strong>Laplace's</strong> or <strong>Poisson's</strong> equations. We will extend our Finite Difference toolkit into 2D and learn how to "relax" a digital mesh into physical equilibrium.</p>
+<hr />
 <h1 id="chapter-10-outline"><strong>Chapter 10: Outline</strong></h1>
 <table>
 <thead>
 <tr>
-<th style="text-align: left;">Sec.</th>
-<th style="text-align: left;">Title</th>
-<th style="text-align: left;">Core Ideas &amp; Examples</th>
+<th style="text-align: left;"><strong>Sec.</strong></th>
+<th style="text-align: left;"><strong>Title</strong></th>
+<th style="text-align: left;"><strong>Core Ideas &amp; Examples</strong></th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td style="text-align: left;"><strong>10.1</strong></td>
-<td style="text-align: left;">The Physics of "Steady State"</td>
-<td style="text-align: left;">Elliptic PDEs, <span class="arithmatex">\(\frac{\partial}{\partial t} = 0\)</span>, Laplace vs. Poisson.</td>
+<td style="text-align: left;"><strong>The PDE Taxonomy</strong></td>
+<td style="text-align: left;">Elliptic (Equilibrium), Parabolic (Diffusion), Hyperbolic (Waves).</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>10.2</strong></td>
-<td style="text-align: left;">The 2D Laplacian</td>
-<td style="text-align: left;">Derivation of the "Five-Point Stencil" from FDM.</td>
+<td style="text-align: left;"><strong>The 2D Laplacian</strong></td>
+<td style="text-align: left;">Extending the stencil; <span class="arithmatex">\(\nabla^2 \phi = 0\)</span>; the "5-Point Average" rule.</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>10.3</strong></td>
-<td style="text-align: left;">The Relaxation Analogy</td>
-<td style="text-align: left;">Iterative methods, "rubber sheet" analogy.</td>
+<td style="text-align: left;"><strong>Iterative Relaxation</strong></td>
+<td style="text-align: left;">The "Rubber Sheet" analogy; solving by iteration instead of direct inversion.</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>10.4</strong></td>
-<td style="text-align: left;">Method 1: Jacobi</td>
-<td style="text-align: left;">Synchronous updates, two-grid requirement, parallelizable.</td>
+<td style="text-align: left;"><strong>Jacobi vs. Gauss-Seidel</strong></td>
+<td style="text-align: left;">Synchronous vs. Asynchronous updates; memory and speed trade-offs.</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>10.5</strong></td>
-<td style="text-align: left;">Method 2: Gauss-Seidel</td>
-<td style="text-align: left;">Sequential updates, one-grid, <span class="arithmatex">\(\approx 2\times\)</span> faster than Jacobi.</td>
+<td style="text-align: left;"><strong>SOR (Successive Over-Relaxation)</strong></td>
+<td style="text-align: left;">Accelerating convergence; the over-relaxation factor <span class="arithmatex">\(\omega\)</span>; the spectral radius.</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>10.6</strong></td>
-<td style="text-align: left;">Method 3: SOR</td>
-<td style="text-align: left;">Over-relaxation factor <span class="arithmatex">\(\omega\)</span>, fastest convergence.</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>10.7</strong></td>
-<td style="text-align: left;">Application: Electrostatic Box</td>
-<td style="text-align: left;"><span class="arithmatex">\(\nabla^2 \phi = 0\)</span> with fixed boundaries, equipotential lines.</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>10.8</strong></td>
-<td style="text-align: left;">Summary &amp; Bridge</td>
-<td style="text-align: left;">From Elliptic to Parabolic PDEs (Heat Equation).</td>
+<td style="text-align: left;"><strong>Boundary Conditions in 2D</strong></td>
+<td style="text-align: left;">Dirichlet (Fixed Value) vs. Neumann (Fixed Flux); the physical meaning of edges.</td>
 </tr>
 </tbody>
 </table>
 <hr />
-<h2 id="101-the-2d-laplacian-the-five-point-stencil"><strong>10.1 The 2D Laplacian: The "Five-Point Stencil"</strong></h2>
-<p>The core of the FDM for Elliptic PDEs is the derivation of an algebraic approximation for the <strong>2D Laplacian operator</strong> (<span class="arithmatex">\(\nabla^2 \phi\)</span>).</p>
+<h2 id="101-the-2d-laplacian-the-5-point-average"><strong>10.1 The 2D Laplacian: The 5-Point Average</strong></h2>
 <hr />
-<h3 id="derivation-of-the-five-point-stencil"><strong>Derivation of the Five-Point Stencil</strong></h3>
-<p>Assuming an evenly spaced grid with spacing <span class="arithmatex">\(h\)</span>, the derivation involves substituting the <span class="arithmatex">\(\mathcal{O}(h^2)\)</span> <strong>Central Difference stencil</strong> (from Chapter 5) into each spatial dimension separately:</p>
-<div class="arithmatex">\[
-\nabla^2 \phi \approx \left( \frac{\phi_{i+1, j} - 2\phi_{i, j} + \phi_{i-1, j}}{h^2} \right) + \left( \frac{\phi_{i, j+1} - 2\phi_{i, j} + \phi_{i, j-1}}{h^2} \right)
-\]</div>
-<p>For <strong>Laplace's Equation</strong> (<span class="arithmatex">\(\nabla^2 \phi = 0\)</span>), we multiply by <span class="arithmatex">\(h^2\)</span> and rearrange to solve for the central point, <span class="arithmatex">\(\phi_{i,j}\)</span>:</p>
-<div class="arithmatex">\[
-\phi_{i+1, j} + \phi_{i-1, j} + \phi_{i, j+1} + \phi_{i, j-1} - 4\phi_{i, j} \approx 0
-\]</div>
-<p>This immediately yields the fundamental FDM rule, known as the <strong>Five-Point Stencil</strong>:</p>
-<div class="arithmatex">\[
-\boxed{\phi_{i, j} \approx \frac{1}{4} \left( \phi_{i+1, j} + \phi_{i-1, j} + \phi_{i, j+1} + \phi_{i, j-1} \right)}
-\]</div>
-<hr />
-<h3 id="physical-interpretation"><strong>Physical Interpretation</strong></h3>
-<p>The mathematical form of the Five-Point Stencil provides a powerful <strong>physical insight</strong>: the potential or temperature at any interior grid point in a static, equilibrium field is simply the <strong>average of the potentials of its four immediate neighbors</strong> (North, South, East, West). This condition <em>defines</em> equilibrium, as any deviation from this average implies a non-zero <span class="arithmatex">\(\nabla^2 \phi\)</span> and thus an unphysical flux.</p>
+<p>In 2D, the Laplacian operator is <span class="arithmatex">\(\nabla^2 \phi = \frac{\partial^2 \phi}{\partial x^2} + \frac{\partial^2 \phi}{\partial y^2}\)</span>. Discretizing both directions with central differences gives the <strong>Five-Point Stencil</strong>:</p>
+<div class="arithmatex">\[ \nabla^2 \phi \approx \frac{\phi_{i+1,j} - 2\phi_{i,j} + \phi_{i-1,j}}{h^2} + \frac{\phi_{i,j+1} - 2\phi_{i,j} + \phi_{i,j-1}}{h^2} \]</div>
+<p>For Laplace’s equation (<span class="arithmatex">\(\nabla^2 \phi = 0\)</span>), this simplifies to a beautiful physical truth:</p>
+<div class="arithmatex">\[ \phi_{i,j} = \frac{1}{4} \left( \phi_{i+1,j} + \phi_{i-1,j} + \phi_{i,j+1} + \phi_{i,j-1} \right) \]</div>
 <div class="admonition tip">
-<p class="admonition-title">The Definition of Equilibrium</p>
-<p>The Five-Point Stencil isn't just a mathematical trick; it's a profound physical statement. It says that for a field in equilibrium (<span class="arithmatex">\(\nabla^2\phi = 0\)</span>), the value at <em>any</em> point must be the <strong>exact average</strong> of its neighbors. If it were higher or lower, there would be a "dip" or "peak," implying a source or sink, which violates the equilibrium condition.</p>
-<p>The local truncation error for this FDM approximation remains <strong><span class="arithmatex">\(\mathcal{O}(h^2)\)</span></strong>.</p>
+<p class="admonition-title">The Value of Average</p>
+<p>Equilibrium in 2D means that every point is the <strong>exact average</strong> of its four neighbors. If a point were higher than the average of its neighbors, it would be a "peak" and would naturally flow outward. Equilibrium is reached when the field is as "smooth" as possible given the boundary constraints.</p>
 </div>
 <hr />
-<h2 id="102-the-relaxation-analogy-and-iterative-methods"><strong>10.2 The "Relaxation" Analogy and Iterative Methods</strong></h2>
-<p>The technique used to solve the large algebraic system resulting from FDM is called the <strong>Relaxation Method</strong>, which models the physical system settling into its final equilibrium shape.</p>
-<p>The process is analogous to a <strong>taut rubber sheet</strong> pinned at its edges (the fixed boundary conditions). An initial perturbation in the interior is gradually "damped out" or <strong>relaxed</strong> until the sheet assumes its final, stable shape.</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>    <span class="n">flowchart</span> <span class="n">TD</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">A</span><span class="p">[</span><span class="n">Start</span><span class="p">:</span> <span class="n">Initial</span> <span class="n">Grid</span> <span class="p">(</span><span class="n">Guesses</span> <span class="o">+</span> <span class="n">Boundaries</span><span class="p">)]</span> <span class="o">--&gt;</span> <span class="n">B</span><span class="p">{</span><span class="n">Sweep</span> <span class="n">Grid</span> <span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">g</span><span class="o">.</span><span class="p">,</span> <span class="n">Gauss</span><span class="o">-</span><span class="n">Seidel</span><span class="p">)}</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="n">B</span> <span class="o">--&gt;</span> <span class="n">C</span><span class="p">[</span><span class="n">Apply</span> <span class="mi">5</span><span class="o">-</span><span class="n">Point</span> <span class="n">Stencil</span> <span class="n">to</span> <span class="n">each</span> <span class="n">interior</span> <span class="n">node</span> <span class="err">$</span>\<span class="n">phi_</span><span class="p">{</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">}</span><span class="err">$</span><span class="p">]</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="n">C</span> <span class="o">--&gt;</span> <span class="n">D</span><span class="p">{</span><span class="n">Check</span> <span class="n">Convergence</span><span class="p">}</span>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    <span class="n">D</span> <span class="o">--</span> <span class="n">No</span> <span class="p">(</span><span class="n">Error</span> <span class="o">&gt;</span> <span class="n">Tolerance</span><span class="p">)</span> <span class="o">--&gt;</span> <span class="n">B</span>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    <span class="n">D</span> <span class="o">--</span> <span class="n">Yes</span> <span class="p">(</span><span class="n">Error</span> <span class="o">&lt;=</span> <span class="n">Tolerance</span><span class="p">)</span> <span class="o">--&gt;</span> <span class="n">E</span><span class="p">[</span><span class="n">Stop</span><span class="p">:</span> <span class="n">Final</span> <span class="n">Equilibrium</span> <span class="n">Solution</span><span class="p">]</span>
-</span></code></pre></div>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="k">def</span><span class="w"> </span><span class="nf">solve_laplace</span><span class="p">(</span><span class="n">grid_size</span><span class="p">,</span> <span class="n">boundary_conditions</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">):</span>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    <span class="n">u</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">grid_size</span><span class="p">,</span> <span class="n">grid_size</span><span class="p">))</span>
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    <span class="c1"># Apply boundary conditions...</span>
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_iter</span><span class="p">):</span>
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>        <span class="n">u_next</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>        <span class="c1"># Finite difference update</span>
-</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>        <span class="n">u_next</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.25</span> <span class="o">*</span> <span class="p">(</span><span class="n">u</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">u</span><span class="p">[</span><span class="mi">2</span><span class="p">:,</span> <span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span>
-</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>                                     <span class="n">u</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">u</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">:])</span>
-</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>
-</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">u_next</span> <span class="o">-</span> <span class="n">u</span><span class="p">))</span> <span class="o">&lt;</span> <span class="n">tol</span><span class="p">:</span>
-</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>            <span class="k">break</span>
-</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>        <span class="n">u</span> <span class="o">=</span> <span class="n">u_next</span>
-</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>
-</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>    <span class="k">return</span> <span class="n">u</span>
-</span></code></pre></div>
-<p><div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># Algorithm: Jacobi Relaxation</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="k">def</span><span class="w"> </span><span class="nf">jacobi_relaxation</span><span class="p">(</span><span class="n">phi_old</span><span class="p">,</span> <span class="n">tolerance</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">):</span>
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>    <span class="c1"># Initialize: phi_new[M, N], phi_old[M, N] (with boundaries)</span>
-</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>    <span class="n">M</span><span class="p">,</span> <span class="n">N</span> <span class="o">=</span> <span class="n">phi_old</span><span class="o">.</span><span class="n">shape</span>
-</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>    <span class="n">phi_new</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">phi_old</span><span class="p">)</span>
-</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>    <span class="n">max_error</span> <span class="o">=</span> <span class="mf">1.0</span>
-</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>
-</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>    <span class="k">while</span> <span class="n">max_error</span> <span class="o">&gt;</span> <span class="n">tolerance</span><span class="p">:</span>
-</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>        <span class="n">max_error</span> <span class="o">=</span> <span class="mf">0.0</span>
-</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>
-</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>        <span class="c1"># 1. Calculate all new values using only old values</span>
-</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a>        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">M</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
-</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a>            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
-</span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a>                <span class="n">phi_new</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.25</span> <span class="o">*</span> <span class="p">(</span><span class="n">phi_old</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">j</span><span class="p">]</span> <span class="o">+</span> <span class="n">phi_old</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">j</span><span class="p">]</span> <span class="o">+</span>
-</span><span id="__span-2-18"><a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a>                                     <span class="n">phi_old</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">phi_old</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
-</span><span id="__span-2-19"><a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a>
-</span><span id="__span-2-20"><a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a>        <span class="c1"># 2. Check for convergence (compare new to old)</span>
-</span><span id="__span-2-21"><a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a>        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">M</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
-</span><span id="__span-2-22"><a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a>            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
-</span><span id="__span-2-23"><a id="__codelineno-2-23" name="__codelineno-2-23" href="#__codelineno-2-23"></a>                <span class="n">error</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">phi_new</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span> <span class="o">-</span> <span class="n">phi_old</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">])</span>
-</span><span id="__span-2-24"><a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a>                <span class="k">if</span> <span class="n">error</span> <span class="o">&gt;</span> <span class="n">max_error</span><span class="p">:</span>
-</span><span id="__span-2-25"><a id="__codelineno-2-25" name="__codelineno-2-25" href="#__codelineno-2-25"></a>                    <span class="n">max_error</span> <span class="o">=</span> <span class="n">error</span>
-</span><span id="__span-2-26"><a id="__codelineno-2-26" name="__codelineno-2-26" href="#__codelineno-2-26"></a>
-</span><span id="__span-2-27"><a id="__codelineno-2-27" name="__codelineno-2-27" href="#__codelineno-2-27"></a>        <span class="c1"># 3. Copy new to old for next iteration</span>
-</span><span id="__span-2-28"><a id="__codelineno-2-28" name="__codelineno-2-28" href="#__codelineno-2-28"></a>        <span class="n">phi_old</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">phi_new</span><span class="p">)</span>
-</span><span id="__span-2-29"><a id="__codelineno-2-29" name="__codelineno-2-29" href="#__codelineno-2-29"></a>
-</span><span id="__span-2-30"><a id="__codelineno-2-30" name="__codelineno-2-30" href="#__codelineno-2-30"></a>    <span class="k">return</span> <span class="n">phi_new</span>
-</span></code></pre></div>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="o">---</span>
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="c1">## **10.4 Method 2: The Gauss-Seidel Method**</span>
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="n">The</span> <span class="o">**</span><span class="n">Gauss</span><span class="o">-</span><span class="n">Seidel</span> <span class="n">Method</span><span class="o">**</span> <span class="ow">is</span> <span class="n">the</span> <span class="n">standard</span> <span class="n">serial</span> <span class="n">implementation</span><span class="p">,</span> <span class="n">offering</span> <span class="n">an</span> <span class="n">immediate</span> <span class="ow">and</span> <span class="n">simple</span> <span class="n">improvement</span> <span class="n">over</span> <span class="n">the</span> <span class="n">Jacobi</span> <span class="n">Method</span> <span class="n">by</span> <span class="n">accelerating</span> <span class="n">the</span> <span class="n">propagation</span> <span class="n">of</span> <span class="n">information</span><span class="o">.</span>
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>
-</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="n">The</span> <span class="n">method</span> <span class="n">updates</span> <span class="n">the</span> <span class="n">grid</span> <span class="o">**</span><span class="n">sequentially</span><span class="o">**</span> <span class="ow">and</span> <span class="n">utilizes</span> <span class="n">the</span> <span class="n">newly</span> <span class="n">calculated</span> <span class="n">potential</span> <span class="n">values</span> <span class="o">*</span><span class="n">immediately</span><span class="o">*.</span> <span class="n">When</span> <span class="n">calculating</span> <span class="err">$</span>\<span class="n">phi_</span><span class="p">{</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">}</span><span class="err">$</span> <span class="ow">in</span> <span class="n">a</span> <span class="n">standard</span> <span class="n">left</span><span class="o">-</span><span class="n">to</span><span class="o">-</span><span class="n">right</span> <span class="n">sweep</span><span class="p">,</span> <span class="n">the</span> <span class="n">potentials</span> <span class="n">at</span> <span class="n">the</span> <span class="n">left</span> <span class="p">(</span><span class="err">$</span>\<span class="n">phi_</span><span class="p">{</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">j</span><span class="p">}</span><span class="err">$</span><span class="p">)</span> <span class="ow">and</span> <span class="n">lower</span> <span class="p">(</span><span class="err">$</span>\<span class="n">phi_</span><span class="p">{</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">}</span><span class="err">$</span><span class="p">)</span> <span class="n">neighbors</span> <span class="n">have</span> <span class="n">already</span> <span class="n">been</span> <span class="n">refreshed</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">current</span> <span class="n">iteration</span><span class="o">.</span>
-</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>
-</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="o">*</span> <span class="o">**</span><span class="n">Advantages</span><span class="p">:</span><span class="o">**</span> <span class="n">It</span> <span class="ow">is</span> <span class="n">typically</span> <span class="o">**</span><span class="n">twice</span> <span class="k">as</span> <span class="n">fast</span><span class="o">**</span> <span class="k">as</span> <span class="n">the</span> <span class="n">Jacobi</span> <span class="n">method</span> <span class="ow">and</span> <span class="n">requires</span> <span class="n">only</span> <span class="o">**</span><span class="n">one</span> <span class="n">copy</span><span class="o">**</span> <span class="n">of</span> <span class="n">the</span> <span class="n">solution</span> <span class="n">array</span><span class="p">,</span> <span class="n">reducing</span> <span class="n">memory</span> <span class="n">overhead</span><span class="o">.</span>
-</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="o">*</span> <span class="o">**</span><span class="n">Disadvantage</span><span class="p">:</span><span class="o">**</span> <span class="n">It</span> <span class="ow">is</span> <span class="n">inherently</span> <span class="o">**</span><span class="n">sequential</span><span class="o">**</span><span class="p">,</span> <span class="n">making</span> <span class="n">straightforward</span> <span class="n">parallelization</span> <span class="n">difficult</span><span class="o">.</span>
-</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>
-</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="err">???</span> <span class="n">question</span> <span class="s2">&quot;How does Gauss-Seidel accelerate convergence?&quot;</span>
-</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>        <span class="n">In</span> <span class="n">Jacobi</span><span class="p">,</span> <span class="n">information</span> <span class="kn">from</span><span class="w"> </span><span class="nn">a</span> <span class="n">boundary</span> <span class="n">moves</span> <span class="n">one</span> <span class="n">cell</span> <span class="n">per</span> <span class="n">iteration</span><span class="o">.</span> <span class="n">In</span> <span class="n">Gauss</span><span class="o">-</span><span class="n">Seidel</span> <span class="p">(</span><span class="n">left</span><span class="o">-</span><span class="n">to</span><span class="o">-</span><span class="n">right</span> <span class="n">sweep</span><span class="p">),</span> <span class="n">information</span> <span class="kn">from</span><span class="w"> </span><span class="nn">the</span> <span class="n">left</span> <span class="p">(</span><span class="err">$</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="err">$</span><span class="p">)</span> <span class="ow">and</span> <span class="n">bottom</span> <span class="p">(</span><span class="err">$</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="err">$</span><span class="p">)</span> <span class="n">boundaries</span> <span class="ow">is</span> <span class="n">used</span> <span class="o">*</span><span class="n">immediately</span><span class="o">*</span> <span class="n">by</span> <span class="n">the</span> <span class="n">point</span> <span class="err">$</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span><span class="err">$</span><span class="o">.</span> <span class="n">This</span> <span class="n">allows</span> <span class="n">boundary</span> <span class="n">information</span> <span class="n">to</span> <span class="n">propagate</span> <span class="n">diagonally</span> <span class="n">across</span> <span class="n">the</span> <span class="o">*</span><span class="n">entire</span> <span class="n">grid</span><span class="o">*</span> <span class="ow">in</span> <span class="n">a</span> <span class="o">*</span><span class="n">single</span> <span class="n">iteration</span><span class="o">*</span><span class="p">,</span> <span class="n">leading</span> <span class="n">to</span> <span class="n">much</span> <span class="n">faster</span> <span class="n">convergence</span><span class="o">.</span>
-</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>
-</span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a><span class="c1">## Algorithm: Gauss-Seidel Relaxation</span>
-</span><span id="__span-3-16"><a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a>
-</span><span id="__span-3-17"><a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a><span class="err">```</span><span class="n">python</span>
-</span><span id="__span-3-18"><a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-</span><span id="__span-3-19"><a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a>
-</span><span id="__span-3-20"><a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a><span class="k">def</span><span class="w"> </span><span class="nf">gauss_seidel_relaxation</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="n">tolerance</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">):</span>
-</span></code></pre></div>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a># Initialize: phi[M, N] (with boundaries)
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>M, N = phi.shape
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>max_error = 1.0
-</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>
-</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>while max_error &gt; tolerance:
-</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>    max_error = 0.0
-</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>
-</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>    for i in range(1, M-1):
-</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>        for j in range(1, N-1):
-</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>            # Store old value just for error check
-</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>            phi_old = phi[i,j]
-</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>
-</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>            # Calculate new value using *most recent* neighbors
-</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>            # Note: phi[i-1,j] and phi[i,j-1] are from the *current* sweep
-</span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a>            phi[i,j] = 0.25 * (phi[i+1,j] + phi[i-1,j] +
-</span><span id="__span-4-16"><a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a>                             phi[i,j+1] + phi[i,j-1])
-</span><span id="__span-4-17"><a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a>
-</span><span id="__span-4-18"><a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a>            # Check error for this point
-</span><span id="__span-4-19"><a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a>            error = abs(phi[i,j] - phi_old)
-</span><span id="__span-4-20"><a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a>            if error &gt; max_error:
-</span><span id="__span-4-21"><a id="__codelineno-4-21" name="__codelineno-4-21" href="#__codelineno-4-21"></a>                max_error = error
-</span><span id="__span-4-22"><a id="__codelineno-4-22" name="__codelineno-4-22" href="#__codelineno-4-22"></a>
-</span><span id="__span-4-23"><a id="__codelineno-4-23" name="__codelineno-4-23" href="#__codelineno-4-23"></a>return phi
-</span></code></pre></div>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>
-</span></code></pre></div></p>
+<h2 id="102-iterative-relaxation-the-rubber-sheet"><strong>10.2 Iterative Relaxation: The Rubber Sheet</strong></h2>
 <hr />
-<h2 id="105-method-3-successive-over-relaxation-sor"><strong>10.5 Method 3: Successive Over-Relaxation (SOR)</strong></h2>
-<p>The <strong>Successive Over-Relaxation (SOR) Method</strong> [1] is the fastest and most efficient iterative technique for dense grids, built as a direct acceleration of the Gauss-Seidel method.</p>
-<p>SOR introduces <strong>extrapolation</strong> by using a tunable <strong>over-relaxation factor (<span class="arithmatex">\(\omega\)</span>)</strong> to intentionally <strong>push the point past</strong> its equilibrium value.</p>
-<p>The update incorporates <span class="arithmatex">\(\omega\)</span> into the Gauss-Seidel (<span class="arithmatex">\(\phi_{\text{GS}}\)</span>) correction:</p>
-<div class="arithmatex">\[
-\phi[i, j] = \phi_{\text{old}}[i, j] + \omega \cdot (\phi_{\text{GS}}[i, j] - \phi_{\text{old}}[i, j])
-\]</div>
-<ul>
-<li><strong>Tuning:</strong> The factor must satisfy <strong><span class="arithmatex">\(1 &lt; \omega &lt; 2\)</span></strong>. When tuned correctly (optimal <span class="arithmatex">\(\omega \approx 1.8\)</span> to <span class="arithmatex">\(1.9\)</span> for many problems), SOR can reduce the total number of iterations required for convergence by an <strong>order of magnitude</strong> compared to Gauss-Seidel, making it the most efficient method for dense grids [1, 3].</li>
-</ul>
-<hr />
-<h2 id="106-core-application-the-electrostatic-box"><strong>10.6 Core Application: The Electrostatic Box</strong></h2>
-<p>The simulation of the <strong>electrostatic potential <span class="arithmatex">\(\phi(x, y)\)</span></strong> inside a charge-free box is the classic application of FDM relaxation, governed by Laplace's Equation (<span class="arithmatex">\(\nabla^2 \phi = 0\)</span>).</p>
-<p>By fixing the potential on the four boundaries (e.g., three at <span class="arithmatex">\(0\)</span> V and one at a source voltage <span class="arithmatex">\(V_0\)</span>) and iteratively applying the Five-Point Stencil via the Gauss-Seidel Method, the interior potential gradually <strong>relaxes</strong> to its final, stable distribution.</p>
-<p>The final visualization (heatmap) yields critical physical insights:
-* <strong>Heatmap:</strong> Shows the total, static potential field.
-* <strong>Contour Lines:</strong> Trace the <strong>equipotential lines</strong> (paths of constant <span class="arithmatex">\(\phi\)</span>). Physically, the <strong>electric field (<span class="arithmatex">\(\mathbf{E}\)</span>) is always perpendicular</strong> to these lines.</p>
+<p>To solve <span class="arithmatex">\(\nabla^2 \phi = 0\)</span> on a grid of <span class="arithmatex">\(100 \times 100\)</span> points, we would need to invert a matrix with <span class="arithmatex">\(10,000^2\)</span> elements. This is too slow. Instead, we use <strong>Relaxation</strong>: we start with a guess and repeatedly apply the "Average Rule" until the grid stops changing.</p>
+<pre class="mermaid"><code>graph TD
+    A[Initial Guess &amp; Boundaries] --&gt; B[Sweep Grid: Apply 5-Point Rule]
+    B --&gt; C{Residual &lt; Tolerance?}
+    C -- No --&gt; B
+    C -- Yes --&gt; D[Converged Equilibrium]</code></pre>
 <div class="admonition example">
-<p class="admonition-title">Visualizing the Physics</p>
-<p>A heatmap of the final potential distribution clearly shows the physics. The potential "flows" from the high-voltage <span class="arithmatex">\(V_0\)</span> boundary to the <span class="arithmatex">\(0\)</span> V boundaries. The contour lines, which show paths of equal voltage, are always perpendicular to the electric field <span class="arithmatex">\(\mathbf{E}\)</span>. A test charge placed in this field would feel a force <span class="arithmatex">\(\mathbf{F} = q\mathbf{E}\)</span>, pushing it "downhill" along the steepest gradient.</p>
+<p class="admonition-title">The Rubber Sheet</p>
+<p>Imagine pinning a rubber sheet to a custom-shaped frame (the boundaries). The shape the sheet takes is the solution to Laplace's equation. Relaxation is the digital process of letting that sheet "settle" into its minimum-energy shape.</p>
 </div>
 <hr />
-<h2 id="107-chapter-summary-bridge-to-chapter-11"><strong>10.7 Chapter Summary &amp; Bridge to Chapter 11</strong></h2>
-<p>The FDM for Elliptic PDEs successfully converts the continuous problem into a massive, sparse <strong>system of linear equations</strong> (<span class="arithmatex">\(\mathbf{A}\mathbf{x} = \mathbf{b}\)</span>). The three relaxation methods (Jacobi, Gauss-Seidel, SOR) are, mathematically, iterative solvers for this system.</p>
-<p>This chapter's methods are the final preparation for modeling <strong>dynamic fields</strong>. <strong>Chapter 11</strong> will re-introduce the <strong>time derivative</strong> (<span class="arithmatex">\(\frac{\partial T}{\partial t}\)</span>) to solve the <strong>Parabolic PDE</strong> (Heat/Diffusion Equation):</p>
-<div class="arithmatex">\[
-\frac{\partial T}{\partial t} = D \nabla^2 T
-\]</div>
-<p>This requires coupling the <strong>spatial discretization</strong> (FDM stencils from this chapter) with <strong>time stepping</strong> (marching techniques from Chapter 7), forcing the simulation to confront <strong>CFL stability constraints</strong>.</p>
+<h2 id="103-jacobi-vs-gauss-seidel-vs-sor"><strong>10.3 Jacobi vs. Gauss-Seidel vs. SOR</strong></h2>
+<hr />
+<ul>
+<li><strong>Jacobi:</strong> Calculate all new values using only the <em>old</em> values from the previous pass. Slow.</li>
+<li><strong>Gauss-Seidel:</strong> Use the <em>newest</em> available values as you sweep. Typically <strong>2x faster</strong> than Jacobi.</li>
+<li><strong>SOR (Successive Over-Relaxation):</strong> Don't just move to the average; "overshoot" the target by a factor <span class="arithmatex">\(\omega\)</span> (<span class="arithmatex">\(1 &lt; \omega &lt; 2\)</span>).</li>
+</ul>
+<div class="arithmatex">\[ \phi_{\text{new}} = (1-\omega)\phi_{\text{old}} + \omega \phi_{\text{GS}} \]</div>
+<details class="question">
+<summary>Why overshoot a solution?</summary>
+<p>In large grids, information travels very slowly (one cell per iteration). SOR "pushes" the information across the grid faster. For a <span class="arithmatex">\(100 \times 100\)</span> grid, SOR can be <strong>50x faster</strong> than Gauss-Seidel with a properly tuned <span class="arithmatex">\(\omega\)</span>.</p>
+</details>
+<hr />
+<h2 id="104-dirichlet-vs-neumann-boundaries"><strong>10.4 Dirichlet vs. Neumann Boundaries</strong></h2>
+<hr />
+<ol>
+<li><strong>Dirichlet:</strong> You specify the <strong>value</strong> at the edge (e.g., "The wall is exactly <span class="arithmatex">\(100^\circ\)</span>").</li>
+<li><strong>Neumann:</strong> You specify the <strong>derivative</strong> or flux at the edge (e.g., "The wall is perfectly insulated, so no heat flows through it").</li>
+</ol>
+<p>In terms of the grid, Neumann conditions involve "Ghost Points"—imaginary points outside the boundary that are forced to match the interior slope.</p>
+<hr />
+<h2 id="summary-iterative-pde-solvers-comparison"><strong>Summary: Iterative PDE Solvers Comparison</strong></h2>
+<hr />
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Method</th>
+<th style="text-align: left;">Speed</th>
+<th style="text-align: left;">Memory</th>
+<th style="text-align: left;">Complexity</th>
+<th style="text-align: left;">Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Jacobi</strong></td>
+<td style="text-align: left;">Slowest</td>
+<td style="text-align: left;">High (2 grids)</td>
+<td style="text-align: left;">Very Low</td>
+<td style="text-align: left;">Parallel-friendly</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Gauss-Seidel</strong></td>
+<td style="text-align: left;">Moderate (2x)</td>
+<td style="text-align: left;">Low (1 grid)</td>
+<td style="text-align: left;">Low</td>
+<td style="text-align: left;">Serial standard</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>SOR</strong></td>
+<td style="text-align: left;"><strong>Fastest</strong></td>
+<td style="text-align: left;">Low (1 grid)</td>
+<td style="text-align: left;">Moderate</td>
+<td style="text-align: left;">Requires tuning <span class="arithmatex">\(\omega\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Multigrid</strong></td>
+<td style="text-align: left;"><strong>Infinite</strong></td>
+<td style="text-align: left;">High</td>
+<td style="text-align: left;">Extreme</td>
+<td style="text-align: left;">The "Gold Standard" for massive meshes</td>
+</tr>
+</tbody>
+</table>
 <hr />
 <h2 id="references"><strong>References</strong></h2>
-<p>[1] Press, W. H., Teukolsky, S. A., Vetterling, W. T., &amp; Flannery, B. P. (2007). <em>Numerical Recipes: The Art of Scientific Computing</em> (3<sup>rd</sup> ed.). Cambridge University Press.</p>
-<p>[2] Higham, N.J. (2002). <em>Accuracy and Stability of Numerical Algorithms</em>. SIAM.</p>
-<p>[3] Quarteroni, A., Sacco, R., &amp; Saleri, F. (2007). <em>Numerical Mathematics</em>. Springer.</p>
-<p>[4] Newman, M. (2013). <em>Computational Physics</em>. CreateSpace Independent Publishing Platform.</p>
-<p>[5] Garcia, A. L. (2000). <em>Numerical Methods for Physics</em> (2<sup>nd</sup> ed.). Prentice Hall.</p>
+<hr />
+<p>[1] Press, W. H., et al. (2007). <em>Numerical Recipes: The Art of Scientific Computing</em>. Cambridge University Press.</p>
+<p>[2] Ames, W. F. (2014). <em>Numerical Methods for Partial Differential Equations</em>. Academic Press.</p>
+<p>[3] Morton, K. W., &amp; Mayers, D. F. (2005). <em>Numerical Solution of Partial Differential Equations</em>. Cambridge University Press.</p>
+<p>[4] Young, D. M. (1971). <em>Iterative Solution of Large Linear Systems</em>. Academic Press.</p>
+<p>[5] Strikwerda, J. C. (2004). <em>Finite Difference Schemes and Partial Differential Equations</em>. SIAM.</p>
 
 
 

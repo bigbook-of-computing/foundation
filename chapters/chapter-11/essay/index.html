@@ -94,7 +94,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#introduction" class="md-skip">
+        <a href="#chapter-11-partial-differential-equations-ii-parabolic" class="md-skip">
           Skip to content
         </a>
       
@@ -2324,238 +2324,131 @@
   
 
 
+<h1 id="chapter-11-partial-differential-equations-ii-parabolic"><strong>Chapter 11: Partial Differential Equations II (Parabolic)</strong></h1>
+<hr />
 <h1 id="introduction"><strong>Introduction</strong></h1>
-<p>In Chapter 10, we solved <strong>Elliptic Partial Differential Equations (PDEs)</strong>, such as Laplace's Equation (<span class="arithmatex">\(\nabla^2 \phi = 0\)</span>), to find the <em>final, static, steady-state</em> shape of a field (e.g., the equilibrium temperature profile). However, the reality of physics is the <strong>transient dynamic process</strong> of <em>reaching</em> that equilibrium. We must now answer the fundamental question: "How does the system evolve over time?".</p>
-<p>This dynamic, spreading-out process is governed by <strong>diffusion</strong>. Whether it is heat propagating through a material, ink spreading in water, or risk diffusing in a financial market (governed by the Black-Scholes equation), the physics is described by the <strong>Heat Equation</strong> (or <strong>Diffusion Equation</strong>), which is the classic <strong>Parabolic PDE</strong>:</p>
-<div class="arithmatex">\[
-\boxed{\frac{\partial T}{\partial t} = D \nabla^2 T}
-\]</div>
-<p>The equation is a <strong>hybrid problem</strong> that demands a combination of our previous techniques:</p>
-<ol>
-<li>It is an <strong>Initial Value Problem (IVP)</strong> in time, requiring a starting distribution <span class="arithmatex">\(T(x, 0)\)</span>.</li>
-<li>It is a <strong>Boundary Value Problem (BVP)</strong> in space, requiring conditions like fixed endpoints <span class="arithmatex">\(T(0, t) = A\)</span>.</li>
-</ol>
-<p>To solve it, we must discretize <strong>both</strong> time (<span class="arithmatex">\(\Delta t\)</span>) and space (<span class="arithmatex">\(\Delta x\)</span>) and march the entire spatial grid forward one time step at a time.</p>
+<p>In Chapter 10, we solved for the "end of the story"—the static, equilibrium state where nothing changes in time. But physics is rarely static. We must now ask: "How does the system <em>get</em> to equilibrium?" This process of spreading and smoothing is known as <strong>Diffusion</strong>. Whether it is heat propagating through a metal rod, a drop of ink spreading in water, or a financial "shock" diffusing through a market, the governing rule is the <strong>Heat Equation</strong>, the classic <strong>Parabolic PDE</strong>.</p>
+<p>Solving the Heat Equation requires a hybrid approach. It is an <strong>Initial Value Problem</strong> in time (how it starts) and a <strong>Boundary Value Problem</strong> in space (where it's contained). This chapter explores the "Stability War" of parabolic systems. We will move from the intuitive but fragile <strong>FTCS</strong> method to the "Gold Standard" <strong>Crank-Nicolson</strong> method, learning why "Implicit" math is the only way to avoid numerical explosions.</p>
+<hr />
 <h1 id="chapter-11-outline"><strong>Chapter 11: Outline</strong></h1>
 <table>
 <thead>
 <tr>
-<th style="text-align: left;">Sec.</th>
-<th style="text-align: left;">Title</th>
-<th style="text-align: left;">Core Ideas &amp; Examples</th>
+<th style="text-align: left;"><strong>Sec.</strong></th>
+<th style="text-align: left;"><strong>Title</strong></th>
+<th style="text-align: left;"><strong>Core Ideas &amp; Examples</strong></th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td style="text-align: left;"><strong>11.1</strong></td>
-<td style="text-align: left;">Discretization: Time &amp; Space</td>
-<td style="text-align: left;">Forward-Time (FT) and Centered-Space (CS) stencils.</td>
+<td style="text-align: left;"><strong>The Physics of Spreading</strong></td>
+<td style="text-align: left;">The Heat Equation; diffusion coefficients; the link between space and time derivatives.</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>11.2</strong></td>
-<td style="text-align: left;">The Explicit FTCS Scheme</td>
-<td style="text-align: left;">Explicit update rule, diffusion number <span class="arithmatex">\(\alpha\)</span>.</td>
+<td style="text-align: left;"><strong>Explicit FTCS (First Attempt)</strong></td>
+<td style="text-align: left;">Forward-Time Centered-Space; the "Marching" grid; the <span class="arithmatex">\(O(h_t, h_x^2)\)</span> mismatch.</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>11.3</strong></td>
-<td style="text-align: left;">Conditional Stability (CFL)</td>
-<td style="text-align: left;">The <span class="arithmatex">\(\alpha \le 0.5\)</span> restriction, numerical explosion.</td>
+<td style="text-align: left;"><strong>The CFL Stability Limit</strong></td>
+<td style="text-align: left;">Why <span class="arithmatex">\(h_t\)</span> is trapped by <span class="arithmatex">\(h_x^2\)</span>; the <span class="arithmatex">\(\alpha \leq 0.5\)</span> rule; numerical "explosions."</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>11.4</strong></td>
-<td style="text-align: left;">The Implicit BTCS Scheme</td>
-<td style="text-align: left;">Unconditional stability, tridiagonal matrix system.</td>
+<td style="text-align: left;"><strong>Implicit BTCS (Backward Time)</strong></td>
+<td style="text-align: left;">Avoiding the explosion; solving a matrix at every time step; unconditional stability.</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>11.5</strong></td>
-<td style="text-align: left;">Crank-Nicolson Method</td>
-<td style="text-align: left;"><span class="arithmatex">\(\mathcal{O}(h_t^2)\)</span> accuracy, unconditional stability, "Gold Standard".</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>11.6</strong></td>
-<td style="text-align: left;">Application: 1D "Quenched" Rod</td>
-<td style="text-align: left;">Testing FTCS failure vs. Crank-Nicolson stability.</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>11.7</strong></td>
-<td style="text-align: left;">Summary &amp; Bridge</td>
-<td style="text-align: left;">From Parabolic (diffusion) to Hyperbolic (waves) PDEs.</td>
+<td style="text-align: left;"><strong>Crank-Nicolson (The Standard)</strong></td>
+<td style="text-align: left;">The "Average" approach; 2<sup>nd</sup>-order accuracy in time and space; the tridiagonal system.</td>
 </tr>
 </tbody>
 </table>
 <hr />
-<h2 id="111-discretization-the-time-and-space-trade-off"><strong>11.1 Discretization: The Time and Space Trade-off</strong></h2>
-<p>The Parabolic PDE involves derivatives in two independent variables: time (<span class="arithmatex">\(t\)</span>) and space (<span class="arithmatex">\(x\)</span>). The solution, <span class="arithmatex">\(T(x, t)\)</span>, is calculated over a discrete grid indexed by time (<span class="arithmatex">\(n\)</span>) and space (<span class="arithmatex">\(i\)</span>), denoted <span class="arithmatex">\(T_{i, n}\)</span>.</p>
-<p>To convert the continuous PDE into a solvable algebraic system, we apply the Finite Difference Method (FDM) to each term:</p>
+<h2 id="111-the-explicit-ftcs-scheme"><strong>11.1 The Explicit FTCS Scheme</strong></h2>
+<hr />
+<p>The <strong>FTCS</strong> (Forward-Time Centered-Space) method is the most intuitive approach. We use a first-order Euler forward step for time and a second-order central difference for space:</p>
+<div class="arithmatex">\[ \frac{T_i^{n+1} - T_i^n}{\Delta t} = D \frac{T_{i+1}^n - 2T_i^n + T_{i-1}^n}{\Delta x^2} \]</div>
+<p>We define the <strong>Diffusion Number</strong> <span class="arithmatex">\(\alpha = D \frac{\Delta t}{\Delta x^2}\)</span>. The update becomes:
+$$ T_i^{n+1} = T_i^n + \alpha (T_{i+1}^n - 2T_i^n + T_{i-1}^n) $$</p>
+<hr />
+<h2 id="112-the-cfl-condition-the-stability-wall"><strong>11.2 The CFL Condition: The Stability Wall</strong></h2>
+<hr />
+<p>FTCS is <strong>Explicit</strong>: the future depends only on the present. This creates a dangerous "speed limit." If your time step <span class="arithmatex">\(\Delta t\)</span> is too large, the error inside the simulation grows exponentially.</p>
+<div class="arithmatex">\[ \alpha = D \frac{\Delta t}{\Delta x^2} \leq \frac{1}{2} \]</div>
+<pre class="mermaid"><code>graph TD
+    A[Choose h_x and h_t] --&gt; B{Alpha &lt;= 0.5?}
+    B -- Yes --&gt; C[Stable Diffusion]
+    B -- No --&gt; D[Numerical Explosion!]
+    D --&gt; E[Values shoot to Infinity]</code></pre>
+<div class="admonition tip">
+<p class="admonition-title">The Tyranny of <span class="arithmatex">\(h_x^2\)</span></p>
+<p>Because <span class="arithmatex">\(\Delta t \propto \Delta x^2\)</span>, if you want to double the spatial resolution (10x more points), you must make the time step <strong>100x smaller</strong>. This makes FTCS impractically slow for high-resolution physics.</p>
+</div>
+<hr />
+<h2 id="113-implicit-btcs-breaking-the-wall"><strong>11.3 Implicit BTCS: Breaking the Wall</strong></h2>
+<hr />
+<p>To ignore the CFL limit, we use an <strong>Implicit</strong> method (Backward-Time). Instead of looking at the <em>current</em> curvature, we look at the <em>future</em> curvature. This forces us to solve a system of linear equations at every step:</p>
+<div class="arithmatex">\[ (1 + 2\alpha)T_i^{n+1} - \alpha T_{i+1}^{n+1} - \alpha T_{i-1}^{n+1} = T_i^n \]</div>
+<div class="admonition tip">
+<p class="admonition-title">Unconditional Stability</p>
+<p>Implicit methods are <strong>Unconditionally Stable</strong>. You can take a time step 1,000 times larger than the CFL limit, and the simulation will still produce a smooth, physically plausible result. You pay for this stability by solving a <strong>Tridiagonal Matrix</strong> at each step.</p>
+</div>
+<hr />
+<h2 id="114-crank-nicolson-the-gold-standard"><strong>11.4 Crank-Nicolson: The Gold Standard</strong></h2>
+<hr />
+<p><strong>Crank-Nicolson</strong> is the "best of both worlds." It averages the explicit and implicit steps, resulting in a method that is:
+1.  <strong>Unconditionally Stable</strong> (like BTCS).
+2.  <strong>Second-Order Accurate</strong> in time (<span class="arithmatex">\(O(\Delta t^2)\)</span>) and space (<span class="arithmatex">\(O(\Delta x^2)\)</span>).</p>
+<p>It remains the workhorse for diffusion problems in everything from chemical engineering to the Black-Scholes model in finance.</p>
+<hr />
+<h2 id="summary-diffusion-solver-comparison"><strong>Summary: Diffusion Solver Comparison</strong></h2>
+<hr />
 <table>
 <thead>
 <tr>
-<th style="text-align: left;">Derivative</th>
-<th style="text-align: left;">Scheme</th>
-<th style="text-align: left;">Formula</th>
+<th style="text-align: left;">Method</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Stability</th>
 <th style="text-align: left;">Accuracy</th>
+<th style="text-align: left;">Note</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left;"><strong>Time (<span class="arithmatex">\(\frac{\partial T}{\partial t}\)</span>)</strong></td>
-<td style="text-align: left;"><strong>Forward Difference</strong> (like Euler's Method, Ch 7)</td>
-<td style="text-align: left;"><span class="arithmatex">\(\frac{T_{i, n+1} - T_{i, n}}{h_t}\)</span></td>
-<td style="text-align: left;"><span class="arithmatex">\(\mathcal{O}(h_t)\)</span> (First-Order)</td>
+<td style="text-align: left;"><strong>FTCS</strong></td>
+<td style="text-align: left;">Explicit</td>
+<td style="text-align: left;"><strong>Conditional</strong> (<span class="arithmatex">\(\alpha \leq 0.5\)</span>)</td>
+<td style="text-align: left;"><span class="arithmatex">\(O(\Delta t, \Delta x^2)\)</span></td>
+<td style="text-align: left;">Simple but explodes easily</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>Space (<span class="arithmatex">\(\frac{\partial^2 T}{\partial x^2}\)</span>)</strong></td>
-<td style="text-align: left;"><strong>Central Difference</strong> (like Laplacian, Ch 5/10)</td>
-<td style="text-align: left;"><span class="arithmatex">\(\frac{T_{i+1, n} - 2T_{i, n} + T_{i-1, n}}{h_x^2}\)</span></td>
-<td style="text-align: left;"><span class="arithmatex">\(\mathcal{O}(h_x^2)\)</span> (Second-Order)</td>
+<td style="text-align: left;"><strong>BTCS</strong></td>
+<td style="text-align: left;">Implicit</td>
+<td style="text-align: left;"><strong>Unconditional</strong></td>
+<td style="text-align: left;"><span class="arithmatex">\(O(\Delta t, \Delta x^2)\)</span></td>
+<td style="text-align: left;">Safe, 1<sup>st</sup>-order in time</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Crank-Nicolson</strong></td>
+<td style="text-align: left;">Implicit</td>
+<td style="text-align: left;"><strong>Unconditional</strong></td>
+<td style="text-align: left;"><span class="arithmatex">\(O(\Delta t^2, \Delta x^2)\)</span></td>
+<td style="text-align: left;"><strong>Professional Standard</strong></td>
 </tr>
 </tbody>
 </table>
-<p>Substituting these into the Heat Equation yields the core algebraic expression:</p>
-<div class="arithmatex">\[
-\frac{T_{i, n+1} - T_{i, n}}{h_t} = D \cdot \frac{T_{i+1, n} - 2T_{i, n} + T_{i-1, n}}{h_x^2}
-\]</div>
-<details class="question">
-<summary>Why use a low-accuracy time stencil?</summary>
-<p>We are using a highly accurate <span class="arithmatex">\(\mathcal{O}(h_x^2)\)</span> stencil for space but only a low-accuracy <span class="arithmatex">\(\mathcal{O}(h_t)\)</span> stencil for time. Why is this mismatch acceptable?</p>
-<p><strong>Hint:</strong> Think about the FTCS stability constraint (<span class="arithmatex">\(h_t \propto h_x^2\)</span>). The time step <span class="arithmatex">\(h_t\)</span> is <em>forced</em> to be so much smaller than <span class="arithmatex">\(h_x\)</span> that the error from the time-stepping (which scales with <span class="arithmatex">\(h_t\)</span>) becomes negligible compared to the spatial error (which scales with <span class="arithmatex">\(h_x^2\)</span>).</p>
-</details>
-<hr />
-<h2 id="112-method-1-the-explicit-ftcs-scheme"><strong>11.2 Method 1: The Explicit FTCS Scheme</strong></h2>
-<p>The <strong>Forward-Time Centered-Space (FTCS) Method</strong> is the most straightforward way to implement this combined discretization.</p>
-<p>The scheme is <strong>explicit</strong>, meaning the future temperature <span class="arithmatex">\(T_{i, n+1}\)</span> is calculated directly from known values at the present time <span class="arithmatex">\(n\)</span>.</p>
-<p>The equation is rearranged by defining the dimensionless <strong>Diffusion Number (<span class="arithmatex">\(\alpha\)</span>)</strong>:</p>
-<div class="arithmatex">\[
-\alpha = D \frac{h_t}{h_x^2}
-\]</div>
-<p>The resulting FTCS update rule is:</p>
-<div class="arithmatex">\[
-\boxed{T_{i, n+1} = T_{i, n} + \alpha \left( T_{i+1, n} - 2T_{i, n} + T_{i-1, n} \right)}
-\]</div>
-<p>This formula states that the change in temperature at a point is proportional to the <strong>spatial curvature</strong> at the present time.</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># Algorithm: Explicit FTCS for 1D Heat Equation</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="k">def</span><span class="w"> </span><span class="nf">ftcs_heat_equation</span><span class="p">(</span><span class="n">T_present</span><span class="p">,</span> <span class="n">D</span><span class="p">,</span> <span class="n">h_x</span><span class="p">,</span> <span class="n">h_t</span><span class="p">,</span> <span class="n">N_steps</span><span class="p">):</span>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    <span class="c1"># Initialize: T_present[N], T_future[N] (with BCs)</span>
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>    <span class="n">N</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">T_present</span><span class="p">)</span>
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>    <span class="n">T_future</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">T_present</span><span class="p">)</span>
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>    <span class="n">alpha</span> <span class="o">=</span> <span class="n">D</span> <span class="o">*</span> <span class="n">h_t</span> <span class="o">/</span> <span class="p">(</span><span class="n">h_x</span> <span class="o">*</span> <span class="n">h_x</span><span class="p">)</span>
-</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>
-</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>    <span class="c1"># Check stability *before* starting</span>
-</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>    <span class="k">if</span> <span class="n">alpha</span> <span class="o">&gt;</span> <span class="mf">0.5</span><span class="p">:</span>
-</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Stability condition alpha &lt;= 0.5 not met!&quot;</span><span class="p">)</span>
-</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>
-</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N_steps</span><span class="p">):</span>
-</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>        <span class="c1"># Calculate all interior points for next timestep</span>
-</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
-</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>            <span class="n">T_future</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">T_present</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">alpha</span> <span class="o">*</span> <span class="p">(</span><span class="n">T_present</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span>
-</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>                                                <span class="mi">2</span><span class="o">*</span><span class="n">T_present</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span>
-</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a>                                                <span class="n">T_present</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
-</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>
-</span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a>        <span class="c1"># Copy future to present for next iteration</span>
-</span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a>        <span class="n">T_present</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">T_future</span><span class="p">)</span>
-</span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a>
-</span><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a>    <span class="k">return</span> <span class="n">T_present</span>
-</span></code></pre></div>
-<hr />
-<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>
-</span></code></pre></div>
-<hr />
-<h2 id="113-the-horror-story-conditional-stability"><strong>11.3 The "Horror Story": Conditional Stability</strong></h2>
-<p>The simplicity of the FTCS method is deceptive, as it is plagued by <strong>conditional stability</strong>. If the time step <span class="arithmatex">\(h_t\)</span> is too large relative to the spatial step <span class="arithmatex">\(h_x\)</span>, the inevitable round-off error (Chapter 2) introduced at each step is <strong>amplified</strong>, leading to non-physical, growing oscillations and a numerical <strong>explosion</strong>.</p>
-<hr />
-<h3 id="the-cfl-condition"><strong>The CFL Condition</strong></h3>
-<p><strong>Von Neumann Stability Analysis</strong> proves the stringent requirement for the FTCS scheme to remain stable [1, 2]:</p>
-<div class="arithmatex">\[
-\boxed{\alpha = D \frac{h_t}{h_x^2} \le \frac{1}{2}}
-\]</div>
-<p>This is a specific case of the general <strong>Courant–Friedrichs–Lewy (CFL) condition</strong>, which imposes a numerical <strong>"speed limit"</strong> on the simulation.</p>
-<hr />
-<h3 id="the-crippling-restriction"><strong>The Crippling Restriction</strong></h3>
-<p>The CFL condition creates a practical dilemma for high-resolution modeling:</p>
-<div class="arithmatex">\[
-h_t \le \frac{1}{2D} h_x^2
-\]</div>
-<p>Because <span class="arithmatex">\(h_t\)</span> is proportional to <span class="arithmatex">\(h_x^2\)</span>, increasing the spatial resolution by a factor of <span class="arithmatex">\(\mathbf{10}\)</span> (i.e., decreasing <span class="arithmatex">\(h_x\)</span> by 10x) forces the time step <span class="arithmatex">\(\mathbf{h_t}\)</span> to decrease by a factor of <span class="arithmatex">\(\mathbf{100}\)</span>. This renders the explicit FTCS method <strong>impractically slow</strong> for simulations requiring fine spatial grids.</p>
-<div class="admonition example">
-<p class="admonition-title">The Cost of Resolution</p>
-<p>Imagine a 2D heat simulation (<span class="arithmatex">\(h_t \propto h_x^2 + h_y^2\)</span>). You need to increase the spatial resolution by <span class="arithmatex">\(10\times\)</span> in both <span class="arithmatex">\(x\)</span> and <span class="arithmatex">\(y\)</span> to capture a fine detail.</p>
-<ul>
-<li><strong>Workload:</strong> The grid size increases by <span class="arithmatex">\(100\times\)</span>.</li>
-<li><strong>Stability:</strong> The time step <span class="arithmatex">\(h_t\)</span> must shrink by <span class="arithmatex">\(100\times\)</span>.</li>
-<li><strong>Total Cost:</strong> The simulation now takes <span class="arithmatex">\(100 \times 100 = \mathbf{10,000}\)</span> times longer to run. This is the "tyranny of <span class="arithmatex">\(h^2\)</span>."</li>
-</ul>
-</div>
-<hr />
-<h2 id="114-method-2-the-implicit-btcs-scheme"><strong>11.4 Method 2: The Implicit BTCS Scheme</strong></h2>
-<p>The solution to the CFL restriction is to switch from an <strong>explicit</strong> marching scheme to an <strong>implicit</strong> scheme.</p>
-<p>The <strong>Backward-Time Centered-Space (BTCS) Method</strong> is the specific implicit scheme that solves this. It calculates the spatial coupling term (<span class="arithmatex">\(\nabla^2 T\)</span>) using the temperature distribution at the <strong>unknown future time step</strong> (<span class="arithmatex">\(n+1\)</span>).</p>
-<hr />
-<h3 id="the-matrix-system"><strong>The Matrix System</strong></h3>
-<p>This implicit linkage means that the future temperature <span class="arithmatex">\(T_{i, n+1}\)</span> is coupled to its future neighbors (<span class="arithmatex">\(T_{i \pm 1, n+1}\)</span>). The rearrangement of the discretized equation results in a <strong>system of linear equations</strong>:</p>
-<div class="arithmatex">\[
-(-\alpha) T_{i-1, n+1} + (1 + 2\alpha) T_{i, n+1} + (-\alpha) T_{i+1, n+1} = T_{i, n}
-\]</div>
-<p>This system is written in matrix form as <span class="arithmatex">\(\mathbf{A} \mathbf{T}_{n+1} = \mathbf{b}\)</span>, where:</p>
-<ul>
-<li><span class="arithmatex">\(\mathbf{T}_{n+1}\)</span> is the <strong>unknown vector</strong> of future temperatures.</li>
-<li><span class="arithmatex">\(\mathbf{b}\)</span> is the <strong>known vector</strong> of present temperatures <span class="arithmatex">\(T_{n}\)</span> (plus boundary contributions).</li>
-<li><span class="arithmatex">\(\mathbf{A}\)</span> is the coefficient matrix, which is <strong>tridiagonal</strong>.</li>
-</ul>
-<hr />
-<h3 id="advantages-and-trade-offs"><strong>Advantages and Trade-offs</strong></h3>
-<p>The most significant feature of BTCS is that it is <strong>unconditionally stable</strong> (A-stable) [2, 3]. The solution will never explode, regardless of the value of <span class="arithmatex">\(\alpha\)</span>. The stability is achieved at the computational cost of having to solve the tridiagonal system <span class="arithmatex">\(\mathbf{A} \mathbf{T}_{n+1} = \mathbf{b}\)</span> at every time step. Furthermore, BTCS is only <strong><span class="arithmatex">\(\mathcal{O}(h_t)\)</span> accurate</strong> in time (like Euler's method).</p>
-<hr />
-<h2 id="115-method-3-the-gold-standard-crank-nicolson"><strong>11.5 Method 3: The "Gold Standard" Crank-Nicolson</strong></h2>
-<p>The <strong>Crank-Nicolson Method</strong> is the most widely used scheme for parabolic PDEs, as it is <strong>unconditionally stable</strong> and achieves <strong>second-order accuracy in time</strong> (<span class="arithmatex">\(\mathcal{O}(h_t^2)\)</span>) [1, 4].</p>
-<hr />
-<h3 id="the-concept-averaging-the-derivatives"><strong>The Concept: Averaging the Derivatives</strong></h3>
-<p>Crank-Nicolson achieves its higher accuracy by approximating the spatial derivative (<span class="arithmatex">\(\nabla^2 T\)</span>) using the <strong>average of the Central Difference stencils</strong> evaluated at the present time (<span class="arithmatex">\(n\)</span>) and the future time (<span class="arithmatex">\(n+1\)</span>):</p>
-<div class="arithmatex">\[
-\frac{\partial T}{\partial t}\;\approx\;\frac{D}{2}\left[\left.\frac{\partial^2 T}{\partial x^2}\right|_{t=t_n}
-+\left.\frac{\partial^2 T}{\partial x^2}\right|_{t=t_{n+1}}\right]
-\]</div>
-<hr />
-<h3 id="the-algorithm-and-the-matrix-system"><strong>The Algorithm and the Matrix System</strong></h3>
-<p>The complex substitution and rearrangement still result in a <strong>tridiagonal system</strong> of linear equations, <span class="arithmatex">\(\mathbf{A} \mathbf{T}_{n+1} = \mathbf{b}\)</span>.</p>
-<ul>
-<li><strong>Matrix <span class="arithmatex">\(\mathbf{A}\)</span> (LHS):</strong> Main Diagonal is <span class="arithmatex">\((1 + \alpha)\)</span>; Off-Diagonals are <span class="arithmatex">\((-\frac{\alpha}{2})\)</span>.</li>
-<li><strong>Vector <span class="arithmatex">\(\mathbf{b}\)</span> (RHS):</strong> Must be <strong>recalculated at every step</strong> using the known <span class="arithmatex">\(T_n\)</span> profile.</li>
-</ul>
-<div class="admonition tip">
-<p class="admonition-title">Implicit Methods: Pay for Stability</p>
-<p>Implicit methods (BTCS, Crank-Nicolson) are <strong>computationally more expensive <em>per step</em></strong> because they require solving a matrix equation. However, they are <strong>vastly more efficient <em>overall</em></strong> because their unconditional stability allows you to take enormous time steps (<span class="arithmatex">\(h_t\)</span>) that would be impossible for an explicit method. You trade
-many cheap, unstable steps for a few expensive, stable steps.</p>
-</div>
-<hr />
-<h3 id="the-gold-standard"><strong>The Gold Standard</strong></h3>
-<p>The Crank-Nicolson method is the gold standard because its combination of <span class="arithmatex">\(\mathbf{\mathcal{O}(h_t^2)}\)</span> accuracy and <strong>unconditional stability</strong> allows the user to choose the largest possible time step that satisfies the desired temporal <em>accuracy</em>, making it vastly more <strong>efficient</strong> than either FTCS or BTCS for a given error requirement. The system <span class="arithmatex">\(\mathbf{A} \mathbf{T}_{n+1} = \mathbf{b}\)</span> is solved efficiently using specialized <span class="arithmatex">\(O(N)\)</span> tridiagonal solvers (like the Thomas Algorithm, Chapter 13).</p>
-<hr />
-<h2 id="116-core-application-the-1d-quenched-rod"><strong>11.6 Core Application: The 1D "Quenched" Rod</strong></h2>
-<p>The transient cooling of a rod, initially hot and instantly quenched at its boundaries (Dirichlet BCs), serves as the ultimate test case for these schemes.</p>
-<p>The simulation confirms the core principles of implicit integration:</p>
-<ol>
-<li><strong>FTCS Failure:</strong> The explicit FTCS method immediately fails when tested with a large time step that sets <span class="arithmatex">\(\alpha &gt; 0.5\)</span> (e.g., <span class="arithmatex">\(\alpha=0.75\)</span> or <span class="arithmatex">\(\alpha=12.5\)</span>), resulting in catastrophic numerical oscillations.</li>
-<li><strong>CN Success:</strong> The <strong>Crank-Nicolson Method</strong> successfully simulates the smooth, predictable cooling of the rod, even when using large time steps (e.g., <span class="arithmatex">\(\Delta t = 0.005\)</span> s, resulting in <span class="arithmatex">\(\alpha=12.5\)</span>) that violate the FTCS condition by a factor of <span class="arithmatex">\(\mathbf{25}\)</span>.</li>
-</ol>
-<p>This application validates the FDM approach: the stability gained from solving the implicit tridiagonal system is essential for developing efficient and robust dynamic models.</p>
-<hr />
-<h2 id="117-chapter-summary-and-bridge-to-chapter-12"><strong>11.7 Chapter Summary and Bridge to Chapter 12</strong></h2>
-<p>This chapter established the full <strong>Parabolic PDE Solver</strong> toolkit, moving from the static fields of Chapter 10 to dynamic, time-evolving systems. The key numerical challenge was the <strong>CFL stability constraint</strong> of explicit schemes, which was solved by adopting the <strong>unconditionally stable</strong> implicit methods (BTCS and the <span class="arithmatex">\(\mathbf{\mathcal{O}(h_t^2)}\)</span> Crank-Nicolson method).</p>
-<p>We now transition from systems that <strong>diffuse</strong> or <strong>smooth out</strong> their energy (<span class="arithmatex">\(\frac{\partial T}{\partial t}\)</span>) to systems that <strong>propagate</strong> and <strong>retain</strong> their energy (waves). This requires replacing the first-order time derivative with a <strong>second-order time derivative</strong>, leading to the <strong>Hyperbolic PDE</strong>, or <strong>Wave Equation</strong>:</p>
-<div class="arithmatex">\[
-\frac{\partial^2 y}{\partial t^2} = v^2 \nabla^2 y
-\]</div>
-<p>This seemingly minor change introduces a new formulation and a different stability constraint that must be resolved in <strong>Chapter 12</strong>.</p>
 <hr />
 <h2 id="references"><strong>References</strong></h2>
-<p>[1] Press, W. H., Teukolsky, S. A., Vetterling, W. T., &amp; Flannery, B. P. (2007). <em>Numerical Recipes: The Art of Scientific Computing</em> (3<sup>rd</sup> ed.). Cambridge University Press.</p>
-<p>[2] Higham, N.J. (2002). <em>Accuracy and Stability of Numerical Algorithms</em>. SIAM.</p>
-<p>[3] Quarteroni, A., Sacco, R., &amp; Saleri, F. (2007). <em>Numerical Mathematics</em>. Springer.</p>
-<p>[4] Newman, M. (2013). <em>Computational Physics</em>. CreateSpace Independent Publishing Platform.</p>
-<p>[5] Garcia, A. L. (2000). <em>Numerical Methods for Physics</em> (2<sup>nd</sup> ed.). Prentice Hall.</p>
+<hr />
+<p>[1] Press, W. H., et al. (2007). <em>Numerical Recipes: The Art of Scientific Computing</em>. Cambridge University Press.</p>
+<p>[2] Crank, J., &amp; Nicolson, P. (1947). A practical method for numerical evaluation of solutions of partial differential equations of the heat-conduction type. <em>CUP</em>.</p>
+<p>[3] Morton, K. W., &amp; Mayers, D. F. (2005). <em>Numerical Solution of Partial Differential Equations</em>. Cambridge University Press.</p>
+<p>[4] Richtmyer, R. D., &amp; Morton, K. W. (1967). <em>Difference Methods for Initial-Value Problems</em>. Interscience.</p>
+<p>[5] Wilmott, P., et al. (1995). <em>The Mathematics of Financial Derivatives</em>. Cambridge University Press.</p>
 
 
 

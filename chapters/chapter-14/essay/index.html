@@ -94,7 +94,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#introduction" class="md-skip">
+        <a href="#chapter-14-linear-algebra-ii-eigenvalue-problems" class="md-skip">
           Skip to content
         </a>
       
@@ -2324,172 +2324,145 @@
   
 
 
+<h1 id="chapter-14-linear-algebra-ii-eigenvalue-problems"><strong>Chapter 14: Linear Algebra II (Eigenvalue Problems)</strong></h1>
+<hr />
 <h1 id="introduction"><strong>Introduction</strong></h1>
-<p>Our previous work in <strong>Chapter 13</strong> focused on the <strong>driven problem</strong>, solving the linear system <span class="arithmatex">\(\mathbf{A}\mathbf{x} = \mathbf{b}\)</span>. This determined the system's <strong>response</strong> (<span class="arithmatex">\(\mathbf{x}\)</span>) to an external, known force or source (<span class="arithmatex">\(\mathbf{b}\)</span>).</p>
-<p>This chapter pivots to the <strong>natural problem</strong>: calculating the <strong>intrinsic, fundamental properties</strong> of the system itself, assuming there is no external driving force (i.e., <span class="arithmatex">\(\mathbf{b} = \mathbf{0}\)</span>). These intrinsic properties define the core characteristics of a physical system and are revealed by the <strong>Eigenvalue Problem</strong>:</p>
-<div class="arithmatex">\[
-\boxed{\mathbf{A}\mathbf{x} = \lambda \mathbf{x}}
-\]</div>
-<p>This single equation unifies disparate phenomena across physics and data science:</p>
-<ul>
-<li><strong>Allowed Energies:</strong> The discrete, quantized energy levels of a quantum particle.</li>
-<li><strong>Normal Modes:</strong> The fundamental frequencies and shapes of vibration in a coupled mechanical system.</li>
-<li><strong>Dominant Patterns:</strong> The principal axes of variance in high-dimensional data analysis (Principal Component Analysis, Chapter 16).</li>
-</ul>
-<p>The goal of this chapter is to build the dedicated algorithms required to find these "natural states"—the <strong>eigenvalues (<span class="arithmatex">\(\lambda\)</span>)</strong> and the corresponding <strong>eigenvectors (<span class="arithmatex">\(\mathbf{x}\)</span>)</strong>.</p>
+<p>In Chapter 13, we solved the "Driven Problem" (<span class="arithmatex">\(Ax=b\)</span>), where an external force (the source <span class="arithmatex">\(b\)</span>) determined the state of the system <span class="arithmatex">\(x\)</span>. However, some of the most profound questions in physics are "Natural Problems"—what does the system do when left entirely to itself? What are its natural frequencies, its stable configurations, or its allowed energy levels? These questions are answered by the <strong>Eigenvalue Problem</strong>.</p>
+<div class="arithmatex">\[ \mathbf{A} \mathbf{x} = \lambda \mathbf{x} \]</div>
+<p>In this equation, the matrix <span class="arithmatex">\(\mathbf{A}\)</span> represents the system's internal constraints. We seek the <strong>eigenvalues</strong> (<span class="arithmatex">\(\lambda\)</span>), which are the "characteristic values" (like energy or frequency), and the <strong>eigenvectors</strong> (<span class="arithmatex">\(\mathbf{x}\)</span>), which are the "characteristic shapes" (like wavefunctions or vibrational modes). This chapter moves beyond simple matrix inversion to the iterative algorithms—like the <strong>Power Method</strong> and the <strong>QR Algorithm</strong>—that reveal the hidden spectrum of a physical system.</p>
+<hr />
 <h1 id="chapter-14-outline"><strong>Chapter 14: Outline</strong></h1>
 <table>
 <thead>
 <tr>
-<th style="text-align: left;">Sec.</th>
-<th style="text-align: left;">Title</th>
-<th style="text-align: left;">Core Ideas &amp; Examples</th>
+<th style="text-align: left;"><strong>Sec.</strong></th>
+<th style="text-align: left;"><strong>Title</strong></th>
+<th style="text-align: left;"><strong>Core Ideas &amp; Examples</strong></th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td style="text-align: left;"><strong>14.1</strong></td>
-<td style="text-align: left;">The FDM Link: TISE</td>
-<td style="text-align: left;"><span class="arithmatex">\(\mathbf{H}\mathbf{\psi} = E\mathbf{\psi}\)</span>, mapping calculus to linear algebra.</td>
+<td style="text-align: left;"><strong>The Intrinsic System</strong></td>
+<td style="text-align: left;">Natural modes vs. Driven response; the Schrödinger connection; <span class="arithmatex">\(Ax = \lambda x\)</span>.</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>14.2</strong></td>
-<td style="text-align: left;">Solution Methods</td>
-<td style="text-align: left;">Exploiting Symmetric (<span class="arithmatex">\(\mathbf{A} = \mathbf{A}^T\)</span>) and Tridiagonal structure.</td>
+<td style="text-align: left;"><strong>The Power Method</strong></td>
+<td style="text-align: left;">Finding the dominant eigenvalue; iterative vector multiplication; convergence.</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>14.3</strong></td>
-<td style="text-align: left;">Application: Normal Modes</td>
-<td style="text-align: left;"><span class="arithmatex">\(\mathbf{K}\mathbf{x} = \omega^2\mathbf{M}\mathbf{x}\)</span>, natural frequencies.</td>
+<td style="text-align: left;"><strong>Inverse Iteration</strong></td>
+<td style="text-align: left;">Finding the smallest (ground state) eigenvalue; the "Shift and Invert" trick.</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>14.4</strong></td>
-<td style="text-align: left;">Summary &amp; Bridge</td>
-<td style="text-align: left;">Bridge to Part 6: Data Analysis (FFT).</td>
+<td style="text-align: left;"><strong>The QR Algorithm</strong></td>
+<td style="text-align: left;">Finding the <strong>full spectrum</strong>; orthogonal transformations; eigenvalue "peeling."</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>14.5</strong></td>
+<td style="text-align: left;"><strong>Diagonalization &amp; Symmetry</strong></td>
+<td style="text-align: left;">The Spectral Theorem; why physical matrices are almost always symmetric.</td>
 </tr>
 </tbody>
 </table>
 <hr />
-<h2 id="141-the-fdm-link-the-matrix-eigenvalue-problem"><strong>14.1 The FDM Link: The Matrix Eigenvalue Problem</strong></h2>
-<p>The computational foundation for solving the <strong>natural problem</strong> was established in <strong>Chapter 9</strong> (Boundary Value Problems) by applying the Finite Difference Method (FDM) to the <strong>Time-Independent Schrödinger Equation</strong> (TISE):</p>
-<div class="arithmatex">\[
-\frac{-\hbar^2}{2m}\frac{d^2\psi}{dx^2} + V(x)\psi = E\psi
-\]</div>
-<p>By substituting the FDM stencil for the second derivative and rearranging, the TISE is transformed <em>exactly</em> into the matrix eigenvalue problem [4]:</p>
-<div class="arithmatex">\[
-\boxed{\mathbf{H}\mathbf{\psi} = E\mathbf{\psi}}
-\]</div>
-<ul>
-<li><strong>Matrix <span class="arithmatex">\(\mathbf{H}\)</span> (Hamiltonian):</strong> The system matrix, representing the total energy operator (kinetic + potential).</li>
-<li><strong>Eigenvalues <span class="arithmatex">\(E\)</span>:</strong> The set of allowed, discrete <strong>Energy Levels</strong> (the physical observable).</li>
-<li><strong>Eigenvectors <span class="arithmatex">\(\mathbf{\psi}\)</span>:</strong> The corresponding <strong>Wavefunctions</strong> (the spatial profile of the probability distribution).</li>
-</ul>
-<p>This direct mapping demonstrates that the solution to a complex differential equation lies in efficiently solving a large system of <strong>Linear Algebra</strong>.</p>
+<h2 id="141-eigenvalues-in-physics-finding-the-resonance"><strong>14.1 Eigenvalues in Physics: Finding the Resonance</strong></h2>
+<hr />
+<p>Eigenvalues appear whenever a system has "Natural Modes":
+1.  <strong>Classical Mechanics:</strong> The <strong>Normal Modes</strong> of a set of coupled springs. The eigenvalues are the square of the vibrational frequencies (<span class="arithmatex">\(\omega^2\)</span>).
+2.  <strong>Quantum Mechanics:</strong> The <strong>Time-Independent Schrödinger Equation</strong>. The eigenvalues are the allowed <strong>Energy Levels</strong> (<span class="arithmatex">\(E\)</span>).
+3.  <strong>Data Science:</strong> <strong>Principal Component Analysis (PCA)</strong>. The eigenvalues represent the variance captured by each "Principal Component."</p>
 <div class="admonition tip">
-<p class="admonition-title">The “Magic Trick” of Computational Physics</p>
-<p>This transformation is arguably the most important "trick" in the field. It converts a complex analytic problem (a differential equation) into a discrete algebraic problem (a matrix equation). We don't solve the TISE; we solve <span class="arithmatex">\(\mathbf{H}\mathbf{\psi} = E\mathbf{\psi}\)</span>, which computers are brilliant at.</p>
+<p class="admonition-title">Eigenvalues are Resonances</p>
+<p>Think of eigenvectors as the "pure notes" a system can play, and eigenvalues as the "pitch" of those notes. Any complex motion of the system can be built by adding these pure notes together.</p>
 </div>
 <hr />
-<h2 id="142-solution-methods-exploiting-matrix-structure"><strong>14.2 Solution Methods: Exploiting Matrix Structure</strong></h2>
-<p>Solving the full eigensystem for all <span class="arithmatex">\(\lambda\)</span> and <span class="arithmatex">\(\mathbf{x}\)</span> is computationally more intensive than solving <span class="arithmatex">\(\mathbf{A}\mathbf{x} = \mathbf{b}\)</span>. The key to efficiency is exploiting the specific structures inherent in physics-based matrices.</p>
+<h2 id="142-the-power-method-the-dominant-mode"><strong>14.2 The Power Method: The Dominant Mode</strong></h2>
 <hr />
-<h3 id="the-importance-of-structure"><strong>The Importance of Structure</strong></h3>
-<ol>
-<li><strong>Symmetric (Hermitian) Matrices:</strong>
-   The system matrix <span class="arithmatex">\(\mathbf{A}\)</span> (or <span class="arithmatex">\(\mathbf{H}\)</span>) is almost always <strong>symmetric</strong> (<span class="arithmatex">\(\mathbf{A} = \mathbf{A}^T\)</span>) or <strong>Hermitian</strong> (<span class="arithmatex">\(\mathbf{A} = \mathbf{A}^\dagger\)</span>).</li>
-</ol>
-<p><em>Advantage:</em> symmetric matrices guarantee <strong>real eigenvalues</strong> and orthogonal eigenvectors.</p>
-<ol>
-<li><strong>Tridiagonal Matrices:</strong>
-   1D FDM discretizations yield <strong>tridiagonal matrices</strong>.</li>
-</ol>
-<p><em>Advantage:</em> specialized solvers compute eigensystems in <span class="arithmatex">\(\mathcal{O}(N^2)\)</span> instead of <span class="arithmatex">\(\mathcal{O}(N^3)\)</span>.</p>
+<p>How do you find the largest eigenvalue of a <span class="arithmatex">\(1000 \times 1000\)</span> matrix without solving a 1000<sup>th</sup>-degree polynomial? You multiply!
+1.  Start with a random vector <span class="arithmatex">\(x_0\)</span>.
+2.  Multiply by <span class="arithmatex">\(A\)</span>: <span class="arithmatex">\(x_{new} = A x_{old}\)</span>.
+3.  Normalize the vector to keep it from blowing up.
+4.  <strong>Repeat.</strong></p>
+<pre class="mermaid"><code>graph TD
+    A[Random Vector x] --&gt; B[Multiply: x = Ax]
+    B --&gt; C[Normalize: x = x / |x|]
+    C --&gt; D{Has x converged?}
+    D -- No --&gt; B
+    D -- Yes --&gt; E[x is the Dominant Eigenvector]
+    E --&gt; F[Lambda = x.T A x]</code></pre>
+<div class="admonition example">
+<p class="admonition-title">Quantum Ground State</p>
+<p>In many physics problems, we only care about the <strong>Ground State</strong> (the lowest energy). By applying the Power Method to the <em>inverse</em> matrix <span class="arithmatex">\(A^{-1}\)</span>, we can find the smallest eigenvalue of <span class="arithmatex">\(A\)</span>—this is called <strong>Inverse Iteration</strong>.</p>
+</div>
+<hr />
+<h2 id="143-the-qr-algorithm-solving-the-whole-spectrum"><strong>14.3 The QR Algorithm: Solving the Whole Spectrum</strong></h2>
+<hr />
+<p>If you need <strong>all</strong> the eigenvalues, the Power Method is too slow. The <strong>QR Algorithm</strong> is the desktop standard. It works by "peeling" the matrix until it becomes upper-triangular:
+1.  Decompose <span class="arithmatex">\(A\)</span> into an Orthogonal matrix <span class="arithmatex">\(Q\)</span> and an Upper-triangular matrix <span class="arithmatex">\(R\)</span> (<span class="arithmatex">\(A = QR\)</span>).
+2.  Multiply them in reverse order: <span class="arithmatex">\(A_{new} = RQ\)</span>.
+3.  <strong>Repeat.</strong>
+Surprisingly, this process causes the off-diagonal elements of <span class="arithmatex">\(A\)</span> to shrink to zero, leaving the <strong>entire spectrum</strong> of eigenvalues on the main diagonal.</p>
+<hr />
+<h2 id="144-the-importance-of-symmetry"><strong>14.4 The Importance of Symmetry</strong></h2>
+<hr />
+<p>Most physical matrices (Hamiltonians, Stiffness matrices) are <strong>Symmetric</strong> (<span class="arithmatex">\(A = A^T\)</span>).
+- Symmetric matrices <strong>always</strong> have real eigenvalues (no imaginary frequencies).
+- Their eigenvectors are <strong>always</strong> orthogonal (each mode is independent of the others).</p>
 <details class="question">
-<summary>Why are physical matrices so often symmetric?</summary>
-<p>Symmetry (<span class="arithmatex">\(\mathbf{A} = \mathbf{A}^T\)</span>) implies that coupling from particle <em>i</em> to <em>j</em> equals that from <em>j</em> to <em>i</em>. This reflects Newton's Third Law and energy conservation.</p>
+<summary>What if the matrix isn't symmetric?</summary>
+<p>Non-symmetric matrices can have complex eigenvalues (representing damped or growing oscillations) and non-orthogonal eigenvectors. These are common in fluids and open systems where energy is not conserved.</p>
 </details>
 <hr />
-<h3 id="specialized-solvers-the-professional-toolkit"><strong>Specialized Solvers (The Professional Toolkit)</strong></h3>
-<ul>
-<li><strong><code>scipy.linalg.eigh</code>:</strong> solver for <strong>symmetric/Hermitian</strong> matrices.</li>
-<li><strong><code>scipy.linalg.eigh_tridiagonal</code>:</strong> optimized solver for <strong>symmetric + tridiagonal</strong> matrices.</li>
-</ul>
+<h2 id="summary-eigenvalue-solver-comparison"><strong>Summary: Eigenvalue Solver Comparison</strong></h2>
 <hr />
-<h3 id="the-power-method-finding-the-dominant-mode"><strong>The Power Method (Finding the Dominant Mode)</strong></h3>
-<ol>
-<li>Start with a random vector <span class="arithmatex">\(\mathbf{x}_0\)</span>.</li>
-<li>Iterate <span class="arithmatex">\(\mathbf{x}_{k+1} = \mathbf{A}\mathbf{x}_k\)</span>.</li>
-<li>Normalize at each step.</li>
-<li>Converges to the eigenvector of the <strong>largest eigenvalue</strong>.</li>
-</ol>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># Algorithm: The Power Method</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="k">def</span><span class="w"> </span><span class="nf">power_method</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">x_k</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">tolerance</span><span class="o">=</span><span class="mf">1e-9</span><span class="p">,</span> <span class="n">max_iterations</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="sd">    Find the largest eigenvalue and corresponding eigenvector using the power method.</span>
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="sd">    Parameters:</span>
-</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="sd">    A: square matrix</span>
-</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="sd">    x_k: initial guess vector (random if None)</span>
-</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="sd">    tolerance: convergence tolerance</span>
-</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="sd">    max_iterations: maximum number of iterations</span>
-</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>
-</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="sd">    Returns:</span>
-</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="sd">    lambda_max: largest eigenvalue</span>
-</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="sd">    x_k: corresponding eigenvector</span>
-</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="sd">    &quot;&quot;&quot;</span>
-</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>    <span class="k">if</span> <span class="n">x_k</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a>        <span class="n">x_k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>
-</span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a>    <span class="n">x_k</span> <span class="o">=</span> <span class="n">x_k</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">x_k</span><span class="p">)</span>
-</span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a>
-</span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a>    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_iterations</span><span class="p">):</span>
-</span><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a>        <span class="n">x_k_plus_1</span> <span class="o">=</span> <span class="n">A</span> <span class="o">@</span> <span class="n">x_k</span>
-</span><span id="__span-0-26"><a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a>        <span class="n">x_k_plus_1</span> <span class="o">=</span> <span class="n">x_k_plus_1</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">x_k_plus_1</span><span class="p">)</span>
-</span><span id="__span-0-27"><a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a>
-</span><span id="__span-0-28"><a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a>        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">x_k_plus_1</span> <span class="o">-</span> <span class="n">x_k</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">tolerance</span><span class="p">:</span>
-</span><span id="__span-0-29"><a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a>            <span class="k">break</span>
-</span><span id="__span-0-30"><a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a>
-</span><span id="__span-0-31"><a id="__codelineno-0-31" name="__codelineno-0-31" href="#__codelineno-0-31"></a>        <span class="n">x_k</span> <span class="o">=</span> <span class="n">x_k_plus_1</span>
-</span><span id="__span-0-32"><a id="__codelineno-0-32" name="__codelineno-0-32" href="#__codelineno-0-32"></a>
-</span><span id="__span-0-33"><a id="__codelineno-0-33" name="__codelineno-0-33" href="#__codelineno-0-33"></a>    <span class="n">lambda_max</span> <span class="o">=</span> <span class="p">(</span><span class="n">x_k</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">A</span> <span class="o">@</span> <span class="n">x_k</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">x_k</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">x_k</span><span class="p">)</span>
-</span><span id="__span-0-34"><a id="__codelineno-0-34" name="__codelineno-0-34" href="#__codelineno-0-34"></a>    <span class="k">return</span> <span class="n">lambda_max</span><span class="p">,</span> <span class="n">x_k</span>
-</span></code></pre></div>
-<hr />
-<h2 id="143-core-application-normal-modes-of-oscillation"><strong>14.3 Core Application: Normal Modes of Oscillation</strong></h2>
-<p>For a coupled system of masses and springs:</p>
-<div class="arithmatex">\[
-\mathbf{K}\mathbf{x} = \omega^2 \mathbf{M} \mathbf{x}
-\]</div>
-<ul>
-<li><strong><span class="arithmatex">\(\mathbf{M}\)</span>:</strong> Mass matrix</li>
-<li><strong><span class="arithmatex">\(\mathbf{K}\)</span>:</strong> Stiffness matrix</li>
-<li><strong>Eigenvalues:</strong> <span class="arithmatex">\(\lambda = \omega^2\)</span></li>
-<li><strong>Eigenvectors:</strong> Mode shapes</li>
-</ul>
-<p>Transform to standard form via <span class="arithmatex">\(\mathbf{A}=\mathbf{M}^{-1}\mathbf{K}\)</span>.</p>
-<div class="admonition example">
-<p class="admonition-title">Two Masses, Three Springs</p>
-<p>A system with <span class="arithmatex">\(m_1, m_2\)</span> and <span class="arithmatex">\(k_1,k_2,k_3\)</span> yields a <span class="arithmatex">\(2\times 2\)</span> eigenproblem with <strong>symmetric</strong> and <strong>antisymmetric</strong> modes.</p>
-</div>
-<hr />
-<h2 id="144-chapter-summary-and-bridge-to-part-6-data-analysis"><strong>14.4 Chapter Summary and Bridge to Part 6: Data Analysis</strong></h2>
-<p>This chapter completed the foundation for solving the <strong>natural problem</strong>:</p>
-<blockquote>
-<div class="arithmatex">\[\mathbf{A}\mathbf{x} = \lambda \mathbf{x}\]</div>
-</blockquote>
-<p>Efficiency depends critically on exploiting <strong>symmetry</strong> and <strong>tridiagonal structure</strong>, enabling specialized solvers like <code>eigh_tridiagonal</code>.</p>
-<p>Next: <strong>Part 6 – Data Analysis</strong>, beginning with <strong>Chapter 15 (FFT)</strong>.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Method</th>
+<th style="text-align: left;">Complexity</th>
+<th style="text-align: left;">Best For</th>
+<th style="text-align: left;">Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Power Method</strong></td>
+<td style="text-align: left;"><span class="arithmatex">\(\mathcal{O}(N^2)\)</span></td>
+<td style="text-align: left;"><strong>Largest</strong> eigenvalue</td>
+<td style="text-align: left;">Simplest to implement</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Inverse Iteration</strong></td>
+<td style="text-align: left;"><span class="arithmatex">\(\mathcal{O}(N^2)\)</span></td>
+<td style="text-align: left;"><strong>Smallest</strong> eigenvalue</td>
+<td style="text-align: left;">Uses LU hidden inside</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>QR Algorithm</strong></td>
+<td style="text-align: left;"><span class="arithmatex">\(\mathcal{O}(N^3)\)</span></td>
+<td style="text-align: left;"><strong>All</strong> eigenvalues</td>
+<td style="text-align: left;">The "Gold Standard"</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Lanczos/Arnoldi</strong></td>
+<td style="text-align: left;"><span class="arithmatex">\(\mathcal{O}(N)\)</span></td>
+<td style="text-align: left;">Massive Sparse matrices</td>
+<td style="text-align: left;">Used for huge quantum systems</td>
+</tr>
+</tbody>
+</table>
 <hr />
 <h2 id="references"><strong>References</strong></h2>
-<p>[1] Press, W. H., Teukolsky, S. A., Vetterling, W. T., &amp; Flannery, B. P. (2007). <em>Numerical Recipes</em>.</p>
-<p>[2] Higham, N. J. (2002). <em>Accuracy and Stability of Numerical Algorithms</em>.</p>
-<p>[3] Quarteroni, A., Sacco, R., &amp; Saleri, F. (2007). <em>Numerical Mathematics</em>.</p>
-<p>[4] Newman, M. (2013). <em>Computational Physics</em>.</p>
-<p>[5] Virtanen, P. et al. (2020). SciPy 1.0.</p>
-<p>[6] Thijssen, J. M. (2007). <em>Computational Physics</em>.</p>
+<hr />
+<p>[1] Press, W. H., et al. (2007). <em>Numerical Recipes: The Art of Scientific Computing</em>. Cambridge University Press.</p>
+<p>[2] Francis, J. G. F. (1961). The QR Transformation. <em>Physical Review</em>.</p>
+<p>[3] Parlett, B. N. (1998). <em>The Symmetric Eigenvalue Problem</em>. SIAM.</p>
+<p>[4] Golub, G. H., &amp; Van Loan, C. F. (2013). <em>Matrix Computations</em>. Johns Hopkins University Press.</p>
+<p>[5] Trefethen, L. N., &amp; Bau, D. (1997). <em>Numerical Linear Algebra</em>. SIAM.</p>
 
 
 

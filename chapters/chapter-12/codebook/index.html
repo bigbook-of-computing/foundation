@@ -94,7 +94,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#chapter-12-hyperbolic-pdes-eg-the-wave-equation-codebook" class="md-skip">
+        <a href="#chapter-12-hyperbolic-pdes-codebook" class="md-skip">
           Skip to content
         </a>
       
@@ -2481,33 +2481,38 @@
   
 
 
-<h1 id="chapter-12-hyperbolic-pdes-eg-the-wave-equation-codebook"><strong>Chapter 12: Hyperbolic PDEs (e.g., The Wave Equation) (Codebook)</strong></h1>
-<p>This Code Book is for <strong>Chapter 12: Hyperbolic PDEs (e.g., The Wave Equation)</strong>, focusing on implementing the explicit FTCS scheme, testing the CFL stability condition, and solving the "first step" problem.</p>
+<h1 id="chapter-12-hyperbolic-pdes-codebook"><strong>Chapter 12: Hyperbolic PDEs (Codebook)</strong></h1>
+<hr />
+<p>This Codebook implements the numerical solutions for wave propagation. We demonstrate the <strong>CFL stability boundary</strong> for hyperbolic systems and provide the <strong>plucked string</strong> simulation, highlighting the <strong>two-stage initialization</strong> required for second-order time derivatives.</p>
 <hr />
 <h2 id="project-1-cfl-stability-crisis-wave-equation">Project 1: CFL Stability Crisis (Wave Equation)</h2>
 <table>
 <thead>
 <tr>
-<th style="text-align: left;">Feature</th>
+<th style="text-align: left;">Component</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left;"><strong>Goal</strong></td>
-<td style="text-align: left;">Simulate the <strong>1D Wave Equation</strong> using the <strong>Explicit FTCS scheme</strong> to demonstrate its <strong>conditional stability</strong>. We run one case that obeys the CFL condition (<span class="arithmatex">\(C \le 1\)</span>) and one case that violates it (<span class="arithmatex">\(C &gt; 1\)</span>).</td>
+<td style="text-align: left;"><strong>Objective</strong></td>
+<td style="text-align: left;">Demonstrate the conditional stability of the Wave Equation (<span class="arithmatex">\(C = v\Delta t / \Delta x\)</span>).</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>Model</strong></td>
-<td style="text-align: left;"><strong>1D Wave Equation</strong>: <span class="arithmatex">\(\frac{\partial^2 y}{\partial t^2} = v^2 \frac{\partial^2 y}{\partial x^2}\)</span>.</td>
+<td style="text-align: left;"><strong>Mathematical Concept</strong></td>
+<td style="text-align: left;">Explicit time-marching using the Central-Time Central-Space (CTCS) stencil.</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>Stability Constraint</strong></td>
-<td style="text-align: left;">The <strong>CFL Condition</strong> for the explicit wave scheme is <span class="arithmatex">\(\mathbf{C = \frac{v h_t}{h_x} \le 1}\)</span>. Violation leads to catastrophic numerical explosion.</td>
+<td style="text-align: left;"><strong>Experiment Setup</strong></td>
+<td style="text-align: left;">1D string with stationary Gaussian pulse; <span class="arithmatex">\(C = 0.9\)</span> (stable) vs <span class="arithmatex">\(C = 1.1\)</span> (unstable).</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>Core Concept</strong></td>
-<td style="text-align: left;">The explicit wave scheme is equivalent to the <strong>Verlet algorithm</strong> (Chapter 8). It is stable only when the wave's physical travel distance per step (<span class="arithmatex">\(v h_t\)</span>) is less than one grid box (<span class="arithmatex">\(h_x\)</span>).</td>
+<td style="text-align: left;"><strong>Expected Behavior</strong></td>
+<td style="text-align: left;">Stable propagation for <span class="arithmatex">\(C \le 1\)</span>; catastrophic explosion for <span class="arithmatex">\(C &gt; 1\)</span>.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Verification Goal</strong></td>
+<td style="text-align: left;">Confirm the "Information Speed Limit" of the numerical grid.</td>
 </tr>
 </tbody>
 </table>
@@ -2706,26 +2711,30 @@
 <table>
 <thead>
 <tr>
-<th style="text-align: left;">Feature</th>
+<th style="text-align: left;">Component</th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left;"><strong>Goal</strong></td>
-<td style="text-align: left;">Simulate the classical <strong>Plucked String</strong> problem, which requires solving the <span class="arithmatex">\(\mathcal{O}(h^2)\)</span> FTCS recurrence relation and correctly handling the <strong>two-stage initialization</strong> for the second-order time derivative.</td>
+<td style="text-align: left;"><strong>Objective</strong></td>
+<td style="text-align: left;">Simulate a fundamental <strong>Plucked String</strong> (Dirichlet BCs).</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>Initial Conditions</strong></td>
-<td style="text-align: left;"><strong>Position:</strong> Triangular "plucked" profile (<span class="arithmatex">\(y(x, 0)\)</span>). <strong>Velocity:</strong> Released from rest (<span class="arithmatex">\(v(x, 0) = 0\)</span>).</td>
+<td style="text-align: left;"><strong>Mathematical Concept</strong></td>
+<td style="text-align: left;">Solving <span class="arithmatex">\(\partial_t^2 y = v^2 \partial_x^2 y\)</span> with a two-step initialization for <span class="arithmatex">\(y(x, t=1)\)</span>.</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>Core Process</strong></td>
-<td style="text-align: left;">1. <strong>First Step:</strong> Use the special initialization formula simplified for <span class="arithmatex">\(v=0\)</span>. 2. <strong>Main March:</strong> Use the standard FTCS/Verlet formula.</td>
+<td style="text-align: left;"><strong>Experiment Setup</strong></td>
+<td style="text-align: left;">Triangular initial profile; released from rest (<span class="arithmatex">\(v_{init}=0\)</span>).</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>Physical Result</strong></td>
-<td style="text-align: left;">Visualization must show the initial shape breaking into two waves that propagate and reflect, forming standing wave patterns.</td>
+<td style="text-align: left;"><strong>Expected Behavior</strong></td>
+<td style="text-align: left;">Separation into two counter-propagating waves; stable reflection at boundaries.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Verification Goal</strong></td>
+<td style="text-align: left;">Visualize harmonic motion and standing wave formation.</td>
 </tr>
 </tbody>
 </table>
